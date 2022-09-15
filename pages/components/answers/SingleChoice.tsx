@@ -1,5 +1,6 @@
 import RadioGroup from '@mui/material/RadioGroup';
 import { FormControlLabel, Radio, Typography } from '@mui/material';
+import { pink } from '@mui/material/colors';
 
 export default function SingleChoice(props: { choices: string[] | number[]; onClick: (index: number) => void }) {
   return (
@@ -7,22 +8,26 @@ export default function SingleChoice(props: { choices: string[] | number[]; onCl
       {props.choices.map((choice, index) => (
         <FormControlLabel
           key={index}
+          value={index}
+          control={
+            <Radio
+              sx={{
+                color: '#fff',
+                '&.Mui-checked': {
+                  color: pink[600],
+                },
+                '& .MuiSvgIcon-root': {
+                  fontSize: 8,
+                },
+              }}
+            />
+          }
           label={
             <Typography color={'#fff'} fontSize={8}>
               {choice}
             </Typography>
           }
-          value={index}
-          control={
-            <Radio
-              sx={{
-                '& .MuiSvgIcon-root': {
-                  fontSize: 8,
-                  color: '#fff',
-                },
-              }}
-            />
-          }
+          sx={{ marginBottom: 1 }}
           onClick={() => props.onClick(index)}
         />
       ))}
