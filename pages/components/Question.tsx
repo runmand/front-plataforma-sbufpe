@@ -6,7 +6,7 @@ export default function Question(props: { question: question; handleChange: (eve
   return (
     <Card style={{ marginBottom: 8, backgroundColor: '#6D141A' }}>
       <CardContent style={{ padding: 8 }}>
-        <Typography color={'#fff'} fontSize={8}>
+        <Typography color={'#fff'} fontSize={8} marginBottom={'8px'}>
           {props.question.title}
         </Typography>
         <SingleChoice choices={props.question.choices} onChange={props.handleChange} />
