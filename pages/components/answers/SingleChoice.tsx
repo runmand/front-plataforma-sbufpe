@@ -8,7 +8,7 @@ export default function SingleChoice(props: {
   onChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
 }) {
   return (
-    <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group" onChange={props.onChange}>
+    <RadioGroup onChange={props.onChange}>
       {props.choices.map((choice, index) => (
         <FormControlLabel
           key={index}
@@ -16,6 +16,7 @@ export default function SingleChoice(props: {
           control={
             <Radio
               sx={{
+                padding: '4px',
                 color: '#fff',
                 '&.Mui-checked': {
                   color: pink[600],
@@ -31,7 +32,7 @@ export default function SingleChoice(props: {
               {choice}
             </Typography>
           }
-          sx={{ marginBottom: 0.3 }}
+          sx={{ marginLeft: 0, marginRight: 0, marginBottom: index === props.choices.length - 1 ? 0 : '8px' }}
         />
       ))}
     </RadioGroup>
