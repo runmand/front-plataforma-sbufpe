@@ -20,18 +20,26 @@ export default function Form() {
     return (
       <form onSubmit={handleSubmit}>
         <Card style={{ backgroundColor: '#5a0f14' }}>
-          <Card style={{ backgroundColor: '#777', margin: '16px', borderRadius: '16px' }}>
-            <CardContent>
-              <Typography style={{ textAlign: 'center', color: '#000', fontSize: '48px', fontWeight: 'bold' }}>{form.title}</Typography>
-            </CardContent>
-          </Card>
-
           <CardContent>
+            <Typography
+              style={{
+                backgroundColor: '#777',
+                borderRadius: '16px',
+                textAlign: 'center',
+                color: '#000',
+                fontSize: '48px',
+                fontWeight: 'bold',
+                marginBottom: '16px',
+                padding: '16px',
+              }}
+            >
+              {form.title}
+            </Typography>
             <Question questions={form.questions} handleChange={handleChange} />
           </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
+          <CardActions style={{ justifyContent: 'end', padding: '16px' }}>
+              <Button type='submit' variant="contained">ENVIAR</Button>
+            </CardActions>
         </Card>
       </form>
     );
