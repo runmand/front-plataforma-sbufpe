@@ -6,9 +6,9 @@ export default function Question(props: { questions: question[]; handleChange: (
   return (
     <div>
       {props.questions.map((question, index) => (
-        <Card key={index} style={{ marginBottom: 8, backgroundColor: '#6D141A' }}>
-          <CardContent style={{ padding: 8 }}>
-            <Typography style={{ marginBottom: '16px', fontSize: '18px', color: colors.amber[200] }}>
+        <Card key={index} style={{ marginBottom: '24px', backgroundColor: '#6D141A', borderRadius: '16px' }}>
+          <CardContent style={{ padding: '16px' }}>
+            <Typography style={{ marginBottom: '16px', fontSize: '24px', color: colors.amber[200] }}>
               {index} - {question.title}
             </Typography>
             <SingleChoice choices={question.choices} onChange={props.handleChange} />
