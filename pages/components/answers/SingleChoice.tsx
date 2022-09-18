@@ -22,13 +22,13 @@ export default function SingleChoice(props: {
                   color: pink[600],
                 },
                 '& .MuiSvgIcon-root': {
-                  fontSize: 6,
+                  fontSize: 16,
                 },
               }}
             />
           }
           label={
-            <Typography color={'#fff'} fontSize={6}>
+            <Typography color={'#fff'} fontSize={'16px'}>
               {choice}
             </Typography>
           }
