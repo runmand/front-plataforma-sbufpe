@@ -13,7 +13,7 @@ export default function Form() {
   };
 
   React.useEffect(() => {
-    axios.get('http://localhost:2000/form-registers/2').then((res) => setForm(res.data.data));
+    axios.get(`${process.env.API_URL}/form-registers/2`).then((res) => setForm(res.data.data));
   }, []);
 
   if (form.questions.length) {
@@ -38,8 +38,10 @@ export default function Form() {
             <Question questions={form.questions} handleChange={handleChange} />
           </CardContent>
           <CardActions style={{ justifyContent: 'end', padding: '16px' }}>
-              <Button type='submit' variant="contained">ENVIAR</Button>
-            </CardActions>
+            <Button type="submit" variant="contained">
+              ENVIAR
+            </Button>
+          </CardActions>
         </Card>
       </form>
     );
