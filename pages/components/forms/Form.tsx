@@ -1,11 +1,10 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { ChangeEvent } from 'react';
-import Question from '../Question';
-import { IForm } from './store';
+import Question, { question } from '../Question';
 
 export default function Form() {
-  const [form, setForm] = React.useState<IForm>(IForm);
+  const [form, setForm] = React.useState<{ title: string; questions: question[] }>({ title: '', questions: [] });
   const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => console.log(value);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

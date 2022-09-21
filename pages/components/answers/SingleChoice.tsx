@@ -9,7 +9,7 @@ export default function SingleChoice(props: {
 }) {
   return (
     <RadioGroup onChange={props.onChange}>
-      {props.choices.map((choice, index) => (
+      {(props.choices || []).map((choice, index) => (
         <FormControlLabel
           key={index}
           value={index}
