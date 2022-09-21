@@ -3,10 +3,7 @@ import { FormControlLabel, Radio, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { ChangeEvent } from 'react';
 
-export default function SingleChoice(props: {
-  choices: string[] | number[];
-  onChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
-}) {
+export default function SingleChoice(props: IProps) {
   return (
     <RadioGroup onChange={props.onChange}>
       {(props.choices || []).map((choice, index) => (
@@ -37,4 +34,9 @@ export default function SingleChoice(props: {
       ))}
     </RadioGroup>
   );
+}
+
+type IProps = {
+  choices: string[] | number[];
+  onChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
 }

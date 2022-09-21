@@ -1,10 +1,10 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { ChangeEvent } from 'react';
-import Question, { question } from '../Question';
+import QuestionCard, { Question } from '../Question';
 
 export default function Form() {
-  const [form, setForm] = React.useState<{ title: string; questions: question[] }>({ title: '', questions: [] });
+  const [form, setForm] = React.useState<FormState>({ title: '', questions: [] });
   const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => console.log(value);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,7 +34,7 @@ export default function Form() {
             >
               {form.title}
             </Typography>
-            <Question questions={form.questions} handleChange={handleChange} />
+            <QuestionCard questions={form.questions} handleChange={handleChange} />
           </CardContent>
           <CardActions style={{ justifyContent: 'end', padding: '16px' }}>
             <Button type="submit" variant="contained">
@@ -46,3 +46,8 @@ export default function Form() {
     );
   }
 }
+
+type FormState = {
+  title: string;
+  questions: Question[];
+};

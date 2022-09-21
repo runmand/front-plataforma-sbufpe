@@ -2,7 +2,7 @@ import { Card, CardContent, colors, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import SingleChoice from './answers/SingleChoice';
 
-export default function Question(props: { questions: question[]; handleChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void }) {
+export default function QuestionCard(props: IProps) {
   return (
     <div>
       {(props.questions || []).map((question, index) => (
@@ -19,7 +19,12 @@ export default function Question(props: { questions: question[]; handleChange: (
   );
 }
 
-export type question = {
+type IProps = {
+  questions: Question[];
+  handleChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
+}
+
+export type Question = {
   formQuestionId: number;
   type: string;
   domain: string;
@@ -27,5 +32,5 @@ export type question = {
   choices: string[] | number[];
   // answers: string[] | null;
   score: number;
-  childrenQuestion?: question[];
+  childrenQuestion?: Question[];
 };
