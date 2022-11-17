@@ -1,6 +1,5 @@
 import { ChangeEvent } from 'react';
-import { ID } from '../../core/types';
-import { Question } from '../questions/contract';
+import { ID } from '../../../core/types';
 
 export type IProps = {
 	choices: Choice[];

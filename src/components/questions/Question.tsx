@@ -1,5 +1,6 @@
 import { Card, CardContent, colors, Typography } from '@mui/material';
-import ChoiceAnswer from '../answers/ChoiceAnswer';
+import ChoiceAnswer from '../answers/choices/ChoiceAnswer';
+import OpenAnswer from '../answers/opens/OpenAnswer';
 import { IProps } from './contract';
 
 export default function QuestionCard(props: IProps) {
@@ -14,10 +15,14 @@ export default function QuestionCard(props: IProps) {
 						<Typography style={{ marginBottom: '16px', fontSize: '24px', color: colors.amber[200] }}>
 							{index} - {question.title}
 						</Typography>
-						<ChoiceAnswer
-							choices={question.choices}
-							onChange={props.handleChange}
-						/>
+						{question.choices.length === 0 ? (
+							<OpenAnswer onChange={props.handleChange} />
+						) : (
+							<ChoiceAnswer
+								choices={question.choices}
+								onChange={props.handleChange}
+							/>
+						)}
 					</CardContent>
 				</Card>
 			))}

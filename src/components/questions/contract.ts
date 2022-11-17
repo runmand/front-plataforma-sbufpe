@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { ID } from '../../core/types';
-import { Choice } from '../answers/contract';
+import { Choice } from '../answers/choices/contract';
 
 export type IProps = {
 	questions: Question[];
@@ -20,8 +20,8 @@ export type Question = {
 	};
 	completionMessage: string;
 	choices: Choice[];
-  //TODO: Implementar respostas
+	//TODO: Implementar respostas
 	// answers: string[] | null;
-  //TODO: Implementar filhos
+	//TODO: Implementar filhos
 	// childrenQuestion?: Question[];
 };

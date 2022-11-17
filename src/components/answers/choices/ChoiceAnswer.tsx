@@ -3,10 +3,10 @@ import { FormControlLabel, Radio, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { IProps } from './contract';
 
-export default function OpenAnswer(props: IProps) {
+export default function ChoiceAnswer(props: IProps) {
 	return (
 		<RadioGroup onChange={props.onChange}>
-			{(props.choices || []).map((choice, index) => (
+			{props.choices.map((choice, index) => (
 				<FormControlLabel
 					key={index}
 					value={index}
