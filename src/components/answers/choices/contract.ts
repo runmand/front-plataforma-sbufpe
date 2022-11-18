@@ -5,7 +5,6 @@ export type IProps = {
 	formQuestionFormRegisterId: ID;
 	choices: Choice[];
 	onAnswerQuestion: (
-		event: ChangeEvent<HTMLInputElement>,
 		value: {
 			formQuestionFormRegisterId: ID;
 			answer: string;

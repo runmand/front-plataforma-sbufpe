@@ -14,10 +14,10 @@ export default function ChoiceAnswer(props: IProps) {
 					value={index}
 					control={
 						<Radio
-							onChange={e => {
+							onChange={() => {
 								answer.fill(0);
 								answer[index] = Number(choice.formsQuestionFormsQuestionChoicesId);
-								return props.onAnswerQuestion(e, { formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
+								return props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
 							}}
 							sx={{
 								padding: '4px',
