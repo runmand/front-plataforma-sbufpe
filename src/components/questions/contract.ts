@@ -3,13 +3,23 @@ import { ID } from '../../core/types';
 import { Choice } from '../answers/choices/contract';
 
 export type IProps = {
+	isChild?: boolean;
 	questions: Question[];
-	handleChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
+	onAnswerQuestion: (
+		event: ChangeEvent<HTMLInputElement>,
+		value: {
+			formQuestionFormRegisterId: ID;
+			answer: string;
+		}
+	) => void;
 };
 
 export type Question = {
 	formQuestionFormRegisterId: ID;
 	title: string;
+	completionMessage: string;
+	choices: Choice[];
+	childrenQuestion?: Question[];
 	type: {
 		cod: string;
 		name: string;
@@ -22,6 +32,4 @@ export type Question = {
 	choices: Choice[];
 	//TODO: Implementar respostas
 	// answers: string[] | null;
-	//TODO: Implementar filhos
-	// childrenQuestion?: Question[];
 };

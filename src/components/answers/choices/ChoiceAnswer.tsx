@@ -4,14 +4,21 @@ import { pink } from '@mui/material/colors';
 import { IProps } from './contract';
 
 export default function ChoiceAnswer(props: IProps) {
+	const answer: number[] = Array(props.choices.length).fill(0);
+
 	return (
-		<RadioGroup onChange={props.onChange}>
+		<RadioGroup>
 			{props.choices.map((choice, index) => (
 				<FormControlLabel
 					key={index}
 					value={index}
 					control={
 						<Radio
+							onChange={e => {
+								answer.fill(0);
+								answer[index] = Number(choice.formsQuestionFormsQuestionChoicesId);
+								return props.onAnswerQuestion(e, { formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
+							}}
 							sx={{
 								padding: '4px',
 								color: '#fff',

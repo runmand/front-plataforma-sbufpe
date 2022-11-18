@@ -1,12 +1,19 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { ChangeEvent } from 'react';
+import { ID } from '../../core/types';
 import QuestionCard from '../questions/Question';
 import { FormState } from './contract';
 
 export default function Form() {
 	const [form, setForm] = React.useState<FormState>({ id: null, title: null, completionMessage: null, questions: [] });
-	const handleChange = (event: ChangeEvent<HTMLInputElement>, value: string) => console.log(value); //TODO: Implementar evento de troca.
+	const handleAnswerQuestion = (
+		event: ChangeEvent<HTMLInputElement>,
+		value: {
+			formQuestionFormRegisterId: ID;
+			answer: string;
+		}
+	) => console.log(value); //TODO: Implementar evento de troca.
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log('clicou em enviar'); //TODO: Implementar envio.
@@ -16,7 +23,7 @@ export default function Form() {
 		axios.get(`${process.env.API_URL}/form-registers/formatted/13`).then(res => setForm(res.data.data));
 	}, []);
 
-  //TODO: Implementar envio do formulário
+	//TODO: Implementar envio do formulário
 	if (form) {
 		return (
 			<form onSubmit={handleSubmit}>
@@ -38,7 +45,7 @@ export default function Form() {
 						</Typography>
 						<QuestionCard
 							questions={form.questions}
-							handleChange={handleChange}
+							onAnswerQuestion={handleAnswerQuestion}
 						/>
 					</CardContent>
 					{/* <CardActions style={{ justifyContent: 'end', padding: '16px' }}> */}

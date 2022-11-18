@@ -7,7 +7,7 @@ export default function OpenAnswer(props: IProps) {
 			id='outlined-basic'
 			variant='outlined'
 			style={{ display: 'flex', backgroundColor: 'wheat', borderRadius: '16px' }}
-			onBlur={e => props.onChange(e, e.target.value)}
+			onBlur={e => props.onAnswerQuestion(e, { formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: e.target.value })}
 		/>
 	);
 }
