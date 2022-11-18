@@ -6,7 +6,6 @@ export type IProps = {
 	isChild?: boolean;
 	questions: Question[];
 	onAnswerQuestion: (
-		event: ChangeEvent<HTMLInputElement>,
 		value: {
 			formQuestionFormRegisterId: ID;
 			answer: string;
