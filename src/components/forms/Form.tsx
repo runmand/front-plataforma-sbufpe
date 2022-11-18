@@ -1,19 +1,13 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { ID } from '../../core/types';
 import QuestionCard from '../questions/Question';
 import { FormState } from './contract';
 
 export default function Form() {
 	const [form, setForm] = React.useState<FormState>({ id: null, title: null, completionMessage: null, questions: [] });
-	const handleAnswerQuestion = (
-		event: ChangeEvent<HTMLInputElement>,
-		value: {
-			formQuestionFormRegisterId: ID;
-			answer: string;
-		}
-	) => console.log(value); //TODO: Implementar evento de troca.
+	const handleAnswerQuestion = (value: { formQuestionFormRegisterId: ID; answer: string }) => console.log(value); //TODO: Implementar evento de troca.
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log('clicou em enviar'); //TODO: Implementar envio.

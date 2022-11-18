@@ -1,16 +1,10 @@
-import { ChangeEvent } from 'react';
 import { ID } from '../../core/types';
 import { Choice } from '../answers/choices/contract';
 
 export type IProps = {
 	isChild?: boolean;
 	questions: Question[];
-	onAnswerQuestion: (
-		value: {
-			formQuestionFormRegisterId: ID;
-			answer: string;
-		}
-	) => void;
+	onAnswerQuestion: (value: { formQuestionFormRegisterId: ID; answer: string }) => void;
 };
 
 export type Question = {
