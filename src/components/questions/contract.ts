@@ -1,10 +1,12 @@
-import { ID } from '../../core/types';
+import { QuestionAnswer, ID } from '../../core/types';
 import { Choice } from '../answers/choices/contract';
 
 export type IProps = {
+	index: number;
 	isChild?: boolean;
-	questions: Question[];
-	onAnswerQuestion: (value: { formQuestionFormRegisterId: ID; answer: string }) => void;
+	question: Question;
+	onAnswerQuestion: (value: QuestionAnswer) => void;
+	fromParentCallback?: (fromChildCallback: () => void) => void;
 };
 
 export type Question = {
@@ -21,8 +23,9 @@ export type Question = {
 		cod: string;
 		name: string;
 	};
-	completionMessage: string;
-	choices: Choice[];
+	condition?: {
+		userAnswer?: number[];
+	};
 	//TODO: Implementar respostas
 	// answers: string[] | null;
 };

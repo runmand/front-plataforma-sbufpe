@@ -1,6 +1,6 @@
-import { ID } from '../../../core/types';
+import { QuestionAnswer, ID } from '../../../core/types';
 
 export type IProps = {
 	formQuestionFormRegisterId: ID;
-	onAnswerQuestion: (value: { formQuestionFormRegisterId: ID; answer: string }) => void;
+	onAnswerQuestion: (value: QuestionAnswer) => void;
 };

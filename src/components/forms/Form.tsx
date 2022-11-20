@@ -1,13 +1,13 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import React from 'react';
-import { ID } from '../../core/types';
+import { QuestionAnswer } from '../../core/types';
 import QuestionCard from '../questions/Question';
 import { FormState } from './contract';
 
 export default function Form() {
 	const [form, setForm] = React.useState<FormState>({ id: null, title: null, completionMessage: null, questions: [] });
-	const handleAnswerQuestion = (value: { formQuestionFormRegisterId: ID; answer: string }) => console.log(value); //TODO: Implementar evento de troca.
+	const handleAnswerQuestion = (value: QuestionAnswer) => console.log('event-forms: ', value); //TODO: Implementar evento de troca.
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log('clicou em enviar'); //TODO: Implementar envio.
@@ -37,10 +37,16 @@ export default function Form() {
 						>
 							{form.title}
 						</Typography>
-						<QuestionCard
-							questions={form.questions}
-							onAnswerQuestion={handleAnswerQuestion}
-						/>
+						<div>
+							{form.questions.map((question, index) => (
+								<QuestionCard
+									key={index}
+                  index={index}
+									question={question}
+									onAnswerQuestion={handleAnswerQuestion}
+								/>
+							))}
+						</div>
 					</CardContent>
 					{/* <CardActions style={{ justifyContent: 'end', padding: '16px' }}> */}
 					{/* <Button type="submit" variant="contained"> */}
