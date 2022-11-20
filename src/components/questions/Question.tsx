@@ -1,24 +1,30 @@
 import { Card, CardContent, colors, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { emitterEnum } from '../../core/enums';
-import { createListener, emitter } from '../../core/events';
+import { emitter } from '../../core/events';
 import ChoiceAnswer from '../answers/choices/ChoiceAnswer';
 import OpenAnswer from '../answers/opens/OpenAnswer';
-import { IProps, Question, QuestionAnswer } from './contract';
+import { IProps, QuestionAnswer } from './contract';
 
 export default function QuestionCard(props: IProps) {
 	const [canShow, setCanShow] = React.useState(false);
 
-	if (props.parent) {
-		/** Ouvindo no filho. */
-		createListener(`${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, (parent: Question, answer: QuestionAnswer) =>
-			setCanShow(answer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer))
-		);
-	}
+	useEffect(() => {
+		if (props.parent) {
+			const canShowQuestionEventKey = `${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
+			/** Criando evento de escuta no filho. */
+			const listener = emitter.on(canShowQuestionEventKey, (answer: QuestionAnswer) =>
+				setCanShow(answer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer))
+			);
 
-	/** Emitindo no pai. */
-	const handleMarkChoice = (answer: QuestionAnswer) =>
-		emitter.emit(`${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, props.question, answer);
+			return () => {
+				listener.removeListener(canShowQuestionEventKey, e => console.log(e));
+			};
+		}
+	}, [props.parent, props.question.condition?.userAnswer]);
+
+	/** Criando evento de emissão no pai. */
+	const handleMarkChoice = (answer: QuestionAnswer) => emitter.emit(`${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, answer);
 
 	if (!props.isChild || canShow) {
 		return (
