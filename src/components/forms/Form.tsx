@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import React from 'react';
-import { QuestionAnswer } from '../../core/types';
+import { QuestionAnswer } from '../questions/contract';
 import QuestionCard from '../questions/Question';
 import { FormState } from './contract';
 

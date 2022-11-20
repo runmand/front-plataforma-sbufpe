@@ -1,12 +1,12 @@
-import { QuestionAnswer, ID } from '../../core/types';
+import { ID } from '../../core/types';
 import { Choice } from '../answers/choices/contract';
 
 export type IProps = {
 	index: number;
 	isChild?: boolean;
+	parent?: Question;
 	question: Question;
 	onAnswerQuestion: (value: QuestionAnswer) => void;
-	fromParentCallback?: (fromChildCallback: () => void) => void;
 };
 
 export type Question = {
@@ -29,3 +29,5 @@ export type Question = {
 	//TODO: Implementar respostas
 	// answers: string[] | null;
 };
+
+export type QuestionAnswer = { formQuestionFormRegisterId: ID; answer: string };

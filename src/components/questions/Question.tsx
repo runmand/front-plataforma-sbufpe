@@ -1,29 +1,24 @@
 import { Card, CardContent, colors, Typography } from '@mui/material';
 import React from 'react';
-import { QuestionAnswer } from '../../core/types';
+import { emitterEnum } from '../../core/enums';
+import { createListener, emitter } from '../../core/events';
 import ChoiceAnswer from '../answers/choices/ChoiceAnswer';
 import OpenAnswer from '../answers/opens/OpenAnswer';
-import { IProps } from './contract';
+import { IProps, Question, QuestionAnswer } from './contract';
 
 export default function QuestionCard(props: IProps) {
 	const [canShow, setCanShow] = React.useState(false);
-	/** 0 - Create variable to store child callback function, for call it on click in a choice's parent. */
-	let handleChildCallback: () => void = null;
-	/** 1 - Create parent callback function */
-	const fromParentCallback = (fromChildCallback: () => void) => (handleChildCallback = fromChildCallback);
-	/** 3 - Create child callback function */
-	const hideChild = () => {
-		setCanShow(true);
-	};
 
-	/** 4 - Call parent callback function. */
-	props.fromParentCallback?.(hideChild);
+	if (props.parent) {
+		/** Ouvindo no filho. */
+		createListener(`${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, (parent: Question, answer: QuestionAnswer) =>
+			setCanShow(answer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer))
+		);
+	}
 
-	/** 5 - Create on select choice function of this card. */
-	const handleMarkChoice = (data: QuestionAnswer) => {
-		handleChildCallback?.();
-		props.onAnswerQuestion(data);
-	};
+	/** Emitindo no pai. */
+	const handleMarkChoice = (answer: QuestionAnswer) =>
+		emitter.emit(`${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, props.question, answer);
 
 	if (!props.isChild || canShow) {
 		return (
@@ -57,10 +52,9 @@ export default function QuestionCard(props: IProps) {
 							key={index}
 							index={index}
 							isChild={true}
+							parent={props.question}
 							question={child}
 							onAnswerQuestion={handleMarkChoice}
-							/** 2 - Create parent callback function */
-							fromParentCallback={fromParentCallback}
 						/>
 					))}
 				</div>
