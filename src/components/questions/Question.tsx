@@ -24,7 +24,10 @@ export default function QuestionCard(props: IProps) {
 	}, [props.parent, props.question.condition?.userAnswer]);
 
 	/** Criando evento de emissão no pai. */
-	const handleMarkChoice = (answer: QuestionAnswer) => emitter.emit(`${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, answer);
+	const handleMarkChoice = (answer: QuestionAnswer) => {
+		emitter.emit(`${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, answer);
+		props.onAnswerQuestion(answer);
+	};
 
 	if (!props.isChild || canShow) {
 		return (
