@@ -6,12 +6,12 @@ import React from 'react';
 
 export default function ChoiceAnswer(props: IProps) {
 	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
-	const onSelectChoice = (index: number, choice: Choice) => {
+	const handleSelectChoice = (index: number, choice: Choice) => {
 		const temp = answer;
 		temp.fill(0);
 		temp[index] = Number(choice.formsQuestionFormsQuestionChoicesId);
 		setAnswer(temp);
-		props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
+		props.onSelectChoice({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
 	};
 
 	return (
@@ -23,7 +23,7 @@ export default function ChoiceAnswer(props: IProps) {
 					control={
 						<Radio
 							onChange={() => {
-								onSelectChoice(index, choice);
+								handleSelectChoice(index, choice);
 							}}
 							sx={{
 								padding: '4px',

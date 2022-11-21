@@ -9,6 +9,12 @@ import { IProps, QuestionAnswer } from './contract';
 export default function QuestionCard(props: IProps) {
 	const [canShow, setCanShow] = React.useState(false);
 
+	/** Criando evento de emissão em todas as questões. */
+	const handleAnswerQuestion = (answer: QuestionAnswer) => {
+		const emitterKey = `${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
+		emitter.emit(emitterKey, answer);
+	};
+
 	if (props.parent) {
 		const listenerKey = `${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
 
@@ -23,12 +29,6 @@ export default function QuestionCard(props: IProps) {
 		}
 		});
 	}
-
-	/** Criando evento de emissão em todas as questões. */
-	const handleMarkChoice = (answer: QuestionAnswer) => {
-		const emitterKey = `${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
-		emitter.emit(emitterKey, answer);
-	};
 
 	if (!props.parent || canShow) {
 		return (
@@ -47,15 +47,15 @@ export default function QuestionCard(props: IProps) {
 						<OpenAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
 							onAnswerQuestion={data => {
-								handleMarkChoice(data);
+								handleAnswerQuestion(data);
 							}}
 						/>
 					) : (
 						<ChoiceAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
 							choices={props.question.choices}
-							onAnswerQuestion={data => {
-								handleMarkChoice(data);
+							onSelectChoice={data => {
+								handleAnswerQuestion(data);
 							}}
 						/>
 					)}
@@ -65,13 +65,9 @@ export default function QuestionCard(props: IProps) {
 						<QuestionCard
 							key={index}
 							index={index}
-							isChild={true}
 							parent={props.question}
 							question={child}
-							onAnswerQuestion={handleMarkChoice}
-							onAnswerQuestion={data => {
-								handleMarkChoice(data);
-							}}
+							answers={props.answers}
 						/>
 					))}
 				</div>

@@ -4,7 +4,7 @@ import { QuestionAnswer } from '../../questions/contract';
 export type IProps = {
 	formQuestionFormRegisterId: ID;
 	choices: Choice[];
-	onAnswerQuestion: (value: QuestionAnswer) => void;
+	onSelectChoice: (value: QuestionAnswer) => void;
 };
 
 export type Choice = {

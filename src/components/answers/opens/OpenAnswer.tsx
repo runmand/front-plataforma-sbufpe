@@ -2,7 +2,7 @@ import { TextField } from '@mui/material';
 import { IProps } from './contract';
 
 export default function OpenAnswer(props: IProps) {
-	const onAnswer = (answer: string) => {
+	const handleAnswerQuestion = (answer: string) => {
 		props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer });
 	};
 
@@ -12,7 +12,7 @@ export default function OpenAnswer(props: IProps) {
 			variant='outlined'
 			style={{ display: 'flex', backgroundColor: 'wheat', borderRadius: '16px' }}
 			onBlur={e => {
-				onAnswer(e.target.value);
+				handleAnswerQuestion(e.target.value);
 			}}
 		/>
 	);
