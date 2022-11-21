@@ -1,10 +1,18 @@
 import RadioGroup from '@mui/material/RadioGroup';
 import { FormControlLabel, Radio, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
-import { IProps } from './contract';
+import { Choice, IProps } from './contract';
+import React from 'react';
 
 export default function ChoiceAnswer(props: IProps) {
-	const answer: number[] = Array(props.choices.length).fill(0);
+	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
+	const onSelectChoice = (index: number, choice: Choice) => {
+		const temp = answer;
+		temp.fill(0);
+		temp[index] = Number(choice.formsQuestionFormsQuestionChoicesId);
+		setAnswer(temp);
+		props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
+	};
 
 	return (
 		<RadioGroup>
@@ -15,9 +23,7 @@ export default function ChoiceAnswer(props: IProps) {
 					control={
 						<Radio
 							onChange={() => {
-								answer.fill(0);
-								answer[index] = Number(choice.formsQuestionFormsQuestionChoicesId);
-								return props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
+								onSelectChoice(index, choice);
 							}}
 							sx={{
 								padding: '4px',
