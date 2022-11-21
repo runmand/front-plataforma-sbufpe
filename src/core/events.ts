@@ -1,3 +1,3 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'fbemitter';
 
 export const emitter = new EventEmitter();

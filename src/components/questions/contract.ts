@@ -3,7 +3,6 @@ import { Choice } from '../answers/choices/contract';
 
 export type IProps = {
 	index: number;
-	isChild?: boolean;
 	parent?: Question;
 	question: Question;
 	onAnswerQuestion: (value: QuestionAnswer) => void;

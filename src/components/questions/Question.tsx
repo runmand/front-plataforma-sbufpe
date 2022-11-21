@@ -1,5 +1,5 @@
 import { Card, CardContent, colors, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { emitterEnum } from '../../core/enums';
 import { emitter } from '../../core/events';
 import ChoiceAnswer from '../answers/choices/ChoiceAnswer';
@@ -9,32 +9,33 @@ import { IProps, QuestionAnswer } from './contract';
 export default function QuestionCard(props: IProps) {
 	const [canShow, setCanShow] = React.useState(false);
 
-	useEffect(() => {
-		if (props.parent) {
-			const canShowQuestionEventKey = `${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
-			/** Criando evento de escuta no filho. */
-			const listener = emitter.on(canShowQuestionEventKey, (answer: QuestionAnswer) =>
-				setCanShow(answer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer))
-			);
+	if (props.parent) {
+		const listenerKey = `${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
+
+		/** Criando evento de escuta no filho. */
+		emitter.addListener(listenerKey, (parentAnswer: QuestionAnswer) => {
+			const isSameAnswer = parentAnswer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer);
+			setCanShow(isSameAnswer);
 
 			return () => {
 				listener.removeListener(canShowQuestionEventKey, e => console.log(e));
 			};
 		}
-	}, [props.parent, props.question.condition?.userAnswer]);
+		});
+	}
 
-	/** Criando evento de emissão no pai. */
+	/** Criando evento de emissão em todas as questões. */
 	const handleMarkChoice = (answer: QuestionAnswer) => {
-		emitter.emit(`${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`, answer);
-		props.onAnswerQuestion(answer);
+		const emitterKey = `${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
+		emitter.emit(emitterKey, answer);
 	};
 
-	if (!props.isChild || canShow) {
+	if (!props.parent || canShow) {
 		return (
 			<Card
 				style={{
-					margin: !props.isChild ? '0px 0px 24px 0px' : '0px 24px 24px 24px',
-					backgroundColor: !props.isChild ? '#6D141A' : '#5C0309',
+					margin: !props.parent ? '0px 0px 24px 0px' : '0px 24px 24px 24px',
+					backgroundColor: !props.parent ? '#6D141A' : '#5C0309',
 					borderRadius: '16px',
 				}}
 			>
@@ -45,13 +46,17 @@ export default function QuestionCard(props: IProps) {
 					{props.question.choices.length === 0 ? (
 						<OpenAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
-							onAnswerQuestion={handleMarkChoice}
+							onAnswerQuestion={data => {
+								handleMarkChoice(data);
+							}}
 						/>
 					) : (
 						<ChoiceAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
 							choices={props.question.choices}
-							onAnswerQuestion={handleMarkChoice}
+							onAnswerQuestion={data => {
+								handleMarkChoice(data);
+							}}
 						/>
 					)}
 				</CardContent>
@@ -64,6 +69,9 @@ export default function QuestionCard(props: IProps) {
 							parent={props.question}
 							question={child}
 							onAnswerQuestion={handleMarkChoice}
+							onAnswerQuestion={data => {
+								handleMarkChoice(data);
+							}}
 						/>
 					))}
 				</div>
