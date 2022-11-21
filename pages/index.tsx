@@ -28,6 +28,7 @@ export default function Index() {
 				if (res.data.data.token) {
 					setIsOpenLogin(false);
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
+					window.location.href += '/AnswerForm';
 				} else enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
 			})
 			.catch(e => {
