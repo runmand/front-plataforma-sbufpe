@@ -1,18 +1,22 @@
 import AppBar from '../src/components/appBars/AppBar';
 import Container from '../src/components/containers/Container';
 import Footer from '../src/components/footers/Footer';
-import LoginDialog from '../src/components/dialogs/logins/LoginDialog';
 import React from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
+import LoginDialog from '../src/components/dialogs/logins/LoginDialog';
+import RegistersDialog from '../src/components/dialogs/registers/RegistersDialog';
 
 export default function Index() {
-	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar();
-
+	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
+	const [isOpenRegister, setIsOpenRegister] = React.useState<boolean>(false);
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const handleCloseLoginModal = () => setIsOpenLogin(false);
+	const handleCloseRegisterModal = () => setIsOpenRegister(false);
 	const handleOpenLoginModal = () => setIsOpenLogin(true);
+	const handleOpenRegisterModal = () => setIsOpenRegister(true);
+
 	const handleMakeLogin = (login: string, pwd: string) => {
 		const auth = btoa(`${login}:${pwd}`);
 
@@ -34,11 +38,16 @@ export default function Index() {
 			});
 	};
 
+	const handleSendRegister = () => {};
+
 	return (
 		<div>
 			<AppBar
 				onClickLoginButton={() => {
 					handleOpenLoginModal();
+				}}
+				onClickRegisterButton={() => {
+					handleOpenRegisterModal();
 				}}
 			/>
 			<Container />
@@ -52,6 +61,17 @@ export default function Index() {
 				}}
 				onConfirm={(login: string, pwd: string) => {
 					handleMakeLogin(login, pwd);
+				}}
+			/>
+			<RegistersDialog
+				isOpen={isOpenRegister}
+				canSkip={true}
+				isLoading={isLoading}
+				onClose={() => {
+					handleCloseRegisterModal();
+				}}
+				onConfirm={() => {
+					handleSendRegister();
 				}}
 			/>
 		</div>
