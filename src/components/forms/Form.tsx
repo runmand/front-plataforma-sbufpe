@@ -7,12 +7,14 @@ import QuestionCard from '../questions/Question';
 import { FormState } from './contract';
 import SendIcon from '@mui/icons-material/Send';
 import AlertDialog from '../dialogs/alerts/AlertDialog';
+import { useSnackbar } from 'notistack';
 
 export default function Form() {
 	const [form, setForm] = useState<FormState>({ id: null, title: null, completionMessage: null, questions: [] });
 	const [answers, setAnswers] = useState<QuestionAnswer[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+	const { enqueueSnackbar } = useSnackbar();
 
 	const handleAnswerQuestion = (answer: QuestionAnswer) => {
 		const temp = answers;
@@ -40,10 +42,15 @@ export default function Form() {
 
 	const handleSubmit = () => {
 		setLoading(true);
-    //TODO: Remover esse setTimeOut e colocar a chamada da API.
+
+		//TODO: Remover esse setTimeOut e colocar a chamada da API.
 		setTimeout(() => {
+			enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
 			setLoading(false);
+			handleCloseDialog();
 		}, 5000);
+
+		console.log(answers);
 	};
 
 	React.useEffect(() => {
@@ -109,7 +116,7 @@ export default function Form() {
 						handleCloseDialog();
 					}}
 					onConfirm={() => {
-						handleSubmit()
+						handleSubmit();
 					}}
 				/>
 			</form>
