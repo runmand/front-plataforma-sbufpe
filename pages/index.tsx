@@ -1,5 +1,8 @@
 import Form from '../src/components/forms/Form';
 import { SnackbarProvider } from 'notistack';
+import AppBar from '../src/components/appBars/AppBar';
+import Container from '../src/components/containers/Container';
+import Footer from '../src/components/footers/Footer';
 
 export default function Index() {
 	return (
@@ -7,7 +10,10 @@ export default function Index() {
 			anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 			maxSnack={3}
 		>
-			<Form />
+			<AppBar />
+			<Container />
+			<Footer />
+			{/* <Form /> */}
 		</SnackbarProvider>
 	);
 	// return (
