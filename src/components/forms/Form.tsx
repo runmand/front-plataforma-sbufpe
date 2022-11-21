@@ -1,14 +1,19 @@
-import { Card, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { ID } from '../../core/types';
 import { QuestionAnswer } from '../questions/contract';
 import QuestionCard from '../questions/Question';
 import { FormState } from './contract';
+import SendIcon from '@mui/icons-material/Send';
+import AlertDialog from '../dialogs/alerts/AlertDialog';
 
 export default function Form() {
 	const [form, setForm] = useState<FormState>({ id: null, title: null, completionMessage: null, questions: [] });
 	const [answers, setAnswers] = useState<QuestionAnswer[]>([]);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+
 	const handleAnswerQuestion = (answer: QuestionAnswer) => {
 		const temp = answers;
 		const indexToUpdate = temp.findIndex(item => item.formQuestionFormRegisterId === answer.formQuestionFormRegisterId);
@@ -29,20 +34,26 @@ export default function Form() {
 		}
 	};
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		console.log('clicou em enviar'); //TODO: Implementar envio.
+	const handleOpenDialog = () => setIsOpenDialog(true);
+
+	const handleCloseDialog = () => setIsOpenDialog(false);
+
+	const handleSubmit = () => {
+		setLoading(true);
+    //TODO: Remover esse setTimeOut e colocar a chamada da API.
+		setTimeout(() => {
+			setLoading(false);
+		}, 5000);
 	};
 
 	React.useEffect(() => {
 		axios.get(`${process.env.API_URL}/form-registers/formatted/13`).then(res => setForm(res.data.data));
 	}, []);
 
-	//TODO: Implementar envio do formulário
 	if (form) {
 		return (
-			<form onSubmit={handleSubmit}>
-				<Card style={{ backgroundColor: '#5a0f14' }}>
+			<form>
+				<Card style={{ backgroundColor: '#5a0f14', padding: '2% 15% 10% 15%' }}>
 					<CardContent>
 						<Typography
 							style={{
@@ -74,12 +85,33 @@ export default function Form() {
 							))}
 						</div>
 					</CardContent>
-					{/* <CardActions style={{ justifyContent: 'end', padding: '16px' }}> */}
-					{/* <Button type="submit" variant="contained"> */}
-					{/* ENVIAR */}
-					{/* </Button> */}
-					{/* </CardActions> */}
+
+					<CardActions style={{ justifyContent: 'end', padding: '16px' }}>
+						<Button
+							variant='contained'
+							endIcon={<SendIcon />}
+							onClick={() => {
+								handleOpenDialog();
+							}}
+						>
+							ENVIAR
+						</Button>
+					</CardActions>
 				</Card>
+
+				<AlertDialog
+					title='Confirmar envio do formulário?'
+					msg='Atenção! Essa ação não poderá ser desfeita neste momento.'
+					isOpen={isOpenDialog}
+					isLoading={loading}
+					canSkip={false}
+					onClose={() => {
+						handleCloseDialog();
+					}}
+					onConfirm={() => {
+						handleSubmit()
+					}}
+				/>
 			</form>
 		);
 	}
