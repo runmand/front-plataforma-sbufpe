@@ -1,5 +1,7 @@
+import { IProps } from './contract';
+
 //TODO: Melhorar essa tela.
-export default function AppBar(props: any) {
+export default function AppBar(props: IProps) {
 	return (
 		<header>
 			<div className='logo'>
@@ -23,9 +25,14 @@ export default function AppBar(props: any) {
 						<a href='.\contatoindex.html'>Contato</a>
 					</li>
 					<li>
-						<a href='.\loginindex.html'>
-							<button className='button-header'>Entrar</button>
-						</a>
+						<button
+							className='button-header'
+							onClick={() => {
+								props.onClickLoginButton();
+							}}
+						>
+							Entrar
+						</button>
 					</li>
 					<li>
 						<a href='indexregister.html'>
