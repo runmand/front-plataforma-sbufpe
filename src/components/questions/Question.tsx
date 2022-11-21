@@ -11,6 +11,8 @@ export default function QuestionCard(props: IProps) {
 
 	/** Criando evento de emissão em todas as questões. */
 	const handleAnswerQuestion = (answer: QuestionAnswer) => {
+		if (canShow || !props.parent) props.onAnswerQuestion(answer);
+
 		const emitterKey = `${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
 		emitter.emit(emitterKey, answer);
 	};
@@ -23,10 +25,8 @@ export default function QuestionCard(props: IProps) {
 			const isSameAnswer = parentAnswer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer);
 			setCanShow(isSameAnswer);
 
-			return () => {
-				listener.removeListener(canShowQuestionEventKey, e => console.log(e));
-			};
-		}
+			/** Caso a questão fique oculta novamente, deleta a resposta dela do vetor de respostas do formulário. */
+			if (!canShow) props.onHideQuestion(props.question.formQuestionFormRegisterId);
 		});
 	}
 
@@ -67,7 +67,12 @@ export default function QuestionCard(props: IProps) {
 							index={index}
 							parent={props.question}
 							question={child}
-							answers={props.answers}
+							onAnswerQuestion={data => {
+								props.onAnswerQuestion(data);
+							}}
+							onHideQuestion={data => {
+								props.onHideQuestion(data);
+							}}
 						/>
 					))}
 				</div>

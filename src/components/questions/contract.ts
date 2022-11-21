@@ -6,6 +6,7 @@ export type IProps = {
 	parent?: Question;
 	question: Question;
 	onAnswerQuestion: (value: QuestionAnswer) => void;
+	onHideQuestion: (formQuestionFormRegisterId: ID) => void;
 };
 
 export type Question = {
@@ -25,8 +26,6 @@ export type Question = {
 	condition?: {
 		userAnswer?: number[];
 	};
-	//TODO: Implementar respostas
-	// answers: string[] | null;
 };
 
 export type QuestionAnswer = { formQuestionFormRegisterId: ID; answer: string };
