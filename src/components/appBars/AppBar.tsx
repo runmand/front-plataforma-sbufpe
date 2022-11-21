@@ -35,9 +35,15 @@ export default function AppBar(props: IProps) {
 						</button>
 					</li>
 					<li>
-						<a href='indexregister.html'>
-							<button className='button-header'>Cadastre-se</button>
-						</a>
+						<button
+							className='button-header'
+							onClick={() => {
+								props.onClickRegisterButton();
+							}}
+							style={{ marginRight: '30px' }}
+						>
+							Registrar-se
+						</button>
 					</li>
 				</ul>
 			</nav>
