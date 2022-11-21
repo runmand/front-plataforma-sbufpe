@@ -1,12 +1,48 @@
 import { Button, Modal } from '@mui/material';
 import React from 'react';
+import { ID } from '../../../core/types';
 import { IProps } from './contract';
 
 export default function RegistersDialog(props: IProps) {
-	// const [login, setLogin] = React.useState<string>(null);
-	// const [pwd, setPwd] = React.useState<string>(null);
-	// const getLogin = (v: string) => setLogin(v);
-	// const getPwd = (v: string) => setPwd(v);
+	const [state, setState] = React.useState<{
+		name: string;
+		username: string;
+		email: string;
+		password: string;
+		typeId: ID;
+		cpf: string;
+		address: {
+			zipcode: string;
+			street: string;
+			city: string;
+			district: string;
+			complement: string;
+		};
+		jsonData: {
+			cellphone: string;
+			sex: string;
+			bornDate: string;
+		};
+	}>({
+		name: '',
+		username: '',
+		email: '',
+		password: '',
+		typeId: -1,
+		cpf: '',
+		address: {
+			zipcode: '',
+			street: '',
+			city: '',
+			district: '',
+			complement: '',
+		},
+		jsonData: {
+			cellphone: '',
+			sex: '',
+			bornDate: '',
+		},
+	});
 
 	return (
 		<Modal
@@ -33,8 +69,12 @@ export default function RegistersDialog(props: IProps) {
 						type='text'
 						size={40}
 						placeholder='Nome Completo'
-						autoFocus
 						required={true}
+						onBlur={e => {
+							const temp = state;
+							temp.name = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<label>CPF:</label>
 					<input
@@ -45,6 +85,11 @@ export default function RegistersDialog(props: IProps) {
 						required
 						autoComplete='off'
 						placeholder='23123132100'
+						onBlur={e => {
+							const temp = state;
+							temp.cpf = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<label>Email:</label>
@@ -53,6 +98,11 @@ export default function RegistersDialog(props: IProps) {
 						size={64}
 						placeholder='Email Válido'
 						required
+						onBlur={e => {
+							const temp = state;
+							temp.email = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<label>Senha:</label>
 					<input
@@ -61,6 +111,11 @@ export default function RegistersDialog(props: IProps) {
 						maxLength={16}
 						placeholder='Escolha sua senha'
 						required={true}
+						onBlur={e => {
+							const temp = state;
+							temp.password = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<label>Confirme sua senha</label>
 					<input
@@ -79,28 +134,48 @@ export default function RegistersDialog(props: IProps) {
 						required
 						autoComplete='off'
 						placeholder='DDD+Números'
+						onBlur={e => {
+							const temp = state;
+							temp.jsonData.cellphone = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
-					<label>Sexo:</label> &nbsp;
+					<label>sex:</label> &nbsp;
 					<label>Masculino</label>
 					<input
 						type='radio'
 						name='opcao'
-						id='op1'
+						id='op11'
+						onBlur={e => {
+							const temp = state;
+							temp.jsonData.sex = e.target.value;
+							setState(temp);
+						}}
 					/>
 					&nbsp;
 					<label>Feminino</label>
 					<input
 						type='radio'
 						name='opcao'
-						id='op2'
+						id='op22'
+						onBlur={e => {
+							const temp = state;
+							temp.jsonData.sex = e.target.value;
+							setState(temp);
+						}}
 					/>
 					&nbsp;
 					<label>Prefiro não responder</label>
 					<input
 						type='radio'
 						name='opcao'
-						id='op3'
+						id='op33'
+						onBlur={e => {
+							const temp = state;
+							temp.jsonData.sex = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<label>Data de Nascimento:</label>
@@ -108,6 +183,11 @@ export default function RegistersDialog(props: IProps) {
 						type='date'
 						name='data'
 						id='data'
+						onBlur={e => {
+							const temp = state;
+							temp.jsonData.bornDate = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<h2>Endereço</h2>
@@ -118,11 +198,21 @@ export default function RegistersDialog(props: IProps) {
 						required
 						pattern='\d{5}-\d{3}'
 						placeholder='00000-000'
+						onBlur={e => {
+							const temp = state;
+							temp.address.zipcode = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<label>Estado:</label>
 					<select
 						name='estado'
 						id='uf'
+						onBlur={e => {
+							const temp = state;
+							temp.address.complement = e.target.value;
+							setState(temp);
+						}}
 					>
 						<option value='0'>Escolha sua Região</option>
 						<optgroup label='Norte'>
@@ -168,6 +258,11 @@ export default function RegistersDialog(props: IProps) {
 						id='cidade'
 						type='text'
 						placeholder='Cidade'
+						onBlur={e => {
+							const temp = state;
+							temp.address.city = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<label>Bairro:</label>
@@ -175,6 +270,11 @@ export default function RegistersDialog(props: IProps) {
 						id='bairro'
 						type='text'
 						placeholder=' Bairro'
+						onBlur={e => {
+							const temp = state;
+							temp.address.district = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<label>Rua:</label>
@@ -182,6 +282,11 @@ export default function RegistersDialog(props: IProps) {
 						type='text'
 						size={30}
 						placeholder='Logradouro'
+						onBlur={e => {
+							const temp = state;
+							temp.address.street = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<label>Número:</label>
 					<input
@@ -196,6 +301,11 @@ export default function RegistersDialog(props: IProps) {
 						type='text'
 						size={30}
 						placeholder='Andar, Apartamento,Bloco'
+						onBlur={e => {
+							const temp = state;
+							temp.address.complement = e.target.value;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<label>
@@ -207,6 +317,11 @@ export default function RegistersDialog(props: IProps) {
 						type='radio'
 						name='opcao'
 						id='op1'
+						onBlur={e => {
+							const temp = state;
+							temp.typeId = 1;
+							setState(temp);
+						}}
 					/>
 					&nbsp;
 					<label>Profissional de Saúde Bucal</label>
@@ -214,6 +329,11 @@ export default function RegistersDialog(props: IProps) {
 						type='radio'
 						name='opcao'
 						id='op2'
+						onBlur={e => {
+							const temp = state;
+							temp.typeId = 2;
+							setState(temp);
+						}}
 					/>
 					&nbsp;
 					<label>Pesquisa Epidemiológica</label>
@@ -221,6 +341,11 @@ export default function RegistersDialog(props: IProps) {
 						type='radio'
 						name='opcao'
 						id='op3'
+						onBlur={e => {
+							const temp = state;
+							temp.typeId = 3;
+							setState(temp);
+						}}
 					/>
 					<br></br>
 					<Button
