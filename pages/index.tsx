@@ -1,5 +1,5 @@
 import React from 'react';
-import Base from '../src/components/base-layout';
+import Base from '@components/base-layout';
 
 export default function Index() {
 	// const { enqueueSnackbar } = useSnackbar();
