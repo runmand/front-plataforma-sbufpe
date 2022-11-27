@@ -1,8 +1,9 @@
 import { Button, Modal } from '@mui/material';
 import React from 'react';
-import { IProps } from './contract';
+import { modal, modalCard } from './style';
+import { IProps } from './type';
 
-export default function LoginDialog(props: IProps) {
+export default function Index(props: IProps) {
 	const [login, setLogin] = React.useState<string>(null);
 	const [pwd, setPwd] = React.useState<string>(null);
 	const getLogin = (v: string) => setLogin(v);
@@ -11,22 +12,16 @@ export default function LoginDialog(props: IProps) {
 	return (
 		<Modal
 			open={props.isOpen}
-			onClose={() => {
-				if (props.canSkip) props.onClose();
-			}}
 			aria-labelledby='modal-modal-title'
 			aria-describedby='modal-modal-description'
-			style={{ backgroundColor: '#000000DD' }}
+			style={modal}
+      onClose={() => {
+				if (props.canSkip) props.onClose();
+			}}
 		>
 			<div
 				className='login'
-				style={{
-					position: 'absolute' as 'absolute',
-					top: '40%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
-					height: 375,
-				}}
+				style={modalCard}
 			>
 				<div className='login-name'>
 					<h1>Bem vindo(a) ao LOGIN</h1>
