@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 // import MoreIcon from '@mui/icons-material/MoreVert';
 import { TProps } from './type';
+import ButtonGroup from '@mui/material/ButtonGroup/ButtonGroup';
 
 // const Search = styled('div')(({ theme }) => ({
 //   position: 'relative',
@@ -160,7 +161,15 @@ export default function Index(props: TProps) {
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position='static'>
 				<Toolbar>
-					{props.loginButtonChild}
+					<ButtonGroup
+						variant='text'
+						color='secondary'
+						aria-label='text secundary button group'
+					>
+						{props.signupButtonChild}
+						{props.loginButtonChild}
+					</ButtonGroup>
+
 					{/* <IconButton
             size="large"
             edge="start"
