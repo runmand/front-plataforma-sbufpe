@@ -13,6 +13,7 @@ import Checkbox from '@mui/material/Checkbox/Checkbox';
 import { Copyright, Link } from '@mui/icons-material';
 import Box from '@mui/material/Box/Box';
 import Button from '@mui/material/Button/Button';
+import Footer from '@components/footers/Footer';
 
 export default function Index() {
 	return (
@@ -23,7 +24,6 @@ export default function Index() {
 					signupButtonChild={<SignupButton />}
 				/>
 			}
-
 			mainContainerChild={
 				<Grid
 					container
@@ -48,7 +48,6 @@ export default function Index() {
 						sm={6}
 						md={6}
 						component={Paper}
-						elevation={6}
 						square
 					>
 						<Box
@@ -130,6 +129,9 @@ export default function Index() {
 						</Box>
 					</Grid>
 				</Grid>
+			}
+			footerChild={
+				<Footer/>
 			}
 		/>
 	);

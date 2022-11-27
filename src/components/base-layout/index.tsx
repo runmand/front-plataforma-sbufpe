@@ -7,6 +7,7 @@ export default function Index(props: TProps) {
 		<Box style={baseBox}>
 			{props.appBarChild}
 			{props.mainContainerChild}
+			{props.footerChild}
 		</Box>
 	);
 }
