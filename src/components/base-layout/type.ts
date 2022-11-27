@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 export type TProps = {
-	// imgLogoPath?: string;
+	appBarChild: ReactElement;
 };
