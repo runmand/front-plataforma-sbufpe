@@ -1,7 +1,20 @@
 import React from 'react';
 import Base from '@components/base-layout';
+import AppBar from '@components/app-bar';
+import LoginButton from '@components/log-in-button';
+import SignupButton from '@components/sign-up-button';
 
 export default function Index() {
+	return (
+		<Base
+			appBarChild={
+				<AppBar
+					loginButtonChild={<LoginButton />}
+					signupButtonChild={<SignupButton />}
+				/>
+			}
+		/>
+	);
 	// const { enqueueSnackbar } = useSnackbar();
 	// const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	// const [isOpenRegister, setIsOpenRegister] = React.useState<boolean>(false);
@@ -35,41 +48,38 @@ export default function Index() {
 
 	// const handleSendRegister = () => {};
 
-	return (
-		<Base />
-		// <div>
-		// 	<AppBar
-		// 		onClickLoginButton={() => {
-		// 			handleOpenLoginModal();
-		// 		}}
-		// 		onClickRegisterButton={() => {
-		// 			handleOpenRegisterModal();
-		// 		}}
-		// 	/>
-		// 	<Container />
-		// 	<Footer />
-		// 	<LoginDialog
-		// 		isOpen={isOpenLogin}
-		// 		canSkip={true}
-		// 		isLoading={isLoading}
-		// 		onClose={() => {
-		// 			handleCloseLoginModal();
-		// 		}}
-		// 		onConfirm={(login: string, pwd: string) => {
-		// 			handleMakeLogin(login, pwd);
-		// 		}}
-		// 	/>
-		// 	<RegistersDialog
-		// 		isOpen={isOpenRegister}
-		// 		canSkip={true}
-		// 		isLoading={isLoading}
-		// 		onClose={() => {
-		// 			handleCloseRegisterModal();
-		// 		}}
-		// 		onConfirm={() => {
-		// 			handleSendRegister();
-		// 		}}
-		// 	/>
-		// </div>
-	);
+	// <div>
+	// 	<AppBar
+	// 		onClickLoginButton={() => {
+	// 			handleOpenLoginModal();
+	// 		}}
+	// 		onClickRegisterButton={() => {
+	// 			handleOpenRegisterModal();
+	// 		}}
+	// 	/>
+	// 	<Container />
+	// 	<Footer />
+	// 	<LoginDialog
+	// 		isOpen={isOpenLogin}
+	// 		canSkip={true}
+	// 		isLoading={isLoading}
+	// 		onClose={() => {
+	// 			handleCloseLoginModal();
+	// 		}}
+	// 		onConfirm={(login: string, pwd: string) => {
+	// 			handleMakeLogin(login, pwd);
+	// 		}}
+	// 	/>
+	// 	<RegistersDialog
+	// 		isOpen={isOpenRegister}
+	// 		canSkip={true}
+	// 		isLoading={isLoading}
+	// 		onClose={() => {
+	// 			handleCloseRegisterModal();
+	// 		}}
+	// 		onConfirm={() => {
+	// 			handleSendRegister();
+	// 		}}
+	// 	/>
+	// </div>
 }
