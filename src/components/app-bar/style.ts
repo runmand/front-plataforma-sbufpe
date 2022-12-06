@@ -22,3 +22,9 @@ export const toolbarStyle: CSSProperties = {
 	justifyContent: 'end',
 	borderRadius: '0.25rem',
 };
+
+export const buttonDividerStyle: CSSProperties = {
+	width: '0.05rem',
+	height: '70%',
+	backgroundColor: theme.primaryColor,
+};
