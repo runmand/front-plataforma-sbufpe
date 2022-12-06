@@ -8,7 +8,7 @@ export default function Index(props: TProps) {
 
 	return (
 		<HighlightOffIcon
-			onClick={() => props.onClick}
+			onClick={() => props.onClick()}
 			onMouseEnter={() => setIsHover(true)}
 			onMouseLeave={() => setIsHover(false)}
 			style={isHover ? buttonHoverStyle : buttonStyle}
