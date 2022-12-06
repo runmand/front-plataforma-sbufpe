@@ -1,11 +1,16 @@
 import Button from '@mui/material/Button/Button';
-import { button } from './style';
+import React from 'react';
+import { buttonHoverStyle, buttonStyle } from './style';
 import { TProps } from './type';
 
 export default function Index(props: TProps) {
+	const [isHover, setIsHover] = React.useState(false);
+
 	return (
 		<Button
-			style={button}
+			style={isHover ? buttonHoverStyle : buttonStyle}
+			onMouseEnter={() => setIsHover(true)}
+			onMouseLeave={() => setIsHover(false)}
 			onClick={() => {
 				props.onClick();
 			}}

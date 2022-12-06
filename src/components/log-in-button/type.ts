@@ -1,3 +1,3 @@
 export type TProps = {
-  onClick: () => void
-}
+	onClick: () => void;
+};
