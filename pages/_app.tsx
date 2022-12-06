@@ -6,7 +6,7 @@ import '../src/css/index.css';
 import '../src/css/login.css';
 import '../src/css/register.css';
 import { ThemeProvider } from '@mui/material/styles';
-import { theme } from 'src/theme';
+import { theme } from 'src/core/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
