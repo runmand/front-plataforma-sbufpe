@@ -1,6 +1,6 @@
-import { Modal } from '@mui/material';
+import { Modal, Typography } from '@mui/material';
 import React from 'react';
-import { modalStyle, cardStyle, cardBodyStyle } from './style';
+import { modalStyle, cardStyle, cardBodyStyle, optionsStyle, optionsLinkStyle } from './style';
 import { IProps } from './type';
 import Header from '../header/index';
 import TextField from '@components/text-field/index';
@@ -30,7 +30,6 @@ export default function Index(props: IProps) {
 				if (res.data.data.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
 					router.push(routerEnum.HOME);
-					props.onClose();
 				} else enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
 			})
 			.catch(e => {
@@ -73,24 +72,19 @@ export default function Index(props: IProps) {
 					</div>
 				</div>
 
+				<Typography style={{ ...optionsStyle, marginTop: '1rem' }}>
+					Primeiro acesso?&nbsp;<Typography style={optionsLinkStyle}>Cadastre-se agora!</Typography>
+				</Typography>
+
+				<Typography style={optionsStyle}>
+					Esqueceu sua senha?&nbsp;<Typography style={optionsLinkStyle}>Recuperar senha!</Typography>
+				</Typography>
+
 				<ActionArea
 					isLoading={isLoading}
 					onConfirm={() => handleLogin()}
 				/>
 			</div>
-			{/*
-
-
-
-
-
-				<form method='POST'>
-
-				</form>
-				<a href='recover.html'>Esqueci minha senha!</a>
-				<p>Ainda não tem uma conta?</p>
-				<a href='#'>Cadastre-se agora!</a>
-			</Box> */}
 		</Modal>
 	);
 }
