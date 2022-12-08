@@ -1,8 +1,6 @@
 import React from 'react';
 import Base from '@components/base-layout';
 import AppBar from '@components/app-bar';
-import LoginButton from '@components/log-in-button';
-import SignupButton from '@components/sign-up-button';
 import Grid from '@mui/material/Grid/Grid';
 import Paper from '@mui/material/Paper/Paper';
 import Avatar from '@mui/material/Avatar/Avatar';
@@ -15,6 +13,7 @@ import Box from '@mui/material/Box/Box';
 import Button from '@mui/material/Button/Button';
 import Footer from '@components/footers/Footer';
 import LoginModal from '@components/modal/log-in/index';
+import IndexToolbar from '@components/toolbar/index';
 
 export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
@@ -25,8 +24,12 @@ export default function Index() {
 			<Base
 				appBarChild={
 					<AppBar
-						loginButtonChild={<LoginButton onClick={() => setIsOpenLogin(true)} />}
-						signupButtonChild={<SignupButton />}
+						toolbarChild={
+							<IndexToolbar
+								openLoginModal={() => setIsOpenLogin(true)}
+								openSignupModal={() => setIsOpenLogin(true)}
+							/>
+						}
 					/>
 				}
 				mainContainerChild={
@@ -147,7 +150,6 @@ export default function Index() {
 			/>
 		</div>
 	);
-
 
 	// 	<Container />
 	// 	<Footer />
