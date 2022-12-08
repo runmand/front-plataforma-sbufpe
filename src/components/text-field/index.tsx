@@ -9,6 +9,7 @@ export default function index(props: TProps) {
 			label={props.title}
 			style={textField}
 			onBlur={e => props.onBlur(e.target.value)}
+			type={props.type || 'text'}
 		/>
 	);
 }

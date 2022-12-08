@@ -20,7 +20,7 @@ export const toolbarStyle: CSSProperties = {
 	width: '100%',
 	backgroundColor: theme.secundaryColor,
 	justifyContent: 'end',
-	borderRadius: '0.25rem',
+	borderRadius: theme.borderRadiusEdge,
 };
 
 export const buttonDividerStyle: CSSProperties = {

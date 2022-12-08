@@ -8,12 +8,13 @@ import '../src/css/register.css';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from 'src/core/theme';
 
+//TODO: Botão para fechar o popup
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<ThemeProvider theme={theme}>
 			<SnackbarProvider
-				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-				maxSnack={3}
+				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+				maxSnack={3} //TODO: Deixar configuravel
 			>
 				<Component {...pageProps} />
 			</SnackbarProvider>

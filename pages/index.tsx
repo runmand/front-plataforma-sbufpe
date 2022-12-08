@@ -14,37 +14,11 @@ import { Copyright } from '@mui/icons-material';
 import Box from '@mui/material/Box/Box';
 import Button from '@mui/material/Button/Button';
 import Footer from '@components/footers/Footer';
-import LoginDialog from '@components/log-in-dialog/index';
-import axios from 'axios';
-import { useSnackbar } from 'notistack';
+import LoginModal from '@components/modal/log-in/index';
 
 export default function Index() {
-	const { enqueueSnackbar } = useSnackbar();
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const handleCloseLoginModal = () => setIsOpenLogin(false);
-	const handleMakeLogin = (login: string, pwd: string) => {
-		const auth = btoa(`${login}:${pwd}`);
-
-		setIsLoading(true);
-
-    //TODO: Mover para um serviço.
-		axios
-			.patch(`${process.env.API_URL}/login`, {}, { headers: { authorization: `Basic ${auth}` } })
-			.then(res => {
-				if (res.data.data.token) {
-					setIsOpenLogin(false);
-					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
-					window.location.href += '/AnswerForm';
-				} else enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
-			})
-			.catch(e => {
-				enqueueSnackbar(e, { variant: 'error' });
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
-	};
 
 	return (
 		<div>
@@ -164,36 +138,17 @@ export default function Index() {
 				footerChild={<Footer />}
 			/>
 
-			<LoginDialog
+			<LoginModal
 				isOpen={isOpenLogin}
 				canSkip={true}
-				isLoading={isLoading}
 				onClose={() => {
 					handleCloseLoginModal();
-				}}
-				onConfirm={(login: string, pwd: string) => {
-					handleMakeLogin(login, pwd);
 				}}
 			/>
 		</div>
 	);
 
-	// const [isOpenRegister, setIsOpenRegister] = React.useState<boolean>(false);
-	// const handleCloseRegisterModal = () => setIsOpenRegister(false);
-	// const handleOpenLoginModal = () => setIsOpenLogin(true);
-	// const handleOpenRegisterModal = () => setIsOpenRegister(true);
 
-	// const handleSendRegister = () => {};
-
-	// <div>
-	// 	<AppBar
-	// 		onClickLoginButton={() => {
-	// 			handleOpenLoginModal();
-	// 		}}
-	// 		onClickRegisterButton={() => {
-	// 			handleOpenRegisterModal();
-	// 		}}
-	// 	/>
 	// 	<Container />
 	// 	<Footer />
 
