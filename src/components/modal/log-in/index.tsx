@@ -12,6 +12,8 @@ import { useRouter } from 'next/router';
 import { routerEnum } from 'src/core/enums';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
+//TODO: Criar modal de cadastro.
+//TODO: Criar modal de recuperação de senha.
 
 export default function Index(props: IProps) {
 	const loginService = new LoginService();
