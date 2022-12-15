@@ -7,9 +7,9 @@ import { TProps } from './type';
 export default function Index(props: TProps) {
 	return (
 		<Toolbar style={toolbarStyle}>
-			<SignupButton onClick={() => props.openLoginModal(true)} />
+			<SignupButton onClick={() => props.openLoginModal()} />
 			<div style={buttonDividerStyle} />
-			<LoginButton onClick={() => props.openLoginModal(true)} />
+			<LoginButton onClick={() => props.openLoginModal()} />
 		</Toolbar>
 	);
 }
