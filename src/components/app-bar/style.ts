@@ -13,5 +13,5 @@ export const appbarStyle: CSSProperties = {
 	padding: '1rem',
 	transition: '0.6s',
 	backgroundColor: theme.primaryColor,
-	zIndex: '999',
+	zIndex: `${Infinity}`,
 };

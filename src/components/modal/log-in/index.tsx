@@ -46,8 +46,6 @@ export default function Index(props: IProps) {
 	return (
 		<Modal
 			open={props.isOpen}
-			aria-labelledby='modal-modal-title'
-			aria-describedby='modal-modal-description'
 			style={modalStyle}
 			onClose={() => {
 				if (props.canSkip) props.onClose();

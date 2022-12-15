@@ -4,6 +4,7 @@ import {
 	black,
 	blue,
 	blur,
+	confirm,
 	green,
 	grey,
 	greyDark,
@@ -24,6 +25,7 @@ declare module '@mui/material/styles' {
 		hoverText: React.CSSProperties['color'];
 		transparent: React.CSSProperties['color'];
 		blur: React.CSSProperties['color'];
+		confirm: React.CSSProperties['color'];
 		black: React.CSSProperties['color'];
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
@@ -68,6 +70,11 @@ declare module '@mui/material/styles' {
 				border: {
 					color: React.CSSProperties['color'];
 				};
+			};
+		};
+		menus: {
+			drawer: {
+				incrementalLeftChildMargin: number;
 			};
 		};
 	}
@@ -77,6 +84,7 @@ declare module '@mui/material/styles' {
 		hoverText: React.CSSProperties['color'];
 		transparent: React.CSSProperties['color'];
 		blur: React.CSSProperties['color'];
+		confirm: React.CSSProperties['color'];
 		black: React.CSSProperties['color'];
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
@@ -121,6 +129,11 @@ declare module '@mui/material/styles' {
 				border: {
 					color: React.CSSProperties['color'];
 				};
+			};
+		};
+		menus: {
+			drawer: {
+				incrementalLeftChildMargin: number;
 			};
 		};
 	}
@@ -132,6 +145,7 @@ export const theme = createTheme({
 	hoverText: hoverText,
 	transparent: transparent,
 	blur: blur,
+	confirm: confirm,
 	black: black,
 	blue: blue,
 	green: green,
@@ -176,6 +190,11 @@ export const theme = createTheme({
 			border: {
 				color: grey,
 			},
+		},
+	},
+	menus: {
+		drawer: {
+			incrementalLeftChildMargin: 1,
 		},
 	},
 });
