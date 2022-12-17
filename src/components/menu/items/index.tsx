@@ -14,7 +14,7 @@ export default function Index(props: TProps) {
 
 	const handleOnSelectMenuItem = () => {
 		setIsOpen(!isOpen);
-		router.push(routerEnum.FORMS);
+		router.push(routerEnum.FORM);
 	};
 
 	return (

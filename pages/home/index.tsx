@@ -2,7 +2,7 @@ import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
 
-export default function Home() {
+export default function Index() {
 	return (
 		<div>
 			<Base
