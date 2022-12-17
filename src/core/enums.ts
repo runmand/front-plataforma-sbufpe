@@ -3,6 +3,6 @@ export enum emitterEnum {
 }
 
 export enum routerEnum {
-	HOME = '/Home',
-	FORMS = '/AnswerForm', //TODO: Trocar esse path para o path correto
+	HOME = '/home',
+	FORM = '/form',
 }

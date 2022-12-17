@@ -1,8 +1,8 @@
 export type ID = string | number;
 
-export type RESPONSE = {
+export type RESPONSE<D> = {
 	status: number;
-	data: null | object;
-	msg: null | string;
-	errors: string[];
+	data?: null | D;
+	msg?: null | string[];
+	errors?: string[];
 };

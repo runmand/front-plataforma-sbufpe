@@ -25,7 +25,7 @@ export default function Index(props: IProps) {
 	const handleLogin = async () => {
 		setIsLoading(true);
 
-		await loginService
+		loginService
 			.handleLogin({ login, pwd })
 			.then(res => {
 				if (!res.errors) {
