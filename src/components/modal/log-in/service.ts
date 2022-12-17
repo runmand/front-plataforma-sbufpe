@@ -1,9 +1,12 @@
-import axios from 'axios';
+import { http } from 'src/core/axios';
 import { THandleLogin } from './type';
 
 export default class LoginService {
+	private path = '/login';
 	handleLogin = async ({ login, pwd }: THandleLogin) => {
 		const auth = btoa(`${login}:${pwd}`);
-		return axios.patch(`${process.env.API_URL}/login`, {}, { headers: { authorization: `Basic ${auth}` } });
+		const config = { headers: { authorization: `Basic ${auth}` } };
+
+		return http.patch(this.path, undefined, config);
 	};
 }

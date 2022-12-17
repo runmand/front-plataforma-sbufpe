@@ -7,7 +7,6 @@ import TextField from '@components/text-field/index';
 import ActionArea from '@components/modal/action-area';
 import LoginService from './service';
 import { useSnackbar } from 'notistack';
-import { mapRequestErrors } from 'src/utils/errorUtils';
 import { useRouter } from 'next/router';
 import { routerEnum } from 'src/core/enums';
 
@@ -29,14 +28,16 @@ export default function Index(props: IProps) {
 		await loginService
 			.handleLogin({ login, pwd })
 			.then(res => {
-				if (res.data.data.token) {
+				if (!res.errors) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
 					router.push(routerEnum.HOME);
-				} else enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
+				} else {
+					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+				}
 			})
 			.catch(e => {
-				const errors = mapRequestErrors(e);
-				errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+				console.error(e);
+				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
 			})
 			.finally(() => {
 				setIsLoading(false);
