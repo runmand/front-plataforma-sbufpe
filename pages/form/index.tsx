@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import { formButtonStyle, mainContainerStyle } from './style';
 import Image from 'next/image';
 import FormService from './service';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { INDEX_RES } from './contract';
 import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
@@ -22,19 +22,21 @@ export default function Index() {
 		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
 	};
 
-	formService
-		.index()
-		.then(res => {
-			if (!res.errors) {
-				setForms(res.data);
-			} else {
-				res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
-			}
-		})
-		.catch(e => {
-			console.error(e);
-			enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
-		});
+	useEffect(() => {
+		formService
+			.index()
+			.then(res => {
+				if (!res.errors) {
+					setForms(res.data);
+				} else {
+					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+				}
+			})
+			.catch(e => {
+				console.error(e);
+				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
+			});
+	}, []);
 
 	return (
 		<Base
