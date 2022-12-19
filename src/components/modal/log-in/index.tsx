@@ -1,7 +1,7 @@
 import { Modal, Typography } from '@mui/material';
 import React from 'react';
 import { modalStyle, cardStyle, cardBodyStyle, optionsStyle, optionsLinkStyle } from './style';
-import { IProps } from './type';
+import { TPROPS } from './type';
 import Header from '../header/index';
 import TextField from '@components/text-field/index';
 import ActionArea from '@components/modal/action-area';
@@ -14,7 +14,7 @@ import { routerEnum } from 'src/core/enums';
 //TODO: Criar modal de cadastro.
 //TODO: Criar modal de recuperação de senha.
 
-export default function Index(props: IProps) {
+export default function Index(props: TPROPS) {
 	const loginService = new LoginService();
 	const [login, setLogin] = React.useState<string>(null);
 	const [pwd, setPwd] = React.useState<string>(null);
@@ -37,7 +37,7 @@ export default function Index(props: IProps) {
 			})
 			.catch(e => {
 				console.error(e);
-				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
+				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });//TODO: Tratar essa exception
 			})
 			.finally(() => {
 				setIsLoading(false);

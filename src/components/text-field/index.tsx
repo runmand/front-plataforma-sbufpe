@@ -1,12 +1,12 @@
 import { TextField } from '@mui/material';
 import { iconButtonStyle, textField, wrapperStyle } from './style';
-import { TProps } from './type';
+import { TPROPS } from './type';
 import IconButton from '@mui/material/IconButton';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import React from 'react';
 
-export default function Index(props: TProps) {
+export default function Index(props: TPROPS) {
 	const textType = 'text';
 	const pwdType = 'password';
 	const [isShowPwd, setIsShowPwd] = React.useState<boolean>(false);
