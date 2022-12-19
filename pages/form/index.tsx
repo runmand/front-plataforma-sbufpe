@@ -8,11 +8,19 @@ import FormService from './service';
 import React from 'react';
 import { INDEX_RES } from './contract';
 import { useSnackbar } from 'notistack';
+import { ID } from 'src/core/types';
+import router from 'next/router';
+import { routerEnum } from 'src/core/enums';
+import NotFound from '@components/not-found/index';
 
 export default function Index() {
 	const formService = new FormService();
 	const { enqueueSnackbar } = useSnackbar();
 	const [forms, setForms] = React.useState<INDEX_RES[]>();
+
+	const handleSelectForm = (id: ID) => {
+		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
+	};
 
 	formService
 		.index()
@@ -29,16 +37,19 @@ export default function Index() {
 		});
 
 	return (
-		<div>
-			<Base
-				appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
-				mainContainerChild={
-					<div style={mainContainerStyle}>
-						{forms?.length > 0 ? (
-							forms.map((v, i) => (
+		<Base
+			appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+			mainContainerChild={
+				forms ? (
+					forms.length === 0 ? (
+						<NotFound msg={'Nenhum questionário encontrado.'} />
+					) : (
+						<div style={mainContainerStyle}>
+							{forms.map((v, i) => (
 								<Button
 									key={i}
 									style={formButtonStyle}
+									onClick={() => handleSelectForm(v.id)}
 								>
 									<div style={{ width: '100%' }}>
 										<div style={{ width: '100%' }}>
@@ -53,13 +64,13 @@ export default function Index() {
 										{v.title}
 									</div>
 								</Button>
-							))
-						) : (
-							<h1>Nenhum dado encontrado.</h1>
-						)}
-					</div>
-				}
-			/>
-		</div>
+							))}
+						</div>
+					)
+				) : (
+					<div></div>
+				)
+			}
+		/>
 	);
 }
