@@ -1,12 +1,12 @@
 import RadioGroup from '@mui/material/RadioGroup';
 import { FormControlLabel, Radio, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
-import { Choice, IProps } from './contract';
+import { CHOICE, TPROPS } from './type';
 import React from 'react';
 
-export default function ChoiceAnswer(props: IProps) {
+export default function Index(props: TPROPS) {
 	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
-	const handleSelectChoice = (index: number, choice: Choice) => {
+	const handleSelectChoice = (index: number, choice: CHOICE) => {
 		const temp = answer;
 		temp.fill(0);
 		temp[index] = Number(choice.formsQuestionFormsQuestionChoicesId);

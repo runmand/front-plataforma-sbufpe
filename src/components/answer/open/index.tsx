@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
-import { IProps } from './contract';
+import { TPROPS } from './type';
 
-export default function OpenAnswer(props: IProps) {
+export default function Index(props: TPROPS) {
 	const handleAnswerQuestion = (answer: string) => {
 		props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer });
 	};
