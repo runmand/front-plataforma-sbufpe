@@ -1,3 +1,3 @@
-import { TMenuItem } from '../items/type';
+import { MENU_ITEM } from '../items/type';
 
-export type TProps = { items: TMenuItem[] };
+export type TPROPS = { items: MENU_ITEM[] };

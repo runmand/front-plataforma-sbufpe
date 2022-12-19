@@ -1,10 +1,14 @@
 import { ID } from 'src/core/types';
 
-export type TProps = { parentId?: ID; item: TMenuItem; incrementalLeftChildMargin: number };
+export type TPROPS = {
+	parentId?: ID;
+	item: MENU_ITEM;
+	incrementalLeftChildMargin: number;
+};
 
-export type TMenuItem = {
+export type MENU_ITEM = {
 	id: ID;
 	title: string;
 	url: string;
-	menuItemChildren?: TMenuItem[];
+	menuItemChildren?: MENU_ITEM[];
 };

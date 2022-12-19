@@ -1,10 +1,10 @@
-export type IProps = {
+export type TPROPS = {
 	isOpen: boolean;
 	canSkip?: boolean;
 	onClose: () => void;
 };
 
-export type THandleLogin = {
+export type HANDLE_LOGIN = {
 	login: string;
 	pwd: string;
 };

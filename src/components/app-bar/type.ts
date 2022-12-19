@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
 
-export type TProps = {
+export type TPROPS = {
 	toolbarChild: ReactElement;
 };

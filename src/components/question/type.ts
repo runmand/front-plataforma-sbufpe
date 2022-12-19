@@ -1,20 +1,20 @@
 import { ID } from '../../core/types';
-import { Choice } from '../answers/choices/contract';
+import { CHOICE } from '../answer/choice/type';
 
-export type IProps = {
+export type TPROPS = {
 	index: number;
-	parent?: Question;
-	question: Question;
-	onAnswerQuestion: (value: QuestionAnswer) => void;
+	parent?: QUESTION;
+	question: QUESTION;
+	onAnswerQuestion: (value: QUESTION_ANSWER) => void;
 	onHideQuestion: (formQuestionFormRegisterId: ID) => void;
 };
 
-export type Question = {
+export type QUESTION = {
 	formQuestionFormRegisterId: ID;
 	title: string;
 	completionMessage: string;
-	choices: Choice[];
-	childrenQuestion?: Question[];
+	choices: CHOICE[];
+	childrenQuestion?: QUESTION[];
 	type: {
 		cod: string;
 		name: string;
@@ -28,4 +28,4 @@ export type Question = {
 	};
 };
 
-export type QuestionAnswer = { formQuestionFormRegisterId: ID; answer: string };
+export type QUESTION_ANSWER = { formQuestionFormRegisterId: ID; answer: string };

@@ -1,4 +1,4 @@
-export type TProps = {
+export type TPROPS = {
 	isLoading: boolean;
 	onClick: () => void;
 };

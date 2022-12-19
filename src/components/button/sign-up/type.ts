@@ -1,3 +1,3 @@
-export type TProps = {
+export type TPROPS = {
 	onClick: () => void;
 };

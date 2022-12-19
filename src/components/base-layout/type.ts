@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export type TProps = {
+export type TPROPS = {
 	appBarChild: ReactElement;
 	mainContainerChild: ReactElement;
 	footerChild?: ReactElement;

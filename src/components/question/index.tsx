@@ -2,15 +2,15 @@ import { Card, CardContent, colors, Typography } from '@mui/material';
 import React from 'react';
 import { emitterEnum } from '../../core/enums';
 import { emitter } from '../../core/events';
-import ChoiceAnswer from '../answers/choices/ChoiceAnswer';
-import OpenAnswer from '../answers/opens/OpenAnswer';
-import { IProps, QuestionAnswer } from './contract';
+import ChoiceAnswer from '../answer/choice';
+import OpenAnswer from '../answer/open';
+import { TPROPS, QUESTION_ANSWER } from './type';
 
-export default function QuestionCard(props: IProps) {
+export default function Index(props: TPROPS) {
 	const [canShow, setCanShow] = React.useState(false);
 
 	/** Criando evento de emissão em todas as questões. */
-	const handleAnswerQuestion = (answer: QuestionAnswer) => {
+	const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
 		if (canShow || !props.parent) props.onAnswerQuestion(answer);
 
 		const emitterKey = `${props.question.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
@@ -21,7 +21,7 @@ export default function QuestionCard(props: IProps) {
 		const listenerKey = `${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
 
 		/** Criando evento de escuta no filho. */
-		emitter.addListener(listenerKey, (parentAnswer: QuestionAnswer) => {
+		emitter.addListener(listenerKey, (parentAnswer: QUESTION_ANSWER) => {
 			const isSameAnswer = parentAnswer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer);
 			setCanShow(isSameAnswer);
 
@@ -62,7 +62,7 @@ export default function QuestionCard(props: IProps) {
 				</CardContent>
 				<div>
 					{props.question.childrenQuestion.map((child, index) => (
-						<QuestionCard
+						<Index
 							key={index}
 							index={index}
 							parent={props.question}

@@ -1,4 +1,4 @@
-export type TProps = {
+export type TPROPS = {
 	title: string;
 	onClose: () => void;
 };

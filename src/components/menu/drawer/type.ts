@@ -1,7 +1,7 @@
-import { TMenuItem } from '../items/type';
+import { MENU_ITEM } from '../items/type';
 
-export type TProps = {
+export type TPROPS = {
 	isOpen: boolean;
-	menuItems: TMenuItem[];
+	menuItems: MENU_ITEM[];
 	onClose: () => void;
 };

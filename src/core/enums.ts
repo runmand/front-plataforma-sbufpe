@@ -5,4 +5,5 @@ export enum emitterEnum {
 export enum routerEnum {
 	HOME = '/home',
 	FORM = '/form',
+	FORM_ANSWER = '/form-answer',
 }
