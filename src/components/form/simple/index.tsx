@@ -1,8 +1,8 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { ID } from '../../../core/types';
-import { QUESTION_ANSWER } from '../../questions/contract';
-import QuestionCard from '../../questions/Question';
+import { QUESTION_ANSWER } from '../../question/type';
+import QuestionCard from '../../question';
 import SendIcon from '@mui/icons-material/Send';
 import AlertDialog from '../../dialogs/alerts/AlertDialog';
 import { useSnackbar } from 'notistack';
