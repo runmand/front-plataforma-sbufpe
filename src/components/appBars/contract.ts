@@ -1,4 +1,4 @@
-export type IProps = {
+export type TPROPS = {
 	onClickLoginButton: () => void;
 	onClickRegisterButton: () => void;
 };

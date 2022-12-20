@@ -36,6 +36,7 @@ export default function Index() {
 				console.error(e);
 				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

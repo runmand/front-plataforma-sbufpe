@@ -1,4 +1,3 @@
-import { positions } from '@mui/system';
 import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 

@@ -1,9 +1,9 @@
 import Button from '@mui/material/Button/Button';
 import React from 'react';
 import { buttonHoverStyle, buttonStyle } from './style';
-import { TProps } from './type';
+import { TPROPS } from './type';
 
-export default function Index(props: TProps) {
+export default function Index(props: TPROPS) {
 	const [isHover, setIsHover] = React.useState(false);
 
 	return (

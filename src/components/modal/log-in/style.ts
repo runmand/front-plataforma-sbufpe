@@ -1,5 +1,4 @@
 import { CSSProperties } from 'react';
-import { confirm } from 'src/core/colors';
 import { theme } from 'src/core/theme';
 
 export const modalStyle: CSSProperties = {
@@ -31,7 +30,7 @@ export const optionsStyle: CSSProperties = {
 export const optionsLinkStyle: CSSProperties = {
 	fontSize: '0.85rem',
 	textTransform: 'uppercase',
-	color: confirm,
+	color: theme.secundaryConfirm,
 	fontWeight: 'bold',
 	cursor: 'pointer',
 };

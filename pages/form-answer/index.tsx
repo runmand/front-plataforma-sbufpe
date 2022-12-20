@@ -19,6 +19,7 @@ export default function Index() {
 			.getFormattedFormShow(id)
 			.then(res => setFormattedForm(res.data))
 			.catch(e => console.error(e));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

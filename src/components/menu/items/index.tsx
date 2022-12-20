@@ -1,6 +1,6 @@
 import { Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React from 'react';
-import { TProps } from './type';
+import { TPROPS } from './type';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { theme } from 'src/core/theme';
@@ -9,7 +9,7 @@ import router from 'next/router';
 import { routerEnum } from 'src/core/enums';
 
 //TODO: Corrigir os icons de acordo com item do menu correspondente
-export default function Index(props: TProps) {
+export default function Index(props: TPROPS) {
 	const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
 	const handleOnSelectMenuItem = () => {

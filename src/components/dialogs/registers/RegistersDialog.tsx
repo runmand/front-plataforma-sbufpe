@@ -1,9 +1,9 @@
 import { Button, Modal } from '@mui/material';
 import React from 'react';
 import { ID } from '../../../core/types';
-import { IProps } from './contract';
+import { TPROPS } from './contract';
 
-export default function RegistersDialog(props: IProps) {
+export default function RegistersDialog(props: TPROPS) {
 	const [state, setState] = React.useState<{
 		name: string;
 		username: string;

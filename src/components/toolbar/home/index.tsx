@@ -4,12 +4,12 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { atualPageAreaStyle, atualPageTitleStyle, toolbarStyle } from './style';
 import DrawerMenu from '@components/menu/drawer/index';
 import React from 'react';
-import { TMenuItem } from '@components/menu/items/type';
+import { MENU_ITEM } from '@components/menu/items/type';
 
 export default function Index() {
 	const [isDrawerMenuOpen, setIsDrawerMenuOpen] = React.useState<boolean>(false);
 	//TODO: Remover o hardcode e buscar os menus verdadeiros
-	const temp: TMenuItem[] = [
+	const temp: MENU_ITEM[] = [
 		{ id: 0, title: 'Questionarios', url: '/AnswerForm' },
 		{
 			id: 1,

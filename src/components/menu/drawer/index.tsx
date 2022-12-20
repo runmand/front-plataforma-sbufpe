@@ -1,11 +1,11 @@
 import { Drawer } from '@mui/material';
 import React from 'react';
-import { TProps } from './type';
+import { TPROPS } from './type';
 import ListMenu from '@components/menu/list/index';
 import { modalStyle } from './style';
 
 //TODO: Permitir configuração da posição do drawer menu
-export default function Index(props: TProps) {
+export default function Index(props: TPROPS) {
 	return (
 		<Drawer
 			anchor={'left'}

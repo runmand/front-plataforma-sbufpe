@@ -1,7 +1,7 @@
-import { IProps } from './contract';
+import { TPROPS } from './contract';
 
 //TODO: Melhorar essa tela.
-export default function AppBar(props: IProps) {
+export default function AppBar(props: TPROPS) {
 	return (
 		<header>
 			<div className='logo'>

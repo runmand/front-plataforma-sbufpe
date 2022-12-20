@@ -1,8 +1,8 @@
 import { actionAreaStyle } from './style';
-import { TProps } from './type';
+import { TPROPS } from './type';
 import ConfirmButton from '@components/button/confirm';
 
-export default function index(props: TProps) {
+export default function index(props: TPROPS) {
 	return (
 		<div style={actionAreaStyle}>
 			{props.onConfirm && (
