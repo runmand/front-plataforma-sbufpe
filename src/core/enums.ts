@@ -7,3 +7,7 @@ export enum routerEnum {
 	FORM = '/form',
 	FORM_ANSWER = '/form-answer',
 }
+
+export enum localStorageKeyEnum {
+	token = 'token',
+}

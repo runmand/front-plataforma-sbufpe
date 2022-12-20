@@ -8,7 +8,7 @@ import ActionArea from '@components/modal/action-area';
 import LoginService from './service';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
-import { routerEnum } from 'src/core/enums';
+import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar modal de cadastro.
@@ -30,7 +30,7 @@ export default function Index(props: TPROPS) {
 			.then(res => {
 				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
-					localStorage.setItem('token', res.data.token); //TODO: Melhorar para utilziar cookies.
+					localStorage.setItem(localStorageKeyEnum.token, res.data.token); //TODO: Melhorar para utilziar cookies.
 					router.push(routerEnum.HOME);
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));

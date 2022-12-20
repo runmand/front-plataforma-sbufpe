@@ -1,17 +1,34 @@
 import axios from 'axios';
+import { localStorageKeyEnum } from './enums';
+// import jwt from 'jsonwebtoken';
 
 export const http = axios.create({ baseURL: process.env.API_URL });
 
-// http.interceptors.request.use(
-// 	config => {
-// 		//TODO: Inserir verificação de auth aqui.
-// 		return config;
-// 	},
-// 	error => {
-// 		console.error('error', error);
-// 		return Promise.reject(error);
-// 	}
-// );
+http.interceptors.request.use(
+	config => {
+		const openRoutes: string[] = ['/login'];
+
+		/** Se a rota for protegida, segue a lógica. */
+		if (!openRoutes.includes(config.url)) {
+			const token = localStorage.getItem(localStorageKeyEnum.token);
+
+			//TODO: Verificar expiração do token.
+			/** Se não existir JWT token, redireciona para a pagina inicial. */
+			if (!token) return (window.location.href = '/');
+
+			/** Se existir JWT token, injeta os dados no header da requisição. */
+			//TODO: Usar token para permissão de rotas.
+			// jwt.verify(token, process.env.JWT_SECRET);
+			config.headers.token = token;
+		}
+
+		return config;
+	},
+	e => {
+		console.error('axios-request-interceptor', e);
+		return { errors: typeof e === 'string' ? e : e.response.data.errors?.map((err: any) => err.message) };
+	}
+);
 
 http.interceptors.response.use(
 	res => ({
@@ -20,7 +37,8 @@ http.interceptors.response.use(
 		msg: res.data.msg,
 		errors: res.data.errors?.map((err: any) => err.message),
 	}),
-	e => ({
-		errors: e.response.data.errors?.map((err: any) => err.message),
-	})
+	e => {
+		console.error('axios-response-interceptor', e);
+		return { errors: typeof e === 'string' ? e : e.response.data.errors?.map((err: any) => err.message) };
+	}
 );
