@@ -7,12 +7,17 @@ import SendIcon from '@mui/icons-material/Send';
 import AlertDialog from '../../dialogs/alerts/AlertDialog';
 import { useSnackbar } from 'notistack';
 import { TPROPS } from './type';
+import SimpleFormService from './service';
+import router from 'next/router';
+import { routerEnum } from 'src/core/enums';
 
+//TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
 	const [answers, setAnswers] = useState<QUESTION_ANSWER[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar();
+	const simpleFormService = new SimpleFormService();
 
 	const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
 		const temp = answers;
@@ -41,14 +46,25 @@ export default function Index(props: TPROPS) {
 	const handleSubmit = () => {
 		setLoading(true);
 
-		//TODO: Remover esse setTimeOut e colocar a chamada da API.
-		setTimeout(() => {
-			enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
-			setLoading(false);
-			handleCloseDialog();
-		}, 5000);
-
-		console.log(answers);
+		simpleFormService
+			.handleSubmit(answers)
+			.then(res => {
+				if (!res.errors) {
+					//TODO: Implementar travas do questionario.
+					enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
+					handleCloseDialog();
+					router.push(routerEnum.FORM);
+				} else {
+					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+				}
+			})
+			.catch(e => {
+				console.error(e);
+				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
+			})
+			.finally(() => {
+				setLoading(false);
+			});
 	};
 
 	return (
