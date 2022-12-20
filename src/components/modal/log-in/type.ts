@@ -8,3 +8,7 @@ export type HANDLE_LOGIN = {
 	login: string;
 	pwd: string;
 };
+
+export type HANDLE_LOGIN_RES = {
+	token: string;
+};

@@ -6,7 +6,7 @@ import { formButtonStyle, mainContainerStyle } from './style';
 import Image from 'next/image';
 import FormService from './service';
 import React, { useEffect } from 'react';
-import { INDEX_RES } from './contract';
+import { INDEX_RES } from './type';
 import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
 import router from 'next/router';

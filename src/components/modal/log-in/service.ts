@@ -1,7 +1,6 @@
 import { http } from 'src/core/axios';
 import { RESPONSE } from 'src/core/types';
-import { HANDLE_LOGIN_RES } from './contract';
-import { HANDLE_LOGIN } from './type';
+import { HANDLE_LOGIN, HANDLE_LOGIN_RES } from './type';
 
 export default class LoginService {
 	private path = '/login';

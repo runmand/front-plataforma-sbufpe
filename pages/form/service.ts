@@ -1,6 +1,6 @@
 import { http } from 'src/core/axios';
 import { RESPONSE } from 'src/core/types';
-import { INDEX_RES } from './contract';
+import { INDEX_RES } from './type';
 
 export default class FormService {
 	private path = `/form-registers`;
