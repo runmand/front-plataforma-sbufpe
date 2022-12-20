@@ -34,13 +34,12 @@ export default function Index(props: TPROPS) {
 					router.push(routerEnum.HOME);
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+					setIsLoading(false);
 				}
 			})
 			.catch(e => {
 				console.error(e);
 				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
-			})
-			.finally(() => {
 				setIsLoading(false);
 			});
 	};
