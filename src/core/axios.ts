@@ -1,30 +1,26 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { RESPONSE } from 'src/core/types';
+import axios from 'axios';
 
-export const http = {
-	get: <D>(path: string, config?: AxiosRequestConfig<any>): Promise<RESPONSE<D>> => request('get', path, config),
-	post: <D>(path: string, data?: any, config?: AxiosRequestConfig<any>): Promise<RESPONSE<D>> => request('post', path, data, config),
-	patch: <D>(path: string, data?: any, config?: AxiosRequestConfig<any>): Promise<RESPONSE<D>> => request('patch', path, data, config),
-	delete: <D>(path: string, config?: AxiosRequestConfig<any>): Promise<RESPONSE<D>> => request('delete', path, config),
-};
+export const http = axios.create({ baseURL: process.env.API_URL });
 
-const request = async <D>(method: any, path: string, data?: any, config?: AxiosRequestConfig<any>): Promise<RESPONSE<D>> => {
-	const result: RESPONSE<D> = {
-		status: -1,
-		data: null,
-		msg: null,
-		errors: null,
-	};
+// http.interceptors.request.use(
+// 	config => {
+// 		//TODO: Inserir verificação de auth aqui.
+// 		return config;
+// 	},
+// 	error => {
+// 		console.error('error', error);
+// 		return Promise.reject(error);
+// 	}
+// );
 
-	return axios({ method, baseURL: process.env.API_URL, url: path, data, ...config })
-		.then(res => {
-			result.status = res.data.status;
-			result.data = res.data.data;
-			result.errors = res.data.errors?.map((err: any) => err.message);
-			return result;
-		})
-		.catch(e => {
-			result.errors = e.response.data.errors?.map((err: any) => err.message);
-			return result;
-		});
-};
+http.interceptors.response.use(
+	res => ({
+		status: res.data.status,
+		data: res.data.data,
+		msg: res.data.msg,
+		errors: res.data.errors?.map((err: any) => err.message),
+	}),
+	e => ({
+		errors: e.response.data.errors?.map((err: any) => err.message),
+	})
+);

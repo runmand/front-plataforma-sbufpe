@@ -28,7 +28,7 @@ export default function Index(props: TPROPS) {
 		loginService
 			.handleLogin({ login, pwd })
 			.then(res => {
-				if (res.data.token) {
+				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
 					localStorage.setItem('token', res.data.token); //TODO: Melhorar para utilziar cookies.
 					router.push(routerEnum.HOME);
