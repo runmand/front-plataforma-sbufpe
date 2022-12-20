@@ -28,8 +28,9 @@ export default function Index(props: TPROPS) {
 		loginService
 			.handleLogin({ login, pwd })
 			.then(res => {
-				if (!res.errors) {
+				if (res.data.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
+					localStorage.setItem('token', res.data.token); //TODO: Melhorar para utilziar cookies.
 					router.push(routerEnum.HOME);
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
@@ -37,7 +38,7 @@ export default function Index(props: TPROPS) {
 			})
 			.catch(e => {
 				console.error(e);
-				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });//TODO: Tratar essa exception
+				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
 			})
 			.finally(() => {
 				setIsLoading(false);
