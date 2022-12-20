@@ -4,7 +4,7 @@ import { ID } from '../../../core/types';
 import { QUESTION_ANSWER } from '../../question/type';
 import QuestionCard from '../../question';
 import SendIcon from '@mui/icons-material/Send';
-import AlertDialog from '../../dialogs/alerts/AlertDialog';
+import Alert from '@components/alert/index';
 import { useSnackbar } from 'notistack';
 import { TPROPS } from './type';
 import SimpleFormService from './service';
@@ -115,9 +115,9 @@ export default function Index(props: TPROPS) {
 				</CardActions>
 			</Card>
 
-			<AlertDialog
+			<Alert
 				title='Confirmar envio do formulário?'
-				msg='Atenção! Essa ação não poderá ser desfeita neste momento.'
+				msg='Atenção! Ao enviar o formulário suas respostas antigas serão sobreescritas! Esta ação não poderá ser desfeita neste momento!'
 				isOpen={isOpenDialog}
 				isLoading={loading}
 				canSkip={false}

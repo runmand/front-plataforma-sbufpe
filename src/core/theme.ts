@@ -5,6 +5,7 @@ import {
 	blue,
 	blur,
 	confirm,
+	cancel,
 	green,
 	grey,
 	greyDark,
@@ -26,6 +27,7 @@ declare module '@mui/material/styles' {
 		transparent: React.CSSProperties['color'];
 		blur: React.CSSProperties['color'];
 		confirm: React.CSSProperties['color'];
+		cancel: React.CSSProperties['color'];
 		black: React.CSSProperties['color'];
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
@@ -59,11 +61,7 @@ declare module '@mui/material/styles' {
 			minHeight: React.CSSProperties['minHeight'];
 			backgroundColor: React.CSSProperties['color'];
 			color: React.CSSProperties['color'];
-			border: {
-				style: React.CSSProperties['borderStyle'];
-				color: React.CSSProperties['color'];
-				width: React.CSSProperties['borderWidth'];
-			};
+			border: React.CSSProperties['border'];
 			disabled: {
 				color: React.CSSProperties['color'];
 				backgroundColor: React.CSSProperties['color'];
@@ -85,6 +83,7 @@ declare module '@mui/material/styles' {
 		transparent: React.CSSProperties['color'];
 		blur: React.CSSProperties['color'];
 		confirm: React.CSSProperties['color'];
+		cancel: React.CSSProperties['color'];
 		black: React.CSSProperties['color'];
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
@@ -118,11 +117,7 @@ declare module '@mui/material/styles' {
 			minHeight: React.CSSProperties['minHeight'];
 			backgroundColor: React.CSSProperties['color'];
 			color: React.CSSProperties['color'];
-			border: {
-				style: React.CSSProperties['borderStyle'];
-				color: React.CSSProperties['color'];
-				width: React.CSSProperties['borderWidth'];
-			};
+			border: React.CSSProperties['border'];
 			disabled: {
 				color: React.CSSProperties['color'];
 				backgroundColor: React.CSSProperties['color'];
@@ -146,6 +141,7 @@ export const theme = createTheme({
 	transparent: transparent,
 	blur: blur,
 	confirm: confirm,
+	cancel: cancel,
 	black: black,
 	blue: blue,
 	green: green,
@@ -179,11 +175,7 @@ export const theme = createTheme({
 		minHeight: '3rem',
 		color: testColor,
 		backgroundColor: testColor02,
-		border: {
-			style: 'solid',
-			color: testColor,
-			width: '0.2rem',
-		},
+		border: `0.2rem outset ${testColor}`,
 		disabled: {
 			color: greyDark,
 			backgroundColor: greyLight,

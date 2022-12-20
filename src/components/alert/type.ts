@@ -1,4 +1,4 @@
-export type IProps = {
+export type TPROPS = {
 	title: string;
 	msg?: string;
 	isOpen: boolean;
