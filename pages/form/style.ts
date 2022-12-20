@@ -12,6 +12,7 @@ export const formButtonStyle: CSSProperties = {
 	backgroundColor: theme.primaryColor,
 	color: theme.white,
 	margin: '1rem',
+  height: 'auto',
 	borderWidth: '0.5rem',
 	borderColor: theme.secundaryColor,
 };
