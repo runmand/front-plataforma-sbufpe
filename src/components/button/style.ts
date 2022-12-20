@@ -2,12 +2,10 @@ import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 
 export const buttonStyle: CSSProperties = {
+	...theme.button,
 	minWidth: theme.button.minWidth,
 	minHeight: theme.button.minHeight,
 	borderRadius: theme.borderRadiusSmooth,
-	borderStyle: theme.button.border.style,
-	borderColor: theme.button.border.color,
-	borderWidth: theme.button.border.width,
 	fontSize: theme.button.fontSize,
 	fontWeight: theme.button.fontWeight,
 	backgroundColor: theme.button.backgroundColor,

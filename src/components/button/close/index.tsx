@@ -1,9 +1,9 @@
-import { TProps } from './type';
+import { TPROPS } from './type';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { buttonHoverStyle, buttonStyle } from './style';
 import React from 'react';
 
-export default function Index(props: TProps) {
+export default function Index(props: TPROPS) {
 	const [isHover, setIsHover] = React.useState(false);
 
 	return (

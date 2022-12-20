@@ -1,9 +1,9 @@
 import { LoadingButton } from '@mui/lab';
 import { confirmButtonStyle } from './style';
-import { TProps } from '../type';
+import { TPROPS } from '../type';
 import { disabledButtonStyle } from '../style';
 
-export default function index(props: TProps) {
+export default function Index(props: TPROPS) {
 	return (
 		<LoadingButton
 			onClick={() => props.onClick()}
