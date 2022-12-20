@@ -4,8 +4,10 @@ import {
 	black,
 	blue,
 	blur,
-	confirm,
-	cancel,
+	primaryConfirm,
+	secundaryConfirm,
+	primaryCancel,
+	secundaryCancel,
 	green,
 	grey,
 	greyDark,
@@ -26,8 +28,10 @@ declare module '@mui/material/styles' {
 		hoverText: React.CSSProperties['color'];
 		transparent: React.CSSProperties['color'];
 		blur: React.CSSProperties['color'];
-		confirm: React.CSSProperties['color'];
-		cancel: React.CSSProperties['color'];
+		primaryConfirm: React.CSSProperties['color'];
+		secundaryConfirm: React.CSSProperties['color'];
+		primaryCancel: React.CSSProperties['color'];
+		secundaryCancel: React.CSSProperties['color'];
 		black: React.CSSProperties['color'];
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
@@ -59,6 +63,7 @@ declare module '@mui/material/styles' {
 			fontWeight: React.CSSProperties['fontWeight'];
 			minWidth: React.CSSProperties['minWidth'];
 			minHeight: React.CSSProperties['minHeight'];
+			height: React.CSSProperties['height'];
 			backgroundColor: React.CSSProperties['color'];
 			color: React.CSSProperties['color'];
 			border: React.CSSProperties['border'];
@@ -82,8 +87,10 @@ declare module '@mui/material/styles' {
 		hoverText: React.CSSProperties['color'];
 		transparent: React.CSSProperties['color'];
 		blur: React.CSSProperties['color'];
-		confirm: React.CSSProperties['color'];
-		cancel: React.CSSProperties['color'];
+		primaryConfirm: React.CSSProperties['color'];
+		secundaryConfirm: React.CSSProperties['color'];
+		primaryCancel: React.CSSProperties['color'];
+		secundaryCancel: React.CSSProperties['color'];
 		black: React.CSSProperties['color'];
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
@@ -115,6 +122,7 @@ declare module '@mui/material/styles' {
 			fontWeight: React.CSSProperties['fontWeight'];
 			minWidth: React.CSSProperties['minWidth'];
 			minHeight: React.CSSProperties['minHeight'];
+			height: React.CSSProperties['height'];
 			backgroundColor: React.CSSProperties['color'];
 			color: React.CSSProperties['color'];
 			border: React.CSSProperties['border'];
@@ -140,8 +148,10 @@ export const theme = createTheme({
 	hoverText: hoverText,
 	transparent: transparent,
 	blur: blur,
-	confirm: confirm,
-	cancel: cancel,
+	primaryConfirm: primaryConfirm,
+	secundaryConfirm: secundaryConfirm,
+	primaryCancel: primaryCancel,
+	secundaryCancel: secundaryCancel,
 	black: black,
 	blue: blue,
 	green: green,
@@ -172,7 +182,8 @@ export const theme = createTheme({
 		fontSize: '1rem',
 		fontWeight: 'bold',
 		minWidth: '10rem',
-		minHeight: '3rem',
+		minHeight: '1rem',
+		height: '2rem',
 		color: testColor,
 		backgroundColor: testColor02,
 		border: `0.2rem outset ${testColor}`,
