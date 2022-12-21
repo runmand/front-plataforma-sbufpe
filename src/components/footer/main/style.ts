@@ -1,10 +1,10 @@
 import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 
-export const subStyle: CSSProperties = {
+export const footerStyle: CSSProperties = {
 	display: 'flex',
 	justifyContent: 'center',
-	padding: '1rem',
+	padding: '0.5rem',
 	backgroundColor: theme.secundaryColor,
 };
 

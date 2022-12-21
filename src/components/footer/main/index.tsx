@@ -1,34 +1,31 @@
-import { copyRightStyle, linkStyle, subStyle } from './style';
+import { copyRightStyle, footerStyle, linkStyle } from './style';
 
 //TODO: Corrigir path dos links.
 export default function Index() {
 	return (
-		<div>
-			<div></div>
-			<div style={subStyle}>
-				<a
-					href={'/'}
-					style={linkStyle}
-				>
-					GestBucal
-				</a>
+		<div style={footerStyle}>
+			<a
+				href={'/'}
+				style={linkStyle}
+			>
+				GestBucal
+			</a>
 
-				<a
-					href={'/'}
-					style={linkStyle}
-				>
-					Termos de Serviços
-				</a>
+			<a
+				href={'/'}
+				style={linkStyle}
+			>
+				Termos de Serviços
+			</a>
 
-				<a
-					href={'/'}
-					style={linkStyle}
-				>
-					Privacidade
-				</a>
+			<a
+				href={'/'}
+				style={linkStyle}
+			>
+				Privacidade
+			</a>
 
-				<span style={copyRightStyle}>&copy; 2022 Tear Technology</span>
-			</div>
+			<span style={copyRightStyle}>&copy; 2022 Tear Technology</span>
 		</div>
 	);
 }
