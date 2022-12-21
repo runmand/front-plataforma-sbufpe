@@ -1,23 +1,18 @@
 import React from 'react';
 import Base from '@components/base-layout';
 import AppBar from '@components/app-bar';
-import Grid from '@mui/material/Grid/Grid';
-import Paper from '@mui/material/Paper/Paper';
-import Avatar from '@mui/material/Avatar/Avatar';
 import Typography from '@mui/material/Typography/Typography';
-import TextField from '@mui/material/TextField/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox/Checkbox';
-import { Copyright } from '@mui/icons-material';
-import Box from '@mui/material/Box/Box';
 import Button from '@mui/material/Button/Button';
 import FooterMain from '@components/footer/main/index';
 import LoginModal from '@components/modal/log-in/index';
 import IndexToolbar from '@components/toolbar/index';
-import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemButton, Paper } from '@mui/material';
 import { theme } from 'src/core/theme';
-import { infoStyle, listItemStyle, listStyle, listTitleStyle } from './style';
+import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from './style';
+import Carousel from 'react-material-ui-carousel';
+import Image from 'next/image';
 
+//TODO: Estilizar melhor o carrosel
 export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const handleCloseLoginModal = () => setIsOpenLogin(false);
@@ -72,6 +67,29 @@ export default function Index() {
 		},
 	];
 
+	//TODO: Remover hardcode
+	const items = [
+		{
+			subject: 'Novidades',
+			subTitle: 'Questionários',
+			description: 'Responda aos questionários de acordo com seu perfil e necessidade.',
+			url: '/',
+		},
+		{
+			subject: 'Referências',
+			subTitle: 'Objetos de Estudos',
+			description: 'Saiba quais referências foram utilizadas para a elaboração dos questionários disponíveis no projeto.',
+			url: '/',
+		},
+		{
+			subject: 'Contato',
+			subTitle: 'Entre em contato conosco',
+			description:
+				'Tem dúvidas sobre o projeto, questionários, assuntos relacionados ou gostaria de contrinuir? Acesse a página de contatos e nos mande suas dúvidas.',
+			url: '/',
+		},
+	];
+
 	return (
 		<div>
 			<Base
@@ -87,6 +105,52 @@ export default function Index() {
 				}
 				mainContainerChild={
 					<div>
+						<Carousel sx={{ height: '800px' }}>
+							{items.map((item, i) => (
+								<Paper
+									key={i}
+									style={carouselStyle}
+								>
+									<Image
+										src={'/logo-transparent.png'}
+										alt='logo-transparent'
+										width='100%'
+										height='100%'
+									/>
+									<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '30%' }}>
+										<Typography
+											variant='h5'
+											style={{ color: theme.grey }}
+										>
+											{item.subject}
+										</Typography>
+
+										<Typography
+											variant='h4'
+											style={{ color: theme.secundaryColor, fontWeight: 'bold' }}
+										>
+											{item.subTitle}
+										</Typography>
+
+										<Typography style={{ fontSize: '1rem', color: theme.black, marginTop: '1rem' }}>{item.description}</Typography>
+
+										<Button
+											style={{
+												...theme.button,
+												marginTop: '1rem',
+												borderRadius: '16px',
+												backgroundColor: theme.white,
+												borderColor: theme.secundaryColor,
+												color: theme.secundaryColor,
+											}}
+										>
+											Saiba mais
+										</Button>
+									</div>
+								</Paper>
+							))}
+						</Carousel>
+
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography
@@ -116,66 +180,6 @@ export default function Index() {
 							))}
 						</div>
 					</div>
-									onSubmit={() => {}}
-									sx={{ mt: 1 }}
-								>
-									<TextField
-										margin='normal'
-										required
-										fullWidth
-										id='email'
-										label='Email Address'
-										name='email'
-										autoComplete='email'
-										autoFocus
-									/>
-									<TextField
-										margin='normal'
-										required
-										fullWidth
-										name='password'
-										label='Password'
-										type='password'
-										id='password'
-										autoComplete='current-password'
-									/>
-									<FormControlLabel
-										control={
-											<Checkbox
-												value='remember'
-												color='primary'
-											/>
-										}
-										label='Remember me'
-									/>
-									<Button
-										type='submit'
-										fullWidth
-										variant='contained'
-										sx={{ mt: 3, mb: 2 }}
-									>
-										Sign In
-									</Button>
-									<Grid container>
-										<Grid
-											item
-											xs
-										>
-											{/* <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link> */}
-										</Grid>
-										<Grid item>
-											{/* <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link> */}
-										</Grid>
-									</Grid>
-									<Copyright sx={{ mt: 5 }} />
-								</Box>
-							</Box>
-						</Grid>
-					</Grid>
 				}
 				footerChild={<FooterMain />}
 			/>
