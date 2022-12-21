@@ -11,13 +11,66 @@ import Checkbox from '@mui/material/Checkbox/Checkbox';
 import { Copyright } from '@mui/icons-material';
 import Box from '@mui/material/Box/Box';
 import Button from '@mui/material/Button/Button';
-import Footer from '@components/footers/Footer';
+import FooterMain from '@components/footer/main/index';
 import LoginModal from '@components/modal/log-in/index';
 import IndexToolbar from '@components/toolbar/index';
+import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { theme } from 'src/core/theme';
+import { infoStyle, listItemStyle, listStyle, listTitleStyle } from './style';
 
 export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const handleCloseLoginModal = () => setIsOpenLogin(false);
+	//TODO: Remover o hardcode dessas infos.
+	const infoList = [
+		{
+			title: 'GestBucal',
+			items: [
+				{
+					title: 'Início',
+					url: '/',
+				},
+				{
+					title: 'Acervo',
+					url: '/',
+				},
+			],
+		},
+		{
+			title: 'Sobre',
+			items: [
+				{
+					title: 'Quem somos?',
+					url: '/',
+				},
+				{
+					title: 'O que é GestBucal',
+					url: '/',
+				},
+				{
+					title: 'GestBucal & Tear Technology',
+					url: '/',
+				},
+			],
+		},
+		{
+			title: 'Suporte',
+			items: [
+				{
+					title: 'Central SAC | +55(81)3194-4900',
+					url: '/',
+				},
+				{
+					title: 'Duvidas | +55(81)3038-6405',
+					url: '/',
+				},
+				{
+					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
+					url: '/',
+				},
+			],
+		},
+	];
 
 	return (
 		<div>
@@ -33,50 +86,36 @@ export default function Index() {
 					/>
 				}
 				mainContainerChild={
-					<Grid
-						container
-						component='main'
-						sx={{ height: '100vh' }}
-					>
-						<Grid
-							item
-							sm={6}
-							md={6}
-							sx={{
-								backgroundImage: 'url(/logo-transparent.png)',
-								backgroundRepeat: 'no-repeat',
-								backgroundColor: 'red',
-								backgroundSize: 'cover',
-								backgroundPosition: 'center',
-							}}
-						/>
-						<Grid
-							item
-							xs={12}
-							sm={6}
-							md={6}
-							component={Paper}
-							square
-						>
-							<Box
-								sx={{
-									my: 8,
-									mx: 4,
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-							>
-								<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>{/* <LockOutlinedIcon /> */}</Avatar>
+					<div>
+						<div style={infoStyle}>
+							{infoList.map((info, index) => (
 								<Typography
-									component='h1'
-									variant='h5'
+									key={index}
+									variant={'subtitle1'}
+									style={listTitleStyle}
 								>
-									Sign in
+									{info.title}
+
+									<List
+										disablePadding
+										style={listStyle}
+									>
+										{info.items.map((item, i) => (
+											<ListItem
+												key={i}
+												disablePadding
+												style={listItemStyle}
+											>
+												<ListItemButton style={{ padding: 0, fontSize: '0.8rem', fontWeight: 'bold', color: theme.grey, whiteSpace: 'pre-line' }}>
+													{item.title}
+												</ListItemButton>
+											</ListItem>
+										))}
+									</List>
 								</Typography>
-								<Box
-									component='form'
-									noValidate
+							))}
+						</div>
+					</div>
 									onSubmit={() => {}}
 									sx={{ mt: 1 }}
 								>
@@ -138,7 +177,7 @@ export default function Index() {
 						</Grid>
 					</Grid>
 				}
-				footerChild={<Footer />}
+				footerChild={<FooterMain />}
 			/>
 
 			<LoginModal
@@ -150,9 +189,6 @@ export default function Index() {
 			/>
 		</div>
 	);
-
-	// 	<Container />
-	// 	<Footer />
 
 	// 	<RegistersDialog
 	// 		isOpen={isOpenRegister}

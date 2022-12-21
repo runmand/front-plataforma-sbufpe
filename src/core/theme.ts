@@ -36,6 +36,8 @@ declare module '@mui/material/styles' {
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
 		white: React.CSSProperties['color'];
+		grey: React.CSSProperties['color'];
+		greyLight: React.CSSProperties['color'];
 		borderRadiusEdge: React.CSSProperties['borderRadius'];
 		borderRadiusSmooth: React.CSSProperties['borderRadius'];
 		modal: {
@@ -95,6 +97,8 @@ declare module '@mui/material/styles' {
 		blue: React.CSSProperties['color'];
 		green: React.CSSProperties['color'];
 		white: React.CSSProperties['color'];
+		grey: React.CSSProperties['color'];
+		greyLight: React.CSSProperties['color'];
 		borderRadiusEdge: React.CSSProperties['borderRadius'];
 		borderRadiusSmooth: React.CSSProperties['borderRadius'];
 		modal: {
@@ -156,6 +160,8 @@ export const theme = createTheme({
 	blue: blue,
 	green: green,
 	white: white,
+	grey: grey,
+	greyLight: greyLight,
 	borderRadiusEdge: '0.25rem',
 	borderRadiusSmooth: '0.5rem',
 	modal: {
