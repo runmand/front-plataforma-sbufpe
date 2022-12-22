@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography/Typography';
 import Button from '@mui/material/Button/Button';
 import FooterMain from '@components/footer/main/index';
 import LoginModal from '@components/modal/log-in/index';
+import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
 import { List, ListItem, ListItemButton, Paper } from '@mui/material';
 import { theme } from 'src/core/theme';
@@ -15,7 +16,7 @@ import Image from 'next/image';
 //TODO: Estilizar melhor o carrosel
 export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
-	const handleCloseLoginModal = () => setIsOpenLogin(false);
+	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	//TODO: Remover o hardcode dessas infos.
 	const infoList = [
 		{
@@ -98,7 +99,7 @@ export default function Index() {
 						toolbarChild={
 							<IndexToolbar
 								openLoginModal={() => setIsOpenLogin(true)}
-								openSignupModal={() => setIsOpenLogin(true)}
+								openSignupModal={() => setIsOpenSignup(true)}
 							/>
 						}
 					/>
@@ -188,22 +189,17 @@ export default function Index() {
 				isOpen={isOpenLogin}
 				canSkip={true}
 				onClose={() => {
-					handleCloseLoginModal();
+					setIsOpenLogin(false);
+				}}
+			/>
+
+			<SignupModal
+				isOpen={isOpenSignup}
+				canSkip={true}
+				onClose={() => {
+					setIsOpenSignup(false);
 				}}
 			/>
 		</div>
 	);
-
-	// 	<RegistersDialog
-	// 		isOpen={isOpenRegister}
-	// 		canSkip={true}
-	// 		isLoading={isLoading}
-	// 		onClose={() => {
-	// 			handleCloseRegisterModal();
-	// 		}}
-	// 		onConfirm={() => {
-	// 			handleSendRegister();
-	// 		}}
-	// 	/>
-	// </div>
 }
