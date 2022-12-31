@@ -9,5 +9,12 @@ export enum routerEnum {
 }
 
 export enum localStorageKeyEnum {
-	token = 'token',
+	TOKEN = 'token',
+}
+
+export enum loginTypeEnum {
+	CPF = 'cpf',
+	DDI_DDD_CELLPHONE = 'ddi-ddd-cellphone',
+	EMAIL = 'email',
+	USERNAME = 'username',
 }

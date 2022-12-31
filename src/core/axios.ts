@@ -10,7 +10,7 @@ http.interceptors.request.use(
 
 		/** Se a rota for protegida, segue a lógica. */
 		if (!openRoutes.includes(config.url)) {
-			const token = localStorage.getItem(localStorageKeyEnum.token);
+			const token = localStorage.getItem(localStorageKeyEnum.TOKEN);
 
 			//TODO: Verificar expiração do token.
 			/** Se não existir JWT token, redireciona para a pagina inicial. */

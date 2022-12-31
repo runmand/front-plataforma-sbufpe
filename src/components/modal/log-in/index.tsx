@@ -22,7 +22,7 @@ export default function Index(props: TPROPS) {
 	const { enqueueSnackbar } = useSnackbar();
 	const router = useRouter();
 
-	const handleLogin = async () => {
+	const handleSubmit = async () => {
 		setIsLoading(true);
 
 		loginService
@@ -30,7 +30,7 @@ export default function Index(props: TPROPS) {
 			.then(res => {
 				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
-					localStorage.setItem(localStorageKeyEnum.token, res.data.token); //TODO: Melhorar para utilziar cookies.
+					localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
 					router.push(routerEnum.HOME);
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
@@ -60,14 +60,14 @@ export default function Index(props: TPROPS) {
 
 				<div style={cardBodyStyle}>
 					<TextField
-						title='CPF | E-mail | Username'
+						title='CPF | Celular | E-mail | Username'
 						onBlur={v => setLogin(v)}
 					/>
 
 					<div style={{ marginTop: '1rem' }}>
 						<TextField
 							title='Password'
-							type='password'
+							textType='password'
 							onBlur={v => setPwd(v)}
 						/>
 					</div>
@@ -83,7 +83,7 @@ export default function Index(props: TPROPS) {
 
 				<ActionArea
 					isLoading={isLoading}
-					onConfirm={() => handleLogin()}
+					onConfirm={() => handleSubmit()}
 				/>
 			</div>
 		</Modal>
