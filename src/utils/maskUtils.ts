@@ -1,18 +1,20 @@
 import { config } from 'src/core/config';
 
 export default class MaskUtils {
-	cpf(value: string) {
-		const rawValue = value.replace(/[\D]/g, '');
-		const charList = rawValue.split('');
+	cpf(value: string, oldValue: string) {
+		/** Caso o usuário tenha apagado um caracter, não cria mascara. */
+		if (oldValue.length >= value.length) return value;
 
-		config.cpfMask.split('').forEach((maskChar, index) => {
-			if (maskChar !== '#' && charList[index - 1] && maskChar !== charList[index]) charList.splice(index, 0, maskChar);
-		});
+		let mask = config.cpfMask;
+		const valueCharList = value.replace(/[\D]/g, '').split('');
 
-		return charList.join('');
+		valueCharList.forEach(char => (mask = mask.replace('#', char)));
+
+		const index = mask.indexOf('#');
+		return index < 0 ? mask : mask.slice(0, index);
 	}
 
-	cellphone(value: string) {
+	cellphone(value: string, oldValue: string) {
 		const rawValue = value.replace(/[^a-zA-Z0-9\+]|^0/g, '');
 		const charList = rawValue.split('');
 		let result = '';

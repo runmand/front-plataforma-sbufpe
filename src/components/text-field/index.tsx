@@ -14,6 +14,7 @@ export default function Index(props: TPROPS) {
 	const textType = 'text';
 	const pwdType = 'password';
 	const [value, setValue] = React.useState<string>('');
+	const [oldValue, setOldValue] = React.useState<string>('');
 	const [isShowPwd, setIsShowPwd] = React.useState<boolean>(false);
 	const [inputProps, setInputProps] = React.useState<InputBaseComponentProps>();
 
@@ -21,11 +22,15 @@ export default function Index(props: TPROPS) {
 	const maskObserver: { [key: string]: (v: string) => string } = {
 		[loginTypeEnum.CPF]: (v: string): string => {
 			setInputProps({ ...inputProps, maxLength: config.cpfMaskedMaxLength });
-			return maskUtils.cpf(v);
+			const maskedValue = maskUtils.cpf(v, oldValue);
+			setOldValue(maskedValue);
+			return maskedValue;
 		},
 		[loginTypeEnum.DDI_DDD_CELLPHONE]: (v: string): string => {
 			setInputProps({ ...inputProps, maxLength: config.cellphoneMaskedMaxLength });
-			return maskUtils.cellphone(v);
+			const maskedValue = maskUtils.cellphone(v, oldValue);
+			setOldValue(maskedValue);
+			return maskedValue;
 		},
 	};
 
