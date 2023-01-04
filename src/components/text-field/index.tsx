@@ -22,15 +22,11 @@ export default function Index(props: TPROPS) {
 	const maskObserver: { [key: string]: (v: string) => string } = {
 		[loginTypeEnum.CPF]: (v: string): string => {
 			setInputProps({ ...inputProps, maxLength: config.cpfMaskedMaxLength });
-			const maskedValue = maskUtils.cpf(v, oldValue);
-			setOldValue(maskedValue);
-			return maskedValue;
+			return maskUtils.apply(v, oldValue, config.cpfMask);
 		},
 		[loginTypeEnum.DDI_DDD_CELLPHONE]: (v: string): string => {
 			setInputProps({ ...inputProps, maxLength: config.cellphoneMaskedMaxLength });
-			const maskedValue = maskUtils.cellphone(v, oldValue);
-			setOldValue(maskedValue);
-			return maskedValue;
+			return maskUtils.apply(v, oldValue, config.cellphoneMask);
 		},
 	};
 
@@ -38,8 +34,11 @@ export default function Index(props: TPROPS) {
 	const onInputCapture = (e: React.FormEvent<HTMLDivElement>) => {
 		const target = e.target as HTMLInputElement;
 
-		if (maskObserver.hasOwnProperty(props.maskType)) setValue(maskObserver[props.maskType](target.value));
-		else setValue(target.value);
+		if (maskObserver.hasOwnProperty(props.maskType)) {
+			const maskedValue = maskObserver[props.maskType](target.value);
+			setOldValue(maskedValue);
+			setValue(maskedValue);
+		} else setValue(target.value);
 	};
 
 	/** Caso exista um callback para que outro componente possa limpar este campo, é aqui onda o clear é feito. */
