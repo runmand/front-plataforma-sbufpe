@@ -9,6 +9,7 @@ export default function index(props: TPROPS) {
 				<ConfirmButton
 					onClick={() => props.onConfirm()}
 					isLoading={props.isLoading}
+					isDisabled={props.isDisabled}
 				/>
 			)}
 		</div>

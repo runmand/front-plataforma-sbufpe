@@ -7,9 +7,9 @@ export default function Index(props: TPROPS) {
 	return (
 		<LoadingButton
 			onClick={() => props.onClick()}
-			style={props.isLoading ? disabledButtonStyle(confirmButtonStyle) : confirmButtonStyle}
+			style={props.isLoading || props.isDisabled ? disabledButtonStyle(confirmButtonStyle) : confirmButtonStyle}
 			loading={props.isLoading}
-			disabled={props.isLoading}
+			disabled={props.isLoading || props.isDisabled}
 		>
 			{props.isLoading ? '' : 'Confirmar'}
 		</LoadingButton>
