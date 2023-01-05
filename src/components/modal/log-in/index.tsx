@@ -1,4 +1,4 @@
-import { Modal, Typography } from '@mui/material';
+import { FormControlLabel, Modal, Radio, RadioGroup, Typography } from '@mui/material';
 import React from 'react';
 import { modalStyle, cardStyle, cardBodyStyle, optionsStyle, optionsLinkStyle } from './style';
 import { TPROPS } from './type';
@@ -8,19 +8,28 @@ import ActionArea from '@components/modal/action-area';
 import LoginService from './service';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
-import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
+import { localStorageKeyEnum, loginTypeEnum, routerEnum } from 'src/core/enums';
+import LoginUtils from 'src/utils/loginUtils';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
-//TODO: Criar modal de cadastro.
-//TODO: Criar modal de recuperação de senha.
+//TODO: Redirecionar para modal de cadastro.
+//TODO: Redirecionar para modal de recuperação de senha.
 
 export default function Index(props: TPROPS) {
+	let clearLoginField = () => console.log('Trying clear login field...');
+	const loginUtils = new LoginUtils();
 	const loginService = new LoginService();
 	const [login, setLogin] = React.useState<string>(null);
 	const [pwd, setPwd] = React.useState<string>(null);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
 	const { enqueueSnackbar } = useSnackbar();
 	const router = useRouter();
+
+	const handleSelectLoginType = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setLoginType(loginUtils.loginTypeList.filter(item => item.key === e.target.value)[0].key);
+		clearLoginField();
+	};
 
 	const handleSubmit = async () => {
 		setIsLoading(true);
@@ -59,9 +68,26 @@ export default function Index(props: TPROPS) {
 				/>
 
 				<div style={cardBodyStyle}>
+					<RadioGroup
+						row
+						defaultValue={loginTypeEnum.CPF}
+					>
+						{loginUtils.loginTypeList.map((item, i) => (
+							<FormControlLabel
+								key={i}
+								value={item.key}
+								control={<Radio />}
+								label={item.title}
+								onChange={handleSelectLoginType}
+							/>
+						))}
+					</RadioGroup>
+
 					<TextField
-						title='CPF | Celular | E-mail | Username'
+						title='CPF, Celular, E-mail ou Username'
+						maskType={loginType}
 						onBlur={v => setLogin(v)}
+						onClear={toInvoke => (clearLoginField = toInvoke)}
 					/>
 
 					<div style={{ marginTop: '1rem' }}>
