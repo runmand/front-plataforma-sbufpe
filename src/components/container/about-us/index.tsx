@@ -1,9 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { ImageListItem, ImageListItemBar, Typography } from '@mui/material';
-import { iconStyle, mainContainerStyle, photoBarStyle, photoCardStyle, photoContainerStyle, photoStyle, titleStyle } from './style';
+import { iconStyle, mainContainerStyle, photoBarStyle, photoCardStyle, photoContainerStyle, titleStyle } from './style';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { theme } from 'src/core/theme';
 
 export default function Index() {
 	//TODO: Remover esse hard code.
@@ -118,7 +117,6 @@ export default function Index() {
 						style={photoCardStyle}
 					>
 						<img
-							style={photoStyle}
 							src={item.photo}
 							srcSet={item.photo}
 							alt={item.photo}

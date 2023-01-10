@@ -2,7 +2,9 @@ import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 
 export const mainContainerStyle: CSSProperties = {
-	backgroundColor: '#001E3C',
+	backgroundColor: theme.secundaryColor,
+	backgroundImage: "url('/our-team-background.png')",
+	WebkitBackgroundSize: '100%',
 	paddingBottom: '10%',
 };
 
@@ -22,16 +24,10 @@ export const photoContainerStyle: CSSProperties = {
 
 export const photoCardStyle: CSSProperties = {
 	margin: '1rem',
-	border: `4px solid ${theme.primaryColor}`,
-	borderRadius: '1rem',
-};
-
-export const photoStyle: CSSProperties = {
-	borderRadius: '1rem',
+	border: `4px solid ${theme.black}`,
 };
 
 export const photoBarStyle: CSSProperties = {
-	borderRadius: '1rem',
 	backgroundColor: theme.blur,
 };
 
