@@ -1,9 +1,9 @@
-import { FormControlLabel, Modal, Radio, RadioGroup } from '@mui/material';
+import { Autocomplete, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
 import React from 'react';
 import { modalStyle, cardStyle, cardBodyStyle } from './style';
 import { TPROPS } from './type';
 import Header from '../header/index';
-import TextField from '@components/text-field/index';
+import CustomTextField from '@components/text-field/index';
 import ActionArea from '@components/modal/action-area';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
@@ -21,10 +21,11 @@ export default function Index(props: TPROPS) {
 	const router = useRouter();
 	const [login, setLogin] = React.useState<string>(null);
 	const [pwd, setPwd] = React.useState<string>(null);
+	const [userTypeId, setUserTypeId] = React.useState<number>(null);
 	const [confirmPwd, setConfirmPwd] = React.useState<string>(null);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
-	const canSubmit = login && pwd && pwd === confirmPwd;
+	const canSubmit = login && userTypeId && pwd && pwd === confirmPwd;
 
 	const handleSelectLoginType = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoginType(loginUtils.loginTypeList.filter(item => item.key === e.target.value)[0].key);
@@ -35,7 +36,7 @@ export default function Index(props: TPROPS) {
 		setIsLoading(true);
 
 		signupService
-			.handleSignup({ login, pwd, typeId: 4 })
+			.handleSignup({ login, pwd, typeId: userTypeId })
 			.then(res => {
 				if (res.data?.token) {
 					enqueueSnackbar('Registro efetuado com sucesso!', { variant: 'success' });
@@ -52,6 +53,9 @@ export default function Index(props: TPROPS) {
 				setIsLoading(false);
 			});
 	};
+
+	//TODO: Remover o hardcode
+	const userTypeOptions = [{ id: 4, label: 'Admin' }];
 
 	return (
 		<Modal
@@ -83,15 +87,29 @@ export default function Index(props: TPROPS) {
 						))}
 					</RadioGroup>
 
-					<TextField
+					<CustomTextField
 						title='CPF, Celular, E-mail ou Username'
 						maskType={loginType}
 						onBlur={v => setLogin(v)}
 						onClear={toInvoke => (clearLoginField = toInvoke)}
 					/>
 
+					<Autocomplete
+						style={{ marginTop: '1rem' }}
+						disablePortal
+						openOnFocus
+						options={userTypeOptions}
+						renderInput={params => (
+							<TextField
+								{...params}
+								label='Tipo de usuário'
+							/>
+						)}
+						onChange={(e: any, newValue: { id: number; label: string }) => setUserTypeId(newValue.id)}
+					/>
+
 					<div style={{ marginTop: '1rem' }}>
-						<TextField
+						<CustomTextField
 							title='Senha'
 							textType='password'
 							onBlur={v => setPwd(v)}
@@ -99,7 +117,7 @@ export default function Index(props: TPROPS) {
 					</div>
 
 					<div style={{ marginTop: '1rem' }}>
-						<TextField
+						<CustomTextField
 							title='Confirmar senha'
 							textType='password'
 							onBlur={v => setConfirmPwd(v)}
