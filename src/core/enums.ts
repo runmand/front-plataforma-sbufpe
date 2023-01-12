@@ -18,3 +18,8 @@ export enum loginTypeEnum {
 	EMAIL = 'email',
 	USERNAME = 'username',
 }
+
+export enum containerBodyTypeEnum {
+	MAIN = 'main',
+	ABOUT_US = 'about-us',
+}

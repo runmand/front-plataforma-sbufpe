@@ -7,8 +7,9 @@ export type TPROPS = {
 };
 
 export type MENU_ITEM = {
-	id: ID;
+	id?: ID;
 	title: string;
-	url: string;
+	url?: string;
 	menuItemChildren?: MENU_ITEM[];
+	onClick?: () => void;
 };

@@ -12,11 +12,14 @@ import { theme } from 'src/core/theme';
 import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from './style';
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
+import AboutUsContainer from '@components/container/about-us';
+import { containerBodyTypeEnum } from 'src/core/enums';
 
 //TODO: Estilizar melhor o carrosel
 export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
+	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
 	//TODO: Remover o hardcode dessas infos.
 	const infoList = [
 		{
@@ -91,6 +94,19 @@ export default function Index() {
 		},
 	];
 
+	//TODO: Remover do hardcode
+	const indexToolbarMenuList = [
+		{
+			title: 'Acervo',
+			menuItems: [
+				{
+					title: 'Quem somos?',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+				},
+			],
+		},
+	];
+
 	return (
 		<div>
 			<Base
@@ -98,59 +114,67 @@ export default function Index() {
 					<AppBar
 						toolbarChild={
 							<IndexToolbar
+								onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
 								openLoginModal={() => setIsOpenLogin(true)}
 								openSignupModal={() => setIsOpenSignup(true)}
+								menuList={indexToolbarMenuList}
 							/>
 						}
 					/>
 				}
 				mainContainerChild={
 					<div>
-						<Carousel sx={{ height: '800px' }}>
-							{items.map((item, i) => (
-								<Paper
-									key={i}
-									style={carouselStyle}
-								>
-									<Image
-										src={'/logo-transparent.png'}
-										alt='logo-transparent'
-										width='100%'
-										height='100%'
-									/>
-									<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '30%' }}>
-										<Typography
-											variant='h5'
-											style={{ color: theme.grey }}
+						{containerBodyType === containerBodyTypeEnum.MAIN && (
+							<div>
+								<Carousel sx={{ height: '800px' }}>
+									{items.map((item, i) => (
+										<Paper
+											key={i}
+											style={carouselStyle}
 										>
-											{item.subject}
-										</Typography>
+											<Image
+												src={'/logo-transparent.png'}
+												alt='logo-transparent'
+												width='100%'
+												height='100%'
+											/>
+											<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '30%' }}>
+												<Typography
+													variant='h5'
+													style={{ color: theme.grey }}
+												>
+													{item.subject}
+												</Typography>
 
-										<Typography
-											variant='h4'
-											style={{ color: theme.secundaryColor, fontWeight: 'bold' }}
-										>
-											{item.subTitle}
-										</Typography>
+												<Typography
+													variant='h4'
+													style={{ color: theme.secundaryColor, fontWeight: 'bold' }}
+												>
+													{item.subTitle}
+												</Typography>
 
-										<Typography style={{ fontSize: '1rem', color: theme.black, marginTop: '1rem' }}>{item.description}</Typography>
+												<Typography style={{ fontSize: '1rem', color: theme.black, marginTop: '1rem' }}>{item.description}</Typography>
 
-										<Button
-											style={{
-												...theme.button,
-												marginTop: '1rem',
-												borderRadius: '16px',
-												backgroundColor: theme.white,
-												borderColor: theme.secundaryColor,
-												color: theme.secundaryColor,
-											}}
-										>
-											Saiba mais
-										</Button>
-									</div>
-								</Paper>
-							))}
-						</Carousel>
+												<Button
+													style={{
+														...theme.button,
+														marginTop: '1rem',
+														borderRadius: '16px',
+														backgroundColor: theme.white,
+														borderColor: theme.secundaryColor,
+														color: theme.secundaryColor,
+													}}
+												>
+													Saiba mais
+												</Button>
+											</div>
+										</Paper>
+									))}
+								</Carousel>
+							</div>
+						)}
+
+						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
