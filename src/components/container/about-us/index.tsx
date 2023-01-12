@@ -120,7 +120,7 @@ export default function Index() {
 							src={item.photo}
 							srcSet={item.photo}
 							alt={item.photo}
-							loading='lazy'
+							loading='eager'
 						/>
 
 						<ImageListItemBar
