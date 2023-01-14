@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Autocomplete, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { modalStyle, cardStyle, cardBodyStyle } from './style';
 import { TPROPS } from './type';
 import Header from '../header/index';
@@ -10,6 +11,7 @@ import { useRouter } from 'next/router';
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from 'src/core/enums';
 import LoginUtils from 'src/utils/loginUtils';
 import SignupService from './service';
+import { ID } from 'src/core/types';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar limpeza de campos apartir do callback fornecido por cada campo.
@@ -22,10 +24,22 @@ export default function Index(props: TPROPS) {
 	const [login, setLogin] = React.useState<string>(null);
 	const [pwd, setPwd] = React.useState<string>(null);
 	const [userTypeId, setUserTypeId] = React.useState<number>(null);
+	const [userTypeList, setUserTypeList] = React.useState<{ id: ID; label: String }[]>([]);
 	const [confirmPwd, setConfirmPwd] = React.useState<string>(null);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
 	const canSubmit = login && userTypeId && pwd && pwd === confirmPwd;
+
+	useEffect(() => {
+		signupService
+			.getUserTypes()
+			.then(res => setUserTypeList(res.data?.map(item => ({ id: item.id, label: item.description }))))
+			.catch(e => {
+				console.error(e);
+				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
+				setIsLoading(false);
+			});
+	}, []);
 
 	const handleSelectLoginType = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoginType(loginUtils.loginTypeList.filter(item => item.key === e.target.value)[0].key);
@@ -54,9 +68,6 @@ export default function Index(props: TPROPS) {
 			});
 	};
 
-	//TODO: Remover o hardcode
-	const userTypeOptions = [{ id: 4, label: 'Admin' }];
-
 	return (
 		<Modal
 			open={props.isOpen}
@@ -66,24 +77,12 @@ export default function Index(props: TPROPS) {
 			}}
 		>
 			<div style={cardStyle}>
-				<Header
-					title='Cadastro'
-					onClose={() => props.onClose()}
-				/>
+				<Header title='Cadastro' onClose={() => props.onClose()} />
 
 				<div style={cardBodyStyle}>
-					<RadioGroup
-						row
-						defaultValue={loginTypeEnum.CPF}
-					>
+					<RadioGroup row defaultValue={loginTypeEnum.CPF}>
 						{loginUtils.loginTypeList.map((item, i) => (
-							<FormControlLabel
-								key={i}
-								value={item.key}
-								control={<Radio />}
-								label={item.title}
-								onChange={handleSelectLoginType}
-							/>
+							<FormControlLabel key={i} value={item.key} control={<Radio />} label={item.title} onChange={handleSelectLoginType} />
 						))}
 					</RadioGroup>
 
@@ -98,38 +97,21 @@ export default function Index(props: TPROPS) {
 						style={{ marginTop: '1rem' }}
 						disablePortal
 						openOnFocus
-						options={userTypeOptions}
-						renderInput={params => (
-							<TextField
-								{...params}
-								label='Tipo de usuário'
-							/>
-						)}
+						options={userTypeList}
+						renderInput={params => <TextField {...params} label='Tipo de usuário' />}
 						onChange={(e: any, newValue: { id: number; label: string }) => setUserTypeId(newValue.id)}
 					/>
 
 					<div style={{ marginTop: '1rem' }}>
-						<CustomTextField
-							title='Senha'
-							textType='password'
-							onBlur={v => setPwd(v)}
-						/>
+						<CustomTextField title='Senha' textType='password' onBlur={v => setPwd(v)} />
 					</div>
 
 					<div style={{ marginTop: '1rem' }}>
-						<CustomTextField
-							title='Confirmar senha'
-							textType='password'
-							onBlur={v => setConfirmPwd(v)}
-						/>
+						<CustomTextField title='Confirmar senha' textType='password' onBlur={v => setConfirmPwd(v)} />
 					</div>
 				</div>
 
-				<ActionArea
-					isLoading={isLoading}
-					isDisabled={!canSubmit}
-					onConfirm={() => handleSubmit()}
-				/>
+				<ActionArea isLoading={isLoading} isDisabled={!canSubmit} onConfirm={() => handleSubmit()} />
 			</div>
 		</Modal>
 	);
