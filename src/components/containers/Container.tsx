@@ -20,78 +20,38 @@ export default function Container(props: any) {
 				<p>O seu uso possibilitará a governança inteligente e melhoria da qualidade dos estabelecimentos de saúde da rede de atenção em saúde bucal.</p>
 			</div>
 
-			<div className='card-lista'>
-				<div className='card-slider'>
-					<input
-						type='radio'
-						name='select'
-						id='tap-1'
-						checked
-						onChange={() => {}}
-					/>
-					<input
-						type='radio'
-						name='select'
-						id='tap-2'
-					/>
-					<input
-						type='radio'
-						name='select'
-						id='tap-3'
-					/>
-					<input
-						type='checkbox'
-						id='imgTap'
-					/>
-					<div className='sliders'>
-						<label
-							htmlFor='tap-1'
-							className='tap tap-1'
-						></label>
-						<label
-							htmlFor='tap-2'
-							className='tap tap-2'
-						></label>
-						<label
-							htmlFor='tap-3'
-							className='tap tap-3'
-						></label>
-					</div>
+			<div className='inner-part'>
+				<div className='content content-1'>
+					<span>Questionários</span>
+					<div className='title'>Acesse aqui os questionários</div>
+					<div className='text'>Responda aos questionários de acordo com ser perfil</div>
+					<a href='.\questionarioceo.html'>
+						<button>Saiba mais</button>
+					</a>
+				</div>
+			</div>
 
-					<div className='inner-part'>
-						<div className='content content-1'>
-							<span>Questionários</span>
-							<div className='title'>Acesse aqui os questionários</div>
-							<div className='text'>Responda aos questionários de acordo com ser perfil</div>
-							<a href='.\questionarioceo.html'>
-								<button>Saiba mais</button>
-							</a>
-						</div>
-					</div>
+			<div className='inner-part'>
+				<div className='content content-2'>
+					<span>Referências</span>
+					<div className='title'>Acesse aqui as referências</div>
+					<div className='text'>Saiba quais referências foram utilizadas para a elaboração dos questionários disponíveis no projeto.</div>
+					<a href='.\acervoinicio.html'>
+						<button>Saiba mais</button>
+					</a>
+				</div>
+			</div>
 
-					<div className='inner-part'>
-						<div className='content content-2'>
-							<span>Referências</span>
-							<div className='title'>Acesse aqui as referências</div>
-							<div className='text'>Saiba quais referências foram utilizadas para a elaboração dos questionários disponíveis no projeto.</div>
-							<a href='.\acervoinicio.html'>
-								<button>Saiba mais</button>
-							</a>
-						</div>
+			<div className='inner-part'>
+				<div className='content content-3'>
+					<span>Contato</span>
+					<div className='title'>Entre em contato conosco</div>
+					<div className='text'>
+						Tem dúvidas sobre o projeto, questionários ou sobre qualquer outro assunto relacionado? Acesse a página de contatos e nos mande suas dúvidas.
 					</div>
-
-					<div className='inner-part'>
-						<div className='content content-3'>
-							<span>Contato</span>
-							<div className='title'>Entre em contato conosco</div>
-							<div className='text'>
-								Tem dúvidas sobre o projeto, questionários ou sobre qualquer outro assunto relacionado? Acesse a página de contatos e nos mande suas dúvidas.
-							</div>
-							<a href='.\contatoindex.html'>
-								<button>Saiba mais</button>
-							</a>
-						</div>
-					</div>
+					<a href='.\contatoindex.html'>
+						<button>Saiba mais</button>
+					</a>
 				</div>
 			</div>
 		</div>

@@ -1,3 +1,8 @@
 export type ID = string | number;
 
-export type QuestionAnswer = { formQuestionFormRegisterId: ID; answer: string };
+export type RESPONSE<D> = {
+	status: number;
+	data?: null | D;
+	msg?: null | string[];
+	errors?: string[];
+};
