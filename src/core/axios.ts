@@ -38,7 +38,7 @@ http.interceptors.response.use(
 		errors: res.data.errors?.map((err: any) => err.message),
 	}),
 	e => {
-		console.error('axios-response-interceptor', e);
+		console.error('LOGGER::axios-response-interceptor', e);
 		return { errors: typeof e === 'string' ? e : e.response.data.errors?.map((err: any) => err.message) };
 	}
 );

@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button/Button';
+import { Button } from '@mui/material';
 import React from 'react';
 import { buttonHoverStyle, buttonStyle } from './style';
 import { TPROPS } from './type';

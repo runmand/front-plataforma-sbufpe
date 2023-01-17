@@ -1,13 +1,11 @@
 import React from 'react';
 import Base from '@components/base-layout';
 import AppBar from '@components/app-bar';
-import Typography from '@mui/material/Typography/Typography';
-import Button from '@mui/material/Button/Button';
 import FooterMain from '@components/footer/main/index';
 import LoginModal from '@components/modal/log-in/index';
 import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
-import { List, ListItem, ListItemButton, Paper } from '@mui/material';
+import { Button, List, ListItem, ListItemButton, Paper, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
 import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from './style';
 import Carousel from 'react-material-ui-carousel';
@@ -128,28 +126,14 @@ export default function Index() {
 							<div>
 								<Carousel sx={{ height: '800px' }}>
 									{items.map((item, i) => (
-										<Paper
-											key={i}
-											style={carouselStyle}
-										>
-											<Image
-												src={'/logo-transparent.png'}
-												alt='logo-transparent'
-												width='100%'
-												height='100%'
-											/>
+										<Paper key={i} style={carouselStyle}>
+											<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='100%' />
 											<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '30%' }}>
-												<Typography
-													variant='h5'
-													style={{ color: theme.grey }}
-												>
+												<Typography variant='h5' style={{ color: theme.grey }}>
 													{item.subject}
 												</Typography>
 
-												<Typography
-													variant='h4'
-													style={{ color: theme.secundaryColor, fontWeight: 'bold' }}
-												>
+												<Typography variant='h4' style={{ color: theme.secundaryColor, fontWeight: 'bold' }}>
 													{item.subTitle}
 												</Typography>
 
@@ -178,23 +162,12 @@ export default function Index() {
 
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
-								<Typography
-									key={index}
-									variant={'subtitle1'}
-									style={listTitleStyle}
-								>
+								<Typography key={index} variant={'subtitle1'} style={listTitleStyle}>
 									{info.title}
 
-									<List
-										disablePadding
-										style={listStyle}
-									>
+									<List disablePadding style={listStyle}>
 										{info.items.map((item, i) => (
-											<ListItem
-												key={i}
-												disablePadding
-												style={listItemStyle}
-											>
+											<ListItem key={i} disablePadding style={listItemStyle}>
 												<ListItemButton style={{ padding: 0, fontSize: '0.8rem', fontWeight: 'bold', color: theme.grey, whiteSpace: 'pre-line' }}>
 													{item.title}
 												</ListItemButton>
