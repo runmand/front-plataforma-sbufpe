@@ -95,10 +95,9 @@ export default function Index(props: TPROPS) {
 					<Autocomplete
 						style={{ marginTop: '1rem' }}
 						options={userTypeList}
+						multiple={false}
 						renderInput={params => <TextField {...params} label='Tipo de usuário' />}
-						onChange={(event: SyntheticEvent<Element, Event>, value: (string | USER_TYPE)[], reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<string | USER_TYPE>) =>
-							setUserType(value as unknown as USER_TYPE)
-						}
+						onChange={(event: any, newValue: USER_TYPE | null) => setUserType(newValue)}
 					/>
 
 					<div style={{ marginTop: '1rem' }}>
