@@ -62,24 +62,12 @@ export default function Index(props: TPROPS) {
 			}}
 		>
 			<div style={cardStyle}>
-				<Header
-					title='Log In'
-					onClose={() => props.onClose()}
-				/>
+				<Header title='Log In' onClose={() => props.onClose()} />
 
 				<div style={cardBodyStyle}>
-					<RadioGroup
-						row
-						defaultValue={loginTypeEnum.CPF}
-					>
+					<RadioGroup row defaultValue={loginTypeEnum.CPF}>
 						{loginUtils.loginTypeList.map((item, i) => (
-							<FormControlLabel
-								key={i}
-								value={item.key}
-								control={<Radio />}
-								label={item.title}
-								onChange={handleSelectLoginType}
-							/>
+							<FormControlLabel key={i} value={item.key} control={<Radio />} label={item.title} onChange={handleSelectLoginType} />
 						))}
 					</RadioGroup>
 
@@ -91,11 +79,7 @@ export default function Index(props: TPROPS) {
 					/>
 
 					<div style={{ marginTop: '1rem' }}>
-						<TextField
-							title='Password'
-							textType='password'
-							onBlur={v => setPwd(v)}
-						/>
+						<TextField title='Password' textType='password' onBlur={v => setPwd(v)} />
 					</div>
 				</div>
 
@@ -107,10 +91,7 @@ export default function Index(props: TPROPS) {
 					Esqueceu sua senha?&nbsp;<Typography style={optionsLinkStyle}>Recuperar senha!</Typography>
 				</Typography>
 
-				<ActionArea
-					isLoading={isLoading}
-					onConfirm={() => handleSubmit()}
-				/>
+				<ActionArea isLoading={isLoading} onConfirm={() => handleSubmit()} />
 			</div>
 		</Modal>
 	);
