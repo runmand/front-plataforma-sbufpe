@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Autocomplete, AutocompleteChangeReason, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
+import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
 import React, { SyntheticEvent, useEffect } from 'react';
 import { modalStyle, cardStyle, cardBodyStyle } from './style';
 import { TPROPS, USER_TYPE } from './type';
@@ -96,7 +96,7 @@ export default function Index(props: TPROPS) {
 						style={{ marginTop: '1rem' }}
 						options={userTypeList}
 						renderInput={params => <TextField {...params} label='Tipo de usuário' />}
-						onChange={(event: SyntheticEvent<Element, Event>, value: (string | USER_TYPE)[], reason: AutocompleteChangeReason, details?: any) =>
+						onChange={(event: SyntheticEvent<Element, Event>, value: (string | USER_TYPE)[], reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<string | USER_TYPE>) =>
 							setUserType(value as unknown as USER_TYPE)
 						}
 					/>
