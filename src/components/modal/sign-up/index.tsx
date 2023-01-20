@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Autocomplete, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
+import React, { SyntheticEvent, useEffect } from 'react';
 import { modalStyle, cardStyle, cardBodyStyle } from './style';
-import { TPROPS } from './type';
+import { TPROPS, USER_TYPE } from './type';
 import Header from '../header/index';
 import CustomTextField from '@components/text-field/index';
 import ActionArea from '@components/modal/action-area';
@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from 'src/core/enums';
 import LoginUtils from 'src/utils/loginUtils';
 import SignupService from './service';
-import { ID } from 'src/core/types';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar limpeza de campos apartir do callback fornecido por cada campo.
@@ -21,14 +20,14 @@ export default function Index(props: TPROPS) {
 	const signupService = new SignupService();
 	const loginUtils = new LoginUtils();
 	const router = useRouter();
-	const [login, setLogin] = React.useState<string>(null);
-	const [pwd, setPwd] = React.useState<string>(null);
-	const [userTypeId, setUserTypeId] = React.useState<number>(null);
-	const [userTypeList, setUserTypeList] = React.useState<{ id: ID; label: String }[]>([]);
-	const [confirmPwd, setConfirmPwd] = React.useState<string>(null);
+	const [login, setLogin] = React.useState<string | null>(null);
+	const [pwd, setPwd] = React.useState<string | null>(null);
+	const [userType, setUserType] = React.useState<USER_TYPE | null>(null);
+	const [userTypeList, setUserTypeList] = React.useState<USER_TYPE[]>([]);
+	const [confirmPwd, setConfirmPwd] = React.useState<string | null>(null);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
-	const canSubmit = login && userTypeId && pwd && pwd === confirmPwd;
+	const canSubmit = login && userType && pwd && pwd === confirmPwd;
 
 	useEffect(() => {
 		signupService
@@ -50,7 +49,7 @@ export default function Index(props: TPROPS) {
 		setIsLoading(true);
 
 		signupService
-			.handleSignup({ login, pwd, typeId: userTypeId })
+			.handleSignup({ login, pwd, typeId: userType.id })
 			.then(res => {
 				if (res.data?.token) {
 					enqueueSnackbar('Registro efetuado com sucesso!', { variant: 'success' });
@@ -95,11 +94,10 @@ export default function Index(props: TPROPS) {
 
 					<Autocomplete
 						style={{ marginTop: '1rem' }}
-						disablePortal
-						openOnFocus
 						options={userTypeList}
+						multiple={false}
 						renderInput={params => <TextField {...params} label='Tipo de usuário' />}
-						onChange={(e: any, newValue: { id: number; label: string }) => setUserTypeId(newValue.id)}
+						onChange={(event: any, newValue: USER_TYPE | null) => setUserType(newValue)}
 					/>
 
 					<div style={{ marginTop: '1rem' }}>

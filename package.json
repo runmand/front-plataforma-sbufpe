@@ -1,11 +1,11 @@
 {
 	"name": "typescript",
 	"version": "0.1.0",
+  "node-version": "18.9.0",
 	"private": true,
 	"scripts": {
 		"start": "next start",
 		"build": "next build",
-		"heroku-postbuild": "npm run build",
 		"dev": "next dev",
 		"lint": "next lint"
 	},

@@ -20,5 +20,10 @@ export type GET_USER_TYPES_RES = {
 	id: ID;
 	createdAt: Date;
 	deletedAt: Date | null;
-	description: String;
+	description: string;
+};
+
+export type USER_TYPE = {
+	id: ID;
+	label: string;
 };
