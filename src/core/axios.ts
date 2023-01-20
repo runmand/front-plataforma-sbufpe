@@ -6,7 +6,7 @@ export const http = axios.create({ baseURL: process.env.API_URL });
 
 http.interceptors.request.use(
 	config => {
-		const openRoutes: string[] = ['/login'];
+		const openRoutes: string[] = ['/', '/login', '/user-registers', '/user-types'];
 
 		/** Se a rota for protegida, segue a lógica. */
 		if (!openRoutes.includes(config.url)) {
@@ -38,7 +38,7 @@ http.interceptors.response.use(
 		errors: res.data.errors?.map((err: any) => err.message),
 	}),
 	e => {
-		console.error('axios-response-interceptor', e);
+		console.error('LOGGER::axios-response-interceptor', e);
 		return { errors: typeof e === 'string' ? e : e.response.data.errors?.map((err: any) => err.message) };
 	}
 );
