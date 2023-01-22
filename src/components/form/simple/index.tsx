@@ -15,7 +15,8 @@ import { routerEnum } from 'src/core/enums';
 export default function Index(props: TPROPS) {
 	const [answers, setAnswers] = useState<QUESTION_ANSWER[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+	const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] = useState<boolean>(false);
+	const [isOpenResultFormDialog, setIsOpenResultFormDialog] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar();
 	const simpleFormService = new SimpleFormService();
 
@@ -39,9 +40,14 @@ export default function Index(props: TPROPS) {
 		}
 	};
 
-	const handleOpenDialog = () => setIsOpenDialog(true);
+	const handleOpenSubmitFormDialog = () => setIsOpenSubmitFormDialog(true);
+	const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
+	const handleOpenResultFormDialog = () => setIsOpenResultFormDialog(true);
 
-	const handleCloseDialog = () => setIsOpenDialog(false);
+	const handleCloseResultFormDialog = () => {
+		setIsOpenResultFormDialog(false);
+		router.push(routerEnum.FORM);
+	};
 
 	const handleSubmit = () => {
 		setLoading(true);
@@ -52,8 +58,9 @@ export default function Index(props: TPROPS) {
 				if (!res.errors) {
 					//TODO: Implementar travas do questionario.
 					enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
-					handleCloseDialog();
-					router.push(routerEnum.FORM);
+					handleCloseSubmitFormDialog();
+					//TODO:Os dados corretos do alert de resuktlado
+					handleOpenResultFormDialog();
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
@@ -103,13 +110,7 @@ export default function Index(props: TPROPS) {
 				</CardContent>
 
 				<CardActions style={{ justifyContent: 'end', padding: '16px' }}>
-					<Button
-						variant='contained'
-						endIcon={<SendIcon />}
-						onClick={() => {
-							handleOpenDialog();
-						}}
-					>
+					<Button variant='contained' endIcon={<SendIcon />} onClick={() => handleOpenSubmitFormDialog()}>
 						ENVIAR
 					</Button>
 				</CardActions>
@@ -118,15 +119,20 @@ export default function Index(props: TPROPS) {
 			<Alert
 				title='Confirmar envio do formulário?'
 				msg='Atenção! Ao enviar o formulário suas respostas antigas serão sobreescritas! Esta ação não poderá ser desfeita neste momento!'
-				isOpen={isOpenDialog}
+				isOpen={isOpenSubmitFormDialog}
 				isLoading={loading}
 				canSkip={false}
-				onClose={() => {
-					handleCloseDialog();
-				}}
-				onConfirm={() => {
-					handleSubmit();
-				}}
+				onClose={() => handleCloseSubmitFormDialog()}
+				onConfirm={() => handleSubmit()}
+			/>
+
+			<Alert
+				title='Formulario concluido!'
+				msg='Resultado: Você acertou 66 de 100!' //TODO remover hard code
+				isOpen={isOpenResultFormDialog}
+				isLoading={loading}
+				canSkip={true}
+				onClose={() => handleCloseResultFormDialog()}
 			/>
 		</div>
 	);

@@ -5,5 +5,6 @@ export type TPROPS = {
 	isLoading: boolean;
 	canSkip?: boolean;
 	onClose: () => void;
-	onConfirm: () => void;
+	onCancel?: () => void;
+	onConfirm?: () => void;
 };
