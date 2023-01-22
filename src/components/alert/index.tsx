@@ -1,5 +1,5 @@
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { modalStyle } from './style';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
+import { modalStyle, titleStyle } from './style';
 import { TPROPS } from './type';
 import ConfirmButton from '@components/button/confirm/index';
 import CancelButton from '@components/button/cancel/index';
@@ -13,7 +13,7 @@ export default function AlertDialog(props: TPROPS) {
 			}}
 			style={modalStyle}
 		>
-			<DialogTitle>{props.title}</DialogTitle>
+			<DialogTitle style={titleStyle}>{props.title}</DialogTitle>
 
 			<DialogContent>
 				<DialogContentText>{props.msg}</DialogContentText>
