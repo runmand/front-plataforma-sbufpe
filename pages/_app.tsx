@@ -1,21 +1,30 @@
 import { AppProps } from 'next/app';
 import React from 'react';
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import '../styles/globals.css';
 import '../src/css/index.css';
 import '../src/css/login.css';
 import '../src/css/register.css';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from 'src/core/theme';
+import { Button } from '@mui/material';
 
-//TODO: Botão para fechar o popup
+
 //TODO: Deixar configuravel
 export default function MyApp({ Component, pageProps }: AppProps) {
+	const DimissAction = () => {
+		const {closeSnackbar} = useSnackbar()
+		return(
+			<Button onClick={()=>closeSnackbar()}>Fechar</Button>
+			)
+	}
 	return (
 		<ThemeProvider theme={theme}>
 			<SnackbarProvider
+				action={<DimissAction/>}
+				preventDuplicate
+				autoHideDuration={1000}
 				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-				maxSnack={3}
 			>
 				<Component {...pageProps} />
 			</SnackbarProvider>

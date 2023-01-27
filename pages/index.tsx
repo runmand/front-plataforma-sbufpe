@@ -124,12 +124,12 @@ export default function Index() {
 					<div>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<div>
-								<Carousel sx={{ height: '800px' }}>
+								<Carousel sx={{ height: '25rem' }}>
 									{items.map((item, i) => (
 										<Paper key={i} style={carouselStyle}>
 											<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='100%' />
-											<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '30%' }}>
-												<Typography variant='h5' style={{ color: theme.grey }}>
+											<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '100%' }}>
+												<Typography variant='h4' style={{ color: theme.grey }}>
 													{item.subject}
 												</Typography>
 
