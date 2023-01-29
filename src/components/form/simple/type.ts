@@ -9,3 +9,7 @@ export type ANSWER = {
 	formQuestionFormRegisterId: ID;
 	answer: string;
 };
+
+export type HANDLE_SUBMIT_RES = {
+	finalScore: number;
+};

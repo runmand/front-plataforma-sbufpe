@@ -17,6 +17,7 @@ export default function Index(props: TPROPS) {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] = useState<boolean>(false);
 	const [isOpenResultFormDialog, setIsOpenResultFormDialog] = useState<boolean>(false);
+	const [finalScore, setFinalScore] = useState<number>(0);
 	const { enqueueSnackbar } = useSnackbar();
 	const simpleFormService = new SimpleFormService();
 
@@ -58,8 +59,8 @@ export default function Index(props: TPROPS) {
 				if (!res.errors) {
 					//TODO: Implementar travas do questionario.
 					enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
+					setFinalScore(res.data.finalScore);
 					handleCloseSubmitFormDialog();
-					//TODO:Os dados corretos do alert de resuktlado
 					handleOpenResultFormDialog();
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
@@ -127,8 +128,8 @@ export default function Index(props: TPROPS) {
 			/>
 
 			<Alert
-				title='Formulario concluido!'
-				msg='Resultado: Você acertou 66 de 100!' //TODO remover hard code
+				title='Resultado'
+				msg={`Você fez ${finalScore} pontos!`} //TODO remover hard code
 				isOpen={isOpenResultFormDialog}
 				isLoading={loading}
 				canSkip={true}
