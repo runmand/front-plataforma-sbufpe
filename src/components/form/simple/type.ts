@@ -1,4 +1,4 @@
-import { GET_FORMATTED_FORM_SHOW } from 'pages/form-answer/type';
+import { GET_FORMATTED_FORM_SHOW } from 'src/pages/form-answer/type';
 import { ID } from 'src/core/types';
 
 export type TPROPS = {

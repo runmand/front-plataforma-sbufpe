@@ -7,7 +7,7 @@ import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
 import { Button, List, ListItem, ListItemButton, Paper, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
-import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from './style';
+import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import AboutUsContainer from '@components/container/about-us';

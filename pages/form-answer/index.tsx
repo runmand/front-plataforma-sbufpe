@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
-import { GET_FORMATTED_FORM_SHOW } from './type';
+import { GET_FORMATTED_FORM_SHOW } from '../../src/pages/form-answer/type';
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
 import { useEffect, useState } from 'react';
-import FormAnswerService from './service';
+import FormAnswerService from '../../src/pages/form-answer/service';
 import SimpleForm from '@components/form/simple/index';
 
 //TODO: Corrigir ID quando o usuario da F5 na page.

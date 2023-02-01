@@ -12,10 +12,15 @@ import { Button } from '@mui/material';
 
 //TODO: Deixar configuravel
 export default function MyApp({ Component, pageProps }: AppProps) {
+	const buttonStyle = {
+		color:theme.greyLight,
+		fontWeight: theme.button.fontWeight
+	}
 	const DimissAction = () => {
 		const {closeSnackbar} = useSnackbar()
 		return(
-			<Button onClick={()=>closeSnackbar()}>Fechar</Button>
+			<Button
+			style={buttonStyle} onClick={()=>closeSnackbar()}>Fechar</Button>
 			)
 	}
 	return (
