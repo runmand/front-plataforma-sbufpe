@@ -10,6 +10,6 @@ export default class LoginService {
 	};
 
 getUserTypes = async (): Promise<RESPONSE<GET_USER_TYPES_RES[]>> => {
-		return http.get('user-types/');
+		return http.get('/user-types');
 	};
 }
