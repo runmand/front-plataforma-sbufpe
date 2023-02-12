@@ -18,6 +18,9 @@ export const cardStyle: CSSProperties = {
 
 export const cardBodyStyle: CSSProperties = {
 	marginTop: '2rem',
+	maxHeight: '30rem',
+	maxWidth: '100rem',
+	overflow: 'auto',
 };
 
 export const optionsStyle: CSSProperties = {
@@ -27,10 +30,9 @@ export const optionsStyle: CSSProperties = {
 	marginTop: '0.25rem',
 };
 
-export const optionsLinkStyle: CSSProperties = {
-	fontSize: '0.85rem',
+export const scoreStyle: CSSProperties = {
+	fontSize: '1.5rem',
 	textTransform: 'uppercase',
 	color: theme.secundaryConfirm,
 	fontWeight: 'bold',
-	cursor: 'pointer',
 };
