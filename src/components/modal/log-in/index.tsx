@@ -35,7 +35,7 @@ export default function Index(props: TPROPS) {
 		setIsLoading(true);
 
 		loginService
-			.handleLogin({ login, pwd })
+			.handleLogin({ login, pwd, loginType })
 			.then(res => {
 				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });

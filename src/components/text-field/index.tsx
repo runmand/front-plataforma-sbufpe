@@ -39,6 +39,9 @@ export default function Index(props: TPROPS) {
 			setOldValue(maskedValue);
 			setValue(maskedValue);
 		} else setValue(target.value);
+
+		/** Atualiza o valor do campo. Pois o autopreenchimento não ativa o onBlur. */
+		props.onBlur(target.value);
 	};
 
 	/** Caso exista um callback para que outro componente possa limpar este campo, é aqui onda o clear é feito. */
@@ -58,10 +61,7 @@ export default function Index(props: TPROPS) {
 			/>
 
 			{props.textType === pwdType && (
-				<IconButton
-					style={iconButtonStyle}
-					onClick={() => setIsShowPwd(!isShowPwd)}
-				>
+				<IconButton style={iconButtonStyle} onClick={() => setIsShowPwd(!isShowPwd)}>
 					{isShowPwd ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
 				</IconButton>
 			)}

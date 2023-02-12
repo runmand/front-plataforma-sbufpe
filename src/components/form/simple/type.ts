@@ -3,6 +3,7 @@ import { ID } from 'src/core/types';
 
 export type TPROPS = {
 	formattedForm: GET_FORMATTED_FORM_SHOW;
+	onFinish: () => void;
 };
 
 export type ANSWER = {
