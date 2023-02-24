@@ -28,17 +28,22 @@ export default function Index(props: TPROPS) {
 			setInputProps({ ...inputProps, maxLength: config.cellphoneMaskedMaxLength });
 			return maskUtils.apply(v, oldValue, config.cellphoneMask);
 		},
+		default: (v: string): string => {
+			setInputProps({ ...inputProps, maxLength: Infinity });
+			return v;
+		},
 	};
 
 	/** Função responsavel por formatar os dados caso exista uma mascara definida para este campo. */
 	const onInputCapture = (e: React.FormEvent<HTMLDivElement>) => {
 		const target = e.target as HTMLInputElement;
+		const maskType = maskObserver.hasOwnProperty(props.maskType) ? props.maskType : 'default';
+		const maskedValue = maskObserver[maskType](target.value);
+		setOldValue(maskedValue);
+		setValue(maskedValue);
 
-		if (maskObserver.hasOwnProperty(props.maskType)) {
-			const maskedValue = maskObserver[props.maskType](target.value);
-			setOldValue(maskedValue);
-			setValue(maskedValue);
-		} else setValue(target.value);
+		/** Atualiza o valor do campo. Pois o autopreenchimento não ativa o onBlur. */
+		props.onBlur(target.value);
 	};
 
 	/** Caso exista um callback para que outro componente possa limpar este campo, é aqui onda o clear é feito. */
@@ -58,10 +63,7 @@ export default function Index(props: TPROPS) {
 			/>
 
 			{props.textType === pwdType && (
-				<IconButton
-					style={iconButtonStyle}
-					onClick={() => setIsShowPwd(!isShowPwd)}
-				>
+				<IconButton style={iconButtonStyle} onClick={() => setIsShowPwd(!isShowPwd)}>
 					{isShowPwd ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
 				</IconButton>
 			)}

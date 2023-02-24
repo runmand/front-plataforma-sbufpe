@@ -6,7 +6,7 @@ export const http = axios.create({ baseURL: process.env.API_URL });
 
 http.interceptors.request.use(
 	config => {
-		const openRoutes: string[] = ['/','/login','/user-registers', 'user-types'];
+		const openRoutes: string[] = ['/', '/login/cpf', '/login/cellphone', '/login/email', '/login/username', '/user-registers', '/user-types'];
 
 		/** Se a rota for protegida, segue a lógica. */
 		if (!openRoutes.includes(config.url)) {

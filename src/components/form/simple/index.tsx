@@ -8,16 +8,12 @@ import Alert from '@components/alert/index';
 import { useSnackbar } from 'notistack';
 import { TPROPS } from './type';
 import SimpleFormService from './service';
-import router from 'next/router';
-import { routerEnum } from 'src/core/enums';
 
 //TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
 	const [answers, setAnswers] = useState<QUESTION_ANSWER[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] = useState<boolean>(false);
-	const [isOpenResultFormDialog, setIsOpenResultFormDialog] = useState<boolean>(false);
-	const [finalScore, setFinalScore] = useState<number>(0);
 	const { enqueueSnackbar } = useSnackbar();
 	const simpleFormService = new SimpleFormService();
 
@@ -43,12 +39,6 @@ export default function Index(props: TPROPS) {
 
 	const handleOpenSubmitFormDialog = () => setIsOpenSubmitFormDialog(true);
 	const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
-	const handleOpenResultFormDialog = () => setIsOpenResultFormDialog(true);
-
-	const handleCloseResultFormDialog = () => {
-		setIsOpenResultFormDialog(false);
-		router.push(routerEnum.FORM);
-	};
 
 	const handleSubmit = () => {
 		setLoading(true);
@@ -59,9 +49,8 @@ export default function Index(props: TPROPS) {
 				if (!res.errors) {
 					//TODO: Implementar travas do questionario.
 					enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
-					setFinalScore(res.data.finalScore);
 					handleCloseSubmitFormDialog();
-					handleOpenResultFormDialog();
+					props.onFinish();
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
@@ -125,15 +114,6 @@ export default function Index(props: TPROPS) {
 				canSkip={false}
 				onClose={() => handleCloseSubmitFormDialog()}
 				onConfirm={() => handleSubmit()}
-			/>
-
-			<Alert
-				title='Resultado'
-				msg={`Você fez ${finalScore} pontos!`} //TODO remover hard code
-				isOpen={isOpenResultFormDialog}
-				isLoading={loading}
-				canSkip={true}
-				onClose={() => handleCloseResultFormDialog()}
 			/>
 		</div>
 	);
