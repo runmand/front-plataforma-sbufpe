@@ -7,11 +7,12 @@ import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
 import { Button, List, ListItem, ListItemButton, Paper, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
-import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
+import { carouselStyle, carouselStyleButton, carouselStyleDescription, carouselStyleItem, carouselStyleItens, carouselStyleLogo, carouselStyleSubTitle, carouselStyleTitle, infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import AboutUsContainer from '@components/container/about-us';
 import { containerBodyTypeEnum } from 'src/core/enums';
+
 
 //TODO: Estilizar melhor o carrosel
 export default function Index() {
@@ -124,42 +125,35 @@ export default function Index() {
 					<div>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<div>
-								<Carousel sx={{ height: '25rem' }}>
+								<Carousel >
 									{items.map((item, i) => (
-										<Paper key={i} style={carouselStyle}>
-											<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='100%' />
-											<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '100%' }}>
-												<Typography variant='h4' style={{ color: theme.grey }}>
-													{item.subject}
-												</Typography>
-
-												<Typography variant='h4' style={{ color: theme.secundaryColor, fontWeight: 'bold' }}>
-													{item.subTitle}
-												</Typography>
-
-												<Typography style={{ fontSize: '1rem', color: theme.black, marginTop: '1rem' }}>{item.description}</Typography>
-
-												<Button
-													style={{
-														...theme.button,
-														marginTop: '1rem',
-														borderRadius: '16px',
-														backgroundColor: theme.white,
-														borderColor: theme.secundaryColor,
-														color: theme.secundaryColor,
-													}}
-												>
-													Saiba mais
-												</Button>
+										<Paper key={i} style={carouselStyle} >
+											<div style={carouselStyleItens}>
+												<div style={carouselStyleLogo}>
+													<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='50%' />
+												</div>
+												
+												<div style={carouselStyleItem}>
+													<Typography variant='h4' style={carouselStyleTitle}>
+														{item.subject}
+													</Typography>
+													<Typography variant='h4' style={carouselStyleSubTitle}>
+														{item.subTitle}
+													</Typography>
+													<Typography  style={carouselStyleDescription}>
+														{item.description}
+													</Typography>
+													<Button style={carouselStyleButton}>
+														Saiba mais
+													</Button>
+												</div>
 											</div>
-										</Paper>
+										</Paper >
 									))}
 								</Carousel>
 							</div>
 						)}
-
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
-
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography key={index} variant={'subtitle1'} style={listTitleStyle}>
