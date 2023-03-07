@@ -68,7 +68,7 @@ export const carouselStyleButton: CSSProperties ={
 export const infoStyle: CSSProperties = { 
 	display: 'flex',
 	justifyContent: 'center',
-	backgroundColor: theme.greyLight 
+	backgroundColor: theme.primaryColor 
 };
 export const listTitleStyle: CSSProperties = { 
 	fontWeight: 'bold',

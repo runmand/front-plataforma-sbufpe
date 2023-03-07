@@ -21,19 +21,7 @@ export default function Index() {
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
 	//TODO: Remover o hardcode dessas infos.
 	const infoList = [
-		{
-			title: 'GestBucal',
-			items: [
-				{
-					title: 'Início',
-					url: '/',
-				},
-				{
-					title: 'Acervo',
-					url: '/',
-				},
-			],
-		},
+		
 		{
 			title: 'Sobre',
 			items: [
@@ -52,6 +40,16 @@ export default function Index() {
 			],
 		},
 		{
+			title: 'Endereço',
+			items: [
+				{
+					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
+					url: '/',
+				},
+			]
+
+		},
+		{
 			title: 'Suporte',
 			items: [
 				{
@@ -62,10 +60,7 @@ export default function Index() {
 					title: 'Duvidas | +55(81)3038-6405',
 					url: '/',
 				},
-				{
-					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
-					url: '/',
-				},
+				
 			],
 		},
 	];
@@ -73,6 +68,7 @@ export default function Index() {
 	//TODO: Remover hardcode
 	const items = [
 		{
+			img:'',
 			subject: 'Novidades',
 			subTitle: 'Questionários',
 			description: 'Responda aos questionários de acordo com seu perfil e necessidade.',
@@ -97,6 +93,23 @@ export default function Index() {
 	const indexToolbarMenuList = [
 		{
 			title: 'Acervo',
+			menuItems: [
+				{
+					title: 'Artigos',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+				},
+				{
+					title: 'Cursos',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+				},
+				{
+					title: 'Quem somos?',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+				},
+			],
+		},
+		{
+			title: 'Quem Somos',
 			menuItems: [
 				{
 					title: 'Quem somos?',
@@ -125,9 +138,16 @@ export default function Index() {
 					<div>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<div>
-								<Carousel >
+								<Carousel
+									animation='fade'
+									autoPlay={true}
+									indicators={false}
+									duration={150}
+									>
 									{items.map((item, i) => (
-										<Paper key={i} style={carouselStyle} >
+										<Paper 
+											key={i} 
+											style={carouselStyle} >
 											<div style={carouselStyleItens}>
 												<div style={carouselStyleLogo}>
 													<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='50%' />
@@ -156,13 +176,27 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
-								<Typography key={index} variant={'subtitle1'} style={listTitleStyle}>
+								<Typography 
+								key={index} 
+								variant={'subtitle1'} 
+								style={listTitleStyle}>
 									{info.title}
 
-									<List disablePadding style={listStyle}>
+									<List 
+										disablePadding 
+										style={listStyle}>
 										{info.items.map((item, i) => (
-											<ListItem key={i} disablePadding style={listItemStyle}>
-												<ListItemButton style={{ padding: 0, fontSize: '0.8rem', fontWeight: 'bold', color: theme.grey, whiteSpace: 'pre-line' }}>
+											<ListItem 
+												key={i} 
+												disablePadding 
+												style={listItemStyle}>
+												<ListItemButton 
+												style={{ 
+													padding: 0, 
+													fontSize: '0.8rem', 
+													fontWeight: 'bold', 
+													color: theme.grey, 
+													whiteSpace: 'pre-line' }}>
 													{item.title}
 												</ListItemButton>
 											</ListItem>
