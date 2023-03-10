@@ -66,7 +66,9 @@ export default function Index(props: TPROPS) {
 
 	return (
 		<div>
-			<Card style={{ backgroundColor: '#5a0f14', padding: '2% 15% 10% 15%' }}>
+			<Card style={{ 
+				backgroundColor: '#5a0f14', 
+				padding: '2% 15% 10% 15%' }}>
 				<CardContent>
 					<Typography
 						style={{
