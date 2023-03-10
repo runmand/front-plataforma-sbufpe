@@ -27,9 +27,7 @@ export const photoCardStyle: CSSProperties = {
 	border: `4px solid ${theme.black}`,
 };
 
-export const photoBarStyle: CSSProperties = {
-	backgroundColor: theme.blur,
-};
+
 
 export const iconStyle: CSSProperties = {
 	margin: '0.25rem',

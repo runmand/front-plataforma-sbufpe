@@ -11,6 +11,7 @@ import { carouselStyle, carouselStyleButton, carouselStyleDescription, carouselS
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import AboutUsContainer from '@components/container/about-us';
+import CollectionContainer from '@components/container/collection';
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
@@ -96,15 +97,15 @@ export default function Index() {
 			menuItems: [
 				{
 					title: 'Artigos',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
 				},
 				{
 					title: 'Cursos',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.COURSE),
 				},
 				{
-					title: 'Quem somos?',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+					title: 'Referencias',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.REFERENCE),
 				},
 			],
 		},
@@ -136,7 +137,7 @@ export default function Index() {
 				}
 				mainContainerChild={
 					<div>
-						{containerBodyType === containerBodyTypeEnum.MAIN && (
+						{containerBodyType === containerBodyTypeEnum.MAIN &&   (
 							<div>
 								<Carousel
 									animation='fade'
@@ -150,14 +151,21 @@ export default function Index() {
 											style={carouselStyle} >
 											<div style={carouselStyleItens}>
 												<div style={carouselStyleLogo}>
-													<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='50%' />
+													<Image 
+													src={'/logo-transparent.png'} 
+													alt='logo-transparent' 
+													width='100%' 
+													height='50%' />
 												</div>
-												
 												<div style={carouselStyleItem}>
-													<Typography variant='h4' style={carouselStyleTitle}>
+													<Typography 
+													variant='h4' 
+													style={carouselStyleTitle}>
 														{item.subject}
 													</Typography>
-													<Typography variant='h4' style={carouselStyleSubTitle}>
+													<Typography 
+													variant='h4' 
+													style={carouselStyleSubTitle}>
 														{item.subTitle}
 													</Typography>
 													<Typography  style={carouselStyleDescription}>
@@ -174,6 +182,7 @@ export default function Index() {
 							</div>
 						)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
+						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography 

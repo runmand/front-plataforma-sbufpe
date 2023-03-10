@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { ImageListItem, ImageListItemBar, Typography } from '@mui/material';
-import { iconStyle, mainContainerStyle, photoBarStyle, photoCardStyle, photoContainerStyle, titleStyle } from './style';
+import { iconStyle, mainContainerStyle, photoCardStyle, photoContainerStyle, titleStyle } from './style';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { theme } from 'src/core/theme';
 
 export default function Index() {
 	//TODO: Remover esse hard code.
@@ -105,7 +106,12 @@ export default function Index() {
 		<div style={mainContainerStyle}>
 			<Typography
 				variant='h2'
-				style={titleStyle}
+				sx={{
+					color:theme.white,
+					textAlign:'center',
+					fontWeight:'bold',
+					padding:'2%'
+				}}
 			>
 				Nossa equipe
 			</Typography>
@@ -126,7 +132,7 @@ export default function Index() {
 						<ImageListItemBar
 							title={item.name}
 							subtitle={item.role}
-							style={photoBarStyle}
+							sx={{bgcolor:theme.blur}}
 							actionIcon={
 								<div>
 									{(() => {
