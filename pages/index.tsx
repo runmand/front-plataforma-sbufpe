@@ -101,11 +101,11 @@ export default function Index() {
 				},
 				// {
 				// 	title: 'Cursos',
-				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.COURSE),
+				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
 				// },
 				// {
-				// 	title: 'Referencias',
-				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.REFERENCE),
+				// 	title: 'Quem somos?',
+				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
 				// },
 			],
 		},
