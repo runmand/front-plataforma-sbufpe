@@ -11,6 +11,6 @@ export const buttonStyle: CSSProperties = {
 
 export const buttonHoverStyle: CSSProperties = {
 	...buttonStyle,
-	color: theme.hoverText,
+	color: theme.white,
 	cursor: 'pointer',
 };

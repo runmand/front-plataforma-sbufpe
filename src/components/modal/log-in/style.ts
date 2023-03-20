@@ -7,6 +7,7 @@ export const modalStyle: CSSProperties = {
 	justifyContent: 'center',
 	backgroundColor: theme.blur,
 	transition: '0.6s',
+	color:theme.primaryColor
 };
 
 export const cardStyle: CSSProperties = {
@@ -25,6 +26,7 @@ export const optionsStyle: CSSProperties = {
 	fontSize: '0.85rem',
 	alignItems: 'end',
 	marginTop: '0.25rem',
+	
 };
 
 export const optionsLinkStyle: CSSProperties = {
@@ -33,4 +35,5 @@ export const optionsLinkStyle: CSSProperties = {
 	color: theme.secundaryConfirm,
 	fontWeight: 'bold',
 	cursor: 'pointer',
+
 };
