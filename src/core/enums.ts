@@ -24,5 +24,6 @@ export enum containerBodyTypeEnum {
 	ABOUT_US = 'about-us',
 	COLLECTION = 'collection',
 	COURSE = 'course',
-	REFERENCE = 'reference'
+	REFERENCE = 'reference',
+	QUESTIONS = 'questions'
 }

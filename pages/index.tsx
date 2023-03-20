@@ -12,6 +12,7 @@ import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import AboutUsContainer from '@components/container/about-us';
 import CollectionContainer from '@components/container/collection';
+import QuestionsContainer from '@components/container/questions'
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
@@ -99,10 +100,10 @@ export default function Index() {
 					title: 'Artigos',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
 				},
-				// {
-				// 	title: 'Cursos',
-				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
-				// },
+				{
+					title: 'Questionario',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.QUESTIONS),
+				},
 				// {
 				// 	title: 'Quem somos?',
 				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
@@ -183,6 +184,7 @@ export default function Index() {
 						)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
+						{containerBodyType === containerBodyTypeEnum.QUESTIONS && <QuestionsContainer/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography 
