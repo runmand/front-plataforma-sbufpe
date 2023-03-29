@@ -1,10 +1,13 @@
 import { Box } from '@mui/material';
-import { baseBox } from './style';
 import { TPROPS } from './type';
 
 export default function Index(props: TPROPS) {
 	return (
-		<Box style={baseBox}>
+		<Box 
+		sx={{
+			width: 1,
+			height: 1
+		}}>
 			{props.appBarChild}
 			{props.mainContainerChild}
 			{props.footerChild}
