@@ -10,22 +10,22 @@ export default function Index({article, author,}: TPROPS ){
   return (
     <Card sx={{ 
       width: 300,
-      height: 200,
+      height: 250,
       textAlign:'center',}}>
       <CardContent
         sx={{
-          padding:'10px',
+          padding:'15px',
           display:'flex',
-          flexDirection:'column',
-          alignItems: 'center',
-          justifyContent:'center',
-          gap:'10px',
-          textAlign:'center'
+          flexDirection:'column',          
+          gap:'15px',          
           }}>
-        <Typography sx={{ fontSize: 16 }} >
+        <Typography sx={{ fontSize: 15, paddingTop: '15px' }} >
           {article}
         </Typography>
-        <Typography variant="body2">
+        <Typography 
+        variant="body2"
+        sx={{paddingTop: '15px'}}
+        >
           {author}
         </Typography>
       </CardContent>
