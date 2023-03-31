@@ -1,58 +1,124 @@
-import { Modal, Typography } from '@mui/material';
+import { 
+	Card, 
+	CardContent, 
+	Modal, 
+	Typography } from '@mui/material';
 import React from 'react';
-import { modalStyle, cardStyle, optionsStyle, cardBodyStyle, scoreStyle } from './style';
 import { TPROPS } from './type';
 import Header from '../../header/index';
 import ActionArea from '@components/modal/action-area';
 import { theme } from 'src/core/theme';
 
-//TODO: Melhorar o CSS e todos o sistema de formulario.
 export default function Index(props: TPROPS) {
 	return (
 		<Modal
 			open={props.isOpen}
-			style={modalStyle}
+			sx={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				backgroundColor: theme.blur,
+				transition: '0.6s',
+				
+			}}
 			onClose={() => {
 				if (props.canSkip) props.onClose();
 			}}
 		>
-			<div style={cardStyle}>
-				<Header title='Resultado' onClose={() => props.onClose()} />
-
-				<div style={{ display: 'flex', justifyContent: 'space-around' }}>
-					<Typography style={{ ...optionsStyle, marginTop: '1rem', fontSize: '1.5rem' }}>
-						Pontualção maxíma: &nbsp;<Typography style={scoreStyle}>{props.formResult.maxScore} pts</Typography>
+			<Card 
+				sx={{
+					backgroundColor: theme.white,
+					borderRadius: theme.borderRadiusEdge,
+					padding: theme.modal.card.padding,
+					minWidth: theme.modal.card.minWidth,
+					margin: '10%',
+					overflow:'auto',
+					maxHeight: '90%'
+				}}
+			>
+				<Header 
+					title='Resultado'
+					onClose={() => props.onClose()} />
+				<CardContent>
+					<Typography 
+						sx={{ 
+							display: 'flex',
+							alignItems: 'end',
+							marginTop: '1rem',
+							fontSize: '1.5rem' }}>
+						Pontuação maxíma: &nbsp;
+						<Typography 
+							sx={{
+								fontSize: '1.5rem',
+								textTransform: 'uppercase',
+								color: theme.secundaryConfirm,
+								fontWeight: 'bold',
+							}}>
+								{props.formResult.maxScore} pts
+							</Typography>
 					</Typography>
 
-					<Typography style={{ ...optionsStyle, marginTop: '1rem', fontSize: '1.5rem' }}>
-						Pontualção atingida: &nbsp;<Typography style={scoreStyle}>{props.formResult.score} pts</Typography>
+					<Typography 
+						sx={{ 
+							display: 'flex',
+							fontSize: '1.5rem',
+							alignItems: 'end',
+							marginTop: '1rem',}}>
+						Pontuação atingida: &nbsp;
+						<Typography 
+							sx={{
+								fontSize: '1.5rem',
+								textTransform: 'uppercase',
+								color: theme.secundaryConfirm,
+								fontWeight: 'bold',}}>
+							{props.formResult.score} pts
+						</Typography>
 					</Typography>
-				</div>
-
-				<div style={cardBodyStyle}>
+				</CardContent>
+				<Card sx={{
+					marginTop: '1rem',
+					maxHeight: '16rem',
+					maxWidth: '100rem',
+					overflow: 'auto'
+				}}>
 					{props.formResult.domainList.map((domain, index) => (
-						<div key={index}>
-							<div style={{ ...scoreStyle, marginTop: '2rem', fontSize: '1.8rem' }}>
-								<span>{domain.name}</span>
-							</div>
-
+						<CardContent 
+								key={index}>
+									
+								{/*INSERIR REACT-INTL PARA TRATAR O NOME DO DOMINIO PARA PT-BR 
+								<Typography 
+									sx={{
+										marginTop: '2rem',
+										fontSize: '1.8rem',
+										textTransform: 'uppercase',
+										color: theme.secundaryConfirm,
+										fontWeight: 'bold', }}>
+									{domain.name}
+								</Typography> */}
 							{domain.questionList.map((question, key) => (
-								<div key={key}>
-									<div>
-										<span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>{question.title}</span>
-									</div>
-
-									<div style={{ marginBottom: '1rem', fontSize: '1.3rem', color: theme.grey }}>
-										<span key={key}>{question.recommendationMessage}</span>
-									</div>
-								</div>
+								<CardContent key={key}>
+									<Typography
+											sx={{
+												color:theme.black,
+												fontWeight: 'bold',
+												fontSize: '1.5rem' }}>{question.title}		
+									</Typography>
+									<Typography
+										key={key}
+										sx={{
+											marginBottom: '1rem',
+											fontSize: '1.3rem',
+											color: theme.grey }}>
+												{question.recommendationMessage}
+									</Typography>
+								</CardContent>
 							))}
-						</div>
+						</CardContent>
 					))}
-				</div>
-
-				<ActionArea isLoading={false} onConfirm={() => props.onClose()} />
-			</div>
+				</Card>
+				<ActionArea isLoading={false} 
+				onConfirm={() => props.onClose()} />
+			</Card>
 		</Modal>
 	);
 }
