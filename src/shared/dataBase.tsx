@@ -1,9 +1,9 @@
 export const people = [
   { 
     name: 'Marcelo Dias',
-    role: 'CEO',
+    role: 'CEO - Tear Technology',
     photo:
-      'https://media.licdn.com/dms/image/C4E03AQH3LX5g6TUn2A/profile-displayphoto-shrink_800_800/0/1629766160330?e=1678924800&v=beta&t=eSp9lZEfvHe-ZWKTXzsaoGQrdcaXXPGEYkc9iC9TqxA',
+      'https://media.licdn.com/dms/image/C4E03AQH3LX5g6TUn2A/profile-displayphoto-shrink_800_800/0/1629766160330?e=1685577600&v=beta&t=Kl04iKoUd-Pk9MIiULY8FSLgFAN6L2JeSE6bO4c-ix4',
     contacts: [
       {
         id: 'linked-in',
@@ -15,7 +15,7 @@ export const people = [
   {
     name: 'Amanda Chaves',
     role: 'Pesquisadora',
-    photo: 'http://servicosweb.cnpq.br/wspessoa/servletrecuperafoto?tipo=1&id=K8578676E7',
+    photo: 'https://media.licdn.com/dms/image/C4D03AQH4sINW0Gb-GQ/profile-displayphoto-shrink_800_800/0/1647296899287?e=1685577600&v=beta&t=nhBjiOXApA8HKonjxdQ9EucL8jmr8vqWfGhbR8x3xdU',
     contacts: [
       {
         id: 'linked-in',
@@ -32,7 +32,7 @@ export const people = [
   {
     name: 'Nilcema Figueiredo',
     role: 'Professora-pesquisadora UFPE',
-    photo: 'http://servicosweb.cnpq.br/wspessoa/servletrecuperafoto?tipo=1&id=K4775310D8',
+    photo: 'https://media.licdn.com/dms/image/C4D03AQGfySA9CKYZKg/profile-displayphoto-shrink_800_800/0/1654042697484?e=1685577600&v=beta&t=DJNvlo8a2ttKKmftePq-kyncQKZvy1VdGewO98jKZ7A',
     contacts: [
       {
         id: 'linked-in',
@@ -50,7 +50,7 @@ export const people = [
     name: 'Danilo Almeida',
     role: 'Sanitarista - Pesquisador',
     photo:
-      'https://media.licdn.com/dms/image/C4D03AQGFR-Hlri_dHw/profile-displayphoto-shrink_800_800/0/1645582308487?e=1678924800&v=beta&t=w4R45ItSQgxILDg4gzYSMFNQUPtUcE3OG6sPsFWcI-0',
+      'https://media.licdn.com/dms/image/C4D03AQGFR-Hlri_dHw/profile-displayphoto-shrink_800_800/0/1645582308487?e=1685577600&v=beta&t=xQU2aWLEyqPgm_WxINUn4AQms4vbP2PNxK_czFfuj4Y',
     contacts: [
       {
         id: 'linked-in',
@@ -90,7 +90,74 @@ export const people = [
       },
     ],
   },
+  { 
+    name: 'Marcelo Arruda',
+    role: 'Estudante',
+    photo:
+      'https://media.licdn.com/dms/image/C4D03AQHJy0NI0hiaqQ/profile-displayphoto-shrink_800_800/0/1617825456685?e=1685577600&v=beta&t=JBxpcoSHeTNiRAb9IPO7g9_ql1DVoXpV9iOiivuCFxQ',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/marcelo-arruda-one/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/6204735805360993',
+      },
+    ],
+  },
+  { 
+    name: 'Daniel Figueiroa',
+    role: 'Estudante',
+    photo:
+      'https://media.licdn.com/dms/image/D4D03AQHlpncMfUa2_w/profile-displayphoto-shrink_800_800/0/1680113727737?e=1685577600&v=beta&t=4ku64k2hjxwKsrGztt-XIkH0d2mTGyaEfg9Vc0KMm_Y',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/daniel-figueiroa-407835248/',
+      },
+    ],
+  },
+  { 
+    name: 'Antonio Netto',
+    role: 'Estudante',
+    photo:
+      'https://media.licdn.com/dms/image/D4D35AQHKolDagZpgCw/profile-framedphoto-shrink_800_800/0/1679602876305?e=1680721200&v=beta&t=vjN1Wt9zAVWIX9OBSi3QXocGO-94MJUnZ-1IQWJkPNo',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/antonio-netto-843694244/',
+      },
+    ],
+  },
+  { 
+    name: 'Juarez Júnior',
+    role: 'Estudante',
+    photo:
+      'https://media.licdn.com/dms/image/C4D03AQGiGSNIrOBXhw/profile-displayphoto-shrink_800_800/0/1657920907282?e=1685577600&v=beta&t=fn6zKzBLVAF7bsJPX7XipbBHgfnPVzm9rMq4CVWvsag',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/juarez-jose/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/5639341487446822',
+      },
+    ],
+  },
 ];
+
+
+
+
+
 
 export const acervo = [
   { 
