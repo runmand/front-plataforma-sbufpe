@@ -28,4 +28,6 @@ export type QUESTION = {
 	};
 };
 
-export type QUESTION_ANSWER = { formQuestionFormRegisterId: ID; answer: string };
+export type QUESTION_ANSWER = {
+	formQuestionFormRegisterId: 
+	ID; answer: string };
