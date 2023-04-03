@@ -91,7 +91,7 @@ export default function Index() {
 									<>
 									{(() => {
 										let linkedInObj = item.contacts.filter(item => item.id === 'linked-in')[0];
-
+										
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon

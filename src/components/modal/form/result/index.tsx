@@ -85,7 +85,7 @@ export default function Index(props: TPROPS) {
 						<CardContent 
 								key={index}>
 									
-								{/*INSERIR REACT-INTL PARA TRATAR O NOME DO DOMINIO PARA PT-BR 
+								INSERIR REACT-INTL PARA TRATAR O NOME DO DOMINIO PARA PT-BR 
 								<Typography 
 									sx={{
 										marginTop: '2rem',
@@ -94,7 +94,7 @@ export default function Index(props: TPROPS) {
 										color: theme.secundaryConfirm,
 										fontWeight: 'bold', }}>
 									{domain.name}
-								</Typography> */}
+								</Typography>
 							{domain.questionList.map((question, key) => (
 								<CardContent key={key}>
 									<Typography

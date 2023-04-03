@@ -5,27 +5,15 @@ import { atualPageAreaStyle, atualPageTitleStyle, toolbarStyle } from './style';
 import DrawerMenu from '@components/menu/drawer/index';
 import React from 'react';
 import { MENU_ITEM } from '@components/menu/items/type';
+import { routerEnum } from 'src/core/enums';
 
 export default function Index() {
 	const [isDrawerMenuOpen, setIsDrawerMenuOpen] = React.useState<boolean>(false);
 	//TODO: Remover o hardcode e buscar os menus verdadeiros
-	const temp: MENU_ITEM[] = [
-		{ id: 0, title: 'Questionarios', url: '/AnswerForm' },
-		{
-			id: 1,
-			title: 'Pai 1',
-			url: '/AnswerForm',
-			menuItemChildren: [
-				{ id: 11, title: 'Filho 11', url: '/AnswerForm', menuItemChildren: [{ id: 111, title: 'Neto 111', url: '/AnswerForm' }] },
-				{ id: 12, title: 'Filho 12', url: '/AnswerForm' },
-			],
-		},
-		{
-			id: 2,
-			title: 'Pai 2',
-			url: '/AnswerForm',
-			menuItemChildren: [{ id: 21, title: 'Filho 21', url: '/AnswerForm' }],
-		},
+	const menu: MENU_ITEM[] = [
+		{ id: 0, title: 'Questionarios', url: routerEnum.FORM },
+		{ id: 1, title: 'Questionario Inicial', url: routerEnum.QUESTION }
+		
 	];
 
 	return (
@@ -56,7 +44,7 @@ export default function Index() {
 
 			<DrawerMenu
 				isOpen={isDrawerMenuOpen}
-				menuItems={temp}
+				menuItems={menu}
 				onClose={() => setIsDrawerMenuOpen(false)}
 			/>
 		</Toolbar>

@@ -1,12 +1,14 @@
 import { Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React from 'react';
 import { TPROPS } from './type';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import QuizIcon from '@mui/icons-material/Quiz';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { theme } from 'src/core/theme';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import router from 'next/router';
 import { routerEnum } from 'src/core/enums';
+
+
 
 //TODO: Corrigir os icons de acordo com item do menu correspondente
 export default function Index(props: TPROPS) {
@@ -14,9 +16,9 @@ export default function Index(props: TPROPS) {
 
 	const handleOnSelectMenuItem = () => {
 		setIsOpen(!isOpen);
-		router.push(routerEnum.FORM);
+		router.push(props.item.url);
 	};
-
+	
 	return (
 		<div>
 			<ListItem
@@ -25,7 +27,7 @@ export default function Index(props: TPROPS) {
 				onClick={() => handleOnSelectMenuItem()}
 			>
 				<ListItemButton>
-					<ListItemIcon>{(props.item.id as number) % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+					<ListItemIcon>{(props.item.id as number) % 2 === 0 ? <QuestionAnswerIcon  /> : <QuizIcon/>}</ListItemIcon>
 					<ListItemText primary={props.item.title} />
 					{props.item.menuItemChildren?.length > 0 ? isOpen ? <ExpandLess /> : <ExpandMore /> : ''}
 				</ListItemButton>
