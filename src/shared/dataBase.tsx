@@ -60,6 +60,23 @@ export const people = [
     ],
   },
   {
+    name: 'Giovanna Petraglia',
+    role: 'Desenvolvedora',
+    photo: 'https://media.licdn.com/dms/image/C4E03AQE46RTIeYBGxw/profile-displayphoto-shrink_800_800/0/1653007631697?e=1686182400&v=beta&t=Ot8esHGiGpMhlmMg15ZBBizwvK4hH1k-wu4fv0KQzK8',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/giovannapetraglia/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/8505607576671441',
+      },
+    ],
+  },
+  {
     name: 'Giovanna Tarquinio',
     role: 'Estudante',
     photo:

@@ -1,57 +1,101 @@
-/* eslint-disable @next/next/no-img-element */
-import { ImageListItem, ImageListItemBar, Typography } from '@mui/material';
-import { iconStyle, mainContainerStyle, photoCardStyle, photoContainerStyle, titleStyle } from './style';
+import { 
+	Grid,
+	Box,
+	Typography,
+	Avatar,
+} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { theme } from 'src/core/theme';
-import { people } from "src/shared/dataBase"
+import { people } from "src/shared/dataBase";
 
 export default function Index() {
-
-	//TODO: Criar constantes para as keys dos contatos.
-
-
 	return (
-		<div style={mainContainerStyle}>
+		<Box
+			sx={{
+				backgroundColor: theme.greyLight,
+				overflow:'hidden',
+				height:1
+			}}>
 			<Typography
 				variant='h2'
 				sx={{
-					color:theme.white,
+					color:theme.primaryColor,
 					textAlign:'center',
 					fontWeight:'bold',
-					padding:'2%'
+					paddingY:'1%'
 				}}
 			>
 				Nossa equipe
 			</Typography>
-
-			<div style={photoContainerStyle}>
-				{people.map((item, index) => (
-					<ImageListItem
+			<Grid
+				container
+				gap={2}
+				spacing={1}		
+				sx={{
+					margin:'auto',
+					justifyContent:'center',
+					padding: '2%'
+					
+				}}>
+				{(people.map((item,index) =>(
+					<Box
 						key={index}
-						style={photoCardStyle}
-					>
-						<img
+						sx={{
+							width:400,
+							height:200,
+							display:'flex',
+							alignContent:'center',
+							padding:'1%',
+							bgcolor:'white'
+						}}>
+						<Box
+							sx={{
+								width:'50%',
+								display:'flex',
+								justifyContent:'center',
+								alignContent:'center',
+								flexWrap:'wrap',
+							}}>
+						<Avatar 
+							alt={item.name} 
 							src={item.photo}
-							srcSet={item.photo}
-							alt={item.photo}
-							loading='eager'
-						/>
-
-						<ImageListItemBar
-							title={item.name}
-							subtitle={item.role}
-							sx={{bgcolor:theme.blur}}
-							actionIcon={
-								<div>
+							sx={{
+								height:1,
+								width:'100%',
+							}} /> 
+						</Box> 
+						<Box
+							sx={{
+								width:'200px',
+								display:'flex',
+								flexDirection:'column',
+								textAlign:'center',
+								gap:'15px',
+							}}>
+						<Typography
+							variant='h4'
+							color={theme.secundaryColor}>
+							{item.name}
+						</Typography>
+						<Typography
+							color={theme.primaryColor}>
+							{item.role}
+						</Typography>
+						<Box
+							sx={{
+								display:'flex',
+								justifyContent:'space-around',
+								
+								}}>
+									<>
 									{(() => {
 										let linkedInObj = item.contacts.filter(item => item.id === 'linked-in')[0];
 
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
-													color='primary'
-													style={iconStyle}
+													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
 											);
@@ -63,19 +107,19 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
-													color='primary'
-													style={iconStyle}
+													color='action'													
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
 											);
 										}
 									})()}
-								</div>
-							}
-						/>
-					</ImageListItem>
-				))}
-			</div>
-		</div>
+									</>
+						</Box>
+						</Box>
+					</Box>
+				)))} 
+				);
+			</Grid>
+		</Box>
 	);
 }
