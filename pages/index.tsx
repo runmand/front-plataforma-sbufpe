@@ -206,7 +206,7 @@ export default function Index() {
 													padding: 0, 
 													fontSize: '0.8rem', 
 													fontWeight: 'bold', 
-													color: theme.grey, 
+													color: theme.white, 
 													whiteSpace: 'pre-line' }}>
 													{item.title}
 												</ListItemButton>
