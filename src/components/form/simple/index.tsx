@@ -8,14 +8,12 @@ import Alert from '@components/alert/index';
 import { useSnackbar } from 'notistack';
 import { TPROPS } from './type';
 import SimpleFormService from './service';
-import router from 'next/router';
-import { routerEnum } from 'src/core/enums';
 
 //TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
 	const [answers, setAnswers] = useState<QUESTION_ANSWER[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+	const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar();
 	const simpleFormService = new SimpleFormService();
 
@@ -39,9 +37,8 @@ export default function Index(props: TPROPS) {
 		}
 	};
 
-	const handleOpenDialog = () => setIsOpenDialog(true);
-
-	const handleCloseDialog = () => setIsOpenDialog(false);
+	const handleOpenSubmitFormDialog = () => setIsOpenSubmitFormDialog(true);
+	const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
 
 	const handleSubmit = () => {
 		setLoading(true);
@@ -52,8 +49,8 @@ export default function Index(props: TPROPS) {
 				if (!res.errors) {
 					//TODO: Implementar travas do questionario.
 					enqueueSnackbar('Formulário enviado com sucesso!', { variant: 'success' });
-					handleCloseDialog();
-					router.push(routerEnum.FORM);
+					handleCloseSubmitFormDialog();
+					props.onFinish();
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
@@ -68,11 +65,16 @@ export default function Index(props: TPROPS) {
 	};
 
 	return (
-		<div>
-			<Card style={{ backgroundColor: '#5a0f14', padding: '2% 15% 10% 15%' }}>
+		<>
+			<Card 
+				sx={{
+					backgroundColor: '#5a0f14',
+					padding:'2% 15% 10% 15%'
+				}}
+			>
 				<CardContent>
 					<Typography
-						style={{
+						sx={{
 							backgroundColor: '#777',
 							borderRadius: '16px',
 							textAlign: 'center',
@@ -80,12 +82,12 @@ export default function Index(props: TPROPS) {
 							fontSize: '48px',
 							fontWeight: 'bold',
 							marginBottom: '16px',
-							padding: '16px',
+							padding: '16px'
 						}}
 					>
 						{props.formattedForm.title}
 					</Typography>
-					<div>
+					<>
 						{props.formattedForm.questions.map((question, index) => (
 							<QuestionCard
 								key={index}
@@ -99,17 +101,18 @@ export default function Index(props: TPROPS) {
 								}}
 							/>
 						))}
-					</div>
+					</>
 				</CardContent>
 
-				<CardActions style={{ justifyContent: 'end', padding: '16px' }}>
-					<Button
-						variant='contained'
-						endIcon={<SendIcon />}
-						onClick={() => {
-							handleOpenDialog();
-						}}
-					>
+				<CardActions 
+				sx={{ 
+					justifyContent: 'end',
+					padding: '16px'
+					}}>
+					<Button 
+					variant='contained'
+					endIcon={<SendIcon />}
+					onClick={() => handleOpenSubmitFormDialog()}>
 						ENVIAR
 					</Button>
 				</CardActions>
@@ -118,16 +121,12 @@ export default function Index(props: TPROPS) {
 			<Alert
 				title='Confirmar envio do formulário?'
 				msg='Atenção! Ao enviar o formulário suas respostas antigas serão sobreescritas! Esta ação não poderá ser desfeita neste momento!'
-				isOpen={isOpenDialog}
+				isOpen={isOpenSubmitFormDialog}
 				isLoading={loading}
 				canSkip={false}
-				onClose={() => {
-					handleCloseDialog();
-				}}
-				onConfirm={() => {
-					handleSubmit();
-				}}
+				onClose={() => handleCloseSubmitFormDialog()}
+				onConfirm={() => handleSubmit()}
 			/>
-		</div>
+		</>
 	);
 }

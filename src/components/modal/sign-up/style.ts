@@ -7,6 +7,7 @@ export const modalStyle: CSSProperties = {
 	justifyContent: 'center',
 	backgroundColor: theme.blur,
 	transition: '0.6s',
+	color: theme.primaryColor
 };
 
 export const cardStyle: CSSProperties = {

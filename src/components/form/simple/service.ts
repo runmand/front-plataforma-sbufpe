@@ -1,11 +1,11 @@
 import { http } from 'src/core/axios';
 import { RESPONSE } from 'src/core/types';
-import { ANSWER } from './type';
+import { ANSWER, HANDLE_SUBMIT_RES } from './type';
 
 export default class SimpleFormService {
-	private path = `/user-answers`;
+	private path = `/form-answers`;
 
-	handleSubmit = async (answerList: ANSWER[]): Promise<RESPONSE<unknown>> => {
+	handleSubmit = async (answerList: ANSWER[]): Promise<RESPONSE<HANDLE_SUBMIT_RES>> => {
 		return http.post(this.path, answerList);
 	};
 }

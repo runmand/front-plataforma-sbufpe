@@ -7,11 +7,14 @@ import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
 import { Button, List, ListItem, ListItemButton, Paper, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
-import { carouselStyle, infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
+import { carouselStyle, carouselStyleButton, carouselStyleDescription, carouselStyleItem, carouselStyleItens, carouselStyleLogo, carouselStyleSubTitle, carouselStyleTitle, infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import AboutUsContainer from '@components/container/about-us';
+import CollectionContainer from '@components/container/collection';
+import QuestionsContainer from '@components/container/questions'
 import { containerBodyTypeEnum } from 'src/core/enums';
+
 
 //TODO: Estilizar melhor o carrosel
 export default function Index() {
@@ -20,19 +23,7 @@ export default function Index() {
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
 	//TODO: Remover o hardcode dessas infos.
 	const infoList = [
-		{
-			title: 'GestBucal',
-			items: [
-				{
-					title: 'Início',
-					url: '/',
-				},
-				{
-					title: 'Acervo',
-					url: '/',
-				},
-			],
-		},
+		
 		{
 			title: 'Sobre',
 			items: [
@@ -51,6 +42,16 @@ export default function Index() {
 			],
 		},
 		{
+			title: 'Endereço',
+			items: [
+				{
+					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
+					url: '/',
+				},
+			]
+
+		},
+		{
 			title: 'Suporte',
 			items: [
 				{
@@ -61,10 +62,7 @@ export default function Index() {
 					title: 'Duvidas | +55(81)3038-6405',
 					url: '/',
 				},
-				{
-					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
-					url: '/',
-				},
+				
 			],
 		},
 	];
@@ -72,6 +70,7 @@ export default function Index() {
 	//TODO: Remover hardcode
 	const items = [
 		{
+			img:'',
 			subject: 'Novidades',
 			subTitle: 'Questionários',
 			description: 'Responda aos questionários de acordo com seu perfil e necessidade.',
@@ -98,6 +97,23 @@ export default function Index() {
 			title: 'Acervo',
 			menuItems: [
 				{
+					title: 'Artigos',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
+				},
+				{
+					title: 'Questionario',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.QUESTIONS),
+				},
+				// {
+				// 	title: 'Quem somos?',
+				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+				// },
+			],
+		},
+		{
+			title: 'Quem Somos',
+			menuItems: [
+				{
 					title: 'Quem somos?',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
 				},
@@ -122,53 +138,76 @@ export default function Index() {
 				}
 				mainContainerChild={
 					<div>
-						{containerBodyType === containerBodyTypeEnum.MAIN && (
+						{containerBodyType === containerBodyTypeEnum.MAIN &&   (
 							<div>
-								<Carousel sx={{ height: '800px' }}>
+								<Carousel
+									animation='fade'
+									autoPlay={true}
+									indicators={false}
+									duration={150}
+									>
 									{items.map((item, i) => (
-										<Paper key={i} style={carouselStyle}>
-											<Image src={'/logo-transparent.png'} alt='logo-transparent' width='100%' height='100%' />
-											<div style={{ margin: 'auto 0px auto 4rem', maxWidth: '30%' }}>
-												<Typography variant='h5' style={{ color: theme.grey }}>
-													{item.subject}
-												</Typography>
-
-												<Typography variant='h4' style={{ color: theme.secundaryColor, fontWeight: 'bold' }}>
-													{item.subTitle}
-												</Typography>
-
-												<Typography style={{ fontSize: '1rem', color: theme.black, marginTop: '1rem' }}>{item.description}</Typography>
-
-												<Button
-													style={{
-														...theme.button,
-														marginTop: '1rem',
-														borderRadius: '16px',
-														backgroundColor: theme.white,
-														borderColor: theme.secundaryColor,
-														color: theme.secundaryColor,
-													}}
-												>
-													Saiba mais
-												</Button>
+										<Paper 
+											key={i} 
+											style={carouselStyle} >
+											<div style={carouselStyleItens}>
+												<div style={carouselStyleLogo}>
+													<Image 
+													src={'/logo-transparent.png'} 
+													alt='logo-transparent' 
+													width='100%' 
+													height='50%' />
+												</div>
+												<div style={carouselStyleItem}>
+													<Typography 
+													variant='h4' 
+													style={carouselStyleTitle}>
+														{item.subject}
+													</Typography>
+													<Typography 
+													variant='h4' 
+													style={carouselStyleSubTitle}>
+														{item.subTitle}
+													</Typography>
+													<Typography  style={carouselStyleDescription}>
+														{item.description}
+													</Typography>
+													<Button style={carouselStyleButton}>
+														Saiba mais
+													</Button>
+												</div>
 											</div>
-										</Paper>
+										</Paper >
 									))}
 								</Carousel>
 							</div>
 						)}
-
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
-
+						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
+						{containerBodyType === containerBodyTypeEnum.QUESTIONS && <QuestionsContainer/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
-								<Typography key={index} variant={'subtitle1'} style={listTitleStyle}>
+								<Typography 
+								key={index} 
+								variant={'subtitle1'} 
+								style={listTitleStyle}>
 									{info.title}
 
-									<List disablePadding style={listStyle}>
+									<List 
+										disablePadding 
+										style={listStyle}>
 										{info.items.map((item, i) => (
-											<ListItem key={i} disablePadding style={listItemStyle}>
-												<ListItemButton style={{ padding: 0, fontSize: '0.8rem', fontWeight: 'bold', color: theme.grey, whiteSpace: 'pre-line' }}>
+											<ListItem 
+												key={i} 
+												disablePadding 
+												style={listItemStyle}>
+												<ListItemButton 
+												style={{ 
+													padding: 0, 
+													fontSize: '0.8rem', 
+													fontWeight: 'bold', 
+													color: theme.grey, 
+													whiteSpace: 'pre-line' }}>
 													{item.title}
 												</ListItemButton>
 											</ListItem>

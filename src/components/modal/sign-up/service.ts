@@ -9,7 +9,7 @@ export default class LoginService {
 		return http.post(this.path, { login, pwd, typeId });
 	};
 
-  getUserTypes = async (): Promise<RESPONSE<GET_USER_TYPES_RES[]>> => {
+getUserTypes = async (): Promise<RESPONSE<GET_USER_TYPES_RES[]>> => {
 		return http.get('/user-types');
 	};
 }

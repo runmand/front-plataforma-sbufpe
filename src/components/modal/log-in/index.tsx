@@ -3,7 +3,7 @@ import React from 'react';
 import { modalStyle, cardStyle, cardBodyStyle, optionsStyle, optionsLinkStyle } from './style';
 import { TPROPS } from './type';
 import Header from '../header/index';
-import TextField from '@components/text-field/index';
+import CustomTextField from '@components/text-field/index';
 import ActionArea from '@components/modal/action-area';
 import LoginService from './service';
 import { useSnackbar } from 'notistack';
@@ -35,7 +35,7 @@ export default function Index(props: TPROPS) {
 		setIsLoading(true);
 
 		loginService
-			.handleLogin({ login, pwd })
+			.handleLogin({ login, pwd, loginType })
 			.then(res => {
 				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
@@ -71,7 +71,7 @@ export default function Index(props: TPROPS) {
 						))}
 					</RadioGroup>
 
-					<TextField
+					<CustomTextField
 						title='CPF, Celular, E-mail ou Username'
 						maskType={loginType}
 						onBlur={v => setLogin(v)}
@@ -79,7 +79,7 @@ export default function Index(props: TPROPS) {
 					/>
 
 					<div style={{ marginTop: '1rem' }}>
-						<TextField title='Password' textType='password' onBlur={v => setPwd(v)} />
+						<CustomTextField title='Password' textType='password' onBlur={v => setPwd(v)} />
 					</div>
 				</div>
 
