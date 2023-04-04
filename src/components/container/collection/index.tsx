@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Box, Grid, Link, Typography } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,7 +11,7 @@ import { theme } from 'src/core/theme'
 export default function Index(){
   const [search, setSearch] = useState("");
   const newAcervo = acervo.filter((type) => type.type.includes(search) )
-  const handleChange = (event) => {
+  const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSearch(event.target.value);}
 
     return(
