@@ -65,11 +65,16 @@ export default function Index(props: TPROPS) {
 	};
 
 	return (
-		<div>
-			<Card style={{ backgroundColor: '#5a0f14', padding: '2% 15% 10% 15%' }}>
+		<>
+			<Card 
+				sx={{
+					backgroundColor: '#5a0f14',
+					padding:'2% 15% 10% 15%'
+				}}
+			>
 				<CardContent>
 					<Typography
-						style={{
+						sx={{
 							backgroundColor: '#777',
 							borderRadius: '16px',
 							textAlign: 'center',
@@ -77,12 +82,12 @@ export default function Index(props: TPROPS) {
 							fontSize: '48px',
 							fontWeight: 'bold',
 							marginBottom: '16px',
-							padding: '16px',
+							padding: '16px'
 						}}
 					>
 						{props.formattedForm.title}
 					</Typography>
-					<div>
+					<>
 						{props.formattedForm.questions.map((question, index) => (
 							<QuestionCard
 								key={index}
@@ -96,11 +101,18 @@ export default function Index(props: TPROPS) {
 								}}
 							/>
 						))}
-					</div>
+					</>
 				</CardContent>
 
-				<CardActions style={{ justifyContent: 'end', padding: '16px' }}>
-					<Button variant='contained' endIcon={<SendIcon />} onClick={() => handleOpenSubmitFormDialog()}>
+				<CardActions 
+				sx={{ 
+					justifyContent: 'end',
+					padding: '16px'
+					}}>
+					<Button 
+					variant='contained'
+					endIcon={<SendIcon />}
+					onClick={() => handleOpenSubmitFormDialog()}>
 						ENVIAR
 					</Button>
 				</CardActions>
@@ -115,6 +127,6 @@ export default function Index(props: TPROPS) {
 				onClose={() => handleCloseSubmitFormDialog()}
 				onConfirm={() => handleSubmit()}
 			/>
-		</div>
+		</>
 	);
 }
