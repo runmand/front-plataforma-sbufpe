@@ -2,8 +2,7 @@ export const people = [
   { 
     name: 'Marcelo Dias',
     role: 'CEO - Tear Technology',
-    photo:
-      'https://media.licdn.com/dms/image/C4E03AQH3LX5g6TUn2A/profile-displayphoto-shrink_800_800/0/1629766160330?e=1685577600&v=beta&t=Kl04iKoUd-Pk9MIiULY8FSLgFAN6L2JeSE6bO4c-ix4',
+    photo:'./profile-image/MarceloDias.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -15,7 +14,7 @@ export const people = [
   {
     name: 'Amanda Chaves',
     role: 'Pesquisadora',
-    photo: 'https://media.licdn.com/dms/image/C4D03AQH4sINW0Gb-GQ/profile-displayphoto-shrink_800_800/0/1647296899287?e=1685577600&v=beta&t=nhBjiOXApA8HKonjxdQ9EucL8jmr8vqWfGhbR8x3xdU',
+    photo: './profile-image/AmandaChaves.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -32,7 +31,7 @@ export const people = [
   {
     name: 'Nilcema Figueiredo',
     role: 'Professora-pesquisadora UFPE',
-    photo: 'https://media.licdn.com/dms/image/C4D03AQGfySA9CKYZKg/profile-displayphoto-shrink_800_800/0/1654042697484?e=1685577600&v=beta&t=DJNvlo8a2ttKKmftePq-kyncQKZvy1VdGewO98jKZ7A',
+    photo: './profile-image/NilcemaFigueiredo.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -50,7 +49,7 @@ export const people = [
     name: 'Danilo Almeida',
     role: 'Sanitarista - Pesquisador',
     photo:
-      'https://media.licdn.com/dms/image/C4D03AQGFR-Hlri_dHw/profile-displayphoto-shrink_800_800/0/1645582308487?e=1685577600&v=beta&t=xQU2aWLEyqPgm_WxINUn4AQms4vbP2PNxK_czFfuj4Y',
+      './profile-image/DaniloAlmeida.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -62,7 +61,7 @@ export const people = [
   {
     name: 'Giovanna Petraglia',
     role: 'Desenvolvedora',
-    photo: 'https://media.licdn.com/dms/image/C4E03AQE46RTIeYBGxw/profile-displayphoto-shrink_800_800/0/1653007631697?e=1686182400&v=beta&t=Ot8esHGiGpMhlmMg15ZBBizwvK4hH1k-wu4fv0KQzK8',
+    photo: './profile-image/GiovannaPetraglia.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -79,8 +78,7 @@ export const people = [
   {
     name: 'Giovanna Tarquinio',
     role: 'Estudante',
-    photo:
-      'https://lh3.googleusercontent.com/QngEGRM4j1Bp64FKJXR-AsVZhFtIiEtgBj6kCYn6C2x6FRmZDc0RStIoyIERmZQ0k8Ppv6j2PwgDEJHgfvB3cFyqh-b_h1IcyDRm9zkgJOqy9aDe2jA45xoNpRFRvWBfNklmTvFX=w2400',
+    photo:'./profile-image/GiovannaTarquino.jpg',
     contacts: [
       {
         id: 'cnpq',
@@ -93,7 +91,7 @@ export const people = [
     name: 'Stephany Carvalho',
     role: 'Estudante',
     photo:
-      'https://lh3.googleusercontent.com/LuXcfPpG4FcdygDsEzIh6NJSh_nWQ9bFXqgE3Rd3o5VYuwMjyG6G57WVJmy9E9QhG2Xb8CdZwdbvSycp9qvw6lhnMH6XFWM2PuN393so9SqEz-ZECdYbspRdTKyNOWwfRX4-O4fX=w2400',
+      './profile-image/StephanyCarvalho.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -111,7 +109,7 @@ export const people = [
     name: 'Marcelo Arruda',
     role: 'Estudante',
     photo:
-      'https://media.licdn.com/dms/image/C4D03AQHJy0NI0hiaqQ/profile-displayphoto-shrink_800_800/0/1617825456685?e=1685577600&v=beta&t=JBxpcoSHeTNiRAb9IPO7g9_ql1DVoXpV9iOiivuCFxQ',
+      './profile-image/MarceloArruda.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -128,8 +126,7 @@ export const people = [
   { 
     name: 'Daniel Figueiroa',
     role: 'Estudante',
-    photo:
-      'https://media.licdn.com/dms/image/D4D03AQHlpncMfUa2_w/profile-displayphoto-shrink_800_800/0/1680113727737?e=1685577600&v=beta&t=4ku64k2hjxwKsrGztt-XIkH0d2mTGyaEfg9Vc0KMm_Y',
+    photo:'./profile-image/DanielFigueiroa.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -142,7 +139,7 @@ export const people = [
     name: 'Antonio Netto',
     role: 'Estudante',
     photo:
-      'https://media.licdn.com/dms/image/D4D35AQHKolDagZpgCw/profile-framedphoto-shrink_800_800/0/1679602876305?e=1680721200&v=beta&t=vjN1Wt9zAVWIX9OBSi3QXocGO-94MJUnZ-1IQWJkPNo',
+      './profile-image/AntonioNeto.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -155,7 +152,7 @@ export const people = [
     name: 'Juarez Júnior',
     role: 'Estudante',
     photo:
-      'https://media.licdn.com/dms/image/C4D03AQGiGSNIrOBXhw/profile-displayphoto-shrink_800_800/0/1657920907282?e=1685577600&v=beta&t=fn6zKzBLVAF7bsJPX7XipbBHgfnPVzm9rMq4CVWvsag',
+      './profile-image/JuarezJunior.jpg',
     contacts: [
       {
         id: 'linked-in',

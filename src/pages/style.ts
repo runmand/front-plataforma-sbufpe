@@ -78,5 +78,6 @@ export const listStyle: CSSProperties = {
 	margin: '1rem 0rem 0rem 0rem' 
 };
 export const listItemStyle: CSSProperties = { 
-	margin: '0.25rem 0rem 0rem 0rem' 
+	margin: '0.25rem 0rem 0rem 0rem' ,
+	
 };
