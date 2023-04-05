@@ -12,11 +12,9 @@ import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import AboutUsContainer from '@components/container/about-us';
 import CollectionContainer from '@components/container/collection';
-import QuestionsContainer from '@components/container/questions'
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
-//TODO: Estilizar melhor o carrosel
 export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
@@ -100,14 +98,6 @@ export default function Index() {
 					title: 'Artigos',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
 				},
-				{
-					title: 'Questionario',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.QUESTIONS),
-				},
-				// {
-				// 	title: 'Quem somos?',
-				// 	onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
-				// },
 			],
 		},
 		{
@@ -184,7 +174,6 @@ export default function Index() {
 						)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
-						{containerBodyType === containerBodyTypeEnum.QUESTIONS && <QuestionsContainer/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography 

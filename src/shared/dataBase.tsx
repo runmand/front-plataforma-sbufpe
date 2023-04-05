@@ -1548,3 +1548,22 @@ export const acervo = [
     link: "http://bases.bireme.br/cgi-bin/wxislind.exe/iah/online/?IsisScript=iah/iah.xis&src=google&base=LILACS&lang=p&nextAction=lnk&exprSearch=658627&indexSearch=ID"
 }
 ]
+
+const menu= [
+  { id: 0, title: 'Questionarios', url: '/AnswerForm' },
+  {
+    id: 1,
+    title: 'Pai 1',
+    url: '/AnswerForm',
+    menuItemChildren: [
+      { id: 11, title: 'Filho 11', url: '/AnswerForm', menuItemChildren: [{ id: 111, title: 'Neto 111', url: '/AnswerForm' }] },
+      { id: 12, title: 'Filho 12', url: '/AnswerForm' },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Pai 2',
+    url: '/AnswerForm',
+    menuItemChildren: [{ id: 21, title: 'Filho 21', url: '/AnswerForm' }],
+  },
+];
