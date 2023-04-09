@@ -30,7 +30,7 @@ export const people = [
   },
   {
     name: 'Nilcema Figueiredo',
-    role: 'Professora-pesquisadora UFPE',
+    role: 'Profª-Pesquisadora UFPE',
     photo: './profile-image/NilcemaFigueiredo.jpg',
     contacts: [
       {
@@ -59,19 +59,26 @@ export const people = [
     ],
   },
   {
-    name: 'Giovanna Petraglia',
-    role: 'Desenvolvedora',
-    photo: './profile-image/GiovannaPetraglia.jpg',
+    name: 'Gabriela Gaspar',
+    role: 'Docente - UFPE',
+    photo: './profile-image/GabrielaGaspar.jpg',
     contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/giovannapetraglia/',
-      },
       {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'http://lattes.cnpq.br/8505607576671441',
+        url: 'http://lattes.cnpq.br/8116811388097867',
+      },
+    ],
+  },
+  {
+    name: 'Paulo Savio Goes',
+    role: 'Docente - UFPE',
+    photo: './profile-image/PauloGoes.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/0012675796289882',
       },
     ],
   },

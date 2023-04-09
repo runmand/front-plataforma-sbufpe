@@ -107,7 +107,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
-													color='action'													
+													color='action'								
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
 											);
