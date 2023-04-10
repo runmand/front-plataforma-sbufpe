@@ -5,13 +5,12 @@ import FooterMain from '@components/footer/main/index';
 import LoginModal from '@components/modal/log-in/index';
 import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
-import { Button, List, ListItem, ListItemButton, Paper, Typography } from '@mui/material';
+import { List, ListItem, ListItemButton, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
-import { carouselStyle, carouselStyleButton, carouselStyleDescription, carouselStyleItem, carouselStyleItens, carouselStyleLogo, carouselStyleSubTitle, carouselStyleTitle, infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
-import Carousel from 'react-material-ui-carousel';
-import Image from 'next/image';
+import {  infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
 import AboutUsContainer from '@components/container/about-us';
 import CollectionContainer from '@components/container/collection';
+import MainBody from '@components/container/main';
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
@@ -64,31 +63,6 @@ export default function Index() {
 			],
 		},
 	];
-
-	//TODO: Remover hardcode
-	const items = [
-		{
-			img:'',
-			subject: 'Novidades',
-			subTitle: 'Questionários',
-			description: 'Responda aos questionários de acordo com seu perfil e necessidade.',
-			url: '/',
-		},
-		{
-			subject: 'Referências',
-			subTitle: 'Objetos de Estudos',
-			description: 'Saiba quais referências foram utilizadas para a elaboração dos questionários disponíveis no projeto.',
-			url: '/',
-		},
-		{
-			subject: 'Contato',
-			subTitle: 'Entre em contato conosco',
-			description:
-				'Tem dúvidas sobre o projeto, questionários, assuntos relacionados ou gostaria de contrinuir? Acesse a página de contatos e nos mande suas dúvidas.',
-			url: '/',
-		},
-	];
-
 	//TODO: Remover do hardcode
 	const indexToolbarMenuList = [
 		{
@@ -110,7 +84,7 @@ export default function Index() {
 			],
 		},
 	];
-
+	
 	return (
 		<div>
 			<Base
@@ -128,50 +102,7 @@ export default function Index() {
 				}
 				mainContainerChild={
 					<div>
-						{containerBodyType === containerBodyTypeEnum.MAIN &&   (
-							<div>
-								<Carousel
-									animation='fade'
-									autoPlay={true}
-									indicators={false}
-									duration={150}
-									>
-									{items.map((item, i) => (
-										<Paper 
-											key={i} 
-											style={carouselStyle} >
-											<div style={carouselStyleItens}>
-												<div style={carouselStyleLogo}>
-													<Image 
-													src={'/logo-transparent.png'} 
-													alt='logo-transparent' 
-													width='100%' 
-													height='50%' />
-												</div>
-												<div style={carouselStyleItem}>
-													<Typography 
-													variant='h4' 
-													style={carouselStyleTitle}>
-														{item.subject}
-													</Typography>
-													<Typography 
-													variant='h4' 
-													style={carouselStyleSubTitle}>
-														{item.subTitle}
-													</Typography>
-													<Typography  style={carouselStyleDescription}>
-														{item.description}
-													</Typography>
-													<Button style={carouselStyleButton}>
-														Saiba mais
-													</Button>
-												</div>
-											</div>
-										</Paper >
-									))}
-								</Carousel>
-							</div>
-						)}
+						{containerBodyType === containerBodyTypeEnum.MAIN &&   (<MainBody/>)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
 						<div style={infoStyle}>
@@ -181,7 +112,6 @@ export default function Index() {
 								variant={'subtitle1'} 
 								style={listTitleStyle}>
 									{info.title}
-
 									<List 
 										disablePadding 
 										style={listStyle}>
