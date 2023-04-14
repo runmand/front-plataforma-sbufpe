@@ -11,8 +11,8 @@ export default function Index() {
 	const [isDrawerMenuOpen, setIsDrawerMenuOpen] = React.useState<boolean>(false);
 	//TODO: Remover o hardcode e buscar os menus verdadeiros
 	const menu: MENU_ITEM[] = [
-		{ id: 0, title: 'Questionários', url: routerEnum.FORM },
-		{ id: 1, title: 'Questionário Inicial', url: routerEnum.QUESTION }
+		{ id: 0, title: 'Questionário Inicial', url: routerEnum.QUESTION },
+		{ id: 1, title: 'Questionários', url: routerEnum.FORM }
 		
 	];
 

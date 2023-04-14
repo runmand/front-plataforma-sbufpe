@@ -84,8 +84,6 @@ export default function Index(props: TPROPS) {
 					{props.formResult.domainList.map((domain, index) => (
 						<CardContent 
 								key={index}>
-									
-								{/* INSERIR REACT-INTL PARA TRATAR O NOME DO DOMINIO PARA PT-BR  */}
 								<Typography 
 									sx={{
 										marginTop: '2rem',

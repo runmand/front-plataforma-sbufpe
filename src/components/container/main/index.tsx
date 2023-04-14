@@ -46,24 +46,30 @@ export default function Index(){
             xs={6}>
               <Box
               textAlign={'justify'}
-              sx={{padding:'10px'}}>
+              sx={{paddingX:'20px'}}>
               <Typography
-              
+                sx={{textIndent: '2rem'}}
+                paragraph={true} 
                 variant="body1"
                 color={theme.primaryColor}>
                 É desafio atual para a governança dos estabelecimentos públicos de saúde a tomada de decisão ágil e oportuna, pautada na evidência científica,possibilitando melhoria de qualidade e promoção de saúde no Sistema Único de Saúde (SUS). A gestão da informação em saúde e a inovação em saúde	digital podem ser solução.
               </Typography>
               <Typography
+                sx={{textIndent: '2rem'}}
+                paragraph={true}
                 variant="body1"
                 color={theme.primaryColor}>
                 O grupo de pesquisa GestBucal (CNPq), composto de pesquisadores,estudantes de graduação e pós-graduação, tem caráter multidisciplinar e intersetorial, tem operacionalizado através do Observatório de Saúde Bucal/UFPE projetos junto a rede de atenção em saúde bucal do SUS para amplificação da saúde digital.
               </Typography>
-              <Typography
+              <Typography 
+                sx={{textIndent: '2rem'}}
+                paragraph={true}
                 variant="body1"
                 color={theme.primaryColor}>
                 Apresentamos, a plataforma GestBucalSD, que é uma ferramenta web-based de autoprocessamento de dados, a qual possui módulos operacionais para avaliação e vigilância em saúde bucal.
               </Typography>
               <Typography
+                sx={{textIndent:'2rem'}}
                 variant="body1"
                 color={theme.primaryColor}>
                 O seu uso possibilitará a governança inteligente e melhoria da qualidade dos estabelecimentos de saúde da rede de atenção em saúde bucal.
@@ -74,7 +80,8 @@ export default function Index(){
             item
             xs={6}>
               <Paper
-              elevation={12}>
+                sx={{height:'100%'}}
+                elevation={12}>
                 <Carousel
 									animation='fade'
 									autoPlay={true}
@@ -82,7 +89,6 @@ export default function Index(){
 									duration={150}
                   sx={{
                     backgroundColor:theme.greyLight
-
                   }}
 									>
 									{items.map((item, i) => (
@@ -92,18 +98,20 @@ export default function Index(){
                         display:'flex',
                         flexDirection:'column',
                         padding:'30px',
-                        height:'300px'
+                        justifyItems:'center',
+                        gap:'2rem',
+                        minHeight:'100%'
                       }}>
 													<Typography 
-													variant='h4'
-                          color={theme.primaryColor}
-                          sx={{
-                            padding:'5px',
-                            textAlign:'justify',
-                            alignContent:'center',
-                          }}
+													  variant='h4'
+                            color={theme.primaryColor}
+                            sx={{
+                              padding:'5px',
+                              textAlign:'justify',
+                              alignContent:'center',
+                            }}
 													>
-														{item.subject}
+                              {item.subject}
 													</Typography>
 													<Typography 
 													variant='h4'
@@ -111,7 +119,7 @@ export default function Index(){
                             padding:'5px',
                             textAlign:'justify',
                             alignContent:'center',
-                            fontSize:'2.5rem'
+                            fontSize:'2rem'
                           }} 
 													>
 														{item.subTitle}
@@ -126,25 +134,29 @@ export default function Index(){
                           }}>
 														{item.description}
 													</Typography>
-													<Button
+                          <Box
                           sx={{
-                            width:'120px',
-                            color:theme.primaryColor,
-                            border:`2px solid ${theme.secundaryColor}`
+                            width:'100%',
+                            display:'flex',
+                            justifyContent:'end',
+                          }}>
+                          <Button
+                            sx={{
+                              width:'120px',
+                              color:theme.primaryColor,
+                              border:`2px solid ${theme.secundaryColor}`
                           }}
                           // href={item.url}
                           >
 														Saiba mais
 													</Button>
-
+                          </Box>
 										</Paper >
 									))}
 								</Carousel>
               </Paper>
             </Grid>
-
           </Grid>
-
       </Box>
     </>
   )
