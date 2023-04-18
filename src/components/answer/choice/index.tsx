@@ -16,7 +16,7 @@ export default function Index(props: TPROPS) {
 
 	return (
 		<RadioGroup>
-			{props.choices.map((choice, index) => (
+			{props.choices.reverse().map((choice, index) => (
 				<FormControlLabel
 					key={index}
 					value={index}

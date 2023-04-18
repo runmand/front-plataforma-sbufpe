@@ -88,7 +88,7 @@ export default function Index(props: TPROPS) {
 						{props.formattedForm.title}
 					</Typography>
 					<>
-						{props.formattedForm.questions.map((question, index) => (
+						{props.formattedForm.questions.reverse().map((question, index) => (
 							<QuestionCard
 								key={index}
 								index={index}
