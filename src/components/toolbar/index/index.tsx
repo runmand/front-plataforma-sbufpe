@@ -1,38 +1,55 @@
-import { Button, Toolbar } from '@mui/material';
-import { buttonDividerStyle, toolbarStyle } from './style';
+import { 
+	Avatar,
+	Box,
+	Button,
+	Toolbar } from '@mui/material';
+
 import LoginButton from '@components/button/log-in';
 import SignupButton from '@components/button/sign-up';
 import SimpleMenu from '@components/menu/simple-menu';
 import { TProps } from './type';
-import { titleStyle } from '@components/menu/simple-menu/style';
+import { theme } from 'src/core/theme';
 
 export default function Index(props: TProps) {
 	return (
-		<Toolbar style={toolbarStyle}>
-			<div style={{ marginRight: '2rem', display: 'flex' }}>
+		<Toolbar 
+			sx={{
+				width: '100%',
+				display:'flex',
+				flexWrap:'wrap',
+				backgroundColor: theme.secundaryColor,
+				justifyContent:'space-between',
+				borderRadius: theme.borderRadiusEdge,
+			}}
+		>
+			<Avatar alt="Logo de Odontologia" src="/logo-transparent.png" />
+			<Box
+				sx={{
+					display:'flex',
+					flexWrap:'wrap',
+					alignItems:'center',
+					justifyContent:'center'}}>
 				<Button
 					onClick={() => props.onClickInitialButton()}
-					style={titleStyle}
+					sx={{
+						fontWeight: 'bold',
+						color: theme.white,}}
 				>
 					Início
 				</Button>
-
 				{props.menuList.map((menu, index) => (
-					<div key={index}>
-						<SimpleMenu
-							title={menu.title}
-							menuItems={menu.menuItems}
-							onClick={() => (menu.onClick ? menu.onClick() : () => {})}
-						/>
-					</div>
+					<SimpleMenu
+						key={index}
+						title={menu.title}
+						menuItems={menu.menuItems}
+						onClick={() => (menu.onClick ? menu.onClick() : () => {})}
+					/>
 				))}
-			</div>
-
-			<SignupButton onClick={() => props.openSignupModal()} />
-
-			<div style={buttonDividerStyle} />
-
-			<LoginButton onClick={() => props.openLoginModal()} />
+				<SignupButton 
+					onClick={() => props.openSignupModal()} />
+				<LoginButton 
+					onClick={() => props.openLoginModal()} />
+				</Box>
 		</Toolbar>
 	);
 }
