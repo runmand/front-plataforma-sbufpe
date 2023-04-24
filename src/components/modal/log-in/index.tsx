@@ -42,7 +42,7 @@ export default function Index(props: TPROPS) {
 					localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
 					router.push(routerEnum.HOME);
 				} else {
-					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+					enqueueSnackbar('Os dados estão incorretos!', { variant: 'error' });
 					setIsLoading(false);
 				}
 			})
