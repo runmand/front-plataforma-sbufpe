@@ -9,6 +9,7 @@ import { List, ListItem, ListItemButton, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
 import {  infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pages/style';
 import AboutUsContainer from '@components/container/about-us';
+import ContactUsContainer from '@components/container/contact-us';
 import CollectionContainer from '@components/container/collection';
 import MainBody from '@components/container/main';
 import { containerBodyTypeEnum } from 'src/core/enums';
@@ -83,6 +84,15 @@ export default function Index() {
 				},
 			],
 		},
+		{
+			title: 'Contato',
+			menuItems: [
+				{
+					title: 'Contato',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.CONTACT_US),
+				},
+			],
+		},
 	];
 	
 	return (
@@ -104,6 +114,7 @@ export default function Index() {
 					<div>
 						{containerBodyType === containerBodyTypeEnum.MAIN &&   (<MainBody/>)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
+						{containerBodyType === containerBodyTypeEnum.CONTACT_US && <ContactUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (

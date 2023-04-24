@@ -23,6 +23,7 @@ export enum loginTypeEnum {
 export enum containerBodyTypeEnum {
 	MAIN = 'main',
 	ABOUT_US = 'about-us',
+	CONTACT_US= 'contact-us',
 	COLLECTION = 'collection',
 	COURSE = 'course',
 	REFERENCE = 'reference',
