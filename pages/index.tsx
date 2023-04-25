@@ -11,6 +11,7 @@ import {  infoStyle, listItemStyle, listStyle, listTitleStyle } from '../src/pag
 import AboutUsContainer from '@components/container/about-us';
 import CollectionContainer from '@components/container/collection';
 import MainBody from '@components/container/main';
+import Faq from '@components/container/faq';
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
@@ -83,6 +84,15 @@ export default function Index() {
 				},
 			],
 		},
+		{
+			title: 'F.A.Q',
+			menuItems: [
+				{
+					title: 'Perguntas Frequentes',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.FAQ),
+				},
+			],
+		},
 	];
 	
 	return (
@@ -105,6 +115,7 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.MAIN &&   (<MainBody/>)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
+						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography 
