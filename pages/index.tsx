@@ -12,6 +12,7 @@ import AboutUsContainer from '@components/container/about-us';
 import ContactUsContainer from '@components/container/contact-us';
 import CollectionContainer from '@components/container/collection';
 import MainBody from '@components/container/main';
+import Faq from '@components/container/faq';
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
@@ -90,6 +91,15 @@ export default function Index() {
 				{
 					title: 'Contato',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.CONTACT_US),
+				}
+			]
+		},
+		{
+			title: 'F.A.Q',
+			menuItems: [
+				{
+					title: 'Perguntas Frequentes',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.FAQ),
 				},
 			],
 		},
@@ -116,6 +126,7 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.CONTACT_US && <ContactUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
+						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography 
