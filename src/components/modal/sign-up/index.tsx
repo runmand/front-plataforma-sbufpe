@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, FormControlLabel, Modal, Radio, RadioGroup, TextField } from '@mui/material';
-import React, { SyntheticEvent, useEffect } from 'react';
-import { modalStyle, cardStyle, cardBodyStyle } from './style';
+import {
+	Autocomplete,
+	Box,
+	FormControlLabel,
+	FormGroup,
+	Modal,
+	Radio,
+	RadioGroup,
+	TextField,
+	Typography
+} from '@mui/material';
+import React, { useEffect } from 'react';
 import { TPROPS, USER_TYPE } from './type';
 import Header from '../header/index';
 import CustomTextField from '@components/text-field/index';
@@ -11,6 +20,8 @@ import { useRouter } from 'next/router';
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from 'src/core/enums';
 import LoginUtils from 'src/utils/loginUtils';
 import SignupService from './service';
+import { CheckBox, Label } from '@mui/icons-material';
+import { theme } from 'src/core/theme';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar limpeza de campos apartir do callback fornecido por cada campo.
@@ -26,6 +37,7 @@ export default function Index(props: TPROPS) {
 	const [userTypeList, setUserTypeList] = React.useState<USER_TYPE[]>([]);
 	const [confirmPwd, setConfirmPwd] = React.useState<string | null>(null);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [isChecked, setIsChecked] = React.useState<boolean>(false)
 	const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
 	const canSubmit = login && userType && pwd && pwd === confirmPwd;
 
@@ -70,18 +82,38 @@ export default function Index(props: TPROPS) {
 	return (
 		<Modal
 			open={props.isOpen}
-			style={modalStyle}
+			sx={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				transition: '0.6s',
+				backgroundColor: theme.blur,
+				color: theme.primaryColor
+			}}
 			onClose={() => {
 				if (props.canSkip) props.onClose();
 			}}
 		>
-			<div style={cardStyle}>
-				<Header title='Cadastro' onClose={() => props.onClose()} />
+			<Box
+				sx={{
+					backgroundColor: theme.white,
+					borderRadius: theme.borderRadiusEdge,
+					padding: theme.modal.card.padding,
+					minWidth: theme.modal.card.minWidth,
+				}}>
+				<Header
+					title='CADASTRE-SE'
+					onClose={() => props.onClose()} />
 
-				<div style={cardBodyStyle}>
+				<Box sx={{ marginTop: '1rem' }}>
 					<RadioGroup row defaultValue={loginTypeEnum.CPF}>
 						{loginUtils.loginTypeList.map((item, i) => (
-							<FormControlLabel key={i} value={item.key} control={<Radio />} label={item.title} onChange={handleSelectLoginType} />
+							<FormControlLabel
+								key={i}
+								value={item.key}
+								control={<Radio />}
+								label={item.title}
+								onChange={handleSelectLoginType} />
 						))}
 					</RadioGroup>
 
@@ -96,21 +128,39 @@ export default function Index(props: TPROPS) {
 						style={{ marginTop: '1rem' }}
 						options={userTypeList}
 						multiple={false}
-						renderInput={params => <TextField {...params} label='Tipo de usuário' />}
+						renderInput={params => <TextField {...params} label='Tipo de Participante' />}
 						onChange={(event: any, newValue: USER_TYPE | null) => setUserType(newValue)}
 					/>
 
-					<div style={{ marginTop: '1rem' }}>
-						<CustomTextField title='Senha' textType='password' onBlur={v => setPwd(v)} />
-					</div>
+					<Box
+						sx={{ marginTop: '1rem' }}>
+						<CustomTextField
+							title='Senha'
+							textType='password'
+							onBlur={v => setPwd(v)} />
+					</Box>
 
-					<div style={{ marginTop: '1rem' }}>
-						<CustomTextField title='Confirmar senha' textType='password' onBlur={v => setConfirmPwd(v)} />
-					</div>
-				</div>
+					<Box sx={{ marginTop: '1rem' }}>
+						<CustomTextField
+							title='Confirmar senha'
+							textType='password'
+							onBlur={v => setConfirmPwd(v)} />
+					</Box>
+					<Box
+						sx={{ marginTop: '1rem' }}>
+						<FormControlLabel
+							aria-required
+							control={<CheckBox />}
+							label="Contrato TCLE da GestBucal"
+						/>
 
-				<ActionArea isLoading={isLoading} isDisabled={!canSubmit} onConfirm={() => handleSubmit()} />
-			</div>
+					</Box>
+				</Box>
+				<ActionArea
+					isLoading={isLoading}
+					isDisabled={!canSubmit}
+					onConfirm={() => handleSubmit()} />
+			</Box>
 		</Modal>
 	);
 }

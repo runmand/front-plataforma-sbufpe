@@ -15,7 +15,7 @@ export default function Index(props: TPROPS) {
 				props.onClick();
 			}}
 		>
-			Sign up
+			Cadastre-se
 		</Button>
 	);
 }
