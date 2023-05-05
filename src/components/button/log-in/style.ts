@@ -9,9 +9,10 @@ export const buttonStyle: CSSProperties = {
 };
 
 export const buttonHoverStyle: CSSProperties = {
-	color: theme.white,
+	border:'white 1px solid',
 	fontSize:'1.1rem',
 	fontWeight: 'bold',
 	transition: '0.3s',
-	backgroundColor: theme.transparent,
+	color:theme.primaryColor,
+	backgroundColor: theme.white,
 };

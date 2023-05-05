@@ -4,6 +4,8 @@ export type TPROPS = {
 	isOpen: boolean;
 	canSkip?: boolean;
 	onClose: () => void;
+	openSignupModal: () => void;
+	openContact: () => void;
 };
 
 export type HANDLE_LOGIN = {
