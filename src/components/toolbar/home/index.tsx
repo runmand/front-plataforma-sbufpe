@@ -38,6 +38,7 @@ export default function Index() {
 				<MenuIcon />
 			</IconButton>
 
+
 			<div style={atualPageAreaStyle}>
 				<Typography style={atualPageTitleStyle}>SB - UFPE</Typography>
 			</div>
