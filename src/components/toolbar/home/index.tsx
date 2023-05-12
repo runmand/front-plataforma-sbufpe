@@ -53,7 +53,6 @@ export default function Index() {
 				<LogoutIcon /> Sair
 			</IconButton>
 			<DrawerMenu
-				position='left'
 				isOpen={isDrawerMenuOpen}
 				menuItems={menu}
 				onClose={() => setIsDrawerMenuOpen(false)}
