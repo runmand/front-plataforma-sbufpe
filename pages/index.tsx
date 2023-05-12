@@ -13,6 +13,7 @@ import ContactUsContainer from '@components/container/contact-us';
 import CollectionContainer from '@components/container/collection';
 import MainBody from '@components/container/main';
 import Faq from '@components/container/faq';
+import Tcle_prof from '@components/container/tcle-prof';
 import { containerBodyTypeEnum } from 'src/core/enums';
 
 
@@ -103,6 +104,15 @@ export default function Index() {
 				},
 			],
 		},
+		{
+			title: 'TCLE - Profissionais',
+			menuItems: [
+				{
+					title: 'TCLE - Profissionais',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.TCLE_PROF),
+				},
+			],
+		},
 	];
 	
 	return (
@@ -127,6 +137,7 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.CONTACT_US && <ContactUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
 						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
+						{containerBodyType === containerBodyTypeEnum.TCLE_PROF && <Tcle_prof/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography 

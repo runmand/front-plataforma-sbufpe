@@ -29,4 +29,5 @@ export enum containerBodyTypeEnum {
 	REFERENCE = 'reference',
 	QUESTIONS = 'questions',
 	FAQ = 'faq',
+	TCLE_PROF = 'tcle-prof',
 }
