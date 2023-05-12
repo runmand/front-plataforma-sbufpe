@@ -7,6 +7,7 @@ export enum routerEnum {
 	FORM = '/form',
 	FORM_ANSWER = '/form-answer',
 	QUESTION = '/question',
+	INITIAL = '/',
 
 }
 

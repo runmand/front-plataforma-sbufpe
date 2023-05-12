@@ -8,7 +8,7 @@ import { modalStyle } from './style';
 export default function Index(props: TPROPS) {
 	return (
 		<Drawer
-			anchor={'left'}
+			anchor={props.position}
 			open={props.isOpen}
 			onClose={() => props.onClose()}
 			style={modalStyle}

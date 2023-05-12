@@ -6,6 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import LoginModal from '@components/modal/log-in/index';
 import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
+import { useRouter } from 'next/router';
 import {
 	Box,
 	Button,
@@ -30,6 +31,7 @@ import Faq from '@components/container/faq';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 
 export default function Index() {
+	const router = useRouter();
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
@@ -145,7 +147,12 @@ export default function Index() {
 		if (!isLogged && url == routerEnum.FORM) {
 			setIsOpenLogin(true)
 			return;
-		} else { setContainerBodyType(url) }
+		}if (isLogged && url == routerEnum.FORM) {
+			router.push(routerEnum.FORM)
+			return;
+		} else {
+			setContainerBodyType(url) 
+		}
 
 	}
 
