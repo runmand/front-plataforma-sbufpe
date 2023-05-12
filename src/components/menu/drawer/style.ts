@@ -6,5 +6,5 @@ export const modalStyle: CSSProperties = {
 	alignItems: 'center',
 	justifyContent: 'center',
 	backgroundColor: theme.blur,
-	transition: '0.6s',
+	transition: '0.2s',
 };

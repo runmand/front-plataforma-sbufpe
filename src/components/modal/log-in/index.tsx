@@ -40,7 +40,7 @@ export default function Index(props: TPROPS) {
 				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
 					localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
-					router.push(routerEnum.HOME);
+					router.push(routerEnum.FORM);
 				} else {
 					enqueueSnackbar('Os dados estão incorretos!', { variant: 'error' });
 					setIsLoading(false);
