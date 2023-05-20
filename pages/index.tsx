@@ -28,7 +28,9 @@ import AboutUsContainer from '@components/container/about-us';
 import ContactUsContainer from '@components/container/contact-us';
 import CollectionContainer from '@components/container/collection';
 import Faq from '@components/container/faq';
-import Tcle_prof from '@components/container/tcle-prof';
+import Tcle from '@components/container/tcle';
+import Direction from '@components/container/direction';
+import Informes from '@components/container/informes'
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 
 export default function Index() {
@@ -44,15 +46,15 @@ export default function Index() {
 			items: [
 				{
 					title: 'Quem somos?',
-					url: '/',
+					url: containerBodyTypeEnum.ABOUT_US,
 				},
 				{
 					title: 'O que é GestBucal',
-					url: '/',
+					url: containerBodyTypeEnum.MAIN,
 				},
 				{
-					title: 'GestBucal & Tear Technology',
-					url: '/',
+					title: 'TCLE',
+					url: containerBodyTypeEnum.TCLE,
 				},
 			],
 		},
@@ -61,7 +63,7 @@ export default function Index() {
 			items: [
 				{
 					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
-					url: '/',
+					url: containerBodyTypeEnum.DIRECTION,
 				},
 			]
 
@@ -70,13 +72,10 @@ export default function Index() {
 			title: 'Suporte',
 			items: [
 				{
-					title: 'Central SAC | +55(81)3194-4900',
-					url: '/',
+					title: 'Central SAC | +55(81)3194-4900\nDuvidas | +55(81)3038-6405',
+					url: containerBodyTypeEnum.CONTACT_US,
 				},
-				{
-					title: 'Duvidas | +55(81)3038-6405',
-					url: '/',
-				},
+				
 
 			],
 		},
@@ -89,6 +88,10 @@ export default function Index() {
 				{
 					title: 'Artigos',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
+				},
+				{
+					title: 'Informes',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.INFORMES),
 				},
 			],
 		},
@@ -116,15 +119,6 @@ export default function Index() {
 				{
 					title: 'Perguntas Frequentes',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.FAQ),
-				},
-			],
-		},
-		{
-			title: 'TCLE - Profissionais',
-			menuItems: [
-				{
-					title: 'TCLE - Profissionais',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.TCLE_PROF),
 				},
 			],
 		},
@@ -168,6 +162,14 @@ export default function Index() {
 
 	const handleShowPageContact = () => {
 		setContainerBodyType(containerBodyTypeEnum.CONTACT_US)
+	}
+	const handleShowTclePage = () =>{
+		setContainerBodyType(containerBodyTypeEnum.TCLE)
+	}
+	const handleInfoPage = (url:string) => {
+		setContainerBodyType(url)
+		
+
 	}
 
 	return (
@@ -319,6 +321,9 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.CONTACT_US && <ContactUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
 						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
+						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle/>}
+						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
+						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography
@@ -341,7 +346,8 @@ export default function Index() {
 														fontWeight: 'bold',
 														color: theme.white,
 														whiteSpace: 'pre-line'
-													}}>
+													}}
+														onClick={() => handleInfoPage(item.url)}>
 													{item.title}
 												</ListItemButton>
 											</ListItem>
@@ -371,6 +377,7 @@ export default function Index() {
 				onClose={() => {
 					setIsOpenSignup(false);
 				}}
+				openTclePage={() => handleShowTclePage()}
 			/>
 		</div>
 	);

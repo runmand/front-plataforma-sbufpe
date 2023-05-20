@@ -45,8 +45,6 @@ export default function Index(props: TProps) {
 						onClick={() => (menu.onClick ? menu.onClick() : () => {})}
 					/>
 				))}
-				<SignupButton 
-					onClick={() => props.openSignupModal()} />
 				<LoginButton 
 					onClick={() => props.openLoginModal()} />
 				</Box>
