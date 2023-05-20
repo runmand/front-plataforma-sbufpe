@@ -28,6 +28,7 @@ import AboutUsContainer from '@components/container/about-us';
 import ContactUsContainer from '@components/container/contact-us';
 import CollectionContainer from '@components/container/collection';
 import Faq from '@components/container/faq';
+import Tcle_prof from '@components/container/tcle-prof';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 
 export default function Index() {
@@ -115,6 +116,15 @@ export default function Index() {
 				{
 					title: 'Perguntas Frequentes',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.FAQ),
+				},
+			],
+		},
+		{
+			title: 'TCLE - Profissionais',
+			menuItems: [
+				{
+					title: 'TCLE - Profissionais',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.TCLE_PROF),
 				},
 			],
 		},
@@ -307,8 +317,8 @@ export default function Index() {
 							</Box>)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.CONTACT_US && <ContactUsContainer />}
-						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer />}
-						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq />}
+						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
+						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
 						<div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography
