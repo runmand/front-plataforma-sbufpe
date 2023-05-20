@@ -10,7 +10,7 @@ export default function Index(){
         <Paper
           sx={{
             marginTop:'3rem',
-            width:'50%',
+            maxWidth:'50rem',
             height:'100%',
             marginX:'auto',
         }}
