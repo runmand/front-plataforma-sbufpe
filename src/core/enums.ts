@@ -31,4 +31,7 @@ export enum containerBodyTypeEnum {
 	REFERENCE = 'reference',
 	QUESTIONS = 'questions',
 	FAQ = 'faq',
+	TCLE = 'tcle',
+	DIRECTION ='direction',
+	INFORMES = 'informes',
 }

@@ -4,6 +4,7 @@ export type TPROPS = {
 	isOpen: boolean;
 	canSkip?: boolean;
 	onClose: () => void;
+	openTclePage: () => void;
 };
 
 export type HANDLE_SIGNUP = {

@@ -56,7 +56,11 @@ export default function Index(props: TPROPS) {
 		setLoginType(loginUtils.loginTypeList.filter(item => item.key === e.target.value)[0].key);
 		clearLoginField();
 	};
+	const handleTcle = ()=>{
+		props.onClose()
+		props.openTclePage()
 
+	}
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
@@ -152,6 +156,7 @@ export default function Index(props: TPROPS) {
 							aria-required
 							control={<CheckBox />}
 							label="Contrato TCLE da GestBucal"
+							onClick={() => handleTcle()}
 						/>
 
 					</Box>

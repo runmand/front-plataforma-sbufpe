@@ -1,15 +1,16 @@
+import { Padding } from "@mui/icons-material";
 import { Box, Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { theme } from 'src/core/theme';
 
 export default function Index() {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [assunto, setAssunto] = useState('');
     const [message, setMessage] = useState('');
 
     function sendEmail(e: { preventDefault: () => void; }) {
         e.preventDefault();
-        alert("Teste")
+
     }
 
     return (
@@ -19,9 +20,9 @@ export default function Index() {
                 bgcolor: theme.greyLight,
                 marginX: 'auto',
                 marginY: '1rem',
-                width: '50%',
-                eight: 'auto'
-
+                maxWidth: '50rem',
+                height: 'auto',
+                padding:'1rem'
             }}>
                 <Typography
                     sx={{ padding: 2 }}
@@ -31,39 +32,33 @@ export default function Index() {
                 >
                     Entre em Contato Conosco
                 </Typography>
-
                 <form onSubmit={sendEmail}>
                     <Stack
                         spacing={6}
-                        margin='30px'
+                        margin='2rem'
                     >
                         <TextField
                             required
-                            id="" //Lembrar de colocar o id
-                            label="Coloque seu nome aqui"
+                            label="Digite seu nome aqui"
                             onChange={(e) => setName(e.target.value)}
                             value={name}
                             sx={{
                                 backgroundColor: theme.white
                             }}
                         />
-
                         <TextField
                             required
-                            id="" // Lembrar de colocar o id
-                            label="Digite um e-mail válido"
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
+                            label="Digite o motivo do contato"
+                            onChange={(e) => setAssunto(e.target.value)}
+                            value={assunto}
                             type="email"
                             sx={{
                                 backgroundColor: theme.white
                             }}
                         />
-
                         <TextField
                             required
-                            id="" // Lembrar de colocar o id
-                            label="Mensagem"
+                            label="Insira sua mensagem aqui"
                             multiline
                             rows={4}
                             onChange={(e) => setMessage(e.target.value)}
@@ -72,21 +67,26 @@ export default function Index() {
                                 backgroundColor: theme.white
                             }}
                         />
-
-                        <Button
-                            href={`mailto:sbufpe@gmail.com?subject=Contato - ${name} (${email})&body=${message}`} variant="contained" type="submit"
+                        <Button 
+                            variant="contained"
                             sx={{
-                                backgroundColor: theme.primaryColor
+                                background:theme.primaryColor,
+                                '&:hover':{
+                                    background:theme.secundaryColor,
+                                },
+                                padding:1,
+                                margin:1,
                             }}
-                        >
-                            Enviar
-                        </Button>
-
+                            href={`mailto:sbufpe@gmail.com?subject=Assunto - ${assunto} (De - ${name})&body=${message}`}
+                            >Enviar</Button>
                     </Stack>
                 </form>
-
             </Box>
         </>
 
     );
 }
+
+
+
+
