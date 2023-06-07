@@ -11,19 +11,10 @@ import {
 	Box,
 	Button,
 	Grid,
-	List,
-	ListItem,
-	ListItemButton,
 	Paper,
 	Typography
 } from '@mui/material';
 import { theme } from 'src/core/theme';
-import {
-	infoStyle,
-	listItemStyle,
-	listStyle,
-	listTitleStyle
-} from '../src/pages/style';
 import AboutUsContainer from '@components/container/about-us';
 import ContactUsContainer from '@components/container/contact-us';
 import CollectionContainer from '@components/container/collection';
@@ -38,48 +29,6 @@ export default function Index() {
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
-	//TODO: Remover o hardcode dessas infos.
-	const infoList = [
-
-		{
-			title: 'Sobre',
-			items: [
-				{
-					title: 'Quem somos?',
-					url: containerBodyTypeEnum.ABOUT_US,
-				},
-				{
-					title: 'O que é GestBucal',
-					url: containerBodyTypeEnum.MAIN,
-				},
-				{
-					title: 'TCLE',
-					url: containerBodyTypeEnum.TCLE,
-				},
-			],
-		},
-		{
-			title: 'Endereço',
-			items: [
-				{
-					title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
-					url: containerBodyTypeEnum.DIRECTION,
-				},
-			]
-
-		},
-		{
-			title: 'Suporte',
-			items: [
-				{
-					title: 'Central SAC | +55(81)3194-4900\nDuvidas | +55(81)3038-6405',
-					url: containerBodyTypeEnum.CONTACT_US,
-				},
-				
-
-			],
-		},
-	];
 	//TODO: Remover do hardcode
 	const indexToolbarMenuList = [
 		{
@@ -90,7 +39,7 @@ export default function Index() {
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
 				},
 				{
-					title: 'Informes',
+					title: 'InformeSBPE',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.INFORMES),
 				},
 			],
@@ -166,9 +115,8 @@ export default function Index() {
 	const handleShowTclePage = () =>{
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
-	const handleInfoPage = (url:string) => {
+	const handleInfoPage = (url : containerBodyTypeEnum) => {
 		setContainerBodyType(url)
-		
 
 	}
 
@@ -188,13 +136,17 @@ export default function Index() {
 					/>
 				}
 				mainContainerChild={
-					<div>
+					<Box
+						sx={{
+							marginTop:'5rem'
+						}}>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<Box
 								sx={{
 									width: 1,
 									minHeight: '56.5vh',
-									padding: '30px'
+									padding: '30px',
+									marginBottom:'5rem'
 								}}>
 								<Grid
 									container
@@ -324,7 +276,7 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle/>}
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
 						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
-						<div style={infoStyle}>
+						{/* <div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography
 									key={index}
@@ -355,10 +307,11 @@ export default function Index() {
 									</List>
 								</Typography>
 							))}
-						</div>
-					</div>
+						</div> */}
+					</Box>
 				}
-				footerChild={<FooterMain />}
+				footerChild={<FooterMain
+					onClick={() => console.log("ClickFooter")}/>}
 			/>
 
 			<LoginModal
