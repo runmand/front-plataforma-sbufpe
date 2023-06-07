@@ -3,6 +3,7 @@ import {
 	Box,
 	Typography,
 	Avatar,
+	Paper,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -23,7 +24,7 @@ export default function Index() {
 					color:theme.primaryColor,
 					textAlign:'center',
 					fontWeight:'bold',
-					paddingY:'1%'
+					paddingY:'2rem'
 				}}
 			>
 				Nossa equipe
@@ -35,19 +36,20 @@ export default function Index() {
 				sx={{
 					margin:'auto',
 					justifyContent:'center',
-					padding: '2%'
-					
+					padding:'1rem',		
 				}}>
 				{(people.map((item,index) =>(
-					<Box
+					<Paper
 						key={index}
 						sx={{
-							width:400,
-							height:200,
+							width:'21rem',
+							height:'13rem',
 							display:'flex',
 							alignContent:'center',
-							padding:'1%',
-							bgcolor:'white'
+							padding:'10px',
+							margin:'0.75rem',
+							bgcolor:'white',
+
 						}}>
 						<Box
 							sx={{
@@ -67,11 +69,11 @@ export default function Index() {
 						</Box> 
 						<Box
 							sx={{
-								width:'200px',
+								width:'8rem',
 								display:'flex',
 								flexDirection:'column',
 								textAlign:'center',
-								gap:'15px',
+								gap:'0.5rem',
 							}}>
 						<Typography
 							variant='h4'
@@ -116,9 +118,8 @@ export default function Index() {
 									</>
 						</Box>
 						</Box>
-					</Box>
+					</Paper>
 				)))} 
-				);
 			</Grid>
 		</Box>
 	);

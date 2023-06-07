@@ -2,6 +2,7 @@ import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 
 export const mainContainerStyle: CSSProperties = {
+	marginTop: '5rem',
 	display: 'flex',
 	flexWrap: 'wrap'
 };

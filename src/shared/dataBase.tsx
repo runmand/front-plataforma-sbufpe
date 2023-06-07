@@ -192,6 +192,11 @@ export const people = [
   },
 ];
 
+export const boletim =[
+  {
+    title:"Boletim 2022 Jaboatão",
+  },
+]
 
 
 
