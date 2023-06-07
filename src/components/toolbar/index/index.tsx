@@ -5,7 +5,7 @@ import {
 	Toolbar } from '@mui/material';
 
 import LoginButton from '@components/button/log-in';
-import SignupButton from '@components/button/sign-up';
+
 import SimpleMenu from '@components/menu/simple-menu';
 import { TProps } from './type';
 import { theme } from 'src/core/theme';
@@ -20,6 +20,7 @@ export default function Index(props: TProps) {
 				backgroundColor: theme.secundaryColor,
 				justifyContent:'space-between',
 				borderRadius: theme.borderRadiusEdge,
+				
 			}}
 		>
 			<Avatar alt="Logo de Odontologia" src="/logo-transparent.png" />

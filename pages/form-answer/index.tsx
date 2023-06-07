@@ -10,6 +10,7 @@ import { ID } from 'src/core/types';
 import React from 'react';
 import FormResultModal from '@components/modal/form/result';
 import { routerEnum } from 'src/core/enums';
+import styled from '@emotion/styled';
 
 //TODO: Corrigir ID quando o usuario da F5 na page.
 export default function Index() {
@@ -46,7 +47,7 @@ export default function Index() {
 		<Base
 			appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
 			mainContainerChild={
-				<div>
+				<div style={{paddingTop:'4.5rem'}}>
 					{formattedForm && <SimpleForm formattedForm={formattedForm} onFinish={() => getUserResultFromForm()} />}
 					{formResult && <FormResultModal formResult={formResult} isOpen={isOpenFormResult} canSkip={true} onClose={() => handleCloseFormResultModal()} />}
 				</div>
