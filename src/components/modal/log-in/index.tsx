@@ -1,4 +1,4 @@
-import { FormControlLabel, Modal, Radio, RadioGroup, Typography } from '@mui/material';
+import { Button, FormControlLabel, Modal, Radio, RadioGroup, Typography } from '@mui/material';
 import React from 'react';
 import { modalStyle, cardStyle, cardBodyStyle, optionsStyle, optionsLinkStyle } from './style';
 import { TPROPS } from './type';
@@ -40,9 +40,9 @@ export default function Index(props: TPROPS) {
 				if (res.data?.token) {
 					enqueueSnackbar('Login efetuado com sucesso!', { variant: 'success' });
 					localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
-					router.push(routerEnum.HOME);
+					router.push(routerEnum.FORM);
 				} else {
-					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
+					enqueueSnackbar('Os dados estão incorretos!', { variant: 'error' });
 					setIsLoading(false);
 				}
 			})
@@ -53,6 +53,16 @@ export default function Index(props: TPROPS) {
 			});
 	};
 
+	const handleSignUp = ()=>{
+		props.onClose();
+		props.openSignupModal();
+	}
+	const handleContact = ()=>{
+		props.onClose();
+		props.openContact();
+		
+	}
+
 	return (
 		<Modal
 			open={props.isOpen}
@@ -62,7 +72,7 @@ export default function Index(props: TPROPS) {
 			}}
 		>
 			<div style={cardStyle}>
-				<Header title='Log In' onClose={() => props.onClose()} />
+				<Header title='ENTRAR' onClose={() => props.onClose()} />
 
 				<div style={cardBodyStyle}>
 					<RadioGroup row defaultValue={loginTypeEnum.CPF}>
@@ -84,11 +94,11 @@ export default function Index(props: TPROPS) {
 				</div>
 
 				<Typography style={{ ...optionsStyle, marginTop: '1rem' }}>
-					Primeiro acesso?&nbsp;<Typography style={optionsLinkStyle}>Cadastre-se agora!</Typography>
+					Primeiro acesso?&nbsp;<Typography onClick={ () => handleSignUp()} style={optionsLinkStyle}>CADASTRE-SE AGORA</Typography>
 				</Typography>
 
 				<Typography style={optionsStyle}>
-					Esqueceu sua senha?&nbsp;<Typography style={optionsLinkStyle}>Recuperar senha!</Typography>
+					Esqueceu sua senha?&nbsp;<Typography onClick={ () => handleContact()} style={optionsLinkStyle}>Recuperar senha!</Typography>
 				</Typography>
 
 				<ActionArea isLoading={isLoading} onConfirm={() => handleSubmit()} />

@@ -6,6 +6,9 @@ export enum routerEnum {
 	HOME = '/home',
 	FORM = '/form',
 	FORM_ANSWER = '/form-answer',
+	QUESTION = '/question',
+	INITIAL = '/',
+
 }
 
 export enum localStorageKeyEnum {
@@ -22,8 +25,13 @@ export enum loginTypeEnum {
 export enum containerBodyTypeEnum {
 	MAIN = 'main',
 	ABOUT_US = 'about-us',
+	CONTACT_US = 'contact-us',
 	COLLECTION = 'collection',
 	COURSE = 'course',
 	REFERENCE = 'reference',
-	QUESTIONS = 'questions'
+	QUESTIONS = 'questions',
+	FAQ = 'faq',
+	TCLE = 'tcle',
+	DIRECTION ='direction',
+	INFORMES = 'informes',
 }

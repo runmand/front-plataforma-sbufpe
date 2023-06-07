@@ -2,7 +2,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import { FormControlLabel, Radio, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { CHOICE, TPROPS } from './type';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function Index(props: TPROPS) {
 	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
@@ -14,9 +14,15 @@ export default function Index(props: TPROPS) {
 		props.onSelectChoice({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(answer) });
 	};
 
+	// Não é a melhor solução, lembrar de ajeitar no backend
+	if (props.choices[props.choices.length - 1].title === 'Não') {
+			const element = props.choices.pop()
+			props.choices.unshift(element)
+	}
+
 	return (
 		<RadioGroup>
-			{props.choices.map((choice, index) => (
+			{props.choices.reverse().map((choice, index) => (
 				<FormControlLabel
 					key={index}
 					value={index}

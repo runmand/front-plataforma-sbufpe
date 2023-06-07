@@ -41,7 +41,7 @@ export default function Index(props: TPROPS) {
 			>
 				<CardContent style={{ padding: '16px' }}>
 					<Typography style={{ marginBottom: '16px', fontSize: '24px', color: colors.amber[200] }}>
-						{props.index} - {props.question.title}
+						{(props.index + 1)} - {props.question.title}
 					</Typography>
 					{props.question.choices.length === 0 ? (
 						<OpenAnswer
@@ -61,7 +61,7 @@ export default function Index(props: TPROPS) {
 					)}
 				</CardContent>
 				<div>
-					{props.question.childrenQuestion.map((child, index) => (
+					{props.question.childrenQuestion.reverse().map((child, index) => (
 						<Index
 							key={index}
 							index={index}
