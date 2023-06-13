@@ -46,7 +46,7 @@ export default function Index(props: TPROPS) {
 							alignItems: 'end',
 							marginTop: '1rem',
 							fontSize: '1.5rem' }}>
-						Pontuação maxíma: &nbsp;
+						Pontuação Máxima: &nbsp;
 						<Typography 
 							sx={{
 								fontSize: '1.5rem',
