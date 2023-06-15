@@ -1,13 +1,16 @@
-import { Card, CardContent, colors, Typography } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { emitterEnum } from '../../core/enums';
 import { emitter } from '../../core/events';
 import ChoiceAnswer from '../answer/choice';
 import OpenAnswer from '../answer/open';
 import { TPROPS, QUESTION_ANSWER } from './type';
+import { theme } from 'src/core/theme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Index(props: TPROPS) {
 	const [canShow, setCanShow] = React.useState(false);
+	const smQuery = useMediaQuery('(min-width:500px)')
 
 	/** Criando evento de emissão em todas as questões. */
 	const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
@@ -35,12 +38,12 @@ export default function Index(props: TPROPS) {
 			<Card
 				style={{
 					margin: !props.parent ? '0px 0px 24px 0px' : '0px 24px 24px 24px',
-					backgroundColor: !props.parent ? '#6D141A' : '#5C0309',
-					borderRadius: '16px',
+					backgroundColor: !props.parent ?theme.white : theme.greyLight,
+					borderRadius: '30px',
 				}}
 			>
 				<CardContent style={{ padding: '16px' }}>
-					<Typography style={{ marginBottom: '16px', fontSize: '24px', color: colors.amber[200] }}>
+					<Typography style={{ marginBottom: '16px', fontSize:!smQuery ? '4.5vw' : '2.3vw', color: theme.primaryColor }}>
 						{(props.index + 1)} - {props.question.title}
 					</Typography>
 					{props.question.choices.length === 0 ? (
