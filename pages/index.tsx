@@ -6,13 +6,15 @@ import Carousel from 'react-material-ui-carousel';
 import LoginModal from '@components/modal/log-in/index';
 import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
+import IndexToolbarMobile from '@components/toolbar/index-mobile'
 import { useRouter } from 'next/router';
 import {
 	Box,
 	Button,
 	Grid,
+	IconButton,
 	Paper,
-	Typography
+	Typography,
 } from '@mui/material';
 import { theme } from 'src/core/theme';
 import AboutUsContainer from '@components/container/about-us';
@@ -23,12 +25,13 @@ import Tcle from '@components/container/tcle';
 import Direction from '@components/container/direction';
 import Informes from '@components/container/informes'
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
-
+import useMediaQuery from '@mui/material/useMediaQuery';
 export default function Index() {
 	const router = useRouter();
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
+	const largeQuery = useMediaQuery('(min-width:720px)')
 	//TODO: Remover do hardcode
 	const indexToolbarMenuList = [
 		{
@@ -125,12 +128,16 @@ export default function Index() {
 			<Base
 				appBarChild={
 					<AppBar
-						toolbarChild={
+						toolbarChild={largeQuery ?
 							<IndexToolbar
 								onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
 								openLoginModal={() => setIsOpenLogin(true)}
 								openSignupModal={() => setIsOpenSignup(true)}
 								menuList={indexToolbarMenuList}
+							/> : <IndexToolbarMobile
+							onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
+							openLoginModal={() => setIsOpenLogin(true)}
+							menuList={indexToolbarMenuList}
 							/>
 						}
 					/>
