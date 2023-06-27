@@ -155,7 +155,7 @@ export default function Index(props: TPROPS) {
 						<FormControlLabel
 							aria-required
 							control={<CheckBox />}
-							label="Contrato TCLE da GestBucal"
+							label="TCLE do GestBucalSD"
 							onClick={() => handleTcle()}
 						/>
 
