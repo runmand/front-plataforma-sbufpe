@@ -1,34 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+  <img src="https://sdufpe.up.railway.app/logo-transparent.png" alt="Logomarca GestbucalSD" width="100px" position="center" />
+</div>
 
-## Getting Started
 
-First, run the development server:
+
+<div align="center" >
+ <h2>GestBucalSD: AVALIAÇÃO DO USO DE PLATAFORMA WEB-BASED PARA MELHORIA DA QUALIDADE E GOVERNANÇA DOS SERVIÇOS PÚBLICOS DE SAÚDE BUCAL<h2/>
+</div>
+
+
+<div align="justify" >
+Frente ao cenário atual, a gestão pública tem vivido desafios quanto a governança dos serviços à tomada de decisão ágil e oportuna, pautada na evidência científica, possibilitando melhoria de qualidade e promoção de saúde. A inovação em saúde digital pode ser solução. Objetiva-se avaliar o uso da plataforma GestBucalSD com vistas a incorporação de tecnologias no SUS. Realizar-se-á uma pesquisa-ação de desenvolvimento tecnológico, com abordagem quantitativa e caráter avaliativo. A plataforma GestBucalSD será desenvolvida, implantada, operacionalizada e analisado o seu uso em estabelecimentos de saúde da atenção primária e secundária da rede de atenção em saúde bucal de Pernambuco com anuência da Secretaria Estadual de Saúde. A plataforma possui 5 módulos operacionais que tem caráter avaliativo e para vigilância em saúde bucal, baseados em modelos teóricos metodológicos validados em pesquisas anteriores. A equipe de trabalho será de docentes; discentes de graduação e pós-graduação da área de Saúde Coletiva e Ciência da Computação com capacidade técnica instalada pertinente à pesquisa
+</div>
+
+
+
+
+## Rodando localmente
+
+Clone o projeto
 
 ```bash
-npm run dev
-# or
-yarn dev
+  git clone https://github.com/runmand/front-plataforma-sbufpe
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Entre no diretório do projeto
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+  cd my-project
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Instale as dependências
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+  npm install
+```
 
-## Learn More
+Inicie o servidor
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+  npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentação de cores
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+| Cor               | Hexadecimal                                                |
+| ----------------- | ---------------------------------------------------------------- |
+| primary      | ![#6D141A](https://via.placeholder.com/10/6D141A?text=+) #6D141A |
+| secondary      | ![#921c22](https://via.placeholder.com/10/921c22?text=+) #921c22 |
+| primary confirm       | ![#0162F5](https://via.placeholder.com/10/0162F5?text=+) #0162F5 |
+| secundary confirm      | ![#52A2F5](https://via.placeholder.com/10/52A2F5?text=+) #52A2F5 |
+| primaryCancel      | ![#DB1F2E](https://via.placeholder.com/10/DB1F2E?text=+) #DB1F2E |
+| secundaryCancel      | ![#E7544A](https://via.placeholder.com/10/E7544A?text=+) #E7544A |
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
