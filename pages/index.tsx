@@ -23,9 +23,12 @@ import CollectionContainer from '@components/container/collection';
 import Faq from '@components/container/faq';
 import Tcle from '@components/container/tcle';
 import Direction from '@components/container/direction';
-import Informes from '@components/container/informes'
+import Informes from '@components/container/informes';
+import WhatIs from '@components/container/what-is';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+
 export default function Index() {
 	const router = useRouter();
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
@@ -53,6 +56,10 @@ export default function Index() {
 				{
 					title: 'Quem somos?',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
+				},
+				{
+					title: 'O que é GESTBUCAL SD?',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.WHAT_IS),
 				},
 			],
 		},
@@ -93,7 +100,7 @@ export default function Index() {
 			subject: 'Contato',
 			subTitle: 'Entre em contato conosco',
 			description:
-				'Tem dúvidas sobre o projeto, questionários, assuntos relacionados ou gostaria de contrinuir? Acesse a página de contatos e nos mande suas dúvidas.',
+				'Tem dúvidas sobre o projeto, questionários, assuntos relacionados ou gostaria de contribuir? Acesse a página de contatos e nos mande suas dúvidas.',
 			url: containerBodyTypeEnum.CONTACT_US,
 		},
 	];
@@ -283,6 +290,7 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle/>}
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
 						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
+						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
 						{/* <div style={infoStyle}>
 							{infoList.map((info, index) => (
 								<Typography
