@@ -116,19 +116,14 @@ export default function Index() {
 		} else {
 			setContainerBodyType(url) 
 		}
-
 	}
-
 	const handleShowPageContact = () => {
 		setContainerBodyType(containerBodyTypeEnum.CONTACT_US)
 	}
 	const handleShowTclePage = () =>{
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
-	const handleInfoPage = (url : containerBodyTypeEnum) => {
-		setContainerBodyType(url)
 
-	}
 
 	return (
 		<div>
@@ -291,42 +286,11 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
 						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
 						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
-						{/* <div style={infoStyle}>
-							{infoList.map((info, index) => (
-								<Typography
-									key={index}
-									variant={'subtitle1'}
-									style={listTitleStyle}>
-									{info.title}
-									<List
-										disablePadding
-										style={listStyle}>
-										{info.items.map((item, i) => (
-											<ListItem
-												key={i}
-												disablePadding
-												style={listItemStyle}>
-												<ListItemButton
-													style={{
-														padding: 0,
-														fontSize: '0.8rem',
-														fontWeight: 'bold',
-														color: theme.white,
-														whiteSpace: 'pre-line'
-													}}
-														onClick={() => handleInfoPage(item.url)}>
-													{item.title}
-												</ListItemButton>
-											</ListItem>
-										))}
-									</List>
-								</Typography>
-							))}
-						</div> */}
 					</Box>
 				}
 				footerChild={<FooterMain
-					onClick={() => console.log("ClickFooter")}/>}
+					handleClick={(url) => setContainerBodyType(url) }
+				/>}
 			/>
 
 			<LoginModal

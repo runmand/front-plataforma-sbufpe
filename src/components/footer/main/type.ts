@@ -1,3 +1,3 @@
 export type TPROPS = {
-onClick: () => void;
+  handleClick: (url :string) => void;
 };
