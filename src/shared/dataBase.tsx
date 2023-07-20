@@ -190,6 +190,23 @@ export const people = [
       },
     ],
   },
+  {
+    name: 'Marcos Capella',
+    role: 'Estudante',
+    photo: './profile-image/AmandaChaves.jpg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/capella-marcosfilipe',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/1227411864151388',
+      },
+    ],
+  }
 ];
 
 export const boletim =[
