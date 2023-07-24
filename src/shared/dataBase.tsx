@@ -218,6 +218,11 @@ export const people = [
         title: 'LinkedIn',
         url: 'https://www.linkedin.com/in/dayane-climaco/',
       },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/2355344882170453',
+      },
     ],
   },
   { 
@@ -231,17 +236,27 @@ export const people = [
         title: 'LinkedIn',
         url: 'https://www.linkedin.com/in/dayane-climaco/',
       },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/9265147279029313',
+      },
+    ],
+  },
+  { 
+    name: 'Victor Vilaça',
+    role: 'Estudante',
+    photo:
+      './profile-image/VictorVilaca.jpg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/victorvila%C3%A7a/',
+      },
     ],
   },
 ];
-
-export const boletim =[
-  {
-    title:"Boletim 2022 Jaboatão",
-  },
-]
-
-
 
 
 
