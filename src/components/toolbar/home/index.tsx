@@ -40,7 +40,7 @@ export default function Index() {
 
 
 			<div style={atualPageAreaStyle}>
-				<Typography style={atualPageTitleStyle}>SB - UFPE</Typography>
+				<Typography style={atualPageTitleStyle}>SD - UFPE</Typography>
 			</div>
 
 			<IconButton

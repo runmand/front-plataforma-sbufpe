@@ -83,7 +83,7 @@ export default function Index(props: TPROPS) {
 							borderRadius: '16px',
 							textAlign: 'center',
 							color: theme.blur,
-							fontSize: !smQuery ? '5vw': '8vw',
+							fontSize: !smQuery ? '4vw': '4vw',
 							fontWeight: 'bold',
 							marginBottom: '16px',
 							padding: '16px'
