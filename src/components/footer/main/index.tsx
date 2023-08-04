@@ -1,7 +1,9 @@
 import { Box, List, ListItem, ListItemButton, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
 import { TPROPS } from './type';
-import { containerBodyTypeEnum, } from 'src/core/enums';
+import { containerBodyTypeEnum, routerEnum } from 'src/core/enums';
+
+
 
 const infoList = [
 
@@ -14,7 +16,7 @@ const infoList = [
 			},
 			{
 				title: 'O que é GestBucal',
-				url: containerBodyTypeEnum.WHAT_IS,
+				url: containerBodyTypeEnum.MAIN,
 			},
 			{
 				title: 'TCLE',
@@ -27,25 +29,31 @@ const infoList = [
 		items: [
 			{
 				title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
-				url: containerBodyTypeEnum.DIRECTION,
+				url: 'containerBodyTypeEnum.DIRECTION',
 			},
 		]
+
 	},
 	{
 		title: 'Suporte',
 		items: [
 			{
 				title: 'Central SAC | +55(81)3194-4900\nDuvidas | +55(81)3038-6405',
-				url: containerBodyTypeEnum.CONTACT_US,
+				url: 'containerBodyTypeEnum.CONTACT_US',
 			},
 			
+
 		],
 	},
 ];
 
+
 export default function Index(props: TPROPS) {
 	
-
+	const handleInfoPage = (url:String) => {
+		console.log(url);
+		
+	}
 	return (
 		<Box
 			sx={{
@@ -92,8 +100,7 @@ export default function Index(props: TPROPS) {
 											whiteSpace: 'pre-line',
 											marginLeft:'1rem'
 										}}
-										onClick={()=>props.handleClick(item.url)}
-											>
+											onClick={() => handleInfoPage(item.url)}>
 										{item.title}
 									</ListItemButton>
 								</ListItem>
@@ -101,6 +108,7 @@ export default function Index(props: TPROPS) {
 						</List>
 					</Typography>
 					))}
+
 					</Box>
 					<span 
 					style={{

@@ -1,15 +1,12 @@
 import { titleStyle } from '@components/menu/simple-menu/style';
 import { Button, Menu, MenuItem } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 import { MENU_ITEM } from '../items/type';
 import { TProps } from './type';
-import { theme } from 'src/core/theme';
 
 export default function Index(props: TProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
-	const largeQuery = useMediaQuery('(min-width:720px)')
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		props.onClick();
@@ -29,10 +26,7 @@ export default function Index(props: TProps) {
 		<div>
 			<Button
 				onClick={handleClick}
-				style={{
-					fontWeight:!largeQuery ? 'normal' : 'bold',
-					color:!largeQuery? theme.black : theme.white,
-				}}
+				style={titleStyle}
 			>
 				{props.title}
 			</Button>

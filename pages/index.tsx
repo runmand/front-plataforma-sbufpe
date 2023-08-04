@@ -6,15 +6,13 @@ import Carousel from 'react-material-ui-carousel';
 import LoginModal from '@components/modal/log-in/index';
 import SignupModal from '@components/modal/sign-up/index';
 import IndexToolbar from '@components/toolbar/index';
-import IndexToolbarMobile from '@components/toolbar/index-mobile'
 import { useRouter } from 'next/router';
 import {
 	Box,
 	Button,
 	Grid,
-	IconButton,
 	Paper,
-	Typography,
+	Typography
 } from '@mui/material';
 import { theme } from 'src/core/theme';
 import AboutUsContainer from '@components/container/about-us';
@@ -23,18 +21,14 @@ import CollectionContainer from '@components/container/collection';
 import Faq from '@components/container/faq';
 import Tcle from '@components/container/tcle';
 import Direction from '@components/container/direction';
-import Informes from '@components/container/informes';
-import WhatIs from '@components/container/what-is';
+import Informes from '@components/container/informes'
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
 
 export default function Index() {
 	const router = useRouter();
 	const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
-	const largeQuery = useMediaQuery('(min-width:720px)')
 	//TODO: Remover do hardcode
 	const indexToolbarMenuList = [
 		{
@@ -56,10 +50,6 @@ export default function Index() {
 				{
 					title: 'Quem somos?',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.ABOUT_US),
-				},
-				{
-					title: 'O que é GESTBUCAL SD?',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.WHAT_IS),
 				},
 			],
 		},
@@ -100,7 +90,7 @@ export default function Index() {
 			subject: 'Contato',
 			subTitle: 'Entre em contato conosco',
 			description:
-				'Tem dúvidas sobre o projeto, questionários, assuntos relacionados ou gostaria de contribuir? Acesse a página de contatos e nos mande suas dúvidas.',
+				'Tem dúvidas sobre o projeto, questionários, assuntos relacionados ou gostaria de contrinuir? Acesse a página de contatos e nos mande suas dúvidas.',
 			url: containerBodyTypeEnum.CONTACT_US,
 		},
 	];
@@ -116,30 +106,31 @@ export default function Index() {
 		} else {
 			setContainerBodyType(url) 
 		}
+
 	}
+
 	const handleShowPageContact = () => {
 		setContainerBodyType(containerBodyTypeEnum.CONTACT_US)
 	}
 	const handleShowTclePage = () =>{
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
+	const handleInfoPage = (url : containerBodyTypeEnum) => {
+		setContainerBodyType(url)
 
+	}
 
 	return (
 		<div>
 			<Base
 				appBarChild={
 					<AppBar
-						toolbarChild={largeQuery ?
+						toolbarChild={
 							<IndexToolbar
 								onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
 								openLoginModal={() => setIsOpenLogin(true)}
 								openSignupModal={() => setIsOpenSignup(true)}
 								menuList={indexToolbarMenuList}
-							/> : <IndexToolbarMobile
-							onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
-							openLoginModal={() => setIsOpenLogin(true)}
-							menuList={indexToolbarMenuList}
 							/>
 						}
 					/>
@@ -285,12 +276,42 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle/>}
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
 						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
-						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
+						{/* <div style={infoStyle}>
+							{infoList.map((info, index) => (
+								<Typography
+									key={index}
+									variant={'subtitle1'}
+									style={listTitleStyle}>
+									{info.title}
+									<List
+										disablePadding
+										style={listStyle}>
+										{info.items.map((item, i) => (
+											<ListItem
+												key={i}
+												disablePadding
+												style={listItemStyle}>
+												<ListItemButton
+													style={{
+														padding: 0,
+														fontSize: '0.8rem',
+														fontWeight: 'bold',
+														color: theme.white,
+														whiteSpace: 'pre-line'
+													}}
+														onClick={() => handleInfoPage(item.url)}>
+													{item.title}
+												</ListItemButton>
+											</ListItem>
+										))}
+									</List>
+								</Typography>
+							))}
+						</div> */}
 					</Box>
 				}
 				footerChild={<FooterMain
-					handleClick={(url) => setContainerBodyType(url) }
-				/>}
+					onClick={() => console.log("ClickFooter")}/>}
 			/>
 
 			<LoginModal
