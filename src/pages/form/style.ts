@@ -2,9 +2,11 @@ import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 
 export const mainContainerStyle: CSSProperties = {
-	marginTop: '5rem',
+	paddingTop:'7.5rem',
 	display: 'flex',
-	flexWrap: 'wrap'
+	flexWrap: 'wrap',
+	overflow:'unset'
+
 };
 
 export const formButtonStyle: CSSProperties = {

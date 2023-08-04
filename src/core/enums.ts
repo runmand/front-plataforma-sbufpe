@@ -34,4 +34,5 @@ export enum containerBodyTypeEnum {
 	TCLE = 'tcle',
 	DIRECTION ='direction',
 	INFORMES = 'informes',
+	WHAT_IS = 'what-is',
 }

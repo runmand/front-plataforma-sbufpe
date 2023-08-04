@@ -3,9 +3,12 @@ import { FormControlLabel, Radio, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { CHOICE, TPROPS } from './type';
 import React, { useEffect } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Index(props: TPROPS) {
 	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
+	const smQuery = useMediaQuery('(min-width:500px)');
+
 	const handleSelectChoice = (index: number, choice: CHOICE) => {
 		const temp = answer;
 		temp.fill(0);
@@ -33,7 +36,7 @@ export default function Index(props: TPROPS) {
 							}}
 							sx={{
 								padding: '4px',
-								color: '#fff',
+								color: 'black',
 								'&.Mui-checked': {
 									color: pink[600],
 								},
@@ -45,8 +48,8 @@ export default function Index(props: TPROPS) {
 					}
 					label={
 						<Typography
-							color={'#fff'}
-							fontSize={'20px'}
+							color={'black'}
+							fontSize={!smQuery ? '4vw' : '2vw'}
 						>
 							{choice.title}
 						</Typography>

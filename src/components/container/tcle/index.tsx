@@ -3,10 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { theme } from 'src/core/theme';
 import { Paper } from '@mui/material';
-import { secundaryColor } from 'src/core/colors';
-import { Padding } from '@mui/icons-material';
+
 
 interface TabPanelProps {
   children?: React.ReactNode;

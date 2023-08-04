@@ -85,7 +85,7 @@ export const people = [
   {
     name: 'Giovanna Petraglia',
     role: 'Desenvolvedora',
-    photo: 'https://media.licdn.com/dms/image/C4E03AQE46RTIeYBGxw/profile-displayphoto-shrink_800_800/0/1653007631697?e=1686182400&v=beta&t=Ot8esHGiGpMhlmMg15ZBBizwvK4hH1k-wu4fv0KQzK8',
+    photo: './profile-image/GiovannaPetraglia.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -190,15 +190,73 @@ export const people = [
       },
     ],
   },
-];
-
-export const boletim =[
   {
-    title:"Boletim 2022 Jaboatão",
+    name: 'Marcos Capella',
+    role: 'Estudante',
+    photo: './profile-image/MarcosCapella.jpg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/capella-marcosfilipe/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/1227411864151388',
+      },
+    ],
   },
-]
-
-
+  { 
+    name: 'Dayane Climaco',
+    role: 'Estudante',
+    photo:
+      './profile-image/DayaneClimaco.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/dayane-climaco/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/2355344882170453',
+      },
+    ],
+  },
+  { 
+    name: 'Beatriz Gonçalves',
+    role: 'Estudante',
+    photo:
+      './profile-image/BeatrizGonçalves.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/dayane-climaco/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/9265147279029313',
+      },
+    ],
+  },
+  { 
+    name: 'Victor Vilaça',
+    role: 'Estudante',
+    photo:
+      './profile-image/VictorVilaca.jpg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/victorvila%C3%A7a/',
+      },
+    ],
+  },
+];
 
 
 
