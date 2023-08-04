@@ -8,6 +8,8 @@ import Alert from '@components/alert/index';
 import { useSnackbar } from 'notistack';
 import { TPROPS } from './type';
 import SimpleFormService from './service';
+import { theme } from 'src/core/theme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 //TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
@@ -16,6 +18,7 @@ export default function Index(props: TPROPS) {
 	const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar();
 	const simpleFormService = new SimpleFormService();
+	const smQuery =useMediaQuery('(max-width:520px)');
 
 	const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
 		const temp = answers;
@@ -68,18 +71,19 @@ export default function Index(props: TPROPS) {
 		<>
 			<Card 
 				sx={{
-					backgroundColor: '#5a0f14',
-					padding:'2% 15% 10% 15%'
+					backgroundColor: theme.greyLight,
+					padding:'0% 5% 3% 5%',
+					
+
 				}}
 			>
 				<CardContent>
 					<Typography
 						sx={{
-							backgroundColor: '#777',
 							borderRadius: '16px',
 							textAlign: 'center',
-							color: '#000',
-							fontSize: '48px',
+							color: theme.blur,
+							fontSize: !smQuery ? '5vw': '8vw',
 							fontWeight: 'bold',
 							marginBottom: '16px',
 							padding: '16px'
@@ -89,8 +93,6 @@ export default function Index(props: TPROPS) {
 					</Typography>
 					<>
 						{props.formattedForm.questions.reverse().map((question, index) => (
-							<>
-						
 							<QuestionCard
 								key={index}
 								index={index}
@@ -102,7 +104,6 @@ export default function Index(props: TPROPS) {
 									handleHideQuestion(data);
 								}}
 							/>
-							</>
 						))}
 					</>
 				</CardContent>

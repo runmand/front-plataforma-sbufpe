@@ -5,5 +5,4 @@ export type TPROPS = {
 	canSkip?: boolean;
 	onClose: () => void;
 	formResult: GET_USER_RESULT_FROM_FORM_RES;
-	formId?:number
 };

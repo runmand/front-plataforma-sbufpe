@@ -12,7 +12,6 @@ import { ID } from 'src/core/types';
 import router from 'next/router';
 import { routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
-import { USER_PERMISSIONS } from 'src/@const/UserPermissions';
 
 export default function Index() {
 	const formService = new FormService();
