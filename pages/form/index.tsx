@@ -23,14 +23,7 @@ export default function Index() {
 		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
 	};
 
-	async function getUserTypes(){
-		try{
-			const {data} = await http.get('/user-types')
-			console.log(data)
-		}catch(error:any){
-			console.error(error)
-		}
-	}
+
 	useEffect(() => {
 		formService
 			.index()
@@ -46,8 +39,6 @@ export default function Index() {
 				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-
-		getUserTypes()
 	}, []);
 
 	return (
