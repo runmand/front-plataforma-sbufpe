@@ -49,7 +49,7 @@ export default function Index() {
 			mainContainerChild={
 				<div style={{paddingTop:'4.5rem'}}>
 					{formattedForm && <SimpleForm formattedForm={formattedForm} onFinish={() => getUserResultFromForm()} />}
-					{formResult && <FormResultModal formResult={formResult} isOpen={isOpenFormResult} canSkip={true} onClose={() => handleCloseFormResultModal()} />}
+					{formResult && <FormResultModal formId={formId as number} formResult={formResult} isOpen={isOpenFormResult} canSkip={true} onClose={() => handleCloseFormResultModal()} />}
 				</div>
 			}
 		/>

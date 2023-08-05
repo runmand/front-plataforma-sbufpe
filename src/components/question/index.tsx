@@ -60,6 +60,7 @@ export default function Index(props: TPROPS) {
 							onSelectChoice={data => {
 								handleAnswerQuestion(data);
 							}}
+              choiceType={props.question.formQuestionFormRegisterId === 109 ? 'select' : 'radio'}
 						/>
 					)}
 				</CardContent>
