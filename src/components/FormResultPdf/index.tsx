@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const ResultFormPdf = ({
+const ResultFormPdf = ({
   maxScore,
   score,
   domainList,
@@ -100,3 +100,5 @@ export const ResultFormPdf = ({
     </Document>
   );
 };
+
+export default ResultFormPdf
