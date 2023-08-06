@@ -18,33 +18,33 @@ export default function Index(props: TPROPS) {
 	
 	async function downloadPdf(){
 	
-		// const {pdf} = await lazyPdf()
+		const {pdf} = await lazyPdf()
 
-		// const blob = await pdf(
-		// 	<PdfComponent
-		// 	domainList={props.formResult.domainList}
-		// maxScore={props.formResult.maxScore}
-		// score={props.formResult.score}	
-		// 	/>
-		//   ).toBlob();
+		const blob = await pdf(
+			<PdfComponent
+			domainList={props.formResult.domainList}
+		maxScore={props.formResult.maxScore}
+		score={props.formResult.score}	
+			/>
+		  ).toBlob();
 	
-		//   // Create a URL for the blob object
-		//   const url = URL.createObjectURL(blob);
-		//   // Create an anchor element and set its href to the PDF URL
-		//   const a = document.createElement("a");
-		//   a.href = url;
+		  // Create a URL for the blob object
+		  const url = URL.createObjectURL(blob);
+		  // Create an anchor element and set its href to the PDF URL
+		  const a = document.createElement("a");
+		  a.href = url;
 	
-		//   // Set the anchor element's download attribute to the PDF file name
-		//   a.download = new Date()+"";
+		  // Set the anchor element's download attribute to the PDF file name
+		  a.download = new Date()+"";
 	
-		//   // Append the anchor element to the document body
-		//   document.body.appendChild(a);
+		  // Append the anchor element to the document body
+		  document.body.appendChild(a);
 	
-		//   // Click the anchor element to initiate the download
-		//   a.click();
+		  // Click the anchor element to initiate the download
+		  a.click();
 	
-		//   // Remove the anchor element from the document body
-		//   document.body.removeChild(a);
+		  // Remove the anchor element from the document body
+		  document.body.removeChild(a);
 	}
 
 	return (
