@@ -8,20 +8,17 @@ import { TPROPS } from './type';
 import Header from '../../header/index';
 import ActionArea from '@components/modal/action-area';
 import { theme } from 'src/core/theme';
-// import { ResultFormPdf } from '@components/FormResultPdf';
+import { ResultFormPdf } from '@components/FormResultPdf';
 
-// import { pdf } from '@react-pdf/renderer';
-const PdfComponent = React.lazy(() => import('@components/FormResultPdf'));
-const lazyPdf = () => import('@react-pdf/renderer');
+import { pdf } from '@react-pdf/renderer';
+
 
 export default function Index(props: TPROPS) {
 	
 	async function downloadPdf(){
 	
-		const {pdf} = await lazyPdf()
-
 		const blob = await pdf(
-			<PdfComponent
+			<ResultFormPdf
 			domainList={props.formResult.domainList}
 		maxScore={props.formResult.maxScore}
 		score={props.formResult.score}	

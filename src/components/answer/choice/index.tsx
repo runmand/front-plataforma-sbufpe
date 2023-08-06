@@ -26,7 +26,7 @@ export default function Index(props: TPROPS) {
 	if (props.choiceType === "select") {
 		return (
 		  <FormControl fullWidth>
-			<InputLabel sx={{color:'white','&.Mui-focused':{color:'#6d141a'}}} id="demo-simple-select-label">Selecione</InputLabel>
+			<InputLabel sx={{color:'#6d141a','&.Mui-focused':{color:'#6d141a'}}} id="demo-simple-select-label">Selecione</InputLabel>
 			<Select
 		
 	
