@@ -13,6 +13,7 @@ export enum routerEnum {
 
 export enum localStorageKeyEnum {
 	TOKEN = 'token',
+	TYPE_ID = 'typeId'
 }
 
 export enum loginTypeEnum {

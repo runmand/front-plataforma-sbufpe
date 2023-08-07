@@ -20,6 +20,7 @@ export default function Index() {
 
 	const handleLogout = () => {
 		localStorage.removeItem(localStorageKeyEnum.TOKEN);
+		localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
 		router.push(routerEnum.INITIAL)
 
 	}

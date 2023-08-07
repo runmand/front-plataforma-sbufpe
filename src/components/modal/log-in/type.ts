@@ -16,4 +16,9 @@ export type HANDLE_LOGIN = {
 
 export type HANDLE_LOGIN_RES = {
 	token: string;
+	user_type:USER_TYPE_RESPONSE
 };
+
+export type USER_TYPE_RESPONSE = {
+	typeId:number
+}

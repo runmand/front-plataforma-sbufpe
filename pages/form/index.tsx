@@ -10,7 +10,7 @@ import { INDEX_RES } from '../../src/pages/form/type';
 import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
 import router from 'next/router';
-import { routerEnum } from 'src/core/enums';
+import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { http } from 'src/core/axios';
 
@@ -29,7 +29,21 @@ export default function Index() {
 			.index()
 			.then(res => {
 				if (!res.errors) {
-					setForms(res.data);
+					//Verificar qual o tipo de usuário está logado
+					const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID)
+					switch(typeId){
+						case 1:
+							return setForms(res.data);
+							case 2:
+								return setForms(res.data);
+							case 3:
+								return setForms(res.data.filter(form => form.id !== 2))
+							case 4:
+								return setForms(res.data.filter(form => form.id === 2))
+					}
+				
+					
+					
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
