@@ -68,8 +68,10 @@ export default function Index(props: TPROPS) {
 			.handleSignup({ login, pwd, typeId: userType.id })
 			.then(res => {
 				if (res.data?.token) {
+					
 					enqueueSnackbar('Registro efetuado com sucesso!', { variant: 'success' });
 					localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
+					localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId+""); //TODO: Melhorar para utilziar cookies.
 					router.push(routerEnum.FORM);
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));

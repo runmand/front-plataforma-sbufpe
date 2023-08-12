@@ -5,6 +5,7 @@ export type TPROPS = {
 	formQuestionFormRegisterId: ID;
 	choices: CHOICE[];
 	onSelectChoice: (value: QUESTION_ANSWER) => void;
+	choiceType?:'radio' | 'select'
 };
 
 export type CHOICE = {

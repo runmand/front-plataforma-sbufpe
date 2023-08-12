@@ -1,5 +1,5 @@
 import RadioGroup from '@mui/material/RadioGroup';
-import { FormControlLabel, Radio, Typography } from '@mui/material';
+import { FormControl, FormControlLabel, InputLabel, MenuItem, Radio, Select, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { CHOICE, TPROPS } from './type';
 import React, { useEffect } from 'react';
@@ -22,6 +22,51 @@ export default function Index(props: TPROPS) {
 			const element = props.choices.pop()
 			props.choices.unshift(element)
 	}
+
+	if (props.choiceType === "select") {
+		return (
+		  <FormControl fullWidth>
+			<InputLabel sx={{color:'#6d141a','&.Mui-focused':{color:'#6d141a'}}} id="demo-simple-select-label">Selecione</InputLabel>
+			<Select
+		
+	
+	 sx={{
+	
+		color: "#6d141a",
+		'.MuiOutlinedInput-notchedOutline': {
+		  borderColor: '#6d141a',
+		},
+		'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+		  borderColor: '#6d141a',
+		},
+		'&:hover .MuiOutlinedInput-notchedOutline': {
+		  borderColor: '#6d141a',
+		},
+		'.MuiSvgIcon-root ': {
+		  fill: "white !important",
+		},
+		'.MuiInputLabel-root':{
+			color:'#6d141a'
+		},
+	  }}          labelId="select-label"
+			  id="select"
+			  label="Selecione"
+			>
+			  {props.choices.map((choice, index) => (
+				<MenuItem
+				key={index}
+				  onClick={() => {
+					handleSelectChoice(index, choice);
+				  }}
+				  value={choice.title}
+				>
+				  {choice.title}
+				</MenuItem>
+			  ))}
+			</Select>
+		  </FormControl>
+		);
+	  }
 
 	return (
 		<RadioGroup>

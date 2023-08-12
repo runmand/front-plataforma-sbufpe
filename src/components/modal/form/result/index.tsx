@@ -3,13 +3,47 @@ import {
 	CardContent, 
 	Modal, 
 	Typography } from '@mui/material';
-import React from 'react';
+import React,{Suspense} from 'react';
 import { TPROPS } from './type';
 import Header from '../../header/index';
 import ActionArea from '@components/modal/action-area';
 import { theme } from 'src/core/theme';
+import { ResultFormPdf } from '@components/FormResultPdf';
+
+import { pdf } from '@react-pdf/renderer';
+
 
 export default function Index(props: TPROPS) {
+	
+	async function downloadPdf(){
+	
+		const blob = await pdf(
+			<ResultFormPdf
+			domainList={props.formResult.domainList}
+		maxScore={props.formResult.maxScore}
+		score={props.formResult.score}	
+			/>
+		  ).toBlob();
+	
+		  // Create a URL for the blob object
+		  const url = URL.createObjectURL(blob);
+		  // Create an anchor element and set its href to the PDF URL
+		  const a = document.createElement("a");
+		  a.href = url;
+	
+		  // Set the anchor element's download attribute to the PDF file name
+		  a.download = new Date()+"";
+	
+		  // Append the anchor element to the document body
+		  document.body.appendChild(a);
+	
+		  // Click the anchor element to initiate the download
+		  a.click();
+	
+		  // Remove the anchor element from the document body
+		  document.body.removeChild(a);
+	}
+
 	return (
 		<Modal
 			open={props.isOpen}
@@ -115,6 +149,8 @@ export default function Index(props: TPROPS) {
 					))}
 				</Card>
 				<ActionArea isLoading={false} 
+				isPdfDownloadable={props.formId !== 2}
+				onClickDownload={downloadPdf}
 				onConfirm={() => props.onClose()} />
 			</Card>
 		</Modal>

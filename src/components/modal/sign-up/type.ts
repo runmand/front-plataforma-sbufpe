@@ -1,4 +1,5 @@
 import { ID } from 'src/core/types';
+import { USER_TYPE_RESPONSE } from '../log-in/type';
 
 export type TPROPS = {
 	isOpen: boolean;
@@ -15,6 +16,7 @@ export type HANDLE_SIGNUP = {
 
 export type HANDLE_SIGNUP_RES = {
 	token: string;
+	user_type:USER_TYPE_RESPONSE
 };
 
 export type GET_USER_TYPES_RES = {
