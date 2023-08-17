@@ -40,7 +40,15 @@ export default function Index(props: TPROPS) {
 		}
 	};
 
-	const handleOpenSubmitFormDialog = () => setIsOpenSubmitFormDialog(true);
+	const handleOpenSubmitFormDialog = () => {
+		if (answers.length == props.formattedForm.questions.length){
+			setIsOpenSubmitFormDialog(true);
+		} else {
+			// setFailedState(true);
+			scrollTo(0,0);
+			alert("Formulário não foi preenchido por inteiro.\n\nPara enviar o formulário é necessário responder todas as perguntas apresentadas. Feche esse diálogo para voltar e responder o que falta.")
+		}
+	};
 	const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
 
 	const handleSubmit = () => {
@@ -131,6 +139,17 @@ export default function Index(props: TPROPS) {
 				onClose={() => handleCloseSubmitFormDialog()}
 				onConfirm={() => handleSubmit()}
 			/>
+			{
+			// TODO: Usar <Alert/> ao invés de alert()
+			/* <Alert
+				title='Formulário não foi preenchido por inteiro.'
+				msg='Atenção! Para enviar o formulário é necessário responder todas as perguntas apresentadas. Feche esse diálogo para voltar e responder o que falta.'
+				isOpen={failedToAnswer}
+				isLoading={loading}
+				canSkip={true}
+				onClose={() => handleCloseFailDialog()}
+				// onConfirm={() => true}
+			/> */}
 		</>
 	);
 }
