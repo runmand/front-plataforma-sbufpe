@@ -27,6 +27,7 @@ import Informes from '@components/container/informes';
 import WhatIs from '@components/container/what-is';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { Height, Padding } from '@mui/icons-material';
 
 
 export default function Index() {
@@ -147,15 +148,19 @@ export default function Index() {
 				mainContainerChild={
 					<Box
 						sx={{
-							marginTop:'5rem'
+							background: theme.greyLight,
+							marginTop:'5rem',
+							paddingTop:!largeQuery? '2rem' : '1rem',
+							minHeight:'88vh',
+							display:'flex',
+							flexDirection:'column',
+							justifyContent:'center'
+							
 						}}>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<Box
 								sx={{
 									width: 1,
-									minHeight: '56.5vh',
-									padding: '30px',
-									marginBottom:'5rem'
 								}}>
 								<Grid
 									container
