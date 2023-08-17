@@ -33,11 +33,9 @@ export default function Index(){
     <Box
     sx={{
         minHeight:'80vh',
-        marginTop:'5rem',
         display:"flex",
         justifyContent:"center",  
         backgroundColor: theme.greyLight,
-        paddingBottom:'5rem'
       }}>
         <Paper
           sx={{

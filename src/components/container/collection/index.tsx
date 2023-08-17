@@ -17,6 +17,7 @@ export default function Index(){
     return(
     <>
     <Box sx = {{
+        marginTop:'3rem',
         position:'justify',
         bgcolor:theme.greyLight,}}>
         <Typography 
