@@ -1,4 +1,4 @@
-import { Box, CardMedia, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Box, CardMedia, Grid, Typography } from "@mui/material";
 import { theme } from "src/core/theme";
 
 export default function Index(){
