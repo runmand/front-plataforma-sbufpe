@@ -101,34 +101,19 @@ export default function Index(props: TPROPS) {
 						{props.formattedForm.title}
 					</Typography>
 					<>
-						{props.formattedForm.questions.reverse().map((question, index) => {
-							if ([46].includes(parseInt(question.formQuestionFormRegisterId.toString()))) {
-								return (
-									<Typography>
-										{index} - {question.title}
-									</Typography>
-									// <Select>
-									// 	<Option value="r">red</Option>
-									// 	<Option value="g">green</Option>
-									// 	<Option value="b">blue</Option>
-									// </Select>
-								);
-							} else {
-								return (
-									<QuestionCard
-										key={index}
-										index={index}
-										question={question}
-										onAnswerQuestion={data => {
-											handleAnswerQuestion(data);
-										}}
-										onHideQuestion={data => {
-											handleHideQuestion(data);
-										}}
-									/>
-								)
-							}
-						})}
+						{props.formattedForm.questions.reverse().map((question, index) => (
+							<QuestionCard
+								key={index}
+								index={index}
+								question={question}
+								onAnswerQuestion={data => {
+									handleAnswerQuestion(data);
+								}}
+								onHideQuestion={data => {
+									handleHideQuestion(data);
+								}}
+							/>
+						))}
 					</>
 				</CardContent>
 
