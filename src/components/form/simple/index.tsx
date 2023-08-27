@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import {Select, Option} from '@mui/base';
 import React, { useState } from 'react';
 import { ID } from '../../../core/types';
 import { QUESTION_ANSWER } from '../../question/type';
@@ -100,19 +101,34 @@ export default function Index(props: TPROPS) {
 						{props.formattedForm.title}
 					</Typography>
 					<>
-						{props.formattedForm.questions.reverse().map((question, index) => (
-							<QuestionCard
-								key={index}
-								index={index}
-								question={question}
-								onAnswerQuestion={data => {
-									handleAnswerQuestion(data);
-								}}
-								onHideQuestion={data => {
-									handleHideQuestion(data);
-								}}
-							/>
-						))}
+						{props.formattedForm.questions.reverse().map((question, index) => {
+							if ([46].includes(parseInt(question.formQuestionFormRegisterId.toString()))) {
+								return (
+									<Typography>
+										{index} - {question.title}
+									</Typography>
+									// <Select>
+									// 	<Option value="r">red</Option>
+									// 	<Option value="g">green</Option>
+									// 	<Option value="b">blue</Option>
+									// </Select>
+								);
+							} else {
+								return (
+									<QuestionCard
+										key={index}
+										index={index}
+										question={question}
+										onAnswerQuestion={data => {
+											handleAnswerQuestion(data);
+										}}
+										onHideQuestion={data => {
+											handleHideQuestion(data);
+										}}
+									/>
+								)
+							}
+						})}
 					</>
 				</CardContent>
 
@@ -130,6 +146,12 @@ export default function Index(props: TPROPS) {
 				</CardActions>
 			</Card>
 
+			{/* <Typography>
+				asasd: {props.formattedForm.questions.map(it => {
+					console.log(it);
+					return "";
+				})}
+			</Typography> */}
 			<Alert
 				title='Confirmar envio do formulário?'
 				msg='Atenção! Ao enviar o formulário suas respostas antigas serão sobreescritas! Esta ação não poderá ser desfeita neste momento!'
