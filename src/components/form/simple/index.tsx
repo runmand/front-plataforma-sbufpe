@@ -41,7 +41,7 @@ export default function Index(props: TPROPS) {
 	};
 
 	const handleOpenSubmitFormDialog = () => {
-		if (answers.length == props.formattedForm.questions.length){
+		if (answers.length >= props.formattedForm.questions.length){
 			setIsOpenSubmitFormDialog(true);
 		} else {
 			// setFailedState(true);
