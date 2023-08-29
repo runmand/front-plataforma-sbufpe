@@ -131,12 +131,6 @@ export default function Index(props: TPROPS) {
 				</CardActions>
 			</Card>
 
-			{/* <Typography>
-				asasd: {props.formattedForm.questions.map(it => {
-					console.log(it);
-					return "";
-				})}
-			</Typography> */}
 			<Alert
 				title='Confirmar envio do formulário?'
 				msg='Atenção! Ao enviar o formulário suas respostas antigas serão sobreescritas! Esta ação não poderá ser desfeita neste momento!'
