@@ -1,5 +1,4 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
-import {Select, Option} from '@mui/base';
 import React, { useState } from 'react';
 import { ID } from '../../../core/types';
 import { QUESTION_ANSWER } from '../../question/type';
