@@ -24,15 +24,27 @@ export default function Index(props: TPROPS) {
 	}
 
 	if (props.choiceType === "select") {
-		const options:any = []
-		props.choices.map((choices,index)=> {options.push(choices,)})
-		{console.log(options)}
+		const optionsAutoComplete:any = props.choices.map((choice)=> {
+			return{
+				label: choice.title,
+				id: choice.formsQuestionFormsQuestionChoicesId
+			}
+		})
+
 		return (
 			<Autocomplete
       id="combo-box-demo"
-      options={options.title}
+      options={optionsAutoComplete}
       sx={{ width: 1}}
       renderInput={(params) => <TextField {...params} label="Selecione" />}
+			onChange={(event,choiceEvent:any) => {
+				const index = props.choices.findIndex((indexChoice)=>{
+					return indexChoice.formsQuestionFormsQuestionChoicesId == choiceEvent.id
+				})
+				const choice = props.choices[index]
+				handleSelectChoice(index, choice);
+			}}
+			
     />
 	// 	  <FormControl fullWidth>
 	// 		<InputLabel sx={{color:'#6d141a','&.Mui-focused':{color:'#6d141a'}}} id="demo-simple-select-label">Selecione</InputLabel>
