@@ -62,7 +62,7 @@ export default function Index(props: TPROPS) {
 							onSelectChoice={data => {
 								handleAnswerQuestion(data);
 							}}
-              choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId)  ?  'select' : 'radio'}
+              choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId)  ?  'autoComplete' : 'radio'}
 						/>
 					)}
 				</CardContent>

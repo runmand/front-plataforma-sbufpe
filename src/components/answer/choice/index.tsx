@@ -1,8 +1,14 @@
 import RadioGroup from '@mui/material/RadioGroup';
-import { Autocomplete, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, Select, TextField, Typography } from '@mui/material';
+import { 
+Autocomplete,
+FormControlLabel,
+Radio,
+TextField,
+Typography
+} from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { CHOICE, TPROPS } from './type';
-import React, { useEffect } from 'react';
+import React from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function Index(props: TPROPS) {
@@ -23,7 +29,7 @@ export default function Index(props: TPROPS) {
 			props.choices.unshift(element)
 	}
 
-	if (props.choiceType === "select") {
+	if (props.choiceType === "autoComplete") {
 		const optionsAutoComplete:any = props.choices.map((choice)=> {
 			return{
 				label: choice.title,
@@ -44,51 +50,9 @@ export default function Index(props: TPROPS) {
 				const choice = props.choices[index]
 				handleSelectChoice(index, choice);
 			}}
-			
     />
-	// 	  <FormControl fullWidth>
-	// 		<InputLabel sx={{color:'#6d141a','&.Mui-focused':{color:'#6d141a'}}} id="demo-simple-select-label">Selecione</InputLabel>
-	// 		<Select
-		
-	
-	//  sx={{
-	
-	// 	color: "#6d141a",
-	// 	'.MuiOutlinedInput-notchedOutline': {
-	// 	  borderColor: '#6d141a',
-	// 	},
-	// 	'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-	// 	  borderColor: '#6d141a',
-	// 	},
-	// 	'&:hover .MuiOutlinedInput-notchedOutline': {
-	// 	  borderColor: '#6d141a',
-	// 	},
-	// 	'.MuiSvgIcon-root ': {
-	// 	  fill: "white !important",
-	// 	},
-	// 	'.MuiInputLabel-root':{
-	// 		color:'#6d141a'
-	// 	},
-	//   }}          labelId="select-label"
-	// 		  id="select"
-	// 		  label="Selecione"
-	// 		>
-	// 		  {props.choices.map((choice, index) => (
-	// 			<MenuItem
-	// 			key={index}
-	// 			  onClick={() => {
-	// 				handleSelectChoice(index, choice);
-	// 			  }}
-	// 			  value={choice.title}
-	// 			>
-	// 			  {choice.title}
-	// 			</MenuItem>
-	// 		  ))}
-	// 		</Select>
-	// 	  </FormControl>
 		);
 	}
-
 	return (
 		<RadioGroup>
 			{props.choices.reverse().map((choice, index) => (
