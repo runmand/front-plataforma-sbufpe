@@ -84,55 +84,91 @@ export default function Index(){
     >
       <Typography
         sx={{ padding: 1.5 }}
+        textAlign={'center'}
         variant="body1"
         color={theme.black}
       >
         Primeiro clique em “ENTRAR” na plataforma: 
       </Typography>
-      <CardMedia
-        component="img"
-        image="https://i.imgur.com/Xgdjlm0.png"
-        alt="Imagem do Botão de ENTRAR"
-        sx={{
-            width: '10%',
-            marginLeft: '1rem',
-        }}
-      />
+      <Grid
+        container
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+        <Grid item xs>
+          <CardMedia
+                  component="img"
+                  image="https://i.imgur.com/Xgdjlm0.png"
+                  alt="Imagem do Botão de ENTRAR"
+                  sx={{
+                      width: '100%',
+                  }}
+          />
+        </Grid>
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+      </Grid>
       <Typography
         sx={{ padding: 1.5 }}
         variant="body1"
+        textAlign={'center'}
         color={theme.black}
       >
         Um modal se abrirá e você deve clicar em “CADASTRE-SE AGORA”:
       </Typography>
-      <CardMedia
-        component="img"
-        image="https://i.imgur.com/COZX0Sz.png"
-        alt="Imagem do Botão de ENTRAR"
-        sx={{
-            width: '40%',
-            marginLeft: '1rem',
-        }}
-      />
+      <Grid
+        container
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Grid item xs></Grid>
+        <Grid item xs>
+          <CardMedia
+            component="img"
+            image="https://i.imgur.com/COZX0Sz.png"
+            alt="Imagem do Modal de ENTRAR"
+            sx={{
+                width: '100%',
+                marginLeft: '1rem',
+            }}
+          />
+        </Grid>
+        <Grid item xs></Grid>
+      </Grid>
       <Typography
         sx={{ padding: 1.5 }}
+        textAlign={'center'}
         variant="body1"
         color={theme.black}
       >
         O Modal Atual irá mudar para este e você deve escolher uma das quatro opções de cadastro:<br/>
         - CPF;<br/>- Telefone;<br/>- e-mail;<br/>- username<br/>
       </Typography>
-      <CardMedia
-        component="img"
-        image="https://i.imgur.com/BuGROFW.png"
-        alt="Imagem do Botão de ENTRAR"
-        sx={{
-            width: '40%',
-            marginLeft: '1rem',
-        }}
-      />
+      <Grid
+        container
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Grid item xs></Grid>
+        <Grid item xs>
+          <CardMedia
+            component="img"
+            image="https://i.imgur.com/BuGROFW.png"
+            alt="Modal de Cadastro"
+            sx={{
+                width: '100%',
+            }}
+          />
+        </Grid>
+        <Grid item xs></Grid>
+        </Grid>
       <Typography
         sx={{ padding: 1.5 }}
+        textAlign={'center'}
         variant="body1"
         color={theme.black}
       >
@@ -173,35 +209,59 @@ export default function Index(){
       <Typography
         sx={{ padding: 1.5 }}
         variant="body1"
+        textAlign={'center'}
         color={theme.black}
       >
         Primeiro, deve-se clicar em ENTRAR na barra superior: 
       </Typography>
-        <CardMedia
-                component="img"
-                image="https://i.imgur.com/Xgdjlm0.png"
-                alt="Imagem do Botão de ENTRAR"
-                sx={{
-                    width: '10%',
-                    marginLeft: '1rem',
-                }}
+      <Grid
+        container
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+        <Grid item xs>
+          <CardMedia
+                  component="img"
+                  image="https://i.imgur.com/Xgdjlm0.png"
+                  alt="Imagem do Botão de ENTRAR"
+                  sx={{
+                      width: '100%',
+                  }}
             />
+        </Grid>
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+        <Grid item xs></Grid>
+      </Grid>
       <Typography
         sx={{ padding: 1.5 }}
         variant="body1"
+        textAlign={'center'}
         color={theme.black}
       >
         Um modal se abrirá e você deverá selecionar o tipo de Login que foi selecionado no momento do cadastro, bem como, a senha que você inseriu anteriormente.      
       </Typography>
+      <Grid
+        container
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Grid item xs></Grid>
+        <Grid item xs>
         <CardMedia
                 component="img"
                 image="https://i.imgur.com/nq0ndHl.png"
                 alt="Modal do LOGIN"
                 sx={{
-                    width: '40%',
-                    marginLeft: '1rem',
+                    width: '100%',
                 }}
             />
+        </Grid>
+        <Grid item xs></Grid>
+      </Grid>
       <Typography>⠀⠀⠀⠀⠀⠀⠀⠀⠀</Typography>
     </Box>
 
@@ -233,6 +293,7 @@ export default function Index(){
     <Typography
         sx={{ padding: 1.5 }}
         variant="body1"
+        textAlign={'center'}
         color={theme.black}
       >
       Estamos instalando um modelo de recuperação de senha, bem como, uma página de Contato onde os usuários poderão solicitar a mudança de senha, porém, por enquanto você pode fazer a solicitação de nova senha e/ou do seu login, para tal envie:<br/>
@@ -300,10 +361,9 @@ export default function Index(){
       <CardMedia
         component="img"
         image="https://i.imgur.com/O4Hne6q.jpg"
-        alt="Código QR da plataforma"
+        alt="Tela Pós Login"
         sx={{
-            marginLeft: '1rem',
-            width: '90%',
+            width: '100%',
         }}
       />
       <Typography>⠀⠀⠀⠀⠀⠀⠀⠀⠀</Typography>
@@ -344,10 +404,9 @@ export default function Index(){
         <CardMedia
             component="img"
             image="https://i.imgur.com/ry8wDtX.png"
-            alt="Código QR da plataforma"
+            alt="Tela dos Questionários"
             sx={{
-                marginLeft: '1rem',
-                width: '90%',
+                width: '100%',
             }}
         />
         <Typography>⠀⠀⠀⠀⠀⠀⠀⠀⠀</Typography>
@@ -385,17 +444,16 @@ export default function Index(){
       >
         Após responder o questionário clique em ENVIAR e CONFIRME:
       </Typography>
-      <CardMedia
-            component="img"
-            image="https://i.imgur.com/0nHF4c6.jpg"
-            alt="Código QR da plataforma"
-            sx={{
-                marginLeft: '1rem',
-                width: '90%',
-            }}
-        />
-        <Typography>⠀⠀⠀⠀⠀⠀⠀⠀⠀</Typography>
-      </Box>
+        <CardMedia
+              component="img"
+              image="https://i.imgur.com/0nHF4c6.jpg"
+              alt="Modal dos Resultados"
+              sx={{
+                  width: '100%',
+              }}
+          />
+      <Typography>⠀⠀⠀⠀⠀⠀⠀⠀⠀</Typography>
+    </Box>
     </>
   )
 }
