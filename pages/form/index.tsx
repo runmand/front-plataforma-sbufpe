@@ -31,19 +31,19 @@ export default function Index() {
 				if (!res.errors) {
 					//Verificar qual o tipo de usuário está logado
 					const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID)
-					switch (typeId) {
+					switch(typeId){
 						case 1:
 							return setForms(res.data);
-						case 2:
-							return setForms(res.data);
-						case 3:
-							return setForms(res.data.filter(form => form.id !== 2 || 4))
-						case 4:
-							return setForms(res.data.filter(form => form.id === 2))
+							case 2:
+								return setForms(res.data);
+							case 3:
+								return setForms(res.data.filter(form => form.id !== 2))
+							case 4:
+								return setForms(res.data.filter(form => form.id === 2))
 					}
-
-
-
+				
+					
+					
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
