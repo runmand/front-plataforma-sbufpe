@@ -258,6 +258,21 @@ export const people = [
   },
 ];
 
+export const image =[{
+  id:1,
+  photo: '/card-form/Ceo.png',
+  alt: 'Logo CEO'
+},{
+  id:2,
+  photo: '/card-form/Aps.png',
+  alt: 'Logo APS'
+},
+{
+  id:3,
+  photo:'/card-form/Usuario.png',
+  alt:'Logo Usuário'
+}
+]
 
 
 export const acervo = [
