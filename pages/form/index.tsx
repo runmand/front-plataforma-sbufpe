@@ -23,7 +23,6 @@ export default function Index() {
 		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
 	};
 
-
 	useEffect(() => {
 		formService
 			.index()
@@ -37,13 +36,10 @@ export default function Index() {
 							case 2:
 								return setForms(res.data);
 							case 3:
-								return setForms(res.data.filter(form => form.id !== 2))
+								return setForms(res.data.filter(form => form.id !== 2 && form.id !==4))
 							case 4:
 								return setForms(res.data.filter(form => form.id === 2))
 					}
-				
-					
-					
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
@@ -79,7 +75,6 @@ export default function Index() {
 												height={'100rem'}
 											/>
 										</div>
-
 										{v.title}
 									</div>
 								</Button>
