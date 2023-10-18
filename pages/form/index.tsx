@@ -1,9 +1,7 @@
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
-import { Button } from '@mui/material';
-import { formButtonStyle, mainContainerStyle } from '../../src/pages/form/style';
-import Image from 'next/image';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import FormService from '../../src/pages/form/service';
 import React, { useEffect } from 'react';
 import { INDEX_RES } from '../../src/pages/form/type';
@@ -12,8 +10,7 @@ import { ID } from 'src/core/types';
 import router from 'next/router';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
-import { http } from 'src/core/axios';
-import FormAnswerService from 'src/pages/form-answer/service';
+import { theme } from 'src/core/theme';
 
 export default function Index() {
 	const formService = new FormService();
@@ -45,10 +42,10 @@ export default function Index() {
 			.index()
 			.then(res => {
 				if (!res.errors) {
-					//Verificar qual o tipo de usuário está logado
 					const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID)
 					switch(typeId){
 						case 1:
+							console.log(forms)
 							return setForms(res.data);
 							case 2:
 								return setForms(res.data);
@@ -76,27 +73,66 @@ export default function Index() {
 					forms.length === 0 ? (
 						<NotFound msg={'Nenhum questionário encontrado.'} />
 					) : (
-						<div style={mainContainerStyle}>
-							{forms.map((v, i) => (
-								<Button
+						<Box
+							sx={{
+								marginY:{xs:'10rem',sm:'7rem' },
+								marginX:{xs:'1rem', sm:'2rem'},
+								minHeight:{xs:'500px', sm:'500px'},
+								minWidth:{xs:'80%'},
+								background:theme.greyLight,
+								display:'flex',
+								flexDirection:'column',
+								alignItems:'center',
+								overflow:'unset'
+						}}>
+							<Typography
+								sx={{
+									fontSize:{xs:'h5.fontSize',md:'h4.fontSize'},
+									fontWeight:'bold'
+								}}>
+								Questionário Avaliativo
+							</Typography>
+							<Box
+								sx={{
+									paddingTop:'4rem',
+									display:'flex',
+									alignItems:'center',
+									gap:'20px',
+									justifyContent:'center',
+									flexWrap:'wrap',
+								}}>
+								{forms.map((v, i) => (
+									<Button
 									key={i}
-									style={formButtonStyle}
+									sx={{
+										backgroundColor:theme.primaryColor,
+										color:theme.white,
+										width:{xs:'100%',sm: '350px'},
+										height:'200px',
+										borderWidth:'0.5rem',
+										borderColor:theme.secundaryColor,
+										display:'flex',
+										flexDirection:'column',
+										gap:'10px',
+										fontWeight:'bold',
+										'&:hover':{
+											backgroundColor:theme.secundaryColor,
+										}
+									}}
 									onClick={() => handleSelectForm(v.id)}
 								>
-									<div style={{ width: '100%' }}>
-										<div style={{ width: '100%' }}>
-											<Image
-												src='/logo-odontology.png'
-												alt='logo-odontology'
-												width={'160%'}
-												height={'100rem'}
-											/>
-										</div>
-										{v.title}
-									</div>
-								</Button>
+									<Avatar 
+										alt="Logo de Odontologia"
+										src="/logo-transparent.png"
+										sx={{ width:'56', height: '56' }}/>
+									{v.title}
+									<>
+									</>
+								</Button>							
 							))}
-						</div>
+							</Box>
+						</Box>
+						
 					)
 				) : (
 					<div></div>
