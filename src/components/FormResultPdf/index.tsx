@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { FormResultProps } from "./FormResultProps.types";
 
@@ -57,11 +57,14 @@ const styles = StyleSheet.create({
   }
 });
 
+
 export const ResultFormPdf = ({
   maxScore,
   score,
   domainList,
+  answer
 }: FormResultProps) => {
+
   return (
     <Document>
       <Page wrap={false}>
@@ -78,6 +81,12 @@ export const ResultFormPdf = ({
         <View style={styles.flex}>
            <Text>Pontuação atingida:</Text>
           <Text style={styles.points}>{score} pts</Text>
+          </View>
+        </View>
+        <View style={styles.section}>
+        <View style={styles.flex}>
+           <Text>Nome do CEO:</Text>
+          <Text style={{maxWidth:'300px',marginLeft:'10px'}}>{answer.title}</Text>
           </View>
         </View>
 
