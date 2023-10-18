@@ -13,17 +13,34 @@ import router from 'next/router';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { http } from 'src/core/axios';
+import FormAnswerService from 'src/pages/form-answer/service';
 
 export default function Index() {
 	const formService = new FormService();
+	const formAnwerService = new FormAnswerService();
+
 	const { enqueueSnackbar } = useSnackbar();
 	const [forms, setForms] = React.useState<INDEX_RES[]>();
-
 	const handleSelectForm = (id: ID) => {
 		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
 	};
 
+	async function getFormResult(){
+		try{
+			
+			const {data:formResult} = await formAnwerService.getFormattedFormShow(3)
+			console.log(formResult)
+		
+		}catch(err:any){
+			console.error(err)
+		}
+	}
+	
+
 	useEffect(() => {
+		getFormResult()
+
+
 		formService
 			.index()
 			.then(res => {
