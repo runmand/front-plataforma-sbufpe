@@ -3,7 +3,7 @@ import {
 	CardContent, 
 	Modal, 
 	Typography } from '@mui/material';
-import React,{Suspense} from 'react';
+import React,{Suspense, useEffect} from 'react';
 import { TPROPS } from './type';
 import Header from '../../header/index';
 import ActionArea from '@components/modal/action-area';
@@ -16,12 +16,13 @@ import { pdf } from '@react-pdf/renderer';
 export default function Index(props: TPROPS) {
 	
 	async function downloadPdf(){
-	
+		const localStorageAnswer = localStorage.getItem('selectedAnswer')
 		const blob = await pdf(
 			<ResultFormPdf
 			domainList={props.formResult.domainList}
 		maxScore={props.formResult.maxScore}
 		score={props.formResult.score}	
+		answer={JSON.parse(localStorageAnswer)}
 			/>
 		  ).toBlob();
 	
@@ -44,6 +45,9 @@ export default function Index(props: TPROPS) {
 		  document.body.removeChild(a);
 	}
 
+	useEffect(() => {
+		localStorage.setItem('lastFormSubmited',props.formId+'')
+	},[])
 	return (
 		<Modal
 			open={props.isOpen}

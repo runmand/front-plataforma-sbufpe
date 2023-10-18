@@ -1,4 +1,4 @@
-import { Box, CardMedia, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Box, CardMedia, Grid, Typography } from "@mui/material";
 import { theme } from "src/core/theme";
 
 export default function Index(){
@@ -73,11 +73,13 @@ export default function Index(){
             height: 'auto',
         }}
         >
-            <Typography
-                sx={{ padding: 2 }}
+            <Typography sx={{ 
+                padding: 2 ,
+                }}
                 textAlign={'center'}
                 variant="h4"
                 color={theme.white}
+                
             >
                 Parceiros
             </Typography>
@@ -112,8 +114,8 @@ export default function Index(){
                 <Grid item xs>
                         <CardMedia
                             component="img"
-                            image="https://i.imgur.com/5hxmD5z.png"
-                            alt="Logo ABC"
+                            image="https://i.imgur.com/n2myEZg.png"
+                            alt="Logo Conselho Regional de Odontologia de Pernambuco"
                             sx={{
                                 width: '80%',
                             }}
@@ -154,10 +156,11 @@ export default function Index(){
                 <Grid item xs>
                     <CardMedia
                         component="img"
-                        image="https://i.imgur.com/Tshctlr.png"
-                        alt="Logo Prefeitura do Recife"
+                        image="https://i.imgur.com/Z1oobdG.png"
+                        alt="Logo UFPE"
                         sx={{
                             width: '80%',
+                            marginBottom: '1rem'
                         }}
                     />
                 </Grid>
@@ -181,18 +184,6 @@ export default function Index(){
             >
                 <Grid item xs>
 
-                </Grid>
-
-                <Grid item xs>
-                    <CardMedia
-                        component="img"
-                        image="https://i.imgur.com/Z1oobdG.png"
-                        alt="Logo UFPE"
-                        sx={{
-                            width: '80%',
-                            marginBottom: '1rem'
-                        }}
-                    />
                 </Grid>
 
                 <Grid item xs>
@@ -238,7 +229,7 @@ export default function Index(){
                         variant="h6"
                         color={theme.black}
                     >
-                        42
+                        120
                     </Typography>
                 </Grid>
 
@@ -248,7 +239,7 @@ export default function Index(){
                         variant="h6"
                         color={theme.black}
                     >
-                        15
+                        18
                     </Typography>
                 </Grid>
 

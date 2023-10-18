@@ -14,14 +14,30 @@ import { theme } from 'src/core/theme';
 
 export default function Index() {
 	const formService = new FormService();
+	const formAnwerService = new FormAnswerService();
+
 	const { enqueueSnackbar } = useSnackbar();
 	const [forms, setForms] = React.useState<INDEX_RES[]>();
-
 	const handleSelectForm = (id: ID) => {
 		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
 	};
 
+	async function getFormResult(){
+		try{
+			
+			const {data:formResult} = await formAnwerService.getFormattedFormShow(3)
+			console.log(formResult)
+		
+		}catch(err:any){
+			console.error(err)
+		}
+	}
+	
+
 	useEffect(() => {
+		getFormResult()
+
+
 		formService
 			.index()
 			.then(res => {
@@ -34,8 +50,7 @@ export default function Index() {
 							case 2:
 								return setForms(res.data);
 							case 3:
-								return setForms(res.data
-									.filter(form => form.id !== 2 && form.id !==4  && form.id !==5))
+								return setForms(res.data.filter(form => form.id !== 2 && form.id !==4))
 							case 4:
 								return setForms(res.data.filter(form => form.id === 2))
 					}
