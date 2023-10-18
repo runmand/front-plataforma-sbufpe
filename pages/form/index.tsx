@@ -1,8 +1,7 @@
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
-import { Box, Button, Divider, Grid, Link, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import Image from 'next/image';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import FormService from '../../src/pages/form/service';
 import React, { useEffect } from 'react';
 import { INDEX_RES } from '../../src/pages/form/type';
@@ -12,8 +11,6 @@ import router from 'next/router';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { theme } from 'src/core/theme';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-
 
 export default function Index() {
 	const formService = new FormService();
@@ -29,19 +26,19 @@ export default function Index() {
 			.index()
 			.then(res => {
 				if (!res.errors) {
-					//Verificar qual o tipo de usuário está logado
 					const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID)
-					
 					switch(typeId){
 						case 1:
+							console.log(forms)
 							return setForms(res.data);
 							case 2:
 								return setForms(res.data);
 							case 3:
-								return setForms(res.data.filter(form => form.id !== 2))
+								return setForms(res.data
+									.filter(form => form.id !== 2 && form.id !==4  && form.id !==5))
 							case 4:
 								return setForms(res.data.filter(form => form.id === 2))
-					}					
+					}
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
 				}
@@ -50,6 +47,7 @@ export default function Index() {
 				console.error(e);
 				enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' }); //TODO: Tratar essa exception
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -62,127 +60,64 @@ export default function Index() {
 					) : (
 						<Box
 							sx={{
-								width:1,
-								height:'100vh',
+								marginY:{xs:'10rem',sm:'7rem' },
+								marginX:{xs:'1rem', sm:'2rem'},
+								minHeight:{xs:'500px', sm:'500px'},
+								minWidth:{xs:'80%'},
+								background:theme.greyLight,
 								display:'flex',
+								flexDirection:'column',
 								alignItems:'center',
-								justifyContent:'center',
-								gap:'10px',
-								flexWrap:'wrap',
-								backgroundColor:theme.greyLight
-								
-							}}>
-								<Paper elevation={3}
+								overflow:'unset'
+						}}>
+							<Typography
 								sx={{
-									marginTop:'5%',
-									width:'80%',
-									height:'80%',
-									display:'flex',
-									flexDirection:'column',
-									alignItems:'center',
-									justifyContent:'center',
+									fontSize:{xs:'h5.fontSize',md:'h4.fontSize'},
+									fontWeight:'bold'
 								}}>
-									<Box component="span"
-									sx={{
-										display:'flex',
-										flexDirection:'column',
-										alignContent:'center',
-										justifyContent:'center',
-										margin:'5%',
-										gap:'20px'
-									}}>
-									<Typography variant='h5'
-									sx={{
-										textAlign:'center',
-										color:theme.primaryColor
-									}}>
-										Questionario
-									</Typography>
-									<Typography
-									sx={{textAlign:'justify'}}>
-										Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima, officiis vitae. Iure commodi autem eum voluptatem aut quas quidem, error voluptatum nulla sunt dolor possimus? Nihil repellendus inventore consectetur sit?
-										Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem debitis praesentium quos tempora repudiandae iure sint quasi sequi officia, quae repellat odio non dolores ullam iste fugiat laudantium saepe earum?Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi dolorum provident rem aperiam sapiente at delectus amet asperiores incidunt nihil, impedit consectetur, molestiae doloribus dicta! Illum fuga dolore fugit consequatur.
-									</Typography>
-									</Box>
-									<Box component="span"
-									sx={{
-										display:'flex',
-										flexDirection:'column',
-										alignContent:'center',
-										justifyContent:'center',
-										margin:'5%',
-										gap:'20px'
-									}}>
-										<TableContainer component={Paper}>
-              				<Table
-											sx={{minWidth:'80%'}}
-												size="small" 
-												aria-label="a dense table">
-                  			<TableHead>
-                    			<TableRow>
-                      			<TableCell align="center">Titulo</TableCell>
-                      			<TableCell align="center">Arquivo</TableCell>
-                    			</TableRow>
-                  			</TableHead>
-                  			<TableBody>
-                    			{forms.map((v,i) => (
-                      		<TableRow
-                        		key={i}
-                        		sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      		>
-
-                        <TableCell align="center">{v.title}</TableCell>
-                        <TableCell align="center" >
-                          <Button
-													onClick={()=> handleSelectForm(v.id)}>
-														<VisibilityIcon></VisibilityIcon>
-													</Button>
-                          </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-									</Box>
-									
-
-									
-								</Paper>
-							{/* {forms.map((v, i) => (
-								<Button
+								Questionário Avaliativo
+							</Typography>
+							<Box
+								sx={{
+									paddingTop:'4rem',
+									display:'flex',
+									alignItems:'center',
+									gap:'20px',
+									justifyContent:'center',
+									flexWrap:'wrap',
+								}}>
+								{forms.map((v, i) => (
+									<Button
 									key={i}
-									variant='contained'
 									sx={{
-										width:'200px',
-										minHeight:'200px',
-										background:theme.primaryColor,
-										border:'solid',
-										fontWeight: 'bold',
-										flexWrap:'wrap',
-										":hover"
-										:{background:theme.secundaryColor}
-										
+										backgroundColor:theme.primaryColor,
+										color:theme.white,
+										width:{xs:'100%',sm: '350px'},
+										height:'200px',
+										borderWidth:'0.5rem',
+										borderColor:theme.secundaryColor,
+										display:'flex',
+										flexDirection:'column',
+										gap:'10px',
+										fontWeight:'bold',
+										'&:hover':{
+											backgroundColor:theme.secundaryColor,
+										}
 									}}
-									// style={formButtonStyle}
 									onClick={() => handleSelectForm(v.id)}
 								>
-									
-									<div style={{ width: '100%' }}>
-										<div style={{ width: '100%' }}>
-											<Image
-												src='/card-form/user.png'
-												alt='logo-odontology'
-												width={'100%'}
-												height={'100rem'}
-												color='white'
-											/>
-										</div>
-
-										{v.title}
-									</div>
-								</Button>
-							))} */}
+									<Avatar 
+										alt="Logo de Odontologia"
+										src="/logo-transparent.png"
+										sx={{ width:'56', height: '56' }}/>
+									{v.title}
+									<>
+									</>
+								</Button>							
+							))}
+							</Box>
 						</Box>
+						
 					)
 				) : (
 					<div></div>
