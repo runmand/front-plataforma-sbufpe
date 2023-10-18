@@ -12,6 +12,7 @@ export type GET_USER_RESULT_FROM_FORM_RES = {
   maxScore: number;
   score: number;
   date: Date;
+  formTitle: string;
   domainList: {
     cod: string;
     name: string;
