@@ -258,8 +258,6 @@ export const people = [
   },
 ];
 
-
-
 export const acervo = [
   { 
       type: "Avaliação CEO",
