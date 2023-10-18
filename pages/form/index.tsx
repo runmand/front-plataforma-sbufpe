@@ -11,6 +11,7 @@ import router from 'next/router';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { theme } from 'src/core/theme';
+import FormAnswerService from 'src/pages/form-answer/service';
 
 export default function Index() {
 	const formService = new FormService();
@@ -50,9 +51,11 @@ export default function Index() {
 							case 2:
 								return setForms(res.data);
 							case 3:
-								return setForms(res.data.filter(form => form.id !== 2 && form.id !==4))
+								return setForms(res.data
+									.filter(form => form.id !== 2 && form.id !== 4 && form.id !== 5))
 							case 4:
-								return setForms(res.data.filter(form => form.id === 2))
+								return setForms(res.data
+									.filter(form => form.id === 2))
 					}
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
