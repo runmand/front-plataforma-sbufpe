@@ -42,7 +42,12 @@ export default function Index(props: TPROPS) {
   }
 
   useEffect(() => {
-    localStorage.setItem("lastFormSubmited", props.formId + "");
+    const lastFormSubmited = {
+      formId: props.formId + "",
+      formTitle: props.formTitle,
+      formDate: props.formResult.date,
+    };
+    localStorage.setItem("lastFormSubmited", JSON.stringify(lastFormSubmited));
   }, []);
   return (
     <Modal
