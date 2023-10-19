@@ -26,14 +26,17 @@ export default function Index(props: TPROPS) {
 
   async function downloadPdf() {
     const localStorageAnswer = localStorage.getItem("selectedAnswer");
+    const lastFormSubmited = JSON.parse(
+      localStorage.getItem("lastFormSubmited")
+    );
     const blob = await pdf(
       <ResultFormPdf
         domainList={formData.domainList}
         maxScore={formData.maxScore}
         score={formData.score}
         answer={JSON.parse(localStorageAnswer)}
-        formTitle={formData.formTitle}
-        date={formData.date}
+        formTitle={lastFormSubmited.formTitle}
+        date={lastFormSubmited.formDate}
       />
     ).toBlob();
 
@@ -57,7 +60,8 @@ export default function Index(props: TPROPS) {
   }
 
   useEffect(() => {
-    const formIdFromLocalStorage = localStorage.getItem("lastFormSubmited");
+    const lastFormSubmited = localStorage.getItem("lastFormSubmited");
+    const formIdFromLocalStorage = JSON.parse(lastFormSubmited).formId;
     if (formIdFromLocalStorage) {
       getFormResult(Number(formIdFromLocalStorage));
     }
