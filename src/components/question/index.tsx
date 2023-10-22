@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { ID } from 'src/core/types';
 
 export default function Index(props: TPROPS) {
-	const selectOptions:ID[] = [109, 1, 6, 8, 48, 46, 66,68]
+	const selectOptions:ID[] = [109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123]
 	const [canShow, setCanShow] = React.useState(false);
 	const smQuery = useMediaQuery('(min-width:500px)')
 
