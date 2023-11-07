@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Base from '@components/base-layout';
 import AppBar from '@components/app-bar';
 import FooterMain from '@components/footer/main/index';
@@ -12,7 +12,6 @@ import {
 	Box,
 	Button,
 	Grid,
-	IconButton,
 	Paper,
 	Typography,
 } from '@mui/material';
@@ -27,8 +26,6 @@ import Informes from '@components/container/informes';
 import WhatIs from '@components/container/what-is';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Height, Padding } from '@mui/icons-material';
-
 
 export default function Index() {
 	const router = useRouter();
@@ -125,6 +122,11 @@ export default function Index() {
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
 
+	useEffect(()=>{
+		if(router.query.containerBody){
+			setContainerBodyType(router.query.containerBody as string)
+		}
+	},[router])
 
 	return (
 		<div>
