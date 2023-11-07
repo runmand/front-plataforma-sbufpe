@@ -42,6 +42,7 @@ export default function Index(){
           <MenuItem value="">
             <em>Referencias</em>
           </MenuItem>
+          <MenuItem value={"CEO-PARAÍBA"}>CEO-PARAÍBA</MenuItem>
           <MenuItem value={"Avaliação CEO"}>Avaliação CEO</MenuItem>
           <MenuItem value={"Avaliação da APS"}>Avaliação APS</MenuItem>
         </Select>
