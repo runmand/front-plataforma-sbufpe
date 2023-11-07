@@ -260,10 +260,76 @@ export const people = [
 
 export const acervo = [
   { 
-      type: "Avaliação CEO",
-      article: "Prestação de Serviços de Manutenção Predial em Estabelecimentos Assistenciais de Saúde. Ciênc. Saúde Col.",
-      author: "Amorim, G.M.; QUINTÃO, E.C.V.; MARTELLI-JÚNIOR, H.; BONAN, P.R.F",
-      link: "https://www.scielosp.org/article/ssm/content/raw/?resource_ssm_path=/media/assets/csc/v18n1/16.pdf"
+    type: "Avaliação CEO",
+    article: "Curso do Programa Nacional em Governança Publica - PRONAGOV",
+    author: "PRONAGOV",
+    link: "https://pronagov.com.br/"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Curso Curso Virtual sobre Políticas Informadas de Evidências(PIE)",
+    author: "OPAS - Organização Pan-Americana de Saúde",
+    link: "https://www.campusvirtualsp.org/pt-br/node/31318"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Curso de Residência em Clínica Integrada em Odontologia com enfae em: Endodontia, Prótese Dentário, Cirurgia Oral Menor e Diagnóstico bucal.",
+    author: "Escola de Saúde Publica- Paraíba",
+    link: "https://esp.pb.gov.br/"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Cursos da Área de Saúde com certificado",
+    author: "TelessaúdeRS",
+    link: "https://www.ufrgs.br/telessauders/cursos/"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Material de Apoio referente a Segunda  Opnião Formativa(S.O.F)",
+    author: "Biblioteca Virtual em Saúde - BVS",
+    link: "https://aps.bvs.br/segunda-opiniao-formativa/"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Politica Nacional de Saúde Bucal - Brasil Sorridente",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://aps.bvs.br/segunda-opiniao-formativa/"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Manual Para Cadastro De Propostas Para Informatização dos CEO",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://egestorab.saude.gov.br/image/?file=20221003_N_MANUALPARACADASTRODEPROPOSTASPARAINFORMATIZACAODOSCENTROSDEESPECIALIDADESODONTOLOGICAS(2)compressed_9082101210571270621.pdf"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Caderno de Atenção Básica nº 17",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal.pdf"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "A Saúde Bucal no Sistema Único de Saúde",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "http://189.28.128.100/dab/docs/portaldab/publicacoes/saude_bucal_sistema_unico_saude.pdf"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Protocolo Clínico e de Regulação Ogontologico",
+    author: "Prefeitura Municipal de Ribeirão Preto",
+    link: "https://www.ribeiraopreto.sp.gov.br/portal/pdf/saude503202112.pdf"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Planejamento Estratégico Situacional (PES)",
+    author: "Fundação Oswaldo Cruz 0 FIOCRUZ",
+    link: "https://www.arca.fiocruz.br/bitstream/handle/icict/39910/T%E9cnico%20de%20Vigil%E2ncia%20em%20Sa%FAde%20v.2%20-%20Planejamento%20em%20sa%FAde.pdf?sequence=2"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Prestação de Serviços de Manutenção Predial em Estabelecimentos Assistenciais de Saúde. Ciênc. Saúde Col.",
+    author: "Amorim, G.M.; QUINTÃO, E.C.V.; MARTELLI-JÚNIOR, H.; BONAN, P.R.F",
+    link: "https://www.scielosp.org/article/ssm/content/raw/?resource_ssm_path=/media/assets/csc/v18n1/16.pdf"
   },
   {
       type: "Avaliação CEO",

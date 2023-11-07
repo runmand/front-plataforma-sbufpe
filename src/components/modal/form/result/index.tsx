@@ -1,14 +1,18 @@
-import { Card, CardContent, Modal, Typography } from "@mui/material";
-import React, { Suspense, useEffect } from "react";
+import { Button, Card, CardContent, Modal, Typography } from "@mui/material";
+import React, {  useEffect } from "react";
 import { TPROPS } from "./type";
 import Header from "../../header/index";
 import ActionArea from "@components/modal/action-area";
 import { theme } from "src/core/theme";
 import { ResultFormPdf } from "@components/FormResultPdf";
-
+import { useRouter } from 'next/router';
 import { pdf } from "@react-pdf/renderer";
+import {routerEnum } from "src/core/enums";
+import { containerBodyTypeEnum } from 'src/core/enums';
+
 
 export default function Index(props: TPROPS) {
+  const router = useRouter();
   async function downloadPdf() {
     const localStorageAnswer = localStorage.getItem("selectedAnswer");
     const blob = await pdf(
@@ -21,24 +25,26 @@ export default function Index(props: TPROPS) {
         formTitle={props.formTitle}
       />
     ).toBlob();
-
     // Create a URL for the blob object
     const url = URL.createObjectURL(blob);
     // Create an anchor element and set its href to the PDF URL
     const a = document.createElement("a");
     a.href = url;
-
     // Set the anchor element's download attribute to the PDF file name
     a.download = new Date() + "";
-
     // Append the anchor element to the document body
     document.body.appendChild(a);
-
     // Click the anchor element to initiate the download
     a.click();
-
     // Remove the anchor element from the document body
     document.body.removeChild(a);
+  }
+  
+  const handleQuestion = () => {
+    router.push({
+      pathname: routerEnum.INITIAL,
+      query: {containerBody : containerBodyTypeEnum.COLLECTION }
+    });
   }
 
   useEffect(() => {
@@ -46,7 +52,7 @@ export default function Index(props: TPROPS) {
   }, []);
   return (
     <Modal
-      open={props.isOpen}
+      open={props.isOpen} 
       sx={{
         display: "flex",
         alignItems: "center",
@@ -118,7 +124,24 @@ export default function Index(props: TPROPS) {
             >
               {props.formResult.score} pts
             </Typography>
+            <Typography>
+            </Typography>
           </Typography>
+          <Button
+          onClick={handleQuestion}>
+          <Typography
+            sx={{
+              paddingTop:'1rem',
+              fontSize: "1.5rem",
+              textTransform: "uppercase",
+              color: theme.secundaryConfirm,
+              fontWeight: "bold",
+            }}>
+            clique aqui e Acesse às referencias em nosso acervo
+          </Typography>
+
+          </Button>
+          
         </CardContent>
         <Card
           sx={{
@@ -177,3 +200,7 @@ export default function Index(props: TPROPS) {
     </Modal>
   );
 }
+function handleShowPageContact() {
+  throw new Error("Function not implemented.");
+}
+
