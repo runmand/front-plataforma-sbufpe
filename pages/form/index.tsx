@@ -23,17 +23,17 @@ export default function Index() {
 		router.push({ pathname: routerEnum.FORM_ANSWER, query: { id } });
 	};
 
-	async function getFormResult(){
-		try{
-			
-			const {data:formResult} = await formAnwerService.getFormattedFormShow(3)
+	async function getFormResult() {
+		try {
+
+			const { data: formResult } = await formAnwerService.getFormattedFormShow(3)
 			console.log(formResult)
-		
-		}catch(err:any){
+
+		} catch (err: any) {
 			console.error(err)
 		}
 	}
-	
+
 
 	useEffect(() => {
 		getFormResult()
@@ -44,18 +44,18 @@ export default function Index() {
 			.then(res => {
 				if (!res.errors) {
 					const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID)
-					switch(typeId){
+					switch (typeId) {
 						case 1:
 							console.log(forms)
 							return setForms(res.data);
-							case 2:
-								return setForms(res.data);
-							case 3:
-								return setForms(res.data
-									.filter(form => form.id !== 2 && form.id !== 4 && form.id !== 5))
-							case 4:
-								return setForms(res.data
-									.filter(form => form.id === 2))
+						case 2:
+							return setForms(res.data);
+						case 3:
+							return setForms(res.data
+								.filter(form => form.id !== 2 && form.id !== 5))
+						case 4:
+							return setForms(res.data
+								.filter(form => form.id === 2))
 					}
 				} else {
 					res.errors.forEach(error => enqueueSnackbar(error, { variant: 'error' }));
@@ -78,64 +78,64 @@ export default function Index() {
 					) : (
 						<Box
 							sx={{
-								marginY:{xs:'10rem',sm:'7rem' },
-								marginX:{xs:'1rem', sm:'2rem'},
-								minHeight:{xs:'500px', sm:'500px'},
-								minWidth:{xs:'80%'},
-								background:theme.greyLight,
-								display:'flex',
-								flexDirection:'column',
-								alignItems:'center',
-								overflow:'unset'
-						}}>
+								marginY: { xs: '10rem', sm: '7rem' },
+								marginX: { xs: '1rem', sm: '2rem' },
+								minHeight: { xs: '500px', sm: '500px' },
+								minWidth: { xs: '80%' },
+								background: theme.greyLight,
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'center',
+								overflow: 'unset'
+							}}>
 							<Typography
 								sx={{
-									fontSize:{xs:'h5.fontSize',md:'h4.fontSize'},
-									fontWeight:'bold'
+									fontSize: { xs: 'h5.fontSize', md: 'h4.fontSize' },
+									fontWeight: 'bold'
 								}}>
 								Questionário Avaliativo
 							</Typography>
 							<Box
 								sx={{
-									paddingTop:'4rem',
-									display:'flex',
-									alignItems:'center',
-									gap:'20px',
-									justifyContent:'center',
-									flexWrap:'wrap',
+									paddingTop: '4rem',
+									display: 'flex',
+									alignItems: 'center',
+									gap: '20px',
+									justifyContent: 'center',
+									flexWrap: 'wrap',
 								}}>
 								{forms.map((v, i) => (
 									<Button
-									key={i}
-									sx={{
-										backgroundColor:theme.primaryColor,
-										color:theme.white,
-										width:{xs:'100%',sm: '350px'},
-										height:'200px',
-										borderWidth:'0.5rem',
-										borderColor:theme.secundaryColor,
-										display:'flex',
-										flexDirection:'column',
-										gap:'10px',
-										fontWeight:'bold',
-										'&:hover':{
-											backgroundColor:theme.secundaryColor,
-										}
-									}}
-									onClick={() => handleSelectForm(v.id)}
-								>
-									<Avatar 
-										alt="Logo de Odontologia"
-										src="/logo-transparent.png"
-										sx={{ width:'56', height: '56' }}/>
-									{v.title}
-									<>
-									</>
-								</Button>							
-							))}
+										key={i}
+										sx={{
+											backgroundColor: theme.primaryColor,
+											color: theme.white,
+											width: { xs: '100%', sm: '350px' },
+											height: '200px',
+											borderWidth: '0.5rem',
+											borderColor: theme.secundaryColor,
+											display: 'flex',
+											flexDirection: 'column',
+											gap: '10px',
+											fontWeight: 'bold',
+											'&:hover': {
+												backgroundColor: theme.secundaryColor,
+											}
+										}}
+										onClick={() => handleSelectForm(v.id)}
+									>
+										<Avatar
+											alt="Logo de Odontologia"
+											src="/logo-transparent.png"
+											sx={{ width: '56', height: '56' }} />
+										{v.title}
+										<>
+										</>
+									</Button>
+								))}
 							</Box>
 						</Box>
-						
+
 					)
 				) : (
 					<div></div>
