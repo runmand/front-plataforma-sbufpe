@@ -4,8 +4,8 @@ import { TPROPS } from "./type";
 import ListMenu from "@components/menu/list/index";
 import { modalStyle } from "./style";
 import FormAnswerService from "src/pages/form-answer/service";
-import { ResultFormPdf } from "@components/FormResultPdf";
-import { pdf } from "@react-pdf/renderer";
+import { ResultFormPdf, stylesPDF } from "@components/FormResultPdf";
+import { pdf, Document, Page, Text, View } from "@react-pdf/renderer";
 import { FormResultProps } from "@components/FormResultPdf/FormResultProps.types";
 
 //TODO: Permitir configuração da posição do drawer menu
@@ -19,21 +19,81 @@ export default function Index(props: TPROPS) {
         formId
       );
       setFormData(formResult);
+      console.log("formResult:", formResult);
     } catch (err: any) {
       console.error(err);
     }
   }
 
+  useEffect(() => {
+    console.log("formData:", formData);
+  }, [formData]);
+
+  const ModifiedPdf = ({
+    maxScore,
+    score,
+    domainList,
+    answer,
+    formTitle,
+    date
+  }: FormResultProps) => {
+    return (
+      <Document>
+        <Page wrap={false}>
+          <View style={stylesPDF.section}>
+            <View style={stylesPDF.flex}>
+              <Text>Pontuação maxíma:</Text>
+              <Text style={stylesPDF.points}>{maxScore} pts</Text>
+            </View>
+          </View>
+          <View style={stylesPDF.section}>
+            <View style={stylesPDF.flex}>
+              <Text>Pontuação atingida:</Text>
+              <Text style={stylesPDF.points}>{score} pts</Text>
+            </View>
+          </View>
+          <View style={stylesPDF.section}>
+            <View style={stylesPDF.flex}>
+              <Text>Nome do CEO:</Text>
+              <Text style={{ maxWidth: "300px", marginLeft: "10px" }}>
+                {answer.title}
+              </Text>
+            </View>
+          </View>
+
+          <View style={stylesPDF.section}>
+            <View style={stylesPDF.sectionSpacing}>
+              {domainList.map((domain) => (
+                <View key={domain.cod}>
+                  <Text style={stylesPDF.sectionTitle}>{domain.name}</Text>
+                  {domain.questionList.map((question, key) => (
+                    <View key={key}>
+                      <Text style={stylesPDF.sectionSubtitle}>{question.title}</Text>
+                      <Text style={stylesPDF.sectionText}>
+                        {question.recommendationMessage}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ))}
+            </View>
+          </View>
+        </Page>
+      </Document>
+    );
+  }
+
   async function downloadPdf() {
     const localStorageAnswer = localStorage.getItem("selectedAnswer");
+    const { domainList, maxScore, score, formTitle, date } = formData;
     const blob = await pdf(
-      <ResultFormPdf
-        domainList={formData.domainList}
-        maxScore={formData.maxScore}
-        score={formData.score}
+      <ModifiedPdf
+        domainList={domainList}
+        maxScore={maxScore}
+        score={score}
         answer={JSON.parse(localStorageAnswer)}
-        formTitle={formData.formTitle}
-        date={formData.date}
+        formTitle={formTitle}
+        date={date}
       />
     ).toBlob();
 
