@@ -137,7 +137,7 @@ export default function Index(props: TPROPS) {
               color: theme.secundaryConfirm,
               fontWeight: "bold",
             }}>
-            clique aqui e Acesse às referencias em nosso acervo
+            clique aqui e Acesse às referências em nosso acervo
           </Typography>
 
           </Button>
