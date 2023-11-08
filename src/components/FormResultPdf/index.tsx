@@ -3,7 +3,7 @@ import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { FormResultProps } from "./FormResultProps.types";
 
 // Create styles
-const styles = StyleSheet.create({
+export const stylesPDF = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#E4E4E4",
@@ -67,25 +67,25 @@ export const ResultFormPdf = ({
   return (
     <Document>
       <Page wrap={false}>
-        <View style={styles.section}>
-          <Text style={styles.title}>{`Resultado ${formTitle} - ${new Date(
+        <View style={stylesPDF.section}>
+          <Text style={stylesPDF.title}>{`Resultado ${formTitle} - ${new Date(
             date
           ).toLocaleDateString("pt-br")}`}</Text>{" "}
         </View>
-        <View style={styles.section}>
-          <View style={styles.flex}>
+        <View style={stylesPDF.section}>
+          <View style={stylesPDF.flex}>
             <Text>Pontuação maxíma:</Text>
-            <Text style={styles.points}>{maxScore} pts</Text>
+            <Text style={stylesPDF.points}>{maxScore} pts</Text>
           </View>
         </View>
-        <View style={styles.section}>
-          <View style={styles.flex}>
+        <View style={stylesPDF.section}>
+          <View style={stylesPDF.flex}>
             <Text>Pontuação atingida:</Text>
-            <Text style={styles.points}>{score} pts</Text>
+            <Text style={stylesPDF.points}>{score} pts</Text>
           </View>
         </View>
-        <View style={styles.section}>
-          <View style={styles.flex}>
+        <View style={stylesPDF.section}>
+          <View style={stylesPDF.flex}>
             <Text>Nome do CEO:</Text>
             <Text style={{ maxWidth: "300px", marginLeft: "10px" }}>
               {answer.title}
@@ -93,15 +93,15 @@ export const ResultFormPdf = ({
           </View>
         </View>
 
-        <View style={styles.section}>
-          <View style={styles.sectionSpacing}>
+        <View style={stylesPDF.section}>
+          <View style={stylesPDF.sectionSpacing}>
             {domainList.map((domain) => (
               <View key={domain.cod}>
-                <Text style={styles.sectionTitle}>{domain.name}</Text>
+                <Text style={stylesPDF.sectionTitle}>{domain.name}</Text>
                 {domain.questionList.map((question, key) => (
                   <View key={key}>
-                    <Text style={styles.sectionSubtitle}>{question.title}</Text>
-                    <Text style={styles.sectionText}>
+                    <Text style={stylesPDF.sectionSubtitle}>{question.title}</Text>
+                    <Text style={stylesPDF.sectionText}>
                       {question.recommendationMessage}
                     </Text>
                   </View>
