@@ -29,5 +29,5 @@ export type QUESTION = {
 };
 
 export type QUESTION_ANSWER = {
-	formQuestionFormRegisterId: 
-	ID; answer: string };
+	formQuestionFormRegisterId:	ID;
+	answer: string };

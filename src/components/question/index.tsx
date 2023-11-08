@@ -7,8 +7,10 @@ import OpenAnswer from '../answer/open';
 import { TPROPS, QUESTION_ANSWER } from './type';
 import { theme } from 'src/core/theme';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { ID } from 'src/core/types';
 
 export default function Index(props: TPROPS) {
+	const selectOptions:ID[] = [109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123]
 	const [canShow, setCanShow] = React.useState(false);
 	const smQuery = useMediaQuery('(min-width:500px)')
 
@@ -27,7 +29,7 @@ export default function Index(props: TPROPS) {
 		emitter.addListener(listenerKey, (parentAnswer: QUESTION_ANSWER) => {
 			const isSameAnswer = parentAnswer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer);
 			setCanShow(isSameAnswer);
-
+		
 			/** Caso a questão fique oculta novamente, deleta a resposta dela do vetor de respostas do formulário. */
 			if (!canShow) props.onHideQuestion(props.question.formQuestionFormRegisterId);
 		});
@@ -50,6 +52,7 @@ export default function Index(props: TPROPS) {
 						<OpenAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
 							onAnswerQuestion={data => {
+							
 								handleAnswerQuestion(data);
 							}}
 						/>
@@ -58,9 +61,18 @@ export default function Index(props: TPROPS) {
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
 							choices={props.question.choices}
 							onSelectChoice={data => {
+							
+								const selectedAnswer = JSON.parse(data.answer).filter((item:number) => Boolean(item))[0]
+								
+								const answerToSave = props.question.choices.find(item => item.formsQuestionFormsQuestionChoicesId === selectedAnswer)
+							
+								if(props.question.title.includes('Nome do CEO') || props.question.title.includes('Nome do Estabelecimento')){
+									localStorage.setItem('selectedAnswer',JSON.stringify(answerToSave))
+								}
+								
 								handleAnswerQuestion(data);
 							}}
-              choiceType={props.question.formQuestionFormRegisterId === 109 ? 'select' : 'radio'}
+              choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId)  ?  'autoComplete' : 'radio'}
 						/>
 					)}
 				</CardContent>
@@ -72,6 +84,7 @@ export default function Index(props: TPROPS) {
 							parent={props.question}
 							question={child}
 							onAnswerQuestion={data => {
+							
 								props.onAnswerQuestion(data);
 							}}
 							onHideQuestion={data => {
