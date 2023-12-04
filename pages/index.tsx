@@ -22,6 +22,9 @@ import CollectionContainer from '@components/container/collection';
 import Faq from '@components/container/faq';
 import Tcle from '@components/container/tcle';
 import Direction from '@components/container/direction';
+import ApsData from '@components/container/aps-data';
+import CeoData from '@components/container/ceo-data';
+import UserData from '@components/container/user-data';
 import Informes from '@components/container/informes';
 import WhatIs from '@components/container/what-is';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
@@ -76,6 +79,23 @@ export default function Index() {
 				{
 					title: 'Perguntas Frequentes',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.FAQ),
+				},
+			],
+		},
+		{
+			title: 'NOSSOS DADOS SD',
+			menuItems: [
+				{
+					title: 'Usuário',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.USER_DATA),
+				},
+				{
+					title: 'CEO',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.CEO_DATA),
+				},
+				{
+					title: 'APS',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.APS_DATA),
 				},
 			],
 		},
@@ -293,6 +313,9 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
 						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
 						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
+						{containerBodyType === containerBodyTypeEnum.APS_DATA && <ApsData/>}
+						{containerBodyType === containerBodyTypeEnum.CEO_DATA && <CeoData/>}
+						{containerBodyType === containerBodyTypeEnum.USER_DATA && <UserData/>}
 					</Box>
 				}
 				footerChild={<FooterMain
