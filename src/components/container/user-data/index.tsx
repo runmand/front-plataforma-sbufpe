@@ -28,7 +28,6 @@ export default function Index() {
           src="https://app.powerbi.com/view?r=eyJrIjoiZDE5NWQyMjItZmMzYi00NmJkLWIzMDQtNTcxZjRkODY4MWE3IiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"
           allow="fullscreen"></iframe>
         </Box>
-    
   </Box>
   )
 }

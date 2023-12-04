@@ -17,7 +17,7 @@ export default function Index() {
 					textAlign:'center',
 					fontWeight:'bold',
 					paddingY:'2rem'}}>
-          USUÁRIOS
+          CEO
       </Typography>
       <Box>
         <iframe
@@ -28,7 +28,6 @@ export default function Index() {
           src="https://app.powerbi.com/view?r=eyJrIjoiZDY3NGI0MmYtOGM5NC00OWNjLTg1M2QtODA0YTFkZDVhOGYyIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9&pageName=ReportSection"
           allow="fullscreen"></iframe>
         </Box>
-    
   </Box>
   )
 }
