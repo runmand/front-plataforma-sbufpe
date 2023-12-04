@@ -86,7 +86,7 @@ export default function Index() {
 			title: 'NOSSOS DADOS SD',
 			menuItems: [
 				{
-					title: 'Usuário',
+					title: 'USUÁRIOS',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.USER_DATA),
 				},
 				{
