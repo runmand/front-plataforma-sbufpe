@@ -399,17 +399,34 @@ export default function Index(){
         variant="body1"
         color={theme.black}
       >
-        Após o login você estará na página inicial, pronto, só escolher o seu questionário:
+        Após o Login você estará na página inicial, ela dependerá do tipo de sua conta:<br/><br/>
+        Caso você seja um Profissional da área de Saúde, essa tela será exibida:
       </Typography>
         <CardMedia
             component="img"
-            image="https://i.imgur.com/ry8wDtX.png"
+            image="https://i.imgur.com/ek0PSoN.png"
             alt="Tela dos Questionários"
             sx={{
                 width: '100%',
             }}
         />
-        <Typography>⠀⠀⠀⠀⠀⠀⠀⠀⠀</Typography>
+        <Typography
+          sx={{ padding: 1.5 }}
+          textAlign={'center'}
+          variant="body1"
+          color={theme.black}
+        >
+          <br/>Caso você seja um Usuário, essa tela será exibida:
+        </Typography>
+        <CardMedia
+            component="img"
+            image="https://i.imgur.com/5aXyov7.png"
+            alt="Tela dos Questionários"
+            sx={{
+                width: '100%',
+            }}
+        />
+        <Typography><br/></Typography>
     </Box>
 
     <Box sx={{
@@ -442,11 +459,11 @@ export default function Index(){
         variant="body1"
         color={theme.black}
       >
-        Após responder o questionário clique em ENVIAR e CONFIRME:
+        Após responder o questionário clique em ENVIAR, Recomendamos que você BAIXE O PDF e depois CONFIRME:
       </Typography>
         <CardMedia
               component="img"
-              image="https://i.imgur.com/0nHF4c6.jpg"
+              image="https://i.imgur.com/3Id4px3.png"
               alt="Modal dos Resultados"
               sx={{
                   width: '100%',
