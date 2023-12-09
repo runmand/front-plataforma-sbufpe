@@ -138,7 +138,7 @@ export default function Index() {
 					textAlign={'center'}
 					variant='h4'
 					color={theme.white}>
-					Pesquisadores e Professores
+					Professores Pesquisadores
 				</Typography>
 			</Box>
 			<Grid container
