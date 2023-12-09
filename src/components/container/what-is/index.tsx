@@ -229,7 +229,7 @@ export default function Index(){
                         variant="h6"
                         color={theme.black}
                     >
-                        120
+                        329
                     </Typography>
                 </Grid>
 
@@ -239,7 +239,7 @@ export default function Index(){
                         variant="h6"
                         color={theme.black}
                     >
-                        18
+                        24
                     </Typography>
                 </Grid>
 
