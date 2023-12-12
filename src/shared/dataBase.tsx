@@ -265,6 +265,24 @@ export const tecTeam = [
 ]
 
 export const acervo = [
+  { 
+    type: "",
+    article: "Matriz Avaliativa da Satisfação do Usuário",
+    author: "Observatório de Saúde Bucal - GESTBUCAL",
+    link: "https://drive.google.com/file/d/1vsVIvkUp6BFma0BjVEw98at_iAnNAnML/view?usp=drive_link"
+  },
+  { 
+    type: "Avaliação CEO",
+    article: "Matriz Avaliativa dos Centros de Especialização Odontologicas(CEO)",
+    author: "Observatório de Saúde Bucal - GESTBUCAL",
+    link: "https://drive.google.com/file/d/1BWuoYuA_SDOznyZng4jgZoa8ab9on6fm/view?usp=drive_link"
+  },
+  { 
+    type: "Avaliação da APS",
+    article: "Matriz Avaliativa da Atenção Primária à Saúde (APS)",
+    author: "Observatório de Saúde Bucal - GESTBUCAL",
+    link: "https://drive.google.com/file/d/1uszV2F6C8ZbuA8wV3AFEIUIKpg-t60ZG/view?usp=drive_link"
+  },
   {
     type: "CEO-PARAÍBA",
     article: "Curso do Programa Nacional em Governança Publica - PRONAGOV",
