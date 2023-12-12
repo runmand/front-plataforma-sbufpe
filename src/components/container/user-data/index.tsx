@@ -25,7 +25,7 @@ export default function Index() {
           style={{
             minHeight:'600px',
             width:'100%'}}   
-          src="https://app.powerbi.com/view?r=eyJrIjoiZDE5NWQyMjItZmMzYi00NmJkLWIzMDQtNTcxZjRkODY4MWE3IiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"
+          src="https://app.powerbi.com/view?r=eyJrIjoiOTQ4YzU0MTgtMzY0Zi00MjhkLTg3N2MtNjM1N2M2NzcwMjlkIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"
           allow="fullscreen"></iframe>
         </Box>
   </Box>
