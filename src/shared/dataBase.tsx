@@ -1,4 +1,4 @@
-export const coordTeam = [
+export const teacherTeamTI = [
   {
     name: 'Amanda Chaves',
     role: 'Pesquisadora',
@@ -16,6 +16,9 @@ export const coordTeam = [
       },
     ],
   },
+];
+
+export const teacherTeamGI = [
   {
     name: 'Nilcema Figueiredo',
     role: 'Profª-Pesquisadora UFPE',
@@ -33,9 +36,6 @@ export const coordTeam = [
       },
     ],
   },
-];
-
-export const searchTeacherTeam = [
   {
     name: 'Danilo Almeida',
     role: 'Sanitarista - Pesquisador',
@@ -75,7 +75,7 @@ export const searchTeacherTeam = [
   },
 ]
 
-export const tecTeam = [
+export const studentTeamTI = [
   {
     name: 'Marcelo Dias',
     role: 'CEO - Tear Technology',
@@ -102,18 +102,6 @@ export const tecTeam = [
         id: 'cnpq',
         title: 'CNPq',
         url: 'http://lattes.cnpq.br/8505607576671441',
-      },
-    ],
-  },
-  {
-    name: 'Giovanna Tarquinio',
-    role: 'Estudante',
-    photo: './profile-image/GiovannaTarquino.jpg',
-    contacts: [
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/6729363004080110',
       },
     ],
   },
@@ -259,6 +247,60 @@ export const tecTeam = [
         id: 'linked-in',
         title: 'LinkedIn',
         url: 'https://www.linkedin.com/in/victorvila%C3%A7a/',
+      },
+    ],
+  },
+]
+
+export const studentsTeamGI = [
+  {
+    name: 'Agna Roberta',
+    role: 'Estudante',
+    photo:
+      './profile-image/AgnaRoberta.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/8681709841735991',
+      },
+    ],
+  },
+  {
+    name: 'Carlos Fernando',
+    role: 'Estudante',
+    photo:
+      './profile-image/CarlosFernando.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/1963632613481159',
+      },
+    ],
+  },
+  {
+    name: 'Crislany Lilyan',
+    role: 'Estudante',
+    photo:
+      './profile-image/CrislanyLilyan.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/8583945906998041',
+      },
+    ],
+  }, 
+  {
+    name: 'Giovanna Tarquinio',
+    role: 'Estudante',
+    photo: './profile-image/GiovannaTarquino.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/6729363004080110',
       },
     ],
   },
