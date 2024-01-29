@@ -49,6 +49,7 @@ export default function Index(props: TPROPS) {
 
   useEffect(() => {
     localStorage.setItem("lastFormSubmited", props.formId + "");
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Modal
