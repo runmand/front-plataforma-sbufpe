@@ -121,8 +121,7 @@ export default function Index(props: TPROPS) {
     if (formIdFromLocalStorage) {
       getFormResult(Number(formIdFromLocalStorage));
     }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  },[getFormResult]);
 
   return (
     <Drawer
