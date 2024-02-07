@@ -305,6 +305,7 @@ export const studentsTeamGI = [
     ],
   },
 ]
+export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174]
 
 export const acervo = [
   { 
