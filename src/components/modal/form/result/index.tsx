@@ -49,7 +49,7 @@ export default function Index(props: TPROPS) {
 
   useEffect(() => {
     localStorage.setItem("lastFormSubmited", props.formId + "");
-  }, []);
+  }, [props.formId]);
   return (
     <Modal
       open={props.isOpen} 

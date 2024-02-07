@@ -1,5 +1,5 @@
 import { Drawer } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { TPROPS } from "./type";
 import ListMenu from "@components/menu/list/index";
 import { modalStyle } from "./style";
@@ -11,9 +11,9 @@ import { FormResultProps } from "@components/FormResultPdf/FormResultProps.types
 //TODO: Permitir configuração da posição do drawer menu
 export default function Index(props: TPROPS) {
   const [formData, setFormData] = useState<FormResultProps>();
-  const formAnwerService = new FormAnswerService();
+  const formAnwerService = useMemo(() => new FormAnswerService(), []);
 
-  async function getFormResult(formId: number) {
+  const getFormResult = useCallback(async (formId: number) => {
     try {
       const { data: formResult } = await formAnwerService.getUserResultFromForm(
         formId
@@ -23,11 +23,14 @@ export default function Index(props: TPROPS) {
     } catch (err: any) {
       console.error(err);
     }
-  }
+  }, [formAnwerService])
 
   useEffect(() => {
-    console.log("formData:", formData);
-  }, [formData]);
+    const formIdFromLocalStorage = localStorage.getItem("lastFormSubmited");
+    if (formIdFromLocalStorage) {
+      getFormResult(Number(formIdFromLocalStorage));
+    }
+  }, [getFormResult]);
 
   const ModifiedPdf = ({
     maxScore,
@@ -121,7 +124,7 @@ export default function Index(props: TPROPS) {
     if (formIdFromLocalStorage) {
       getFormResult(Number(formIdFromLocalStorage));
     }
-  }, []);
+  }, [getFormResult]);
 
   return (
     <Drawer
