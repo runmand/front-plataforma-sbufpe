@@ -44,15 +44,15 @@ export default function Index() {
 			.then(res => {
 				if (!res.errors) {
 					const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID)
+					console.log(typeId)
 					switch(typeId){
 						case 1:
-							console.log(forms)
 							return setForms(res.data);
 							case 2:
 								return setForms(res.data);
 							case 3:
 								return setForms(res.data
-									.filter(form => form.id !== 2  && form.id !== 5))
+									.filter(form => form.id !== 2  && form.id !== 5 && form.id !== 6 && form.id !== 7 && form.id !== 8))
 							case 4:
 								return setForms(res.data
 									.filter(form => form.id === 2))
