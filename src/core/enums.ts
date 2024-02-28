@@ -8,6 +8,7 @@ export enum routerEnum {
 	FORM_ANSWER = '/form-answer',
 	QUESTION = '/question',
 	INITIAL = '/',
+	PLANEJA = '/planeja',
 }
 
 export enum localStorageKeyEnum {
