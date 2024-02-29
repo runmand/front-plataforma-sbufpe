@@ -1,8 +1,12 @@
-type PlanejaProps = {
+import { ReactElement } from "react";
+
+export type PlanejaProps = {
+  id?: string;
   title?: string;
   description?: string;
   yesDescr?: string;
   noDescr?: string;
-  campoMensagem?: Element;
+  noHasJustify?: boolean;
+  campoMensagem?: ReactElement;
   respondido?: string;
 }

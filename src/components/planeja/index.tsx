@@ -1,11 +1,22 @@
 import { Box, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 import { theme } from "src/core/theme";
+import { PlanejaProps } from "./type";
+import { useState } from "react";
 
-export const PlanejaQuest = ({ title = '', respondido = '', description = '', yesDescr = '', noDescr = '', campoMensagem }: PlanejaProps) => {
-  // let respondido: 'Sim' | 'Não' = 'Não';
+export const PlanejaQuest = (
+  { id = '',
+  title = '', 
+  respondido = '', 
+  description = '', 
+  yesDescr = '', 
+  noDescr = '', 
+  noHasJustify = true,
+  campoMensagem, 
+}: PlanejaProps) => {
   const retorno = (value: string) => {
     respondido = value;
   }
+  const [justify, setJustify] = useState('');
   
   if (respondido === 'Sim') {
     {yesDescr = description}
@@ -13,8 +24,10 @@ export const PlanejaQuest = ({ title = '', respondido = '', description = '', ye
     {noDescr = description}
   }
 
-  if (respondido === '') {
-    campoMensagem = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify01(e.target.value)} value={justify01} sx={{ backgroundColor: theme.white }} label="1." />;
+  if (noHasJustify === true && respondido === '') {
+    campoMensagem = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify(e.target.value)} value={justify + id} sx={{ backgroundColor: theme.white }} label="1." />;
+  } else if (respondido != 'Não') {
+    campoMensagem = <Box></Box>
   }
 
   return (
@@ -31,7 +44,7 @@ export const PlanejaQuest = ({ title = '', respondido = '', description = '', ye
       </FormLabel>
       <RadioGroup
         row
-        name="question01"
+        name={'question'+id}
         value={respondido}
         aria-required="true"
       >
