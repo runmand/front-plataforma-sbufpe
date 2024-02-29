@@ -27,7 +27,7 @@ export const PlanejaQuest = (
   if (noHasJustify === true && respondido === '') {
     campoMensagem = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify(e.target.value)} value={justify + id} sx={{ backgroundColor: theme.white }} label="1." />;
   } else if (respondido != 'Não') {
-    campoMensagem = <Box></Box>
+    campoMensagem = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify(e.target.value)} value={justify + id} sx={{ backgroundColor: theme.white }} label="1." />;
   }
 
   return (
