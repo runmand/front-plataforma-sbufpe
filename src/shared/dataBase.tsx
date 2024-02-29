@@ -305,6 +305,86 @@ export const studentsTeamGI = [
     ],
   },
 ]
+
+export const planejaQuestions = [
+  {
+    id: 1,
+    question: 'Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho?',
+    options: ['Sim', 'Não'],
+    ifYes: 'quais foram as ações feitas?',
+    ifNo: 'por quê?',
+    hasTextArea: true,
+  },
+  {
+    id: 2,
+    question: 'Agora que estudamos um pouco sobre o Planejamento Normativo, você consegue observar se algumas dessas características estão presentes na sua rotina de trabalho da Unidade de Saúde à qual você está vinculado?',
+    options: ['Sim', 'Não'],
+    ifYes: 'Quais?',
+    ifNo: 'por que?',
+    hasTextArea: true,
+  },
+  {
+    id: 3,
+    question: 'Você consegue perceber ações e/ou componentes do Planejamento Estratégico Situacional (PES) realizados no contexto da sua Unidade de Saúde e/ou município?',
+    options: ['Sim', 'Não'],
+    ifYes: 'Quais?',
+    ifNo: 'por quê?',
+    hasTextArea: true,
+  },
+  {
+    id: 4,
+    question: 'Você conhece os instrumentos de planejamento em saúde do seu município?',
+    options: ['Sim', 'Não'],
+    ifYes: 'quais instrumentos você já utilizou?',
+    ifNo: 'pesquise sobre eles e responda: Quais você identificou no seu município?',
+    hasTextArea: true,
+  },
+  {
+    id: 5,
+    question: 'Existem aspectos relacionados à Saúde Bucal nos instrumentos?',
+    options: ['Sim', 'Não'],
+    ifYes: 'Quais?',
+    ifNo: 'O que poderia estar incluído?',
+    hasTextArea: true,
+  },
+  {
+    id: 6,
+    question: 'Você participou/participa da construção e do monitoramento das diretrizes, objetivos, metas, indicadores e respectivos resultados?',
+    options: ['Sim', 'Não'],
+    ifYes: 'Quais?',
+    ifNo: 'por quê?',
+    hasTextArea: true,
+  },
+  {
+    id: 7,
+    question: 'Compreendendo a importância do planejamento em saúde no âmbito do SUS, que tal relembrarmos quais são os instrumentos utilizados nesse planejamento?',
+    hasTextArea: true,
+  },
+  {
+    id: 8,
+    question: 'Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde?',
+    options: ['Sim', 'Não'],
+    ifYes: 'quais são?',
+    ifNo: 'pesquise a respeito!',
+    hasTextArea: true,
+  },
+  {
+    id: 9,
+    question: 'Você já participou de alguma reunião ou foi membro de algum Conselho de Saúde (municipal, estadual ou nacional)?',
+    options: ['Sim', 'Não'],
+    ifYes: 'Quais?',
+    ifNo: 'Por quê?',
+    hasTextArea: true,
+  },
+  {
+    id: 10,
+    question: 'Você já teve a experiência de participar da Conferência Municipal ou das etapas estadual (Conferência Estadual de Saúde) e nacional (Conferência Nacional de Saúde)?',
+    options: ['Sim', 'Não'],
+    ifYes: 'Quais?',
+    ifNo: 'Por quê?',
+    hasTextArea: true,
+  },
+]
 export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174]
 
 export const acervo = [

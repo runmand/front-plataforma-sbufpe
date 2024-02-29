@@ -1,16 +1,16 @@
 import { Box, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 import { theme } from "src/core/theme";
 
-export const PlanejaQuest = ({ title = '', respondido = '', yesDescr = '', noDescr = '', campoMensagem }: PlanejaProps) => {
-  let respondido: 'Sim' | 'Não' = 'Não';
+export const PlanejaQuest = ({ title = '', respondido = '', description = '', yesDescr = '', noDescr = '', campoMensagem }: PlanejaProps) => {
+  // let respondido: 'Sim' | 'Não' = 'Não';
   const retorno = (value: string) => {
     respondido = value;
   }
   
   if (respondido === 'Sim') {
-    {yesDescr}
+    {yesDescr = description}
   } else if (respondido === 'Não') {
-    {noDescr}
+    {noDescr = description}
   }
 
   if (respondido === '') {

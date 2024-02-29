@@ -168,7 +168,6 @@ export default function Index() {
               margin='2rem'
               direction="column"
             >
-              <PlanejaQuest />
               <Box
                 sx={{
                   padding: '1rem',
@@ -349,7 +348,7 @@ export default function Index() {
                 }}
               >
                 <FormLabel component='legend' sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  8. Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde</FormLabel>
+                  8. Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde?</FormLabel>
                 <RadioGroup
                   row
                   aria-label="Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde"
