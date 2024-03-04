@@ -49,7 +49,8 @@ export default function Index() {
 						case 1:
 							return setForms(res.data);
 							case 2:
-								return setForms(res.data);
+								return setForms(res.data
+									.filter(form => form.id !== 6));
 							case 3:
 								return setForms(res.data
 									.filter(form => form.id !== 2  && form.id !== 5 && form.id !== 6 && form.id !== 7 && form.id !== 8))
