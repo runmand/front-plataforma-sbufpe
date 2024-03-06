@@ -30,6 +30,8 @@ export default function Index() {
       .getFormattedFormShow(formId)
       .then((res) => {
         console.log(res.data.questions.sort((a, b) => +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId))
+        const sortedData = res.data.questions.sort((a, b) => +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId)
+        res.data.questions = sortedData;
         setFormattedForm(res.data)
       })
       .catch((e) => console.error(e));
