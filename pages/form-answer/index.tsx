@@ -28,7 +28,10 @@ export default function Index() {
   useEffect(() => {
     formAnwerService
       .getFormattedFormShow(formId)
-      .then((res) => setFormattedForm(res.data))
+      .then((res) => {
+        console.log(res.data.questions.sort((a, b) => +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId))
+        setFormattedForm(res.data)
+      })
       .catch((e) => console.error(e));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
