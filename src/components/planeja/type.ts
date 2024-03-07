@@ -1,12 +1,24 @@
 import { ReactElement } from "react";
 
-export type PlanejaProps = {
-  id?: string;
-  title?: string;
+export type PlanejaQuestionProps = {
+  id: number;
+  invisible: boolean;
+  title: string;
   description?: string;
-  yesDescr?: string;
-  noDescr?: string;
-  noHasJustify?: boolean;
+  yesDescr: string;
+  noDescr: string;
+  noHasJustify: boolean;
   campoMensagem?: ReactElement;
-  respondido?: string;
+}
+
+export type PlanejaTextProps = {
+  invisible: boolean;
+  title?: string;
+  texto?: string;
+  elemento?: ReactElement;
+}
+
+export type PlanejaPagPros = {
+  invisible: boolean;
+  elemento?: ReactElement;
 }

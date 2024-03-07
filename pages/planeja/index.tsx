@@ -5,417 +5,107 @@ import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGrou
 import { useState } from 'react';
 import { theme } from 'src/core/theme';
 import SendIcon from '@mui/icons-material/Send';
-import { PlanejaQuest } from '@components/planeja';
-
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { PlanejaText, PlanejaQuestion, PlanejaPag } from '@components/planeja';
 export default function Index() {
-  const [quest01, setQuest01] = useState('');
-  const [quest02, setQuest02] = useState('');
-  const [quest03, setQuest03] = useState('');
-  const [quest04, setQuest04] = useState('');
-  const [quest05, setQuest05] = useState('');
-  const [quest06, setQuest06] = useState('');
-  const [quest08, setQuest08] = useState('');
-  const [quest09, setQuest09] = useState('');
-  const [quest10, setQuest10] = useState('');
-  const [justify01, setJustify01] = useState('');
-  const [justify02, setJustify02] = useState('');
-  const [justify03, setJustify03] = useState('');
-  const [justify04, setJustify04] = useState('');
-  const [justify05, setJustify05] = useState('');
-  const [justify06, setJustify06] = useState('');
-  const [justify07, setJustify07] = useState('');
-  const [justify08, setJustify08] = useState('');
-  const [justify09, setJustify09] = useState('');
-  const [justify10, setJustify10] = useState('');
-  var labelQuest01 = '';
-  var labelQuest02 = '';
-  var labelQuest03 = '';
-  var labelQuest04 = '';
-  var labelQuest05 = '';
-  var labelQuest06 = '';
-  var labelQuest08 = '';
-  var labelQuest09 = '';
-  var labelQuest10 = '';
-  var textAreaQuest01;
-  var textAreaQuest02;
-  var textAreaQuest03;
-  var textAreaQuest04;
-  var textAreaQuest05;
-  var textAreaQuest06;
-  var textAreaQuest08;
-  var textAreaQuest09;
-  var textAreaQuest10;
-
-  if (quest01 === 'Sim') {
-    labelQuest01 = 'quais foram as ações feitas?';
-  } else if (quest01 === 'Não') {
-    labelQuest01 = 'por quê?';
-  }
-
-  if (quest02 === 'Sim') {
-    labelQuest02 = 'Quais?';
-  } else if (quest02 === 'Não') {
-    labelQuest02 = 'por que?';
-  }
-
-  if (quest03 === 'Sim') {
-    labelQuest03 = 'Quais?';
-  } else if (quest03 === 'Não') {
-    labelQuest03 = 'por quê?';
-  }
-
-  if (quest04 === 'Sim') {
-    labelQuest04 = 'quais instrumentos você já utilizou?';
-  } else if (quest04 === 'Não') {
-    labelQuest04 = 'pesquise sobre eles e responda: Quais você identificou no seu município?';
-  }
-
-  if (quest05 === 'Sim') {
-    labelQuest05 = 'Quais?';
-  } else if (quest05 === 'Não') {
-    labelQuest05 = 'O que poderia estar incluído?';
-  }
-
-  if (quest06 === 'Sim') {
-    labelQuest06 = 'Quais?';
-  } else if (quest06 === 'Não') {
-    labelQuest06 = 'O que poderia estar incluído?';
-  }
-
-  if (quest08 === 'Sim') {
-    labelQuest08 = 'quais são?';
-  } else if (quest08 === 'Não') {
-    labelQuest08 = 'pesquise a respeito!';
-  }
-
-  if (quest09 === 'Sim') {
-    labelQuest09 = 'Quais?';
-  } else if (quest09 === 'Não') {
-    labelQuest09 = 'Por quê?';
-  }
-
-  if (quest10 === 'Sim') {
-    labelQuest10 = 'Quais?';
-  } else if (quest10 === 'Não') {
-    labelQuest10 = 'Por quê?';
-  }
-
-  if (labelQuest01 != '') {
-    textAreaQuest01 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify01(e.target.value)} value={justify01} sx={{ backgroundColor: theme.white }} label="1." />;
-  } else {
-    textAreaQuest01 = '';
-  }
-
-  if (labelQuest02 != '') {
-    textAreaQuest02 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify02(e.target.value)} value={justify02} sx={{ backgroundColor: theme.white }} label="2." />;
-  } else {
-    textAreaQuest02 = '';
-  }
-
-  if (labelQuest03 != '') {
-    textAreaQuest03 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify03(e.target.value)} value={justify03} sx={{ backgroundColor: theme.white }} label="3." />;
-  } else {
-    textAreaQuest03 = '';
-  }
-
-  if (labelQuest04 != '') {
-    textAreaQuest04 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify04(e.target.value)} value={justify04} sx={{ backgroundColor: theme.white }} />;
-  } else {
-    textAreaQuest04 = '';
-  }
-
-  if (labelQuest05 != '') {
-    textAreaQuest05 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify05(e.target.value)} value={justify05} sx={{ backgroundColor: theme.white }} />;
-  } else {
-    textAreaQuest05 = '';
-  }
-
-  if (labelQuest06 != '') {
-    textAreaQuest06 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify06(e.target.value)} value={justify06} sx={{ backgroundColor: theme.white }} />;
-  } else {
-    textAreaQuest06 = '';
-  }
-
-  if (labelQuest08 != '' && quest08 != 'Não') {
-    textAreaQuest08 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify08(e.target.value)} value={justify08} sx={{ backgroundColor: theme.white }} />;
-  } else {
-    textAreaQuest08 = '';
-  }
-
-  if (labelQuest09 != '') {
-    textAreaQuest09 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify09(e.target.value)} value={justify09} sx={{ backgroundColor: theme.white }} />;
-  } else {
-    textAreaQuest09 = '';
-  }
-
-  if (labelQuest10 != '') {
-    textAreaQuest10 = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify10(e.target.value)} value={justify10} sx={{ backgroundColor: theme.white }} />;
-  } else {
-    textAreaQuest10 = '';
-  }
 
   return (
     <Base
       appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
       mainContainerChild={
         <Box sx={{ paddingTop: '6rem', flexGrow: 1, }}>
-          <FormControl
-            component="fieldset"
-            sx={{ padding: '1rem' }}
-          >
-            <Stack spacing={6}
-              margin='2rem'
-              direction="column"
-            >
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component="legend"
-                  sx={{ fontSize: '1.3rem', color: 'black' }}
-                >
-                  1. Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho?
-                </FormLabel>
-                <RadioGroup
-                  row
-                  name="question01"
-                  value={quest01}
-                  aria-required="true"
-                >
-                  <FormControlLabel onClick={() => setQuest01('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest01('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>
-                  {labelQuest01}
-                </FormLabel>
-                {textAreaQuest01}
-              </Box>
 
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend'
-                  sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  2. Agora que estudamos um pouco sobre o Planejamento Normativo, você consegue observar se algumas dessas características estão presentes na sua rotina de trabalho da Unidade de Saúde à qual você está vinculado?
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Agora que estudamos um pouco sobre o Planejamento Normativo, você consegue observar se algumas dessas características estão presentes na sua rotina de trabalho da Unidade de Saúde à qual você está vinculado?"
-                  name="question02"
-                  value={quest02}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest02('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest02('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest02}</FormLabel>
-                {textAreaQuest02}
+          {/* Página 1 */}
+          <PlanejaPag invisible={false}
+            elemento={
+              <Box>
+                <PlanejaText invisible={false}
+                  title={'Olá! Bem-vindo (a) ao PlanejaSD!'}
+                  texto={'Para a execução deste módulo operacional da plataforma GestBucalSD, propomos uma qualificação profissional teórico-prática - autoinstrucional em planejamento sistematizado de ações em saúde bucal, inclusive com garantia de certificação, como curso de extensão (20h).\nVamos vivenciar o planejamento de ações em saúde bucal, entendendo o ato de planejar como reduzir incertezas.\nDiscutiremos aqui os principais conceitos e instrumentos relacionados ao planejamento no âmbito do Sistema Único de Saúde (SUS), compreendendo-o principalmente com de âmbito local.\nTrabalharemos as seguintes temáticas:\n ●	Conceito de planejamento;\n ●	Tipos de Planejamento;\n ●	Planejamento Estratégico Situacional (PES) e Planejamento participativo;\n ●	Processo decisório;\n ●	Definições dos instrumentos de planejamento e gestão no Sistema Único de Saúde (SUS) (Plano de Saúde – PS, Programação Anual de Saúde – PAS, Relatório Detalhado do Quadrimestre Anterior – RDQA, Relatório Anual de Gestão – RAG) e a sua importância no contexto do planejamento no SUS;\n ●	Planejamento local em saúde no contexto das Redes de Atenção à Saúde (RAS).\n\nEspera-se que após o cumprimento do componente teórico, você realize na prática baseada do PES a construção de um Plano Local de Ação com o uso do PlanejaSD e demais dados da plataforma GestBucalSD. O componente teórico deve ser feito em caráter individual, mas a prática pode (e deve) envolver outros membros da equipe e ainda outros atores sociais implicados em nível local, se possível.\n\nCertificação: a certificação será emitida para cada participante, após o cumprimento de atividades individuais formativas através do preenchimento de respostas as perguntas condutoras do componente teórico e da avaliação somativa (individual ou equipe profissional local), pela construção do Plano de Ação Local.\nA equipe do projeto estará disponível, para assessorá-los, através de agendamento prévio, numa perspectiva de ações de Telessaúde para teleconsulta e telemonitoramento ao Planejamento, gestão e avaliação em saúde.\n\nOnde incluir os créditos do material teórico??? '}
+                />
+                <Button color="success" variant="contained" endIcon={<ArrowForwardIcon />}
+                  onClick={() => { }}>Vamos começar?!</Button>
               </Box>
+            }
+          />
 
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend'
-                sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  3. Você consegue perceber ações e/ou componentes do Planejamento Estratégico Situacional (PES) realizados no contexto da sua Unidade de Saúde e/ou município?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Você consegue perceber ações e/ou componentes do Planejamento Estratégico Situacional (PES) realizados no contexto da sua Unidade de Saúde e/ou município?"
-                  name="question03"
-                  value={quest03}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest03('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest03('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest03}</FormLabel>
-                {textAreaQuest03}
+          {/* Página 2 */}
+          <PlanejaPag invisible={false}
+            elemento={
+              <Box>
+                <PlanejaText invisible={false}
+                  title={'1.	PLANEJAMENTO EM SAÚDE'}
+                  texto={'Pode-se compreender o planejamento como uma prática social que é ao mesmo tempo técnica, política, econômica e ideológica. É um processo de transformação de uma situação em outra, levando em consideração uma dada finalidade e recorrendo a instrumentos (meios de trabalho tais como técnicas e saberes) e a atividades (trabalho propriamente dito), sob determinadas relações sociais, em uma dada organização (PAIM, 2002, 2006). Além de um requisito previsto em legislação, o planejamento no âmbito do Sistema Único de Saúde (SUS) se constitui como um dos mecanismos relevantes que visam assegurar a unidade e os princípios constitucionais do SUS, uma vez que expressa as responsabilidades dos gestores em cada esfera de governo no que se refere à saúde da população e à integração da organização sistêmica. Assim, o ato de planejar exige que haja conhecimento técnico, o qual se expressa em instrumentos e ferramentas que são desenvolvidas em processos de trabalho (BRASIL, 2016).Vale aqui sinalizar, entretanto, que ao longo da história diferentes noções a respeito do que é o planejamento emergiram, e a seguir estudaremos um pouco mais sobre'}
+                />
+                <PlanejaQuestion
+                  id={1}
+                  invisible={false}
+                  title={'Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho ?'}
+                  yesDescr={'quais foram as ações feitas?'}
+                  noDescr={'por quê?'}
+                  noHasJustify={true}
+                />
+                <PlanejaText invisible={false}
+                  texto={'Sabemos que essa questão já foi abordada como indicador avaliativo do GestBucalSD, mas aqui vocês poderão aprofundar essa reflexão para à ação. A importância da realização do planejamento pode ser vista já no senso comum, onde o ato de planejar está ligado à organização de atividades, à busca por melhores resultados. Uma ação planejada é uma ação não improvisada (WERNECK, 2012) e, no geral, pode-se afirmar que planejar é reduzir incertezas, o que leva a algum grau de intervenção na economia, orientando investimentos e estando vinculado à alocação eficiente de recursos e à busca por melhores resultados. Na saúde, as práticas de planejamento estão presentes em todo o processo de gestão do Sistema Único de Saúde (BRASIL, 2016), desde níveis mais locais e seus microterritórios até a esfera federal.'}
+                />
+                <Stack direction='row'>
+                  <Button color="error" variant="contained" startIcon={<ArrowBackIcon />}
+                    onClick={() => { }}>Voltar</Button>
+                  <Button color="success" variant="contained" endIcon={<ArrowForwardIcon />}
+                    onClick={() => { }}>Continuar</Button>
+                </Stack>
               </Box>
+            }
+          />
 
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend'
-                sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  4. Você conhece os instrumentos de planejamento em saúde do seu município?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Você conhece os instrumentos de planejamento em saúde do seu município?"
-                  name="question04"
-                  value={quest04}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest04('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest04('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest04}</FormLabel>
-                {textAreaQuest04}
+          {/* Página 3 */}
+          <PlanejaPag invisible={false}
+            elemento={
+              <Box>
+                <PlanejaText invisible={false}
+                  title={'1.1.	PLANEJAMENTO NORMATIVO'}
+                  texto={'Em 1965, Mário Testa, em conjunto com a Organização Pan-Americana da Saúde (OPAS) e o Centro de Estudos para o Desenvolvimento Econômico e Saúde (CENDES) introduziu o chamado Método CENDES/OPAS, considerado o marco inicial do planejamento na América Latina. Esse se constituiu numa forma de programação sanitária onde o desenvolvimento de métodos e técnicas de programação social impunham mudanças racionalmente planejadas como alternativa para a crise social. Esse método, também denominado de planejamento normativo, representa o marco inicial do desenvolvimento do planejamento em saúde na América Latina. A lógica interna do método CENDES/OPAS tem por base ser economicista e administrativo, a partir da ideia da eficiência na utilização dos recursos disponíveis e teve por principais características:●	Uma visão ecológica (geral) do processo saúde-doença para a aplicação do diagnóstico, onde as prioridades são tratadas de acordo com a análise custo/benefício numa perspectiva economicista que tem por objetivo aumentar a eficiência na prestação de serviços, em termos de quantidade, alinhada à redução de custos (LANA; GOMES, 1996);●	Não considera as causas sociais dos problemas (LANA; GOMES, 1996), uma vez que separa o sujeito do objeto de atuação (LACERDA; BOTELHO; COLUSSI, 2013);●	A sociedade é resumida a comportamentos previsíveis e ausência de incertezas (LACERDA; BOTELHO; COLUSSI, 2013);●	A garantia de êxito do planejamento quando seguidos à risca os cálculos previstos (LACERDA; BOTELHO; COLUSSI, 2013). O modelo conduzido pela OPAS perdeu importância ao longo do tempo por fatores relacionados à dificuldade na obtenção de informações adequadas e ao foco na produtividade e eficiência econômica. Nesse sentido, as abordagens relacionadas ao planejamento estratégico e as práticas da programação em saúde se disseminaram e ganharam força (BRASIL, 2016).'}
+                />
+                <PlanejaQuestion
+                  id={2}
+                  invisible={false}
+                  title={'Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho ?'}
+                  yesDescr={'quais foram as ações feitas?'}
+                  noDescr={'por quê?'}
+                  noHasJustify={true}
+                />
+                <PlanejaText invisible={false}
+                  texto={'O enfoque normativo do planejamento na área da saúde caracteriza-se como um enfoque basicamente descritivo, fundamentado no levantamento de informações e sistematização de variáveis demográficas, epidemiológicas e sociais para a construção de indicadores de saúde e, consequentemente, fazer um diagnóstico. É possível verificar a influência do planejamento normativo no trabalho cotidiano dos estabelecimentos de saúde da rede de atenção em saúde bucal, a qual busca alcançar os objetivos das secretarias de saúde de acordo com as metas estabelecidas pelo Ministério da Saúde. Nesse sentido, destacam-se que, por vezes, as exigências sobre as metas a serem alcançadas com relação às instalações físicas, aos recursos humanos e financeiros, equipamentos e materiais de consumo, às políticas e aos programas (imunizações, saúde da mulher, saúde da criança, saúde adulto e idoso, saúde bucal e vigilância epidemiológica), que acabam por engessar algumas iniciativas, limitando as adaptações necessárias às características locais e aumentando a distância dos resultados desejados.'} />
+                <Stack direction='row'>
+                  <Button color="error" variant="contained" startIcon={<ArrowBackIcon />}
+                    onClick={() => { }}>Voltar</Button>
+                  <Button color="success" variant="contained" endIcon={<ArrowForwardIcon />}
+                    onClick={() => { }}>Continuar</Button>
+                </Stack>
               </Box>
+            }
+          />
 
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend'
-                sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  5. Existem aspectos relacionados à Saúde Bucal nos instrumentos?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Existem aspectos relacionados à Saúde Bucal nos instrumentos?"
-                  name="question05"
-                  value={quest05}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest05('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest05('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest05}</FormLabel>
-                {textAreaQuest05}
+          {/* Página 4 */}
+          <PlanejaPag invisible={false}
+            elemento={
+              <Box>
+                <PlanejaText invisible={false}
+                  title={'1.2. PLANEJAMENTO	ESTRATÉGICO\n\n'}
+                  texto={'O Planejamento Estratégico pode ser reconhecido como um modo de planejar que não se reduz à elaboração de um plano de ação, mas considera refletir sobre aspectos organizacionais e variáveis que podem exercer influência interna e externa na execução do plano. Nesse sentido, considera elementos estratégicos presentes na dinâmica organizacional, tendo por objetivo compreendê-los e aprovisionar sua concretização e melhoria (PARENTE, 2011). Esse modelo, ainda, considera as relações entre os atores políticos e instituições como arena de disputa de poder, analisando-as a partir da ótica e equilíbrios de poder (MATUS, 1993).\n\nSAIBA MAIS!\nPara saber mais detalhes sobre o Planejamento Estratégico, indicamos a leitura do seguinte artigo:\n●	GIOVANELLA. Planejamento estratégico em saúde: uma discussão da abordagem de Mário Testa. Cadernos de Saúde Pública, v. 2, n. 6, 1990.\nDisponível em: https://www.scielo.br/j/csp/a/y9Jxy9qpphd6YGnMyJRYTyq/?lang=pt'}
+                />
+                <Stack direction='row'>
+                  <Button color="error" variant="contained" startIcon={<ArrowBackIcon />}
+                    onClick={() => { }}>Voltar</Button>
+                  <Button color="success" variant="contained" endIcon={<ArrowForwardIcon />}
+                    onClick={() => { }}>Continuar</Button>
+                </Stack>
               </Box>
+            } />
 
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend'
-                sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  6. Você participou/participa da construção e do monitoramento das diretrizes, objetivos, metas, indicadores e respectivos resultados?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Você participou/participa da construção e do monitoramento das diretrizes, objetivos, metas, indicadores e respectivos resultados?"
-                  name="question06"
-                  value={quest06}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest06('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest06('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest06}</FormLabel>
-                {textAreaQuest06}
-              </Box>
-
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend' sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  7. Compreendendo a importância do planejamento em saúde no âmbito do SUS, que tal relembrarmos quais são os instrumentos utilizados nesse planejamento?</FormLabel>
-                <TextField required label="Insira quais são os instrumentos utilizados aqui"
-                  fullWidth
-                  multiline rows={4}
-                  onChange={(e) => setJustify07(e.target.value)}
-                  value={justify07}
-                  sx={{ backgroundColor: theme.white }} />
-              </Box>
-
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend' sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  8. Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde"
-                  name="question08"
-                  value={quest08}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest08('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest08('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest08}</FormLabel>
-                {textAreaQuest08}
-              </Box>
-
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend' sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  9. Você já participou de alguma reunião ou foi membro de algum Conselho de Saúde (municipal, estadual ou nacional)?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label=""
-                  name="question09"
-                  value={quest09}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest09('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest09('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest09}</FormLabel>
-                {textAreaQuest09}
-              </Box>
-
-              <Box
-                sx={{
-                  padding: '1rem',
-                  width: '100%',
-                  borderRadius: theme.borderRadiusSmooth,
-                }}
-              >
-                <FormLabel component='legend' sx={{ fontSize: '1.3rem', color: 'black' }}>
-                  10. Você já teve a experiência de participar da Conferência Municipal ou das etapas estadual (Conferência Estadual de Saúde) e nacional (Conferência Nacional de Saúde)?</FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="Você já teve a experiência de participar da Conferência Municipal ou das etapas estadual (Conferência Estadual de Saúde) e nacional (Conferência Nacional de Saúde)?"
-                  name="question10"
-                  value={quest10}
-                  aria-required="true">
-                  <FormControlLabel onClick={() => setQuest10('Sim')} value='Sim' control={<Radio />} label={
-                    <Typography color={'black'}>Sim</Typography>} />
-                  <FormControlLabel onClick={() => setQuest10('Não')} value='Não' control={<Radio />} label={
-                    <Typography color={'black'}>Não</Typography>} />
-                </RadioGroup>
-                <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>{labelQuest10}</FormLabel>
-                {textAreaQuest10}
-              </Box>
-              <Button color="success" variant="contained" endIcon={<SendIcon/>} >
-                Enviar</Button>
-            </Stack>
-
-          </FormControl>
+          {/* Página 5 */}
+          
         </Box>
       }
     />
