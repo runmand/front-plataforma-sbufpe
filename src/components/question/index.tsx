@@ -60,7 +60,7 @@ export default function Index(props: TPROPS) {
 					) : (
 						<ChoiceAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
-							choices={props.question.choices}
+							choices={props.question.choices.sort((a, b) => +b.formsQuestionFormsQuestionChoicesId - +a.formsQuestionFormsQuestionChoicesId)}
 							onSelectChoice={data => {
 							
 								const selectedAnswer = JSON.parse(data.answer).filter((item:number) => Boolean(item))[0]
