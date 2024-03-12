@@ -1,10 +1,10 @@
 import { Box, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 import { theme } from "src/core/theme";
-import { PlanejaTextProps, PlanejaQuestionProps, PlanejaPagPros } from "./type";
+import { PlanejaQuestionProps } from "./type";
 import { useState } from "react";
 
 export const PlanejaQuestion = (
-  { id = 0, invisible = false, title = '', description = '',
+  { id = 0, title = '', description = '',
     yesDescr = '', noDescr = '',
     noHasJustify = true, campoMensagem,
   }: PlanejaQuestionProps) => {
@@ -27,7 +27,6 @@ export const PlanejaQuestion = (
   return (
     <Box>
       <Box
-        hidden={invisible}
         sx={{
           padding: '1rem',
           width: '100%',
@@ -39,6 +38,7 @@ export const PlanejaQuestion = (
           {title}
         </FormLabel>
         <RadioGroup
+          id={id.toString()}
           row
           name={'question' + id}
           value={respondido}
@@ -54,28 +54,6 @@ export const PlanejaQuestion = (
         </FormLabel>
         {campoMensagem}
       </Box>
-    </Box>
-  );
-}
-
-export const PlanejaText = (props: PlanejaTextProps) => {
-  return (
-    <Box
-      hidden={props.invisible}>
-      <Typography>
-        {props.title}
-      </Typography>
-      <Typography>
-        {props.texto}
-      </Typography>
-    </Box>
-  );
-}
-
-export const PlanejaPag = (props: PlanejaPagPros) => {
-  return (
-    <Box hidden={props.invisible}>
-      {props.elemento}
     </Box>
   );
 }

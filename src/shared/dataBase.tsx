@@ -306,89 +306,152 @@ export const studentsTeamGI = [
   },
 ]
 
-export const planejaQuestions = [
+export const planejaTable01 = [
   {
-    id: 1,
-    invisible: false,
-    texto1: 'Pode-se compreender o planejamento como uma prática social que é ao mesmo tempo técnica, política, econômica e ideológica. É um processo de transformação de uma situação em outra, levando em consideração uma dada finalidade e recorrendo a instrumentos (meios de trabalho tais como técnicas e saberes) e a atividades (trabalho propriamente dito), sob determinadas relações sociais, em uma dada organização (PAIM, 2002, 2006). Além de um requisito previsto em legislação, o planejamento no âmbito do Sistema Único de Saúde (SUS) se constitui como um dos mecanismos relevantes que visam assegurar a unidade e os princípios constitucionais do SUS, uma vez que expressa as responsabilidades dos gestores em cada esfera de governo no que se refere à saúde da população e à integração da organização sistêmica. Assim, o ato de planejar exige que haja conhecimento técnico, o qual se expressa em instrumentos e ferramentas que são desenvolvidas em processos de trabalho (BRASIL, 2016). Vale aqui sinalizar, entretanto, que ao longo da história diferentes noções a respeito do que é o planejamento emergiram, e a seguir estudaremos um pouco mais sobre. REFLETINDO',
-    texto2: 'Sabemos que essa questão já foi abordada como indicador avaliativo do GestBucalSD, mas aqui vocês poderão aprofundar essa reflexão para à ação. A importância da realização do planejamento pode ser vista já no senso comum, onde o ato de planejar está ligado à organização de atividades, à busca por melhores resultados. Uma ação planejada é uma ação não improvisada (WERNECK, 2012) e, no geral, pode-se afirmar que planejar é reduzir incertezas, o que leva a algum grau de intervenção na economia, orientando investimentos e estando vinculado à alocação eficiente de recursos e à busca por melhores resultados. Na saúde, as práticas de planejamento estão presentes em todo o processo de gestão do Sistema Único de Saúde (BRASIL, 2016), desde níveis mais locais e seus microterritórios até a esfera federal.',
-    title: 'Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho?',
-    yesDescr: 'quais foram as ações feitas?',
-    noDescr: 'por quê?',
-    noHasJustify: true,
+    title: "Explicativo",
+    description: "Realiza-se um diagnóstico situacional, onde os problemas são selecionados e analisados, especificando-se nós críticos (causas que explicam o problema que, quando modificadas, por si só promovem a alteração de outra ou de uma série de causas).",
   },
   {
-    id: 2,
-    invisible: false,
-    title: 'Agora que estudamos um pouco sobre o Planejamento Normativo, você consegue observar se algumas dessas características estão presentes na sua rotina de trabalho da     Unidade de Saúde à qual você está vinculado?',
-    yesDescr: 'Quais?',
-    noDescr: 'por que?',
-    noHasJustify: true,
+    title: "Normativo",
+    description: "Construção do plano de ação/intervenção, onde são definidos o que se deseja alcançar e as respectivas estratégias.",
   },
   {
-    id: 3,
-    invisible: false,
-    title: 'Você consegue perceber ações e/ou componentes do Planejamento Estratégico Situacional (PES) realizados no contexto da sua Unidade de Saúde e/ou município?',
-    visible: false,
-    ifYes: 'Quais?',
-    ifNo: 'por quê?',
-    noHasJustify: true,
+    title: "Estratégico",
+    description: "Análise de viabilidade das ações a serem realizadas, incluindo a análise dos recursos econômicos, administrativos e políticos necessários e/ou disponíveis a partir das propostas traçadas.",
   },
   {
-    id: 4,
-    invisible: false,
-    title: 'Você conhece os instrumentos de planejamento em saúde do seu município?',
-    yesDescr: 'quais instrumentos você já utilizou?',
-    ifNo: 'pesquise sobre eles e responda: Quais você identificou no seu município?',
-    noHasJustify: true,
-  },
-  {
-    id: 5,
-    invisible: false,
-    title: 'Existem aspectos relacionados à Saúde Bucal nos instrumentos?',
-    yesDescr: 'Quais?',
-    noDescr: 'O que poderia estar incluído?',
-    noHasJustify: true,
-  },
-  {
-    id: 6,
-    visible: false,
-    title: 'Você participou/participa da construção e do monitoramento das diretrizes, objetivos, metas, indicadores e respectivos resultados?',
-    yesDescr: 'Quais?',
-    noDescr: 'por quê?',
-    noHasJustify: true,
-  },
-  {
-    id: 7,
-    visible: false,
-    title: 'Compreendendo a importância do planejamento em saúde no âmbito do SUS, que tal relembrarmos quais são os instrumentos utilizados nesse planejamento?',
-    hasTextArea: true,
-  },
-  {
-    id: 8,
-    visible: false,
-    title: 'Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde?',
-    yesDescr: 'quais são?',
-    noDescr: 'pesquise a respeito!',
-    noHasJustify: false,
-  },
-  {
-    id: 9,
-    visible: false,
-    title: 'Você já participou de alguma reunião ou foi membro de algum Conselho de Saúde (municipal, estadual ou nacional)?',
-    yesDescr: 'Quais?',
-    noDescr: 'Por quê?',
-    noHasJustify: true,
-  },
-  {
-    id: 10,
-    visible: false,
-    title: 'Você já teve a experiência de participar da Conferência Municipal ou das etapas estadual (Conferência Estadual de Saúde) e nacional (Conferência Nacional de Saúde)?',
-    yesDescr: 'Quais?',
-    noDescr: 'Por quê?',
-    noHasJustify: true,
+    title: "Tático-Operacional",
+    description: "Implementação do plano de ação/intervenção.",
   },
 ]
+
+export const planejaTable02 = [
+  {
+    moment: "Explicativo",
+    steps: "Primeiro Passo - Definição de Problemas",
+  },
+  {
+    moment: "Explicativo",
+    steps: "Segundo passo - Priorização de problemas",
+  },
+  {
+    moment: "Explicativo",
+    steps: "Terceiro passo - Descrição dos problemas selecionados",
+  },
+  {
+    moment: "Explicativo",
+    steps: "Quarto passo - Explicação dos problemas selecionados",
+  },
+  {
+    moment: "Normativo",
+    steps: "Quinto passo - Seleção de nós críticos",
+  },
+  {
+    moment: "Normativo",
+    steps: "Sexto passo - Desenho das operações",
+  },
+  {
+    moment: "Normativo",
+    steps: "Sétimo passo - Identificação dos recursos críticos",
+  },
+  {
+    moment: "Estratégico",
+    steps: "Oitavo passo - Análise da viabilidade do plano",
+  },
+  {
+    moment: "Tático-operacional",
+    steps: "Nono passo - Definição dos responsáveis pelas operações do plano",
+  },
+  {
+    moment: "Tático-operacional",
+    steps: "Décimo passo - Gestão do plano",
+  },
+]
+
+export const planejaTable03 = [
+  {
+    normative: "Plano por setores",
+    strategic: "Plano por problemas",
+  },
+  {
+    normative: "Predições únicas ou previsão probabilística",
+    strategic: "Combina apostas bem fundamentadas com apostas difusas",
+  },
+  {
+    normative: "Incerteza “bem definida”",
+    strategic: "Incertezas e surpresas",
+  },
+  {
+    normative: "Cálculo técnico",
+    strategic: "Cálculo técnico-político",
+  },
+  {
+    normative: "Os sujeitos são agentes",
+    strategic: "Os sujeitos são atores",
+  },
+  {
+    normative: "Metas únicas",
+    strategic: "Várias possibilidades",
+  },
+]
+
+export const planejaTable04 = [
+  {
+    goal: "Marco Situacional",
+    description: "Etapa de contextualização crítica pelo grupo de trabalho do momento sócio-histórico local e global no qual se pretende operar o planejamento.",
+  },
+  {
+    goal: "Marco Doutrinal",
+    description: "A discussão e definição dos valores, crenças e ideias gerais do coletivo, o modelo de sociedade que o grupo acredita. Os resultados consensuados destas reflexões deverão subsidiar o processo de planejamento e o próprio plano.",
+  },
+  {
+    goal: "Marco Operacional",
+    description: "A tomada de decisão do grupo no sentido de construir o plano e aplicar aquilo que foi discutido.",
+  },
+]
+
+export const planejaTable05 = [
+  {
+    legalGoal: "Lei nº 8.080, de 19 de setembro de 1990 (BRASIL,1990a)",
+    synopsis: "Lei Orgânica da Saúde, que define os princípios do SUS e as atribuições dos entes federativos e estabelece o planejamento ascendente (ou seja, partindo do micro para o macro).",
+  },
+  {
+    legalGoal: "Lei nº 8.142, de 29 de novembro de 1990 (BRASIL, 2990b)",
+    synopsis: "Traz a necessidade de os entes federativos disporem de plano de saúde e relatórios de gestão para fazerem jus ao recebimento de recursos financeiros.",
+  },
+  {
+    legalGoal: "Decreto nº 7.508, de junho de 2011 (BRASIL, 2011)",
+    synopsis: "Regulamenta a Lei nº 8.080, dispondo de um capítulo específico sobre planejamento da saúde, o estabelecimento de metas de saúde e a necessidade de o gestor público elaborar e apresentar instrumentos de planejamento.",
+  },
+  {
+    legalGoal: "Lei Complementar nº 141, de janeiro de 2012 (BRASIL, 2012)",
+    synopsis: "Regulamenta o artigo 198 da Constituição Federal de 1988, definindo normas de fiscalização, avaliação e controle das despesas com o SUS nos entes federativos, e determina o planejamento ascendente e mecanismos de financiamento do SUS.",
+  },
+  {
+    legalGoal: "Portaria de Consolidação nº 1, de 28 de setembro de 2017 (Título IV do Capítulo I) (substitui a Portaria nº 2.135, de setembro de 2013) (BRASIL, 2017)",
+    synopsis: "Estabelece diretrizes para o planejamento do SUS e define instrumentos do planejamento em saúde (Plano Municipal de Saúde, Programação Anual da Saúde, Relatório Anual de Gestão, Relatório Detalhado do Quadrimestre Anterior) e orienta pressupostos do planejamento.",
+  },
+]
+
+export const planejaTable06 = [
+  {
+    title: "Plano de Saúde (PS)",
+    instruments: "●	Instrumento central do planejamento para definição e implementação das iniciativas no âmbito da saúde em cada esfera de gestão do SUS;\n●	Período de quatro anos, devendo ser elaborado no primeiro ano da gestão em curso, cuja execução se dá a partir do segundo ano da gestão até o primeiro ano da gestão seguinte;\n●	A elaboração do planejamento e do orçamento do que governo no que se refere à saúde é a sua base;\n●	Deve apresentar as diretrizes e objetivos que nortearão a condução da política de saúde nos quatro anos seguintes, especificando as respectivas metas e indicadores;\n●	Consolida as políticas e compromissos da saúde no ente federativo. Portanto, deve ser proposto com base na análise situacional da saúde e guardar íntima relação com instrumentos de governo do ente federativo, como o Plano Plurianual (PPA) e o projeto de lei orçamentária, e deve incorporar as recomendações das Conferências de Saúde;\n●	Deve ser construído conjuntamente com a sociedade civil, por meio do Conselho de Saúde, e aprovado por esse.",
+  },
+  {
+    title: "Programação Anual da Saúde (PAS)",
+    instruments: "●	Instrumento que operacionaliza as proposições contidas no Plano de Saúde;\n●	Seu objetivo é o de anualizar as metas do Plano e prever a alocação dos recursos orçamentários a serem executados;\n●	Deve ser elaborada e aprovada pelo Conselho de Saúde antes do encaminhamento da Lei de Diretrizes Orçamentárias, até o mês de março do ano anterior à sua vigência.",
+  },
+  {
+    title: "Relatório Anual de Gestão (RAG)",
+    instruments: "●	Instrumento destinado à apresentação de resultados atrelados à PAS, devendo conter as diretrizes, objetivos e os indicadores, especificando as metas previstas e executadas da Programação; a análise da execução orçamentária e recomendações necessárias;\n●	Poderá levar a redirecionamentos necessários à revisão do PMS;\n●	Resultado do somatório dos três Relatórios Detalhados do Quadrimestre Anterior anuais;\n●	Deverá ser enviado para apreciação e aprovação pelo Conselho de Saúde até março do ano seguinte à sua competência.",
+  },
+  {
+    title: "Relatório Detalhado do Quadrimestre Anterior (RDQA)",
+    instruments: "●	Instrumento de monitoramento da execução da política de saúde do ente federativo;\n●	Deve apresentar conteúdo semelhante ao RAG, cujo foco se dá no período quadrimestral;\n●	Deve ser entregue para apresentação em Audiência Pública na Casa Legislativa nos meses de maio (quadrimestre janeiro-abril), setembro (quadrimestre maio-agosto) e fevereiro (quadrimestre setembro-dezembro), sempre em referência ao quadrimestre anterior;\n●	Obrigatoriamente, deve conter informações referentes ao montante e a fonte de recursos aplicados no quadrimestre analisado, descrever auditorias realizadas ou em execução e descrever a produção e oferta de serviços na rede SUS, relacionando-o aos indicadores previstos.",
+  }
+]
+
 export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174]
 
 export const acervo = [
