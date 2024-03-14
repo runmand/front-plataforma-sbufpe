@@ -100,7 +100,7 @@ export default function Index(props: TPROPS) {
 						{props.formattedForm.title}
 					</Typography>
 					<>
-						{props.formattedForm.questions.reverse().map((question, index) => (
+						{props.formattedForm.questions.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId).map((question, index) => (
 							<QuestionCard
 								key={index}
 								index={index}

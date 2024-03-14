@@ -14,14 +14,17 @@ import React from "react";
 import FormResultModal from "@components/modal/form/result";
 import { routerEnum } from "src/core/enums";
 import styled from "@emotion/styled";
+import FormResultFeedBack from "@components/modal/FormResultFeedBack";
 
 //TODO: Corrigir ID quando o usuario da F5 na page.
 export default function Index() {
   const router = useRouter();
   const [formId, setFormId] = React.useState<ID>(Number(router.query.id));
+  
   const formAnwerService = new FormAnswerService();
   const [formattedForm, setFormattedForm] = useState<GET_FORMATTED_FORM_SHOW>();
   const [isOpenFormResult, setIsOpenFormResult] = useState<boolean>(false);
+  const [formThanks, setFormThanks] = useState(false);
   const [formResult, setFormResult] =
     useState<GET_USER_RESULT_FROM_FORM_RES | null>();
 
@@ -39,6 +42,10 @@ export default function Index() {
   }, []);
 
   const getUserResultFromForm = () => {
+    if(formId === 5){
+      setFormThanks(true)
+      return
+    }
     setIsOpenFormResult(true);
     formAnwerService
       .getUserResultFromForm(formId)
@@ -65,16 +72,29 @@ export default function Index() {
               onFinish={() => getUserResultFromForm()}
             />
           )}
-          {formResult && (
-            <FormResultModal
-              formId={formId as number}
-              formTitle={formattedForm.title}
-              formResult={formResult}
-              isOpen={isOpenFormResult}
-              canSkip={true}
-              onClose={() => handleCloseFormResultModal()}
+
+          {formThanks && (
+            <FormResultFeedBack 
+            formId={formId as number}
+            formTitle={formattedForm?.title}
+            isOpen={formThanks}
+            canSkip={true}
+            onClose={() => handleCloseFormResultModal()}
             />
           )}
+
+          {formResult && (
+         <FormResultModal
+           formId={formId as number}
+           formTitle={formattedForm.title}
+           formResult={formResult}
+           isOpen={isOpenFormResult}
+           canSkip={true}
+           onClose={() => handleCloseFormResultModal()}
+         />
+       )}
+
+         
         </div>
       }
     />
