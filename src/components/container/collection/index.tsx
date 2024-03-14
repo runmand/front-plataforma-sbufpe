@@ -17,6 +17,7 @@ export default function Index(){
     return(
     <>
     <Box sx = {{
+        marginTop:'3rem',
         position:'justify',
         bgcolor:theme.greyLight,}}>
         <Typography 
@@ -41,8 +42,10 @@ export default function Index(){
           <MenuItem value="">
             <em>Referencias</em>
           </MenuItem>
+          <MenuItem value={"CEO-PARAÍBA"}>CEO-PARAÍBA</MenuItem>
           <MenuItem value={"Avaliação CEO"}>Avaliação CEO</MenuItem>
           <MenuItem value={"Avaliação da APS"}>Avaliação APS</MenuItem>
+          <MenuItem value={"Planeja SD"}>Planeja SD</MenuItem>
         </Select>
       </FormControl>
         <Grid 

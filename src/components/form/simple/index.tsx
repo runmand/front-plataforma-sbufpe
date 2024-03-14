@@ -23,9 +23,9 @@ export default function Index(props: TPROPS) {
 	const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
 		const temp = answers;
 		const indexToUpdate = temp.findIndex(item => item.formQuestionFormRegisterId === answer.formQuestionFormRegisterId);
-
 		if (indexToUpdate >= 0) temp[indexToUpdate] = answer;
 		else temp.push(answer);
+		
 
 		setAnswers(temp);
 	};
@@ -41,7 +41,7 @@ export default function Index(props: TPROPS) {
 	};
 
 	const handleOpenSubmitFormDialog = () => {
-		if (answers.length == props.formattedForm.questions.length){
+		if (answers.length >= props.formattedForm.questions.length){
 			setIsOpenSubmitFormDialog(true);
 		} else {
 			// setFailedState(true);
@@ -100,12 +100,13 @@ export default function Index(props: TPROPS) {
 						{props.formattedForm.title}
 					</Typography>
 					<>
-						{props.formattedForm.questions.reverse().map((question, index) => (
+						{props.formattedForm.questions.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId).map((question, index) => (
 							<QuestionCard
 								key={index}
 								index={index}
 								question={question}
 								onAnswerQuestion={data => {
+									
 									handleAnswerQuestion(data);
 								}}
 								onHideQuestion={data => {

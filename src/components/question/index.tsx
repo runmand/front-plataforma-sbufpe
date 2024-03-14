@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import React from 'react';
+import { useState } from 'react';
 import { emitterEnum } from '../../core/enums';
 import { emitter } from '../../core/events';
 import ChoiceAnswer from '../answer/choice';
@@ -7,9 +7,13 @@ import OpenAnswer from '../answer/open';
 import { TPROPS, QUESTION_ANSWER } from './type';
 import { theme } from 'src/core/theme';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { ID } from 'src/core/types';
+import { droplist } from 'src/shared/dataBase';
 
 export default function Index(props: TPROPS) {
-	const [canShow, setCanShow] = React.useState(false);
+	const selectOptions:ID[] = droplist 
+	const [canShow, setCanShow] = useState(false);
+	const [isMedicalExam, setIsMedicalExam] = useState(false)
 	const smQuery = useMediaQuery('(min-width:500px)')
 
 	/** Criando evento de emissão em todas as questões. */
@@ -27,7 +31,7 @@ export default function Index(props: TPROPS) {
 		emitter.addListener(listenerKey, (parentAnswer: QUESTION_ANSWER) => {
 			const isSameAnswer = parentAnswer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer);
 			setCanShow(isSameAnswer);
-
+		
 			/** Caso a questão fique oculta novamente, deleta a resposta dela do vetor de respostas do formulário. */
 			if (!canShow) props.onHideQuestion(props.question.formQuestionFormRegisterId);
 		});
@@ -44,27 +48,60 @@ export default function Index(props: TPROPS) {
 			>
 				<CardContent style={{ padding: '16px' }}>
 					<Typography style={{ marginBottom: '16px', fontSize:!smQuery ? '4.5vw' : '2.3vw', color: theme.primaryColor }}>
-						{(props.index + 1)} - {props.question.title}
+						{props.parent?.formQuestionFormRegisterId === 234 ? (
+								<>
+								{props.question.title}
+							</>
+						) : (
+							<>
+								{(props.index + 1)} - {props.question.title}
+							</>
+						)}
+					
 					</Typography>
 					{props.question.choices.length === 0 ? (
 						<OpenAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
 							onAnswerQuestion={data => {
+							
 								handleAnswerQuestion(data);
 							}}
 						/>
 					) : (
 						<ChoiceAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
-							choices={props.question.choices}
+							choices={props.question.choices.sort((a, b) => +b.formsQuestionFormsQuestionChoicesId - +a.formsQuestionFormsQuestionChoicesId)}
 							onSelectChoice={data => {
+							
+								const selectedAnswer = JSON.parse(data.answer).filter((item:number) => Boolean(item))[0]
+								
+								const answerToSave = props.question.choices.find(item => item.formsQuestionFormsQuestionChoicesId === selectedAnswer)
+							
+								if(props.question.title.includes('Nome do CEO') || props.question.title.includes('Nome do Estabelecimento')){
+									localStorage.setItem('selectedAnswer',JSON.stringify(answerToSave))
+								}
+								
+								console.log(data)
+								
+								// Caso a questão respondida seja "Será feito exame médico?", e caso seja "Sim", exibiremos a imagem
+								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[1336,0]") {
+									setIsMedicalExam(true);
+								}
+								// Caso seja não, vamos colocar a variável como false
+								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[0,1337]") {
+									setIsMedicalExam(false);
+								}
+
 								handleAnswerQuestion(data);
 							}}
-              choiceType={props.question.formQuestionFormRegisterId === 109 ? 'select' : 'radio'}
+              choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId)  ?  'autoComplete' : 'radio'}
 						/>
 					)}
 				</CardContent>
 				<div>
+					{props.question.formQuestionFormRegisterId === 234 && isMedicalExam && (
+						<img src="/tabela.jpg" />
+					)}
 					{props.question.childrenQuestion.reverse().map((child, index) => (
 						<Index
 							key={index}
@@ -72,6 +109,7 @@ export default function Index(props: TPROPS) {
 							parent={props.question}
 							question={child}
 							onAnswerQuestion={data => {
+							
 								props.onAnswerQuestion(data);
 							}}
 							onHideQuestion={data => {

@@ -1,16 +1,4 @@
-export const people = [
-  { 
-    name: 'Marcelo Dias',
-    role: 'CEO - Tear Technology',
-    photo:'./profile-image/MarceloDias.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/marcelo-dias-979003210/',
-      },
-    ],
-  },
+export const teacherTeamTI = [
   {
     name: 'Amanda Chaves',
     role: 'Pesquisadora',
@@ -28,6 +16,9 @@ export const people = [
       },
     ],
   },
+];
+
+export const teacherTeamGI = [
   {
     name: 'Nilcema Figueiredo',
     role: 'Profª-Pesquisadora UFPE',
@@ -82,6 +73,21 @@ export const people = [
       },
     ],
   },
+]
+
+export const studentTeamTI = [
+  {
+    name: 'Marcelo Dias',
+    role: 'CEO - Tear Technology',
+    photo: './profile-image/MarceloDias.jpg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/marcelo-dias-979003210/',
+      },
+    ],
+  },
   {
     name: 'Giovanna Petraglia',
     role: 'Desenvolvedora',
@@ -96,18 +102,6 @@ export const people = [
         id: 'cnpq',
         title: 'CNPq',
         url: 'http://lattes.cnpq.br/8505607576671441',
-      },
-    ],
-  },
-  {
-    name: 'Giovanna Tarquinio',
-    role: 'Estudante',
-    photo:'./profile-image/GiovannaTarquino.jpg',
-    contacts: [
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/6729363004080110',
       },
     ],
   },
@@ -129,7 +123,7 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Marcelo Arruda',
     role: 'Estudante',
     photo:
@@ -147,10 +141,10 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Daniel Figueiroa',
     role: 'Estudante',
-    photo:'./profile-image/DanielFigueiroa.jpg',
+    photo: './profile-image/DanielFigueiroa.jpg',
     contacts: [
       {
         id: 'linked-in',
@@ -159,7 +153,7 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Antonio Netto',
     role: 'Estudante',
     photo:
@@ -172,7 +166,7 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Juarez Júnior',
     role: 'Estudante',
     photo:
@@ -207,7 +201,7 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Dayane Climaco',
     role: 'Estudante',
     photo:
@@ -225,7 +219,7 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Beatriz Gonçalves',
     role: 'Estudante',
     photo:
@@ -243,7 +237,7 @@ export const people = [
       },
     ],
   },
-  { 
+  {
     name: 'Victor Vilaça',
     role: 'Estudante',
     photo:
@@ -256,418 +250,555 @@ export const people = [
       },
     ],
   },
-];
+]
 
-
+export const studentsTeamGI = [
+  {
+    name: 'Agna Roberta',
+    role: 'Estudante',
+    photo:
+      './profile-image/AgnaRoberta.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/8681709841735991',
+      },
+    ],
+  },
+  {
+    name: 'Carlos Fernando',
+    role: 'Estudante',
+    photo:
+      './profile-image/CarlosFernando.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/1963632613481159',
+      },
+    ],
+  },
+  {
+    name: 'Crislany Lilyan',
+    role: 'Estudante',
+    photo:
+      './profile-image/CrislanyLilyan.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/8583945906998041',
+      },
+    ],
+  }, 
+  {
+    name: 'Giovanna Tarquinio',
+    role: 'Estudante',
+    photo: './profile-image/GiovannaTarquino.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/6729363004080110',
+      },
+    ],
+  },
+]
+export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174]
 
 export const acervo = [
   { 
-      type: "Avaliação CEO",
-      article: "Prestação de Serviços de Manutenção Predial em Estabelecimentos Assistenciais de Saúde. Ciênc. Saúde Col.",
-      author: "Amorim, G.M.; QUINTÃO, E.C.V.; MARTELLI-JÚNIOR, H.; BONAN, P.R.F",
-      link: "https://www.scielosp.org/article/ssm/content/raw/?resource_ssm_path=/media/assets/csc/v18n1/16.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "How Has Teledentistry Been Applied in Public Dental Health Services? An Integrative Review.",
-      author: "Bo C, Peralta S, Lu A.",
-      link: "https://www.liebertpub.com/doi/abs/10.1089/tmj.2019.0122"
-  },
-  {
-      // revisar
-      type: "Avaliação CEO",
-      article: "A saúde bucal no Sistema Único de Saúde",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL",
-      link: "https://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal_sistema_unico_saude.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Programa Nacional de Melhoria do Acesso e da Qualidade dos Centros de Especialidades Odontológicas (Pmaq-CEO): manual instrutivo 2º Ciclo (2015-2017).",
-      author: "Ministério da Saúde, Secretaria de Atenção à Saúde. Departamento de Atenção Básica.",
-      link: "http://189.28.128.100/dab/docs/portaldab/publicacoes/manual_pmaqceo_preliminar.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Documento de Referência para o Programa Nacional de Segurança do Paciente.",
-      author: "Ministério da Saúde. Fundação Oswaldo Cruz; Agência Nacional de Vigilância Sanitária.",
-      link: "https://bvsms.saude.gov.br/bvs/publicacoes/documento_referencia_programa_nacional_seguranca.pdf"
-  },
-  {
-      // revisar
-      type: "Avaliação CEO",
-      article: "Institui o Programa Nacional de Segurança do Paciente (PNSP).",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL",
-      link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2013/prt0529_01_04_2013.html"
-  },
-  {
-      // revisar
-      type: "Avaliação CEO",
-      article: "Define a implantação de Especialidades Odontológicas (CEOs) e de Laboratórios Regionais de Próteses Dentárias (LRPDs) e estabelecer critérios, normas e requisitos para seu credenciamento.",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL",
-      link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2006/prt0599_23_03_2006.html"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "PCCS - SUS : diretrizes nacionais para a instituição de planos de carreiras, cargos e salários no âmbito do Sistema Único de Saúde.",
-      author: "Ministério da Saúde. Departamento de Gestão da Educação na Saúde, Secretaria de Gestão do Trabalho e da Educação na Saúde",
-      link: "https://bvsms.saude.gov.br/bvs/publicacoes/pccs_diretrizes_nacionais_planos_carreiras_sus.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Política Nacional de Atenção Básica.",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL",
-      link: "http://189.28.128.100/dab/docs/publicacoes/geral/pnab.pdf"
-  },
-  {
-      // revisar
-      type: "Avaliação CEO",
-      article: "Institui a Política Nacional de Educação Permanente em Saúde.",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL",
-      link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2017/MatrizesConsolidacao/comum/13150.html"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Dispõe sobre as diretrizes para a implementação da Política Nacional de Educação Permanente em Saúde.",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL",
-      link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2017/MatrizesConsolidacao/comum/5668.html"
-  },
-  {   
-      type: "Avaliação CEO",
-      article: "Retificação na Portaria nº 718, SAS/MS de 20 de dezembro de 2010, publicada no Diário Oficial nº 251, de 31 de dezembro de 2010, seção 1, páginas 100 a 113.",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL. Secretaria de Atenção à Saúde",
-      link: "http://189.28.128.100/dab/docs/geral/nota_tecnica_telessaude_abril2012.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "A saúde bucal no Sistema Único de Saúde",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL. Secretaria de Atenção à Saúde. Departamento de Atenção Básica",
-      link: "http://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal_sistema_unico_saude.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Pesquisa Nacional de Saúde Bucal: resultados principais.",
-      author: "MINISTÉRIO DA SAÚDE - BRASIL. Secretaria de Atenção à Saúde. Secretaria de Vigilância em Saúde.",
-      link: "https://bvsms.saude.gov.br/bvs/publicacoes/pesquisa_nacional_saude_bucal.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Trabalho e Capital Monopolista",
-      author: "Braverman H.",
-      link: "https://wp.ufpel.edu.br/franciscovargas/files/2018/08/Trabalho-e-For%C3%A7a-de-Trabalho.-Harry-Braverman.pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Avaliação: conceitos e métodos.",
-      author: "Brousselle A; Champagne F; Contradriopoulos AP; Hartz Z",
-      link: "https://www.scielo.br/j/csp/a/F4QnHtrTsjs3bSBj55myzpt/"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Appropriate and inappropriate referrals to a unit of conservative dentistry.",
-      author: "Burke F. J. T.; Goodall C.; Hayes F.",
-      link: "https://europepmc.org/article/med/11819890"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Defining quality of care. Social Science & Medicine 51",
-      author: "Campbell, S.M., Roland M.O., Buetow S.A. (2000) ",
-      link: "https://www.sciencedirect.com/science/article/abs/pii/S0277953600000575"
-  },
-  {
-      // revisar
-      type: "Avaliação CEO",
-      article: "Avaliação de desempenho de sistemas de saúde e gerencialismo na gestão pública brasileira.",
-      author: "Carnut L, Narvai PC.",
-      link: "https://www.scielo.br/j/sausoc/a/fY4tKrkdBSJGrsV7mr3C5Xh/abstract/?lang=pt"
+    type: "",
+    article: "Matriz Avaliativa da Satisfação do Usuário",
+    author: "Observatório de Saúde Bucal - GESTBUCAL",
+    link: "https://drive.google.com/file/d/1vsVIvkUp6BFma0BjVEw98at_iAnNAnML/view?usp=drive_link"
   },
   { 
-      type: "Avaliação CEO",
-      article: "Teledentistry and the Unified Health System: an important tool for the resumption of Primary Health Care in the context of the COVID-19 pandemic.",
-      author: "Carrer, F. C. de almeida, Matuck, B., Lucena , E. H. G. de, Martins, F. C., Pucca Junior , G. A., Galante , M. L., Tricoli, M. F. de M., & Macedo , M. C. S. (2020).",
-      link: "http://www.cescage.com.br/revistas/index.php/JournalofHealth/article/download/1579/pdf"
-  },
-  {
-      type: "Avaliação CEO",
-      article: "Política Nacional de Saúde Bucal Brasileira (Brasil Sorridente): a maior política pública de saúde bucal do mundo",
-      author: "Cayetano MH, Carrer FC, Gabriel M, Martins FC, Pucca Jr. GA.",
-      link: "https://www.redalyc.org/journal/2312/231265797006/231265797006.pdf"
-  },
-  {
-      // revisar
-      type: "Avaliação CEO",
-      article: "Pesquisa Brasileira em Odontopediatria e Clínica Integrada. 2020",
-      author: "Carrer, Fernanda Campos de Almeida",
-      link: "https://doi.org/10.1590/pboci.2020.155"
+    type: "Avaliação CEO",
+    article: "Matriz Avaliativa dos Centros de Especialização Odontologicas(CEO)",
+    author: "Observatório de Saúde Bucal - GESTBUCAL",
+    link: "https://drive.google.com/file/d/1BWuoYuA_SDOznyZng4jgZoa8ab9on6fm/view?usp=drive_link"
   },
   { 
-      type: "Avaliação CEO",
-      article: "Cultura de segurança na percepção dos profissionais de saúde de hospitais públicos.",
-      author: "Carvalho, P.A.",
-      link: "https://www.scielo.br/j/rsp/a/vxrzhVhFgGTZJ7pWksphpWj/abstract/?lang=pt"
+    type: "Avaliação da APS",
+    article: "Matriz Avaliativa da Atenção Primária à Saúde (APS)",
+    author: "Observatório de Saúde Bucal - GESTBUCAL",
+    link: "https://drive.google.com/file/d/1uszV2F6C8ZbuA8wV3AFEIUIKpg-t60ZG/view?usp=drive_link"
   },
   {
-      type: "Avaliação CEO",
-      article: "Plano de carreira, cargos e salários: ferramenta favorável à valorização dos recursos humanos em saúde pública",
-      author: "Costa, A. C. O.",
-      link: "http://revodonto.bvsalud.org/scielo.php?script=sci_arttext&pid=S1677-38882010000200006"
+    type: "CEO-PARAÍBA",
+    article: "Curso do Programa Nacional em Governança Publica - PRONAGOV",
+    author: "PRONAGOV",
+    link: "https://pronagov.com.br/"
   },
   {
-      type: "Avaliação CEO",
-      article: "The impact of inequalities and health expenditure on mortality due to oral and oropharyngeal cancer in Brazil.",
-      author: "Cunha, A. R. ; Bigoni, A. ; Antunes J. L. F. ; Hugo F. N.",
-      link: "https://www.nature.com/articles/s41598-021-92207-x"
+    type: "CEO-PARAÍBA",
+    article: "Curso Curso Virtual sobre Políticas Informadas de Evidências(PIE)",
+    author: "OPAS - Organização Pan-Americana de Saúde",
+    link: "https://www.campusvirtualsp.org/pt-br/node/31318"
   },
   {
-      type: "Avaliação CEO",
-      article: "TELEODONTOLOGY AND ORAL HEALTH: CHALLENGES AND PERSPECTIVES.",
-      author: "de Moraes, I. M., Vieira, P. A., Pedreira, J. D. B. G., & Pedreira, E. N. (2022).",
-      link: "https://periodicojs.com.br/index.php/hs/article/view/673"
+    type: "CEO-PARAÍBA",
+    article: "Curso de Residência em Clínica Integrada em Odontologia com enfae em: Endodontia, Prótese Dentário, Cirurgia Oral Menor e Diagnóstico bucal.",
+    author: "Escola de Saúde Publica- Paraíba",
+    link: "https://esp.pb.gov.br/"
   },
   {
-      type: "Avaliação CEO",
-      article: "Absenteísmo em odontologia na percepção de usuários e profissionais: discutindo acesso, equidade e bucalidade.",
-      author: "Dias TM.",
-      link: "https://core.ac.uk/download/pdf/326801451.pdf"
+    type: "CEO-PARAÍBA",
+    article: "Cursos da Área de Saúde com certificado",
+    author: "TelessaúdeRS",
+    link: "https://www.ufrgs.br/telessauders/cursos/"
   },
   {
-      type: "Avaliação CEO",
-      article: "Teleodontologia, formação profissional e assistência odontológica no sistema único de saúde brasileiro: relato de experiência.",
-      author: "do Nascimento, A. D. A., de Holanda, L. A. L., Borges, B. S., Pereira, F. T., Frade, A. L., de Barros Santos, C., & de Lacerda Vidal, A. K. (2020)",
-      link: "http://www.cescage.com.br/revistas/index.php/JournalofHealth/article/view/1579"
+    type: "CEO-PARAÍBA",
+    article: "Material de Apoio referente a Segunda  Opnião Formativa(S.O.F)",
+    author: "Biblioteca Virtual em Saúde - BVS",
+    link: "https://aps.bvs.br/segunda-opiniao-formativa/"
   },
   {
-      type: "Avaliação CEO",
-      article: "Serviços de Telessaúde como apoio à Educação Permanente na Atenção Básica à Saúde: uma proposta de modelo avaliativo. ",
-      author: "Dolny, Luise Lüdke",
-      link: "https://www.scielo.br/j/icse/a/VgGQ7ryqRpcnqQHGnX6VC5P/?lang=pt"
+    type: "CEO-PARAÍBA",
+    article: "Politica Nacional de Saúde Bucal - Brasil Sorridente",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://aps.bvs.br/segunda-opiniao-formativa/"
   },
   {
-      type: "Avaliação CEO",
-      article: "Criteria, norms and standards of quality: what do they mean?",
-      author: "Donabedian A",
-      link: "https://ajph.aphapublications.org/doi/abs/10.2105/AJPH.71.4.409"
+    type: "CEO-PARAÍBA",
+    article: "Manual Para Cadastro De Propostas Para Informatização dos CEO",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://egestorab.saude.gov.br/image/?file=20221003_N_MANUALPARACADASTRODEPROPOSTASPARAINFORMATIZACAODOSCENTROSDEESPECIALIDADESODONTOLOGICAS(2)compressed_9082101210571270621.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "The British Society of Periodontology Referral Policy and Parameters of Care.",
-      author: "DOWELL P, CHAPPLE IL.",
-      link: "https://www.magonlinelibrary.com/doi/abs/10.12968/denu.2002.29.7.352"
+    type: "CEO-PARAÍBA",
+    article: "Caderno de Atenção Básica nº 17",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "A review of research in the United Kingdom to evaluate the implementation of clinical guidelines in general practice.",
-      author: "DOWIE R.",
-      link: "https://academic.oup.com/fampra/article/15/5/462/536395?login=true"
+    type: "CEO-PARAÍBA",
+    article: "A Saúde Bucal no Sistema Único de Saúde",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "http://189.28.128.100/dab/docs/portaldab/publicacoes/saude_bucal_sistema_unico_saude.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "A resource reallocation model for school dental screening : taking advantage of teledentistry in low-risk areas",
-      author: "Estai M, Bunt SM, Kanagasingam Y.",
-      link: "https://onlinelibrary.wiley.com/doi/abs/10.1111/idj.12379"
+    type: "CEO-PARAÍBA",
+    article: "Protocolo Clínico e de Regulação Ogontologico",
+    author: "Prefeitura Municipal de Ribeirão Preto",
+    link: "https://www.ribeiraopreto.sp.gov.br/portal/pdf/saude503202112.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Tempo de espera e absenteísmo na atenção especializada- um desafio para os sistemas universais de saúde.",
-      author: "Farias",
-      link: "https://www.scielo.br/j/sdeb/a/GPfqjbXJDNnPWMZ5TnDPyKN/?lang=pt&format=html"
+    type: "CEO-PARAÍBA",
+    article: "Planejamento Estratégico Situacional (PES)",
+    author: "Fundação Oswaldo Cruz 0 FIOCRUZ",
+    link: "https://www.arca.fiocruz.br/bitstream/handle/icict/39910/T%E9cnico%20de%20Vigil%E2ncia%20em%20Sa%FAde%20v.2%20-%20Planejamento%20em%20sa%FAde.pdf?sequence=2"
   },
   {
-      type: "Avaliação CEO",
-      article: "Absenteísmo de usuários - barreiras e determinantes no acesso aos serviços de saúde.",
-      author: "Farias",
-      link: "https://www.rbmfc.org.br/rbmfc/article/view/2239"
+    type: "Avaliação CEO",
+    article: "Prestação de Serviços de Manutenção Predial em Estabelecimentos Assistenciais de Saúde. Ciênc. Saúde Col.",
+    author: "Amorim, G.M.; QUINTÃO, E.C.V.; MARTELLI-JÚNIOR, H.; BONAN, P.R.F",
+    link: "https://www.scielosp.org/article/ssm/content/raw/?resource_ssm_path=/media/assets/csc/v18n1/16.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Making the best use of consultant orthodontic services.",
-      author: "Ferguson JW; Langford JW; Davenport PJ.",
-      link: "https://europepmc.org/article/med/9515347"
+    type: "Avaliação CEO",
+    article: "How Has Teledentistry Been Applied in Public Dental Health Services? An Integrative Review.",
+    author: "Bo C, Peralta S, Lu A.",
+    link: "https://www.liebertpub.com/doi/abs/10.1089/tmj.2019.0122"
   },
   {
-      type: "Avaliação CEO",
-      article: "Gerência de serviços de saúde: competências desenvolvidas e dificuldades encontradas na atenção básica.",
-      author: "Fernandes L. C. L.; Machado R. Z.; Anschau, G. O.",
-      link: "https://www.scielo.br/pdf/csc/v14s1/a28v14s1.pdf"
+    // revisar
+    type: "Avaliação CEO",
+    article: "A saúde bucal no Sistema Único de Saúde",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal_sistema_unico_saude.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Avaliação da atenção secundária em saúde bucal: Uma investigação nos centros de especialidades do Brasil.",
-      author: "Goes PSA, Figueiredo N, Neves JC Das, Silveira FM da M, Costa JFR, Pucca GA, Rosales MS.",
-      link: "https://www.scielo.br/j/csp/a/5LcWqg8q9dXtH9NQQ9yqFpK/abstract/?lang=pt"
+    type: "Avaliação CEO",
+    article: "Programa Nacional de Melhoria do Acesso e da Qualidade dos Centros de Especialidades Odontológicas (Pmaq-CEO): manual instrutivo 2º Ciclo (2015-2017).",
+    author: "Ministério da Saúde, Secretaria de Atenção à Saúde. Departamento de Atenção Básica.",
+    link: "http://189.28.128.100/dab/docs/portaldab/publicacoes/manual_pmaqceo_preliminar.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Telemedicine—A Complement to Traditional Referrals in Oral Medicine Lena.",
-      author: "Gullbrandsson L, Eklund B, Kildal M,",
-      link: "https://www.liebertpub.com/doi/abs/10.1089/tmj.2011.0207"
+    type: "Avaliação CEO",
+    article: "Documento de Referência para o Programa Nacional de Segurança do Paciente.",
+    author: "Ministério da Saúde. Fundação Oswaldo Cruz; Agência Nacional de Vigilância Sanitária.",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/documento_referencia_programa_nacional_seguranca.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Avaliação em saúde: dos modelos teóricos à prática na avaliação de programas e sistemas de saúde",
-      author: "Hartz, Zulmira Maria de Araújo; Silva, Ligia Maria Vieira da.",
-      link: "https://www.scielosp.org/article/csp/2006.v22n1/229-231/"
+    // revisar
+    type: "Avaliação CEO",
+    article: "Institui o Programa Nacional de Segurança do Paciente (PNSP).",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2013/prt0529_01_04_2013.html"
   },
   {
-      type: "Avaliação CEO",
-      article: "STUDY AND ANALYSIS OF INFORMATION TECHNOLOGY IN DENTISTRY IN LATIN AMERICAN COUNTRIES.",
-      author: "Jordi CL, Figueiredo MÇ, Barone D.",
-      link: "http://www.scielo.org.ar/scielo.php?pid=S1852-48342016000100003&script=sci_arttext&tlng=en"
+    // revisar
+    type: "Avaliação CEO",
+    article: "Define a implantação de Especialidades Odontológicas (CEOs) e de Laboratórios Regionais de Próteses Dentárias (LRPDs) e estabelecer critérios, normas e requisitos para seu credenciamento.",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2006/prt0599_23_03_2006.html"
   },
   {
-      type: "Avaliação CEO",
-      article: "Atenção primária à saúde e a organização de redes regionais de atenção à saúde no Brasil.",
-      author: "Lavras C.",
-      link: "https://www.scielosp.org/article/sausoc/2011.v20n4/867-874/"
+    type: "Avaliação CEO",
+    article: "PCCS - SUS : diretrizes nacionais para a instituição de planos de carreiras, cargos e salários no âmbito do Sistema Único de Saúde.",
+    author: "Ministério da Saúde. Departamento de Gestão da Educação na Saúde, Secretaria de Gestão do Trabalho e da Educação na Saúde",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/pccs_diretrizes_nacionais_planos_carreiras_sus.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Sociedade de risco e risco epidemiológico. Cadernos de Saúde Pública.",
-      author: "Luiz O.C., Cohn A.",
-      link: "https://www.scielo.br/j/csp/a/86Wndmt9FFbB4SQmCmtMVkm/abstract/?lang=pt"
+    type: "Avaliação CEO",
+    article: "Política Nacional de Atenção Básica.",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "http://189.28.128.100/dab/docs/publicacoes/geral/pnab.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Dimensions of quality revisited: from thought to action.",
-      author: "Maxwell, R. J. (1992).",
-      link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1055007/"
+    // revisar
+    type: "Avaliação CEO",
+    article: "Institui a Política Nacional de Educação Permanente em Saúde.",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2017/MatrizesConsolidacao/comum/13150.html"
   },
   {
-      type: "Avaliação CEO",
-      article: "Planos de cargos, carreiras e salários: perspectivas de profissionais de saúde do Centro-Oeste do Brasil.",
-      author: "Mendes, T. M. C.",
-      link: "https://www.scielo.br/j/sdeb/a/FzP8rJLtwtNyCxKPr3Npq5M/?lang=pt"
+    type: "Avaliação CEO",
+    article: "Dispõe sobre as diretrizes para a implementação da Política Nacional de Educação Permanente em Saúde.",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2017/MatrizesConsolidacao/comum/5668.html"
   },
   {
-      type: "Avaliação CEO",
-      article: "Primary and secondary dental care: how ideal is the interface?",
-      author: "Morris AJ, Burke FJ.",
-      link: "https://www.nature.com/articles/4801263"
+    type: "Avaliação CEO",
+    article: "Retificação na Portaria nº 718, SAS/MS de 20 de dezembro de 2010, publicada no Diário Oficial nº 251, de 31 de dezembro de 2010, seção 1, páginas 100 a 113.",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL. Secretaria de Atenção à Saúde",
+    link: "http://189.28.128.100/dab/docs/geral/nota_tecnica_telessaude_abril2012.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Primary and secondary dental care: the nature of the interface",
-      author: "Morris AJ, Burke FJ.",
-      link: "https://www.nature.com/articles/4801262"
+    type: "Avaliação CEO",
+    article: "A saúde bucal no Sistema Único de Saúde",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL. Secretaria de Atenção à Saúde. Departamento de Atenção Básica",
+    link: "http://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal_sistema_unico_saude.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Referral for secondary restorative dental care in rural and urban areas of Scotland: findings from the Highlands & Islands Teledentistry Project.",
-      author: "NUTTALL NM, STEED MS, DONACHIE MA",
-      link: "https://www.nature.com/articles/4801339"
+    type: "Avaliação CEO",
+    article: "Pesquisa Nacional de Saúde Bucal: resultados principais.",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL. Secretaria de Atenção à Saúde. Secretaria de Vigilância em Saúde.",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/pesquisa_nacional_saude_bucal.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "The effect of orthodontic referral guidelines: a randomised controlled trial.",
-      author: "O'BRIEN K, WRIGHT J, CONBOY F,",
-      link: "https://www.nature.com/articles/4800492"
+    type: "Avaliação CEO",
+    article: "Trabalho e Capital Monopolista",
+    author: "Braverman H.",
+    link: "https://wp.ufpel.edu.br/franciscovargas/files/2018/08/Trabalho-e-For%C3%A7a-de-Trabalho.-Harry-Braverman.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "From Quality Assurance to Quality Improvement: The Joint Commission on Accreditation of Healthcare Organizations and Emergency Care.",
-      author: "O'Leary, D. S., & O'Leary, M. R.",
-      link: "https://www.sciencedirect.com/science/article/abs/pii/S0733862720306945"
+    type: "Avaliação CEO",
+    article: "Avaliação: conceitos e métodos.",
+    author: "Brousselle A; Champagne F; Contradriopoulos AP; Hartz Z",
+    link: "https://www.scielo.br/j/csp/a/F4QnHtrTsjs3bSBj55myzpt/"
   },
   {
-      type: "Avaliação CEO",
-      article: "Flexibilização dos vínculos de trabalho na atenção secundária: limites da Política Nacional de Saúde Bucal.",
-      author: "Oliveira RS, Morais HMM.",
-      link: "https://www.scielo.br/j/tes/a/BHXYHGdMRLDsqDqBsYmf53M/abstract/?lang=pt"
+    type: "Avaliação CEO",
+    article: "Appropriate and inappropriate referrals to a unit of conservative dentistry.",
+    author: "Burke F. J. T.; Goodall C.; Hayes F.",
+    link: "https://europepmc.org/article/med/11819890"
   },
   {
-      type: "Avaliação CEO",
-      article: "Perdas dentárias no Brasil: análise da Pesquisa Nacional de Saúde Bucal 2010. Revista de Saúde Pública",
-      author: "Peres, Marco Aurélio",
-      link: "https://doi.org/10.1590/S0034-8910.201304700422"
+    type: "Avaliação CEO",
+    article: "Defining quality of care. Social Science & Medicine 51",
+    author: "Campbell, S.M., Roland M.O., Buetow S.A. (2000) ",
+    link: "https://www.sciencedirect.com/science/article/abs/pii/S0277953600000575"
   },
   {
-      type: "Avaliação CEO",
-      article: "Trend of hospitalized cases of oral cancer in Brazil and its relationship with oral health coverage in public health system between 2009 and 2017.",
-      author: "Raymundo ML, Freire AR, Gomes-Freire DE, Silva RO, Araújo EC, Ishigame RT, Sousa SA, Lucena EH, Cavalcanti YW.",
-      link: "https://dialnet.unirioja.es/servlet/articulo?codigo=7884324"
+    // revisar
+    type: "Avaliação CEO",
+    article: "Avaliação de desempenho de sistemas de saúde e gerencialismo na gestão pública brasileira.",
+    author: "Carnut L, Narvai PC.",
+    link: "https://www.scielo.br/j/sausoc/a/fY4tKrkdBSJGrsV7mr3C5Xh/abstract/?lang=pt"
   },
   {
-      type: "Avaliação CEO",
-      article: "An International Working Definition for Quality of Oral Healthcare.",
-      author: "Righolt AJ, Walji MF, Feine JS, Williams DM, Kalenderian E, Listl S.",
-      link: "https://journals.sagepub.com/doi/full/10.1177/2380084419875442"
+    type: "Avaliação CEO",
+    article: "Teledentistry and the Unified Health System: an important tool for the resumption of Primary Health Care in the context of the COVID-19 pandemic.",
+    author: "Carrer, F. C. de almeida, Matuck, B., Lucena , E. H. G. de, Martins, F. C., Pucca Junior , G. A., Galante , M. L., Tricoli, M. F. de M., & Macedo , M. C. S. (2020).",
+    link: "http://www.cescage.com.br/revistas/index.php/JournalofHealth/article/download/1579/pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Organização da demanda de um Centro de Especialidades Odontológicas.",
-      author: "Saliba NA",
-      link: "https://www.scielo.br/j/rounesp/a/6CZCvK8nLrvnCZXHDrJ4SQr/abstract/?lang=pt"
+    type: "Avaliação CEO",
+    article: "Política Nacional de Saúde Bucal Brasileira (Brasil Sorridente): a maior política pública de saúde bucal do mundo",
+    author: "Cayetano MH, Carrer FC, Gabriel M, Martins FC, Pucca Jr. GA.",
+    link: "https://www.redalyc.org/journal/2312/231265797006/231265797006.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Perfil de gerentes da atenção primária à saúde de um município de Minas Gerais, Brasil.",
-      author: "Santos AS, Silveira RE, Mendonça FTNF, Buso ALZ, Silva SGF, Silva DD.",
-      link: "https://pesquisa.bvsalud.org/portal/resource/pt/bde-29084"
+    // revisar
+    type: "Avaliação CEO",
+    article: "Pesquisa Brasileira em Odontopediatria e Clínica Integrada. 2020",
+    author: "Carrer, Fernanda Campos de Almeida",
+    link: "https://doi.org/10.1590/pboci.2020.155"
   },
   {
-      type: "Avaliação CEO",
-      article: "A Web-Based Tool for Monitoring and Evaluating Health Care Services: An Analysis of Centers for Dental Specialties Webpage.",
-      author: "Santos LX, Almeida D, Silva J, Rizental A, Goes PSA, Figueiredo N.",
-      link: "https://arquivo.revista.uepb.edu.br/index.php/pboci/article/view/3385"
+    type: "Avaliação CEO",
+    article: "Cultura de segurança na percepção dos profissionais de saúde de hospitais públicos.",
+    author: "Carvalho, P.A.",
+    link: "https://www.scielo.br/j/rsp/a/vxrzhVhFgGTZJ7pWksphpWj/abstract/?lang=pt"
   },
   {
-      type: "Avaliação CEO",
-      article: "Interface entre a Atenção Primária e a Secundária em odontologia no Sistema Único de Saúde: uma revisão sistemática integrativa.",
-      author: "Silva, Helbert Eustáquio Cardoso da e Gottems, Leila Bernarda Donato.",
-      link: "https://doi.org/10.1590/1413-81232017228.22432015"
+    type: "Avaliação CEO",
+    article: "Plano de carreira, cargos e salários: ferramenta favorável à valorização dos recursos humanos em saúde pública",
+    author: "Costa, A. C. O.",
+    link: "http://revodonto.bvsalud.org/scielo.php?script=sci_arttext&pid=S1677-38882010000200006"
   },
   {
-      type: "Avaliação CEO",
-      article: ".Avaliação em saúde: limites e perspectivas.",
-      author: "Silva, Ligia Maria V. da e Formigli, Vera Lúcia A.",
-      link: "https://doi.org/10.1590/S0102-311X1994000100009"
+    type: "Avaliação CEO",
+    article: "The impact of inequalities and health expenditure on mortality due to oral and oropharyngeal cancer in Brazil.",
+    author: "Cunha, A. R. ; Bigoni, A. ; Antunes J. L. F. ; Hugo F. N.",
+    link: "https://www.nature.com/articles/s41598-021-92207-x"
   },
   {
-      type: "Avaliação CEO",
-      article: "Acesso e qualidade: avaliação das Equipes de Saúde Bucal participantes do PMAQ-AB 2012 em Pernambuco",
-      author: "Sobrinho JEL, Martelli PJL, Albuquerque MSV, Lyra TM, Farias SF.",
-      link: "https://www.scielosp.org/article/sdeb/2015.v39n104/136-146/"
+    type: "Avaliação CEO",
+    article: "TELEODONTOLOGY AND ORAL HEALTH: CHALLENGES AND PERSPECTIVES.",
+    author: "de Moraes, I. M., Vieira, P. A., Pedreira, J. D. B. G., & Pedreira, E. N. (2022).",
+    link: "https://periodicojs.com.br/index.php/hs/article/view/673"
   },
   {
-      type: "Avaliação CEO",
-      article: "Referência e contra referência em saúde bucal: regulação do acesso aos centros de especialidades odontológicas.",
-      author: "Souza G C",
-      link: "http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S0124-00642015000300009&lng=en&nrm=iso"
+    type: "Avaliação CEO",
+    article: "Absenteísmo em odontologia na percepção de usuários e profissionais: discutindo acesso, equidade e bucalidade.",
+    author: "Dias TM.",
+    link: "https://core.ac.uk/download/pdf/326801451.pdf"
   },
   {
-      type: "Avaliação CEO",
-      article: "Uma revisão sobre os conceitos de acesso e utilização de serviços de saúde",
-      author: "Travassos, Claudia; Martins, Mônica.",
-      link: "https://doi.org/10.1590/S0102-311X2004000800014"
+    type: "Avaliação CEO",
+    article: "Teleodontologia, formação profissional e assistência odontológica no sistema único de saúde brasileiro: relato de experiência.",
+    author: "do Nascimento, A. D. A., de Holanda, L. A. L., Borges, B. S., Pereira, F. T., Frade, A. L., de Barros Santos, C., & de Lacerda Vidal, A. K. (2020)",
+    link: "http://www.cescage.com.br/revistas/index.php/JournalofHealth/article/view/1579"
   },
   {
-      type: "Avaliação CEO",
-      article: "Qualidade e subjetividade na avaliação de programas e serviços em saúde.",
-      author: "Uchimura KY, Bosi MLM.",
-      link: "https://www.scielo.br/j/csp/a/jsNy8jWBKbwmggFQM6t5DHQ/?format=html"
+    type: "Avaliação CEO",
+    article: "Serviços de Telessaúde como apoio à Educação Permanente na Atenção Básica à Saúde: uma proposta de modelo avaliativo. ",
+    author: "Dolny, Luise Lüdke",
+    link: "https://www.scielo.br/j/icse/a/VgGQ7ryqRpcnqQHGnX6VC5P/?lang=pt"
   },
   {
-      type: "Avaliação CEO",
-      article: "Planos de carreira, cargos e salários no âmbito do Sistema Único de Saúde: além dos limites e testando possibilidades.",
-      author: "Vieira SP, Pierantoni CR, Magnago C, França T, Miranda RG",
-      link: "https://www.scielo.br/j/sdeb/a/ZRFkRbrWXr8zwSfbL7vH6BF/?lang=pt&format=html"
+    type: "Avaliação CEO",
+    article: "Criteria, norms and standards of quality: what do they mean?",
+    author: "Donabedian A",
+    link: "https://ajph.aphapublications.org/doi/abs/10.2105/AJPH.71.4.409"
   },
   {
-      type: "Avaliação CEO",
-      article: "Universal health coverage, oral health, equity and personal responsibility",
-      author: "Wang TT, Mathur MR, Schmidt H",
-      link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7652557/"
+    type: "Avaliação CEO",
+    article: "The British Society of Periodontology Referral Policy and Parameters of Care.",
+    author: "DOWELL P, CHAPPLE IL.",
+    link: "https://www.magonlinelibrary.com/doi/abs/10.12968/denu.2002.29.7.352"
   },
   {
-      type: "Avaliação CEO",
-      article: "Quality of care : a process for making strategic choices in health systems.",
-      author: "World Health Organization.",
-      link: "https://apps.who.int/iris/bitstream/handle/10665/43470/?sequence=1"
+    type: "Avaliação CEO",
+    article: "A review of research in the United Kingdom to evaluate the implementation of clinical guidelines in general practice.",
+    author: "DOWIE R.",
+    link: "https://academic.oup.com/fampra/article/15/5/462/536395?login=true"
   },
   {
-      type: "Avaliação CEO",
-      article: "Conceptual framework for the International Classification for Patient Safety: final technical report",
-      author: "World Health Organization.",
-      link: "https://www.who.int/patientsafety/taxonomy/icps_full_report.pdf"
+    type: "Avaliação CEO",
+    article: "A resource reallocation model for school dental screening : taking advantage of teledentistry in low-risk areas",
+    author: "Estai M, Bunt SM, Kanagasingam Y.",
+    link: "https://onlinelibrary.wiley.com/doi/abs/10.1111/idj.12379"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Tempo de espera e absenteísmo na atenção especializada- um desafio para os sistemas universais de saúde.",
+    author: "Farias",
+    link: "https://www.scielo.br/j/sdeb/a/GPfqjbXJDNnPWMZ5TnDPyKN/?lang=pt&format=html"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Absenteísmo de usuários - barreiras e determinantes no acesso aos serviços de saúde.",
+    author: "Farias",
+    link: "https://www.rbmfc.org.br/rbmfc/article/view/2239"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Making the best use of consultant orthodontic services.",
+    author: "Ferguson JW; Langford JW; Davenport PJ.",
+    link: "https://europepmc.org/article/med/9515347"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Gerência de serviços de saúde: competências desenvolvidas e dificuldades encontradas na atenção básica.",
+    author: "Fernandes L. C. L.; Machado R. Z.; Anschau, G. O.",
+    link: "https://www.scielo.br/pdf/csc/v14s1/a28v14s1.pdf"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Avaliação da atenção secundária em saúde bucal: Uma investigação nos centros de especialidades do Brasil.",
+    author: "Goes PSA, Figueiredo N, Neves JC Das, Silveira FM da M, Costa JFR, Pucca GA, Rosales MS.",
+    link: "https://www.scielo.br/j/csp/a/5LcWqg8q9dXtH9NQQ9yqFpK/abstract/?lang=pt"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Telemedicine—A Complement to Traditional Referrals in Oral Medicine Lena.",
+    author: "Gullbrandsson L, Eklund B, Kildal M,",
+    link: "https://www.liebertpub.com/doi/abs/10.1089/tmj.2011.0207"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Avaliação em saúde: dos modelos teóricos à prática na avaliação de programas e sistemas de saúde",
+    author: "Hartz, Zulmira Maria de Araújo; Silva, Ligia Maria Vieira da.",
+    link: "https://www.scielosp.org/article/csp/2006.v22n1/229-231/"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "STUDY AND ANALYSIS OF INFORMATION TECHNOLOGY IN DENTISTRY IN LATIN AMERICAN COUNTRIES.",
+    author: "Jordi CL, Figueiredo MÇ, Barone D.",
+    link: "http://www.scielo.org.ar/scielo.php?pid=S1852-48342016000100003&script=sci_arttext&tlng=en"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Atenção primária à saúde e a organização de redes regionais de atenção à saúde no Brasil.",
+    author: "Lavras C.",
+    link: "https://www.scielosp.org/article/sausoc/2011.v20n4/867-874/"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Sociedade de risco e risco epidemiológico. Cadernos de Saúde Pública.",
+    author: "Luiz O.C., Cohn A.",
+    link: "https://www.scielo.br/j/csp/a/86Wndmt9FFbB4SQmCmtMVkm/abstract/?lang=pt"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Dimensions of quality revisited: from thought to action.",
+    author: "Maxwell, R. J. (1992).",
+    link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1055007/"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Planos de cargos, carreiras e salários: perspectivas de profissionais de saúde do Centro-Oeste do Brasil.",
+    author: "Mendes, T. M. C.",
+    link: "https://www.scielo.br/j/sdeb/a/FzP8rJLtwtNyCxKPr3Npq5M/?lang=pt"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Primary and secondary dental care: how ideal is the interface?",
+    author: "Morris AJ, Burke FJ.",
+    link: "https://www.nature.com/articles/4801263"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Primary and secondary dental care: the nature of the interface",
+    author: "Morris AJ, Burke FJ.",
+    link: "https://www.nature.com/articles/4801262"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Referral for secondary restorative dental care in rural and urban areas of Scotland: findings from the Highlands & Islands Teledentistry Project.",
+    author: "NUTTALL NM, STEED MS, DONACHIE MA",
+    link: "https://www.nature.com/articles/4801339"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "The effect of orthodontic referral guidelines: a randomised controlled trial.",
+    author: "O'BRIEN K, WRIGHT J, CONBOY F,",
+    link: "https://www.nature.com/articles/4800492"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "From Quality Assurance to Quality Improvement: The Joint Commission on Accreditation of Healthcare Organizations and Emergency Care.",
+    author: "O'Leary, D. S., & O'Leary, M. R.",
+    link: "https://www.sciencedirect.com/science/article/abs/pii/S0733862720306945"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Flexibilização dos vínculos de trabalho na atenção secundária: limites da Política Nacional de Saúde Bucal.",
+    author: "Oliveira RS, Morais HMM.",
+    link: "https://www.scielo.br/j/tes/a/BHXYHGdMRLDsqDqBsYmf53M/abstract/?lang=pt"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Perdas dentárias no Brasil: análise da Pesquisa Nacional de Saúde Bucal 2010. Revista de Saúde Pública",
+    author: "Peres, Marco Aurélio",
+    link: "https://doi.org/10.1590/S0034-8910.201304700422"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Trend of hospitalized cases of oral cancer in Brazil and its relationship with oral health coverage in public health system between 2009 and 2017.",
+    author: "Raymundo ML, Freire AR, Gomes-Freire DE, Silva RO, Araújo EC, Ishigame RT, Sousa SA, Lucena EH, Cavalcanti YW.",
+    link: "https://dialnet.unirioja.es/servlet/articulo?codigo=7884324"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "An International Working Definition for Quality of Oral Healthcare.",
+    author: "Righolt AJ, Walji MF, Feine JS, Williams DM, Kalenderian E, Listl S.",
+    link: "https://journals.sagepub.com/doi/full/10.1177/2380084419875442"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Organização da demanda de um Centro de Especialidades Odontológicas.",
+    author: "Saliba NA",
+    link: "https://www.scielo.br/j/rounesp/a/6CZCvK8nLrvnCZXHDrJ4SQr/abstract/?lang=pt"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Perfil de gerentes da atenção primária à saúde de um município de Minas Gerais, Brasil.",
+    author: "Santos AS, Silveira RE, Mendonça FTNF, Buso ALZ, Silva SGF, Silva DD.",
+    link: "https://pesquisa.bvsalud.org/portal/resource/pt/bde-29084"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "A Web-Based Tool for Monitoring and Evaluating Health Care Services: An Analysis of Centers for Dental Specialties Webpage.",
+    author: "Santos LX, Almeida D, Silva J, Rizental A, Goes PSA, Figueiredo N.",
+    link: "https://arquivo.revista.uepb.edu.br/index.php/pboci/article/view/3385"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Interface entre a Atenção Primária e a Secundária em odontologia no Sistema Único de Saúde: uma revisão sistemática integrativa.",
+    author: "Silva, Helbert Eustáquio Cardoso da e Gottems, Leila Bernarda Donato.",
+    link: "https://doi.org/10.1590/1413-81232017228.22432015"
+  },
+  {
+    type: "Avaliação CEO",
+    article: ".Avaliação em saúde: limites e perspectivas.",
+    author: "Silva, Ligia Maria V. da e Formigli, Vera Lúcia A.",
+    link: "https://doi.org/10.1590/S0102-311X1994000100009"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Acesso e qualidade: avaliação das Equipes de Saúde Bucal participantes do PMAQ-AB 2012 em Pernambuco",
+    author: "Sobrinho JEL, Martelli PJL, Albuquerque MSV, Lyra TM, Farias SF.",
+    link: "https://www.scielosp.org/article/sdeb/2015.v39n104/136-146/"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Referência e contra referência em saúde bucal: regulação do acesso aos centros de especialidades odontológicas.",
+    author: "Souza G C",
+    link: "http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S0124-00642015000300009&lng=en&nrm=iso"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Uma revisão sobre os conceitos de acesso e utilização de serviços de saúde",
+    author: "Travassos, Claudia; Martins, Mônica.",
+    link: "https://doi.org/10.1590/S0102-311X2004000800014"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Qualidade e subjetividade na avaliação de programas e serviços em saúde.",
+    author: "Uchimura KY, Bosi MLM.",
+    link: "https://www.scielo.br/j/csp/a/jsNy8jWBKbwmggFQM6t5DHQ/?format=html"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Planos de carreira, cargos e salários no âmbito do Sistema Único de Saúde: além dos limites e testando possibilidades.",
+    author: "Vieira SP, Pierantoni CR, Magnago C, França T, Miranda RG",
+    link: "https://www.scielo.br/j/sdeb/a/ZRFkRbrWXr8zwSfbL7vH6BF/?lang=pt&format=html"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Universal health coverage, oral health, equity and personal responsibility",
+    author: "Wang TT, Mathur MR, Schmidt H",
+    link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7652557/"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Quality of care : a process for making strategic choices in health systems.",
+    author: "World Health Organization.",
+    link: "https://apps.who.int/iris/bitstream/handle/10665/43470/?sequence=1"
+  },
+  {
+    type: "Avaliação CEO",
+    article: "Conceptual framework for the International Classification for Patient Safety: final technical report",
+    author: "World Health Organization.",
+    link: "https://www.who.int/patientsafety/taxonomy/icps_full_report.pdf"
   },
   {
     type: "Avaliação da APS",
@@ -1364,32 +1495,32 @@ export const acervo = [
     article: "Diretrizes Nacionais da Vigilância em Saúde / Ministério da Saúde, Secretaria de Vigilância em Saúde, Secretaria de Atenção à Saúde.",
     author: "MINISTÉRIO DA SAÚDE - BRASIL",
     link: "https://bvsms.saude.gov.br/bvs/publicacoes/diretrizes_nacionais_vigilancia_saude.pdf"
-  },{
+  }, {
     type: "Avaliação da APS",
     article: "Apoio matricial em saúde mental entre CAPS e Saúde da Família: trilhando caminhos possíveis. ",
     author: "MINOZZO, Fabiane; COSTA, Ileno Izídio da. ",
     link: "https://www.scielo.br/j/pusf/a/8RHHTjnrC6xSK5f6XnsHNHm/?lang=pt"
-  },{
+  }, {
     type: "Avaliação da APS",
     article: "Princípios do Apoio Matricial. In: Gusso e Lopes (Org.). Tratado de Medicina de Família e Comunidade. ",
     author: "SARAIVA, S; ZEPEDA, J.",
     link: "https://pt.scribd.com/document/452645765/2-s-saraiva-e-j-zepeda-principios-do-apoio-matricial"
-  },{
+  }, {
     type: "Avaliação da APS",
     article: "Appropriate and inappropriate referrals to a unit of conservative dentistry. ",
     author: "BURKE F J T, GOODALL C, HAYES F. ",
     link: "https://pubmed.ncbi.nlm.nih.gov/11819890/"
-  },{
+  }, {
     type: "Avaliação da APS",
     article: "Making the best use of consultant orthodontic services. Part 1: Determining which patients require referral.",
     author: "FERGUSON JW; LANGFORD JW; DAVENPORT PJ.",
     link: "https://pubmed.ncbi.nlm.nih.gov/9515357/"
-  },{
+  }, {
     type: "Avaliação da APS",
     article: "A review of research in the United Kingdom to evaluate the implementation of clinical guidelines in general practice",
     author: "DOWIE R.",
     link: "https://pubmed.ncbi.nlm.nih.gov/9848434/"
-  },{
+  }, {
     type: "Avaliação da APS",
     article: "The effect of orthodontic referral guidelines: a randomised controlled trial. ",
     author: "O'BRIEN K, WRIGHT J, CONBOY F, et al. ",
@@ -1533,93 +1664,279 @@ export const acervo = [
     author: "VITORINO, Davina; OLIVEIRA, Isabel Cristina",
     link: "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjMiLzp7eX5AhXkSLgEHTG6DMYQFnoECAoQAw&url=https%3A%2F%2Fares.unasus.gov.br%2Facervo%2Fbitstream%2FARES%2F14673%2F1%2FARTIGO-DAVINA-Ares.pdf&usg=AOvVaw28T4P_wd7rty4M1mtyFsSM"
   },
-{
+  {
     type: "Avaliação da APS",
     article: "Comunicação entre profissional de saúde e paciente: percepções de mulheres com câncer de mama.",
     author: "OTANI, M.A.P",
     link: "http://www.revistanursing.com.br/revistas/242-Julho2018/Comunicacao_entre_profissional_saude.pdf"
-},
+  },
   {
     type: "Avaliação da APS",
     article: "Comunicação nas práticas em saúde: revisão integrativa da literatura.",
     author: "CORIOLANO-MARINUS, Maria Wanderleya de Lavor et al",
     link: "https://www.scielo.br/j/sausoc/a/v4qzCcwMMwyyz5TtztQ9sMg/"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Educação em saúde: programa e canal de comunicação via WhatsApp da unidade básica de saúde do N6 para comunidade rural do sertão pernambucano.",
     author: "JÚNIOR, Aristóteles Homero dos Santos Cardona; DE QUEIROZ ANDRADE, Cleusa Wanderley; CALDAS, Luciana Nogueira Mendes",
     link: "https://apsemrevista.org/aps/article/view/92/63"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "A saúde bucal no Sistema Único de Saúde",
     author: "MINISTÉRIO DA SAÚDE - BRASIL",
     link: "http://bvsms.saude.gov.br/bvs/publicacoes/saude_bucal_sistema_unico_saude.pdf"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Avaliação dos usuários sobre o Programa de Saúde da Família em Vitória da Conquista - Bahia",
     author: "TEIXEIRA SA",
     link: "https://revistaseletronicas.pucrs.br/ojs/index.php/scientiamedica/article/download/1572/1175/0"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Avaliação de satisfação de usuários: considerações teórico-conceituais.",
     author: "ESPIRIDIÃO MA, TRAD LAB.",
     link: "https://www.scielo.br/j/csp/a/Sf88fP5QRXzLbWrdfGZxkRr/?format=pdf&lang=pt"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "O Portal CEO: um experimento em saúde digital à gestão dos Centros de Especialidades Odontológicas",
     author: "FIGUEIREDO, N. & GÓES, P. S. A.",
     link: "https://editora.ufpe.br/books/catalog/download/50/53/157?inline=1"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Quality of care: 1. What is quality and how can it be measured?",
     author: "Health Services Research Group",
     link: "https://pubmed.ncbi.nlm.nih.gov/1611571/"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "From quality assurance to quality improvement.",
     author: "O'Leary, D. S., & O'Leary, M. R.",
     link: "https://pubmed.ncbi.nlm.nih.gov/1628555/"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Saúde bucal no Programa Saúde da Família: uma avaliação do modelo assistencial.",
     author: "SOUZA TMS, RONCALLI AG",
     link: "https://www.scielo.br/j/csp/a/dWWFKyHp7G5jVB8zxrvXsZf/?lang=pt"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Saúde bucal: uma revisão crítica sobre programações educativas para escolares.",
     author: "PAULETO ARC et al",
     link: "https://www.scielo.br/j/csc/a/cL7Ym9gZJm7HnGyQrVkTtRs/abstract/?lang=pt"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Secretaria de Atenção à Saúde. Departamento de Atenção Básica.",
     author: "MINISTÉRIO DA SAÚDE - BRASIL",
     link: "https://bvsms.saude.gov.br/bvs/publicacoes/politica_nacional_atencao_basica_2006.pdf"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Reuniões da estratégia saúde da família: um dispositivo indispensável para o planejamento local.",
     author: "VOLTOLINI, Bruna Carla et al",
     link: "https://www.scielo.br/j/tce/a/MmncBRhFVvvTvSBWdTBzXWs/abstract/?lang=pt"
-},
-{
+  },
+  {
     type: "Avaliação da APS",
     article: "Reunião de equipe: uma reflexão sobre sua importância enquanto estratégia diferencial na gestão coletiva no Programa de Saúde da Família (PSF).",
     author: "CRUZ MLS, FRANCO L, CARVALHO JW, SILVA FB, BETELI VC, LIMA MF et al.",
     link: "http://bases.bireme.br/cgi-bin/wxislind.exe/iah/online/?IsisScript=iah/iah.xis&src=google&base=LILACS&lang=p&nextAction=lnk&exprSearch=658627&indexSearch=ID"
-}
+  },
+  {
+    type: "Planeja SD",
+    article: "Planejamento participativo realizado em área de abrangência do programa saúde da família. Revista APS",
+    author: "GABRIEL AGUIAR, GIZELE FAGUNDES, KEILA LEÃO, PEDRO ALMEIDA, MILENA DE SOUZA",
+    link: "https://www.academia.edu/93480756/Planejamento_participativo_realizado_em_%C3%A1rea_de_abrang%C3%AAncia_do_Programa_Sa%C3%BAde_da_Fam%C3%ADlia"
+  },
+  {
+    type: "Planeja SD",
+    article: "Processo decisório: a tomada de decisão. Revista Científica Eletrônica de Agronomia, v. 20, n. 1, 2011",
+    author: "CRISTINA BERTONCINI, ADRIANA BRITO, ELISANGELA LEME, ISMAEL SILVA, THIAGO SILVA, RICARDO PERRI",
+    link: "https://faef.revista.inf.br/imagens_arquivos/arquivos_destaque/QjxDDqGcS5r3dHL_2013-5-3-12-8-34.pdf"
+  },
+  {
+    type: "Planeja SD",
+    article: "Regulamenta a Lei nº 8.080, de 19 de setembro de 1990, para dispor sobre a organização do Sistema Único de Saúde - SUS, o planejamento da saúde, a assistência à saúde e a articulação interfederativa, e dá outras providências. 2011",
+    author: "PRESIDÊNCIA DA REPÚBLICA - BRASIL",
+    link: "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/decreto/d7508.htm"
+  },
+  {
+    type: "Planeja SD",
+    article: "LEI COMPLEMENTAR Nº 141, DE 13 DE JANEIRO DE 2012 QUE REGULAMENTA O §3º DO ART. 198",
+    author: "PRESIDÊNCIA DA REPÚBLICA - BRASIL",
+    link: "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp141.htm"
+  },
+  {
+    type: "Planeja SD",
+    article: "Lei nº 8.080, de 19 de setembro de 1990. Dispõe sobre as condições para a promoção, proteção e recuperação da saúde, a organização e o funcionamento dos serviços correspondentes e dá outras providências",
+    author: "PRESIDÊNCIA DA REPÚBLICA - BRASIL",
+    link: "https://www.planalto.gov.br/ccivil_03/leis/l8080.htm"
+  },
+  {
+    type: "Planeja SD",
+    article: "Manual de planejamento no SUS. 1. ed. rev. Brasília: MS",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/publicacoes/articulacao_interfederativa_v4_manual_planejamento_atual.pdf"
+  },
+  {
+    type: "Planeja SD",
+    article: "Portaria de Consolidação nº 1, de 28 de setembro de 2017. Consolidação das Normas sobre os direitos e deveres dos usuários da saúde, a organização e o funcionamento do Sistema Único de Saúde (Título IV, Capítulo I). 2017",
+    author: "MINISTÉRIO DA SAÚDE - BRASIL",
+    link: "https://bvsms.saude.gov.br/bvs/saudelegis/gm/2017/prc0001_03_10_2017.html"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento estratégico situacional em saúde: abordagem da saúde do trabalhador na Estratégia Saúde da Família",
+    author:"Camargo, F. C., Machado, G. G., Felipe, L. R. R., Faria, G. S., Nogueira, A. L., Reis, S. C. R. M., & Walsh, I. A. P.,",
+    link:"https://seer.uftm.edu.br/revistaeletronica/index.php/refacs/article/view/4528/pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:". Planejamento e programação em saúde – texto para fixação de conteúdos e seminários. ",
+    author:"Adolfo H. Chorny,Rosana Kuschnir, Maura Taveira",
+    link:"http://www.ensp.fiocruz.br/portal-ensp/_uploads/documentos-pessoais/documento-pessoal_12465.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"Gestão participativa na Estratégia Saúde da Família: reorientação da demanda à luz do Método Paideia",
+    author:"MYKAELLY CLEMENTE, ANTONIO PINTO, ALISSAN MARTINS",
+    link:"https://www.scielo.br/j/sdeb/a/kqN5Q4HWfK4XnXj6FCKtwCC/"
+  },
+  {
+    type:"Planeja SD",
+    article:"Manual do Gestor Municipal do SUS",
+    author:"CONSELHO NACIONAL DE SECRETARIAS MUNICIPAIS DE SAÚDE - CONASEMS",
+    link:"https://www.conasems.org.br/wp-content/uploads/2021/02/manual_do_gestor_2021_F02-1.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"Concepções, estratégias e usos do planejamento na gerência em Unidades de Saúde da Família",
+    author:"Michele de Araújo de Jesus, Mariluce Karla Bomfim de Souza",
+    link:"https://periodicos.ufjf.br/index.php/aps/article/view/15815/24105"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento em saúde nas equipes de saúde bucal: análise do processo de trabalho e fatores associados",
+    author:"Fernandes, Anderson de Souza",
+    link:"https://repositorio.ufrn.br/handle/123456789/27023"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento em Saúde",
+    author:"SIMONE FERREIRA, LETÍCIA SILVA, GLADYS MIYASHIRO",
+    link:"https://www.arca.fiocruz.br/bitstream/handle/icict/39910/T%c3%a9cnico%20de%20Vigil%c3%a2ncia%20em%20Sa%c3%bade%20v.2%20-%20Planejamento%20em%20sa%c3%bade.pdf?sequence=2&isAllowed=y"
+  },
+  {
+    type:"Planeja SD",
+    article:"A prática do planejamento participativo. 11. ed. Petrópolis: Vozes, 2002.",
+    author:"YOLI SERRÃO, MARIA LIMA",
+    link:"https://educapes.capes.gov.br/bitstream/capes/573284/2/Produto%20Final%20Planejamento%20Participativo%20com%20ficha%20catalografica.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"O planejamento estratégico situacional no ensino da gestão em saúde da família",
+    author:"MARIA ELISABETH KLEBA",
+    link:"https://www.scielo.br/j/tce/a/MJ874KDGTwVjm9f4LWpcvCR/#"
+  },
+  {
+    type:"Planeja SD",
+    article:"Especialização Multiprofissional na Atenção Básica",
+    author:"MINISTÉRIO DA SAÚDE - BRASIL",
+    link:"https://unasus.ufsc.br/atencaobasica/files/2017/10/Planejamento-na-Aten%C3%A7%C3%A3o-B%C3%A1sica-ilovepdf-compressed.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"ESPECIALIZAÇÃO MULTIPROFISSIONAL NA ATENÇÃO BÁSICA",
+    author:"MINISTÉRIO DA SAÚDE - BRASIL",
+    link:"https://unasus.ufsc.br/atencaobasica/files/2017/10/Planejamento-na-Aten%C3%A7%C3%A3o-B%C3%A1sica-ilovepdf-compressed.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"Reflexões sobre o planejamento em saúde e o processo da reforma sanitária brasileira",
+    author:"FRANCISCO LANA, ELIZABETH GOMES",
+    link:"https://www.scielo.br/j/rlae/a/GDB9qGP3yTD3vhsNgwd9CDg/#"
+  },
+  {
+    type:"Planeja SD",
+    article:"Política, planejamento e governo. Brasília: Instituto de Pesquisa Econômica Aplicada, 1993",
+    author:"CARLOS MATUS",
+    link:"https://pt.scribd.com/document/285785802/Matus-Politica-Planejamento-e-Governo-Tomo-I"
+  },
+  {
+    type:"Planeja SD",
+    article:"Epidemiologia e planejamento: a recomposição das práticas epidemiológicas na gestão do SUS",
+    author:"JAIRNILSON PAIM",
+    link:"https://www.scielo.br/j/csc/a/hPzrtYnZZJdQDDD39QNrMQL/"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento em saúde para não especialistas. In: CAMPO, et al. Tratado de saúde coletiva. ",
+    author:"JAIRNILSON PAIM",
+    link:"https://pea.ufba.br/eventos/gestores/biblioteca/docs/PLANEJAMENTO_EM_SAUDE__.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"PLANEJAMENTO PARTICIPATIVO EM SAÚDE",
+    author:"JOSÉ REGINALDO PARENTE",
+    link:"https://sanare.emnuvens.com.br/sanare/article/view/144"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento em Enfermagem aplicação do processo de enfermagem na prática administrativa",
+    author:"RICARDO SANTANA, ÂNGELA TAHARA",
+    link:"https://books.scielo.org/id/vgr7y/pdf/santana-9788574555294.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento Estratégico Situacional - PES: uma análise bibliométrica da produção científica brasileira",
+    author:"ALLINY SILVA, JOSEA SOUSA WALDECY RODRIGUES, AIRTON CANÇADO",
+    link:"https://revista.enap.gov.br/index.php/RSP/article/view/1269"
+  },
+  {
+    type:"Planeja SD",
+    article:". Planejamento em Saúde. Método Altair de Planificação Popular - MAPP",
+    author:"A. OLIVEIRA, A. COSTA, D. CUNHA, E. ANJOS, J. FRANCO, W. SOUZA",
+    link:"https://downloads.editoracientifica.org/articles/210605159.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento em saúde. São Paulo: Faculdade de Saúde Pública da Universidade de São Paulo",
+    author:"T. BERNARDINI, B. LOPEZ, F. GERMANN",
+    link:"https://colecoes.abcd.usp.br/fsp/files/original/56afd7bd8a246b33b21ec8d839021f46.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"Which criteria are considered in healthcare decisions? Insights from an international survey of policy and clinical decision makers. International Journal of Technology Assessment in Health Care",
+    author:"N. TANIOS, M. WAGNER, M. TONY, R.BALTUSSEN, J. VAN TIL, et al.",
+    link:"https://pubmed.ncbi.nlm.nih.gov/24290340/"
+  },
+  {
+    type:"Planeja SD",
+    article:". Planejamento e programação das ações de vigilância da saúde no nível local do Sistema Único de Saúde",
+    author:"A. L . Q. VILASBÔAS",
+    link:"https://pesquisa.bvsalud.org/portal/resource/pt/biblio-926611"
+  },
+  {
+    type:"Planeja SD",
+    article:"Planejamento, gestão e avaliação em saúde bucal. São Paulo: Artes Médicas",
+    author:"P. GOES, S. MOYSÉS",
+    link:"https://statics-americanas.b2w.io/produtos/111164534/documentos/111164534_1.pdf"
+  },
+  {
+    type:"Planeja SD",
+    article:"District decisionmaking for health in low income settings: a systematic literature review. Health Policy and Planning",
+    author:"D. WICKREMASINGHE, I. HASHMI, J. SCHELLENBERG, B. AVAN",
+    link:"https://pubmed.ncbi.nlm.nih.gov/27591202/"
+  }
 ]
 
-const menu= [
+const menu = [
   { id: 0, title: 'Questionarios', url: '/AnswerForm' },
   {
     id: 1,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Base from '@components/base-layout';
 import AppBar from '@components/app-bar';
 import FooterMain from '@components/footer/main/index';
@@ -12,7 +12,6 @@ import {
 	Box,
 	Button,
 	Grid,
-	IconButton,
 	Paper,
 	Typography,
 } from '@mui/material';
@@ -23,11 +22,13 @@ import CollectionContainer from '@components/container/collection';
 import Faq from '@components/container/faq';
 import Tcle from '@components/container/tcle';
 import Direction from '@components/container/direction';
+import ApsData from '@components/container/aps-data';
+import CeoData from '@components/container/ceo-data';
+import UserData from '@components/container/user-data';
 import Informes from '@components/container/informes';
 import WhatIs from '@components/container/what-is';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
 
 export default function Index() {
 	const router = useRouter();
@@ -81,6 +82,23 @@ export default function Index() {
 				},
 			],
 		},
+		{
+			title: 'NOSSOS DADOS SD',
+			menuItems: [
+				{
+					title: 'USUÁRIOS',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.USER_DATA),
+				},
+				{
+					title: 'CEO',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.CEO_DATA),
+				},
+				{
+					title: 'APS',
+					onClick: () => setContainerBodyType(containerBodyTypeEnum.APS_DATA),
+				},
+			],
+		},
 	];
 	const items = [
 		{
@@ -124,6 +142,11 @@ export default function Index() {
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
 
+	useEffect(()=>{
+		if(router.query.containerBody){
+			setContainerBodyType(router.query.containerBody as string)
+		}
+	},[router])
 
 	return (
 		<div>
@@ -147,15 +170,19 @@ export default function Index() {
 				mainContainerChild={
 					<Box
 						sx={{
-							marginTop:'5rem'
+							background: theme.greyLight,
+							marginTop:'5rem',
+							paddingTop:!largeQuery? '2rem' : '1rem',
+							minHeight:'88vh',
+							display:'flex',
+							flexDirection:'column',
+							justifyContent:'center'
+							
 						}}>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<Box
 								sx={{
 									width: 1,
-									minHeight: '56.5vh',
-									padding: '30px',
-									marginBottom:'5rem'
 								}}>
 								<Grid
 									container
@@ -286,6 +313,9 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
 						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
 						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
+						{containerBodyType === containerBodyTypeEnum.APS_DATA && <ApsData/>}
+						{containerBodyType === containerBodyTypeEnum.CEO_DATA && <CeoData/>}
+						{containerBodyType === containerBodyTypeEnum.USER_DATA && <UserData/>}
 					</Box>
 				}
 				footerChild={<FooterMain
