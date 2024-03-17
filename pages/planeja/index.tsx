@@ -61,8 +61,8 @@ export default function Index() {
             <PlanejaQuestion
               id={1}
               title={'Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho ?'}
-              yesDescr={'quais foram as ações feitas?'}
-              noDescr={'por quê?'}
+              yesDescr={'Quais foram as ações feitas?'}
+              noDescr={'Por quê?'}
               noHasJustify={true}
             />
             <Typography>Sabemos que essa questão já foi abordada como indicador avaliativo do GestBucalSD, mas aqui vocês poderão aprofundar essa reflexão para à ação. A importância da realização do planejamento pode ser vista já no senso comum, onde o ato de planejar está ligado à organização de atividades, à busca por melhores resultados. Uma ação planejada é uma ação não improvisada (WERNECK, 2012) e, no geral, pode-se afirmar que planejar é reduzir incertezas, o que leva a algum grau de intervenção na economia, orientando investimentos e estando vinculado à alocação eficiente de recursos e à busca por melhores resultados. Na saúde, as práticas de planejamento estão presentes em todo o processo de gestão do Sistema Único de Saúde (BRASIL, 2016), desde níveis mais locais e seus microterritórios até a esfera federal.</Typography>
@@ -80,9 +80,9 @@ export default function Index() {
             <Typography>Em 1965, Mário Testa, em conjunto com a Organização Pan-Americana da Saúde (OPAS) e o Centro de Estudos para o Desenvolvimento Econômico e Saúde (CENDES) introduziu o chamado Método CENDES/OPAS, considerado o marco inicial do planejamento na América Latina. Esse se constituiu numa forma de programação sanitária onde o desenvolvimento de métodos e técnicas de programação social impunham mudanças racionalmente planejadas como alternativa para a crise social. Esse método, também denominado de planejamento normativo, representa o marco inicial do desenvolvimento do planejamento em saúde na América Latina. A lógica interna do método CENDES/OPAS tem por base ser economicista e administrativo, a partir da ideia da eficiência na utilização dos recursos disponíveis e teve por principais características:●	Uma visão ecológica (geral) do processo saúde-doença para a aplicação do diagnóstico, onde as prioridades são tratadas de acordo com a análise custo/benefício numa perspectiva economicista que tem por objetivo aumentar a eficiência na prestação de serviços, em termos de quantidade, alinhada à redução de custos (LANA; GOMES, 1996);●	Não considera as causas sociais dos problemas (LANA; GOMES, 1996), uma vez que separa o sujeito do objeto de atuação (LACERDA; BOTELHO; COLUSSI, 2013);●	A sociedade é resumida a comportamentos previsíveis e ausência de incertezas (LACERDA; BOTELHO; COLUSSI, 2013);●	A garantia de êxito do planejamento quando seguidos à risca os cálculos previstos (LACERDA; BOTELHO; COLUSSI, 2013). O modelo conduzido pela OPAS perdeu importância ao longo do tempo por fatores relacionados à dificuldade na obtenção de informações adequadas e ao foco na produtividade e eficiência econômica. Nesse sentido, as abordagens relacionadas ao planejamento estratégico e as práticas da programação em saúde se disseminaram e ganharam força (BRASIL, 2016).</Typography>
             <PlanejaQuestion
               id={2}
-              title={'Você e sua equipe realizam algum tipo de planejamento na sua rotina de trabalho ?'}
-              yesDescr={'quais foram as ações feitas?'}
-              noDescr={'por quê?'}
+              title={'Agora que estudamos um pouco sobre o Planejamento Normativo, você consegue observar se algumas dessas características estão presentes na sua rotina de trabalho da Unidade de Saúde à qual você está vinculado?'}
+              yesDescr={'Quais?'}
+              noDescr={'Por quê?'}
               noHasJustify={true}
             />
             <Typography>O enfoque normativo do planejamento na área da saúde caracteriza-se como um enfoque basicamente descritivo, fundamentado no levantamento de informações e sistematização de variáveis demográficas, epidemiológicas e sociais para a construção de indicadores de saúde e, consequentemente, fazer um diagnóstico. É possível verificar a influência do planejamento normativo no trabalho cotidiano dos estabelecimentos de saúde da rede de atenção em saúde bucal, a qual busca alcançar os objetivos das secretarias de saúde de acordo com as metas estabelecidas pelo Ministério da Saúde. Nesse sentido, destacam-se que, por vezes, as exigências sobre as metas a serem alcançadas com relação às instalações físicas, aos recursos humanos e financeiros, equipamentos e materiais de consumo, às políticas e aos programas (imunizações, saúde da mulher, saúde da criança, saúde adulto e idoso, saúde bucal e vigilância epidemiológica), que acabam por engessar algumas iniciativas, limitando as adaptações necessárias às características locais e aumentando a distância dos resultados desejados.</Typography>
@@ -149,7 +149,7 @@ export default function Index() {
               id={3}
               title={'Você consegue perceber ações e/ou componentes do Planejamento Estratégico Situacional (PES) realizados no contexto da sua Unidade de Saúde e/ou município ?'}
               yesDescr={'Quais?'}
-              noDescr={'por quê?'}
+              noDescr={'Por quê?'}
               noHasJustify={true}
             />
             <Typography>O PES tem como uma de suas características a adoção de práticas, que efetivam a participação popular e promovem a cooperação, o compartilhamento, transparência e protagonismo social como formas de promover o exercício democrático e a cidadania. A gestão participativa, nas Unidades e demais serviços de saúde, pressupõe a ampliação de arranjos organizacionais que estimulem a participação de sujeitos e de coletivos no gerenciamento de ações e práticas políticas do controle social.<br />No entanto, a participação da população no processo de planejamento em saúde ainda é incipiente. Deste modo, ampliar os espaços de participação social e reivindicar que usuários e trabalhadores atuem em associação com os gestores, no processo de planejamento social, tem sido um desafio para o planejamento participativo na Atenção Primária à Saúde. <br />Vale destacar que o SUS preconiza o modelo do PES desde o final da década de 1980 (BRASIL, 2016; FERREIRA; SILVA; MIYASHIRO, 2017), e, dessa forma, o ideal é que sejam observados elementos desse tipo de planejamento no âmbito da sua Unidade de Saúde e/ou município.</Typography>
@@ -266,8 +266,8 @@ export default function Index() {
             <PlanejaQuestion
               id={4}
               title={'Você conhece os instrumentos de planejamento em saúde do seu município?'}
-              yesDescr={'quais instrumentos você já utilizou?'}
-              noDescr={'pesquise sobre eles e responda: Quais você identificou no seu município?'}
+              yesDescr={'Quais instrumentos você já utilizou?'}
+              noDescr={'Pesquise sobre eles e responda: Quais você identificou no seu município?'}
               noHasJustify={true} />
             <PlanejaQuestion
               id={5}
@@ -279,7 +279,7 @@ export default function Index() {
               id={6}
               title={'Você participou/participa da construção e do monitoramento das diretrizes, objetivos, metas, indicadores e respectivos resultados?'}
               yesDescr={'Quais?'}
-              noDescr={'por quê?'}
+              noDescr={'Por quê?'}
               noHasJustify={true} />
             <Typography>Considerando a importância de o planejamento envolver todos os atores ligados direta e indiretamente ao contexto sanitário do território, seja micro ou macro, a Equipe deve estar familiarizada com os instrumentos de planejamento e esses devem contemplar aspectos referentes à Saúde Bucal, além de participarem ativamente do processo de elaboração, monitoramento, condução e avaliação.</Typography>
             <Typography>SAIBA MAIS!<br />Para obter mais informações sobre os instrumentos de planejamento em saúde no SUS, as Conferências de Saúde e os Conselhos de Saúde indicamos a leitura do seguinte texto:<br />●	CONASEMS. Manual do(a) gestor(a) municipal no SUS. Diálogos no cotidiano. 2a edição digital - revisada e ampliada. 2021.<br />Disponível em: https://portal.conasems.org.br/publicacoes?rows=16&start=48</Typography>
@@ -300,8 +300,8 @@ export default function Index() {
             <PlanejaQuestion
               id={8}
               title={'Você conhece os espaços de governança do SUS, nos quais a sociedade tem possibilidade de atuar nas políticas de saúde'}
-              yesDescr={'quais são?'}
-              noDescr={'pesquise a respeito!'}
+              yesDescr={'Quais são?'}
+              noDescr={'Pesquise a respeito!'}
               noHasJustify={false} />
             <PlanejaQuestion
               id={9}
