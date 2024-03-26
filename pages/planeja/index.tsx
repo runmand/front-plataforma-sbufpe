@@ -15,6 +15,7 @@ export default function Index() {
   const [page, setPage] = useState(0);
 
 
+
   function pageable(numPage: number, page: number) {
     if (numPage == page) {
       return false;
@@ -40,9 +41,7 @@ export default function Index() {
         }}>
 
           {/* Página 1 */}
-          <Box 
-            hidden={pageable(0, page)}
-            >
+          <Box hidden={pageable(0, page)}>
             <Typography
               sx={{
                 textAlign:'center',
@@ -58,20 +57,10 @@ export default function Index() {
                 textAlign:'justify'
               }}
             >
-              Para a execução deste módulo operacional da plataforma GestBucalSD, propomos uma qualificação profissional teórico-prática - autoinstrucional em planejamento sistematizado de ações em saúde bucal, inclusive com garantia de certificação, como curso de extensão (20h).<br />Vamos vivenciar o planejamento de ações em saúde bucal, entendendo o ato de planejar como reduzir incertezas.<br />Discutiremos aqui os principais conceitos e instrumentos relacionados ao planejamento no âmbito do Sistema Único de Saúde (SUS), compreendendo-o principalmente com de âmbito local.<br />Trabalharemos as seguintes temáticas:<br /> ●	Conceito de planejamento;<br /> ●	Tipos de Planejamento;<br /> ●	Planejamento Estratégico Situacional (PES) e Planejamento participativo;<br /> ●	Processo decisório;<br /> ●	Definições dos instrumentos de planejamento e gestão no Sistema Único de Saúde (SUS) (Plano de Saúde – PS, Programação Anual de Saúde – PAS, Relatório Detalhado do Quadrimestre Anterior – RDQA, Relatório Anual de Gestão – RAG) e a sua importância no contexto do planejamento no SUS;<br /> ●	Planejamento local em saúde no contexto das Redes de Atenção à Saúde (RAS).<br /><br />Espera-se que após o cumprimento do componente teórico, você realize na prática baseada do PES a construção de um Plano Local de Ação com o uso do PlanejaSD e demais dados da plataforma GestBucalSD. O componente teórico deve ser feito em caráter individual, mas a prática pode (e deve) envolver outros membros da equipe e ainda outros atores sociais implicados em nível local, se possível.<br /><br />Certificação: a certificação será emitida para cada participante, após o cumprimento de atividades individuais formativas através do preenchimento de respostas as perguntas condutoras do componente teórico e da avaliação somativa (individual ou equipe profissional local), pela construção do Plano de Ação Local.<br />A equipe do projeto estará disponível, para assessorá-los, através de agendamento prévio, numa perspectiva de ações de Telessaúde para teleconsulta e telemonitoramento ao Planejamento, gestão e avaliação em saúde.
-              <Typography
-                sx={{
-                  margin:'auto',
-                  paddingY:'1rem',
-                  fontWeight:'bold'
-  
-                }}
-              >
-                Onde incluir os créditos do material teórico???
-              </Typography>
+              Para a execução deste módulo operacional da plataforma GestBucalSD, propomos uma qualificação profissional teórico-prática - autoinstrucional em planejamento sistematizado de ações em saúde bucal, inclusive com garantia de certificação, como curso de extensão (30h). Portanto, você terá disponível o PlanejaSD-componente teórico e PlanejaSD-componente prático. <br />Vamos vivenciar o planejamento de ações em saúde bucal, entendendo o ato de planejar como reduzir incertezas.<br />Discutiremos aqui os principais conceitos e instrumentos relacionados ao planejamento no âmbito do Sistema Único de Saúde (SUS), compreendendo-o principalmente com de âmbito local.<br />Trabalharemos as seguintes temáticas:<br /> ●	Conceito de planejamento;<br /> ●	Tipos de Planejamento;<br /> ●	Planejamento Estratégico Situacional (PES) e Planejamento participativo;<br /> ●	Processo decisório;<br /> ●	Definições dos instrumentos de planejamento e gestão no Sistema Único de Saúde (SUS) (Plano de Saúde – PS, Programação Anual de Saúde – PAS, Relatório Detalhado do Quadrimestre Anterior – RDQA, Relatório Anual de Gestão – RAG) e a sua importância no contexto do planejamento no SUS;<br /> ●	Planejamento local em saúde no contexto das Redes de Atenção à Saúde (RAS).<br /><br />Espera-se que após o cumprimento do PlanejaSD-componente teórico, você realize na prática baseada do PES a construção de um Plano de Ação em Saúde Bucal (PA-SB). com o uso do PlanejaSD e demais dados da plataforma GestBucalSD. O componente teórico deve ser feito em caráter individual, mas a prática pode (e deve) envolver outros membros da equipe e ainda outros atores sociais implicados em nível local, se possível.<br /><br />Certificação: a certificação será emitida para cada participante, após o cumprimento de atividades individuais formativas através do preenchimento de respostas as perguntas condutoras do componente teórico e da avaliação somativa (individual ou equipe profissional local), pela construção do Plano de Ação em Saúde Bucal (PA-SB).<br />A equipe do projeto estará disponível, para assessorá-los, através de agendamento prévio, numa perspectiva de ações de Telessaúde: telemonitoramento ao Planejamento, gestão e avaliação em saúde.
             </Typography>
             <Button color="success" variant="contained" endIcon={<ArrowForwardIcon />}
-              onClick={() => {setPage(1)}}>Vamos começar?!</Button>
+              onClick={() => {setPage(1)}}>Vamos começar!</Button>
           </Box>
 
           {/* Página 2 */}
@@ -546,7 +535,7 @@ export default function Index() {
                 paddingBottom:'1rem'
               }}
             >
-              Propomos agora, a partir do uso do PlanejaSD, a construção de um Plano de Ação local, sendo metodologicamente uma adaptação do Planejamento Estratégico Situacional (PES).<br/>O uso do PlanejaSD irá auxiliá-lo na construção passo a passo, através do artifício dinâmico de pergunta-resposta para a vivência dos momentos operacionais do PES. E, no término você terá seu Plano de Ação Local elaborado pronto para à intervenção.<br/>Salienta-se que cada situação/contexto é única, emergindo muitos problemas à intervenção, porém o PlanejaSD irá direcioná-lo (a) à construção de um plano para a tomada de decisão baseada nos resultados dos outros módulos operativos da plataforma GestBucalSD, sumarizado no dashboards.
+              Propomos agora, a partir do uso do PlanejaSD-componente prático, a construção de um Plano de Ação em Saúde Bucal (PA-SB), sendo metodologicamente uma adaptação do Planejamento Estratégico Situacional (PES).<br/>O uso do PlanejaSD irá auxiliá-lo na construção passo a passo, através do artifício dinâmico de pergunta-resposta para a vivência dos momentos operacionais do PES. E, no término você terá seu Plano de Ação em Saúde Bucal (PA-SB) elaborado pronto para à intervenção.<br/>Salienta-se que cada situação/contexto é única, emergindo muitos problemas à intervenção, porém o PlanejaSD irá direcioná-lo (a) à construção de um plano para a tomada de decisão baseada nos resultados dos outros módulos operativos da plataforma GestBucalSD, sumarizado no dashboards.
             </Typography>
             <Stack direction='row'>
               <Button color="error" variant="contained" startIcon={<ArrowBackIcon />}
