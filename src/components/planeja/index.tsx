@@ -9,6 +9,15 @@ export const PlanejaQuestion = (
     noHasJustify = true, campoMensagem,
   }: PlanejaQuestionProps) => {
 
+   function handleQuestion(id: string, response: string, justify: string){
+    const data ={
+      id :id,
+      respondido : response,
+      justify : justify
+    }
+    return data;
+  }
+
   const [respondido, setRespondido] = useState('');
   const [justify, setJustify] = useState('');
 
@@ -55,5 +64,6 @@ export const PlanejaQuestion = (
         {campoMensagem}
       </Box>
     </Box>
+
   );
 }

@@ -9,13 +9,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { PlanejaQuestion } from '@components/planeja';
 import { planejaTable01, planejaTable02, planejaTable03, planejaTable04, planejaTable05, planejaTable06 } from 'src/shared/dataBase';
-import apiPaneja from 'src/core/apiPlaneja';
+// import apiPaneja from 'src/core/apiPlaneja';
 
 export default function Index() {
   const [justify07, setJustify07] = useState('');
   // const questionQTY = document.getElementsByTagName('PlanejaQuestion');
   // const data = new apiPaneja();
   const [page, setPage] = useState(0);
+
 
   function pageable(numPage: number, page: number) {
     if (numPage == page) {
@@ -28,7 +29,7 @@ export default function Index() {
   // function submitPlaneja() {
   //   for(let i = 1; i <= questionQTY.length;  i++) {
   //     const questionIndex = document.getElementById(`question${i}`);
-  //     data.answerQuestion(questionIndex, );
+  //     data.answerQuestion(questionIndex, , res.data);
   //   }
   // }
 

@@ -54,8 +54,9 @@ export default class apiPaneja{
     })
   }
 
-  public async answerQuestion(idQuestionChoice: number, idChoiceJustifyChoice: number, data: answerData, keyJWT: string):Promise<answerQuestion>{
+  public async answerQuestion( idQuestionChoice: number, idChoiceJustifyChoice: number, data: answerData ):Promise<answerQuestion>{
     return new Promise<answerQuestion>(async (resolve, reject) => {
+      const keyJWT = localStorage.getItem('key'); 
       await axios.post(`${this.baseURL}/answer/${idQuestionChoice}/${idChoiceJustifyChoice}`, data, {headers:{Authorization: `Bearer ${keyJWT}`}}).then((result:AxiosResponse) =>{
         resolve(result.data)
       }).catch((error: AxiosError )=>{
