@@ -305,6 +305,153 @@ export const studentsTeamGI = [
     ],
   },
 ]
+
+export const planejaTable01 = [
+  {
+    title: "Explicativo",
+    description: "Realiza-se um diagnóstico situacional, onde os problemas são selecionados e analisados, especificando-se nós críticos (causas que explicam o problema que, quando modificadas, por si só promovem a alteração de outra ou de uma série de causas).",
+  },
+  {
+    title: "Normativo",
+    description: "Construção do plano de ação/intervenção, onde são definidos o que se deseja alcançar e as respectivas estratégias.",
+  },
+  {
+    title: "Estratégico",
+    description: "Análise de viabilidade das ações a serem realizadas, incluindo a análise dos recursos econômicos, administrativos e políticos necessários e/ou disponíveis a partir das propostas traçadas.",
+  },
+  {
+    title: "Tático-Operacional",
+    description: "Implementação do plano de ação/intervenção.",
+  },
+]
+
+export const planejaTable02 = [
+  {
+    moment: "Explicativo",
+    steps: "Primeiro Passo - Definição de Problemas",
+  },
+  {
+    moment: "Explicativo",
+    steps: "Segundo passo - Priorização de problemas",
+  },
+  {
+    moment: "Explicativo",
+    steps: "Terceiro passo - Descrição dos problemas selecionados",
+  },
+  {
+    moment: "Explicativo",
+    steps: "Quarto passo - Explicação dos problemas selecionados",
+  },
+  {
+    moment: "Normativo",
+    steps: "Quinto passo - Seleção de nós críticos",
+  },
+  {
+    moment: "Normativo",
+    steps: "Sexto passo - Desenho das operações",
+  },
+  {
+    moment: "Normativo",
+    steps: "Sétimo passo - Identificação dos recursos críticos",
+  },
+  {
+    moment: "Estratégico",
+    steps: "Oitavo passo - Análise da viabilidade do plano",
+  },
+  {
+    moment: "Tático-operacional",
+    steps: "Nono passo - Definição dos responsáveis pelas operações do plano",
+  },
+  {
+    moment: "Tático-operacional",
+    steps: "Décimo passo - Gestão do plano",
+  },
+]
+
+export const planejaTable03 = [
+  {
+    normative: "Plano por setores",
+    strategic: "Plano por problemas",
+  },
+  {
+    normative: "Predições únicas ou previsão probabilística",
+    strategic: "Combina apostas bem fundamentadas com apostas difusas",
+  },
+  {
+    normative: "Incerteza “bem definida”",
+    strategic: "Incertezas e surpresas",
+  },
+  {
+    normative: "Cálculo técnico",
+    strategic: "Cálculo técnico-político",
+  },
+  {
+    normative: "Os sujeitos são agentes",
+    strategic: "Os sujeitos são atores",
+  },
+  {
+    normative: "Metas únicas",
+    strategic: "Várias possibilidades",
+  },
+]
+
+export const planejaTable04 = [
+  {
+    goal: "Marco Situacional",
+    description: "Etapa de contextualização crítica pelo grupo de trabalho do momento sócio-histórico local e global no qual se pretende operar o planejamento.",
+  },
+  {
+    goal: "Marco Doutrinal",
+    description: "A discussão e definição dos valores, crenças e ideias gerais do coletivo, o modelo de sociedade que o grupo acredita. Os resultados consensuados destas reflexões deverão subsidiar o processo de planejamento e o próprio plano.",
+  },
+  {
+    goal: "Marco Operacional",
+    description: "A tomada de decisão do grupo no sentido de construir o plano e aplicar aquilo que foi discutido.",
+  },
+]
+
+export const planejaTable05 = [
+  {
+    legalGoal: "Lei nº 8.080, de 19 de setembro de 1990 (BRASIL,1990a)",
+    synopsis: "Lei Orgânica da Saúde, que define os princípios do SUS e as atribuições dos entes federativos e estabelece o planejamento ascendente (ou seja, partindo do micro para o macro).",
+  },
+  {
+    legalGoal: "Lei nº 8.142, de 29 de novembro de 1990 (BRASIL, 2990b)",
+    synopsis: "Traz a necessidade de os entes federativos disporem de plano de saúde e relatórios de gestão para fazerem jus ao recebimento de recursos financeiros.",
+  },
+  {
+    legalGoal: "Decreto nº 7.508, de junho de 2011 (BRASIL, 2011)",
+    synopsis: "Regulamenta a Lei nº 8.080, dispondo de um capítulo específico sobre planejamento da saúde, o estabelecimento de metas de saúde e a necessidade de o gestor público elaborar e apresentar instrumentos de planejamento.",
+  },
+  {
+    legalGoal: "Lei Complementar nº 141, de janeiro de 2012 (BRASIL, 2012)",
+    synopsis: "Regulamenta o artigo 198 da Constituição Federal de 1988, definindo normas de fiscalização, avaliação e controle das despesas com o SUS nos entes federativos, e determina o planejamento ascendente e mecanismos de financiamento do SUS.",
+  },
+  {
+    legalGoal: "Portaria de Consolidação nº 1, de 28 de setembro de 2017 (Título IV do Capítulo I) (substitui a Portaria nº 2.135, de setembro de 2013) (BRASIL, 2017)",
+    synopsis: "Estabelece diretrizes para o planejamento do SUS e define instrumentos do planejamento em saúde (Plano Municipal de Saúde, Programação Anual da Saúde, Relatório Anual de Gestão, Relatório Detalhado do Quadrimestre Anterior) e orienta pressupostos do planejamento.",
+  },
+]
+
+export const planejaTable06 = [
+  {
+    title: "Plano de Saúde (PS)",
+    instruments: "●	Instrumento central do planejamento para definição e implementação das iniciativas no âmbito da saúde em cada esfera de gestão do SUS;\n●	Período de quatro anos, devendo ser elaborado no primeiro ano da gestão em curso, cuja execução se dá a partir do segundo ano da gestão até o primeiro ano da gestão seguinte;\n●	A elaboração do planejamento e do orçamento do que governo no que se refere à saúde é a sua base;\n●	Deve apresentar as diretrizes e objetivos que nortearão a condução da política de saúde nos quatro anos seguintes, especificando as respectivas metas e indicadores;\n●	Consolida as políticas e compromissos da saúde no ente federativo. Portanto, deve ser proposto com base na análise situacional da saúde e guardar íntima relação com instrumentos de governo do ente federativo, como o Plano Plurianual (PPA) e o projeto de lei orçamentária, e deve incorporar as recomendações das Conferências de Saúde;\n●	Deve ser construído conjuntamente com a sociedade civil, por meio do Conselho de Saúde, e aprovado por esse.",
+  },
+  {
+    title: "Programação Anual da Saúde (PAS)",
+    instruments: "●	Instrumento que operacionaliza as proposições contidas no Plano de Saúde;\n●	Seu objetivo é o de anualizar as metas do Plano e prever a alocação dos recursos orçamentários a serem executados;\n●	Deve ser elaborada e aprovada pelo Conselho de Saúde antes do encaminhamento da Lei de Diretrizes Orçamentárias, até o mês de março do ano anterior à sua vigência.",
+  },
+  {
+    title: "Relatório Anual de Gestão (RAG)",
+    instruments: "●	Instrumento destinado à apresentação de resultados atrelados à PAS, devendo conter as diretrizes, objetivos e os indicadores, especificando as metas previstas e executadas da Programação; a análise da execução orçamentária e recomendações necessárias;\n●	Poderá levar a redirecionamentos necessários à revisão do PMS;\n●	Resultado do somatório dos três Relatórios Detalhados do Quadrimestre Anterior anuais;\n●	Deverá ser enviado para apreciação e aprovação pelo Conselho de Saúde até março do ano seguinte à sua competência.",
+  },
+  {
+    title: "Relatório Detalhado do Quadrimestre Anterior (RDQA)",
+    instruments: "●	Instrumento de monitoramento da execução da política de saúde do ente federativo;\n●	Deve apresentar conteúdo semelhante ao RAG, cujo foco se dá no período quadrimestral;\n●	Deve ser entregue para apresentação em Audiência Pública na Casa Legislativa nos meses de maio (quadrimestre janeiro-abril), setembro (quadrimestre maio-agosto) e fevereiro (quadrimestre setembro-dezembro), sempre em referência ao quadrimestre anterior;\n●	Obrigatoriamente, deve conter informações referentes ao montante e a fonte de recursos aplicados no quadrimestre analisado, descrever auditorias realizadas ou em execução e descrever a produção e oferta de serviços na rede SUS, relacionando-o aos indicadores previstos.",
+  }
+]
+
 export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174]
 
 export const acervo = [
