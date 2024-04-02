@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import React from 'react';
+import { useState } from 'react';
 import { emitterEnum } from '../../core/enums';
 import { emitter } from '../../core/events';
 import ChoiceAnswer from '../answer/choice';
@@ -12,7 +12,8 @@ import { droplist } from 'src/shared/dataBase';
 
 export default function Index(props: TPROPS) {
 	const selectOptions:ID[] = droplist 
-	const [canShow, setCanShow] = React.useState(false);
+	const [canShow, setCanShow] = useState(false);
+	const [isMedicalExam, setIsMedicalExam] = useState(false)
 	const smQuery = useMediaQuery('(min-width:500px)')
 
 	/** Criando evento de emissão em todas as questões. */
@@ -47,7 +48,16 @@ export default function Index(props: TPROPS) {
 			>
 				<CardContent style={{ padding: '16px' }}>
 					<Typography style={{ marginBottom: '16px', fontSize:!smQuery ? '4.5vw' : '2.3vw', color: theme.primaryColor }}>
-						{(props.index + 1)} - {props.question.title}
+						{props.parent?.formQuestionFormRegisterId === 234 ? (
+								<>
+								{props.question.title}
+							</>
+						) : (
+							<>
+								{(props.index + 1)} - {props.question.title}
+							</>
+						)}
+					
 					</Typography>
 					{props.question.choices.length === 0 ? (
 						<OpenAnswer
@@ -60,7 +70,7 @@ export default function Index(props: TPROPS) {
 					) : (
 						<ChoiceAnswer
 							formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
-							choices={props.question.choices}
+							choices={props.question.choices.sort((a, b) => +b.formsQuestionFormsQuestionChoicesId - +a.formsQuestionFormsQuestionChoicesId)}
 							onSelectChoice={data => {
 							
 								const selectedAnswer = JSON.parse(data.answer).filter((item:number) => Boolean(item))[0]
@@ -71,6 +81,17 @@ export default function Index(props: TPROPS) {
 									localStorage.setItem('selectedAnswer',JSON.stringify(answerToSave))
 								}
 								
+								console.log(data)
+								
+								// Caso a questão respondida seja "Será feito exame médico?", e caso seja "Sim", exibiremos a imagem
+								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[1336,0]") {
+									setIsMedicalExam(true);
+								}
+								// Caso seja não, vamos colocar a variável como false
+								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[0,1337]") {
+									setIsMedicalExam(false);
+								}
+
 								handleAnswerQuestion(data);
 							}}
               choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId)  ?  'autoComplete' : 'radio'}
@@ -78,6 +99,9 @@ export default function Index(props: TPROPS) {
 					)}
 				</CardContent>
 				<div>
+					{props.question.formQuestionFormRegisterId === 234 && isMedicalExam && (
+						<img src="/tabela.jpg" />
+					)}
 					{props.question.childrenQuestion.reverse().map((child, index) => (
 						<Index
 							key={index}
