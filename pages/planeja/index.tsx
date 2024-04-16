@@ -14,7 +14,7 @@ import { QuestionResponse } from "@components/planeja/type";
 
 export default function Index() {
   const [courses, setCourses] = useState<CourseAll>();
-  const [page, setPage] = useState(9);
+  const [page, setPage] = useState(0);
   const [data, setData] = useState<QuestionResponse[]>([]);
   const [sendData, setSendData] = useState(false);
 
@@ -41,7 +41,7 @@ export default function Index() {
   }, [page]);
 
   function nextPage(newData: QuestionResponse[]): void {
-    setData((lastData) => [...lastData, ...newData]);
+    if (newData !== null) setData((lastData) => [...lastData, ...newData]);
     setPage(page + 1);
   }
 
@@ -76,6 +76,7 @@ export default function Index() {
                 <PlanejaQuestion
                   question={question}
                   nextPage={nextPage}
+                  last={index == courses.questions.length - 1}
                   hidden={index !== page}
                   previusPage={previusPage}
                   key={question.question.id}

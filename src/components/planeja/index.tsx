@@ -30,6 +30,7 @@ interface PlanejaProps {
   hidden: boolean;
   nextPage: (data: QuestionResponse[]) => void;
   previusPage: () => void;
+  last: boolean;
 }
 
 const PlanejaQuestion: React.FC<PlanejaProps> = ({
@@ -37,6 +38,7 @@ const PlanejaQuestion: React.FC<PlanejaProps> = ({
   hidden,
   nextPage,
   previusPage,
+  last,
 }) => {
   const [data, setData] = useState<QuestionResponse[]>([]);
   const [text, setText] = useState([1, 2, 3, 4]);
@@ -127,13 +129,14 @@ const PlanejaQuestion: React.FC<PlanejaProps> = ({
         >
           Voltar
         </Button>
+
         <Button
           color="success"
           variant="contained"
           endIcon={<ArrowForwardIcon />}
           onClick={next}
         >
-          Continuar
+          {last ? "Enviar" : "Continuar"}
         </Button>
       </Stack>
     </Box>

@@ -16,10 +16,14 @@ import {
 export class ApiPaneja {
   private baseURL = process.env.PLANEJA_API || "http://localhost:2000";
 
-  public async listAllCourse(): Promise<ListAllCourse> {
+  public async listAllCourse(keyJWT: string): Promise<ListAllCourse> {
     return new Promise<ListAllCourse>(async (resolve, reject) => {
       await axios
-        .get(`${this.baseURL}/courses/`)
+        .get(`${this.baseURL}/courses/`, {
+          headers: {
+            Authorization: `Bearer ${keyJWT}`,
+          },
+        })
         .then((result: AxiosResponse) => {
           resolve(result.data);
         })
@@ -29,10 +33,17 @@ export class ApiPaneja {
     });
   }
 
-  public async listCourse(idCourse: number): Promise<ListCourse> {
+  public async listCourse(
+    idCourse: number,
+    keyJWT: string
+  ): Promise<ListCourse> {
     return new Promise<ListCourse>(async (resolve, reject) => {
       await axios
-        .get(`${this.baseURL}/courses/${idCourse}`)
+        .get(`${this.baseURL}/courses/${idCourse}`, {
+          headers: {
+            Authorization: `Bearer ${keyJWT}`,
+          },
+        })
         .then((result: AxiosResponse) => {
           resolve(result.data);
         })
@@ -43,11 +54,16 @@ export class ApiPaneja {
   }
 
   public async listQuestionByCourse(
-    idCourse: number
+    idCourse: number,
+    keyJWT: string
   ): Promise<listQuestionByCourse> {
     return new Promise<listQuestionByCourse>(async (resolve, reject) => {
       await axios
-        .get(`${this.baseURL}/courses/${idCourse}/questions`)
+        .get(`${this.baseURL}/courses/${idCourse}/questions`, {
+          headers: {
+            Authorization: `Bearer ${keyJWT}`,
+          },
+        })
         .then((result: AxiosResponse) => {
           resolve(result.data);
         })
@@ -58,11 +74,16 @@ export class ApiPaneja {
   }
 
   public async listChoicesById(
-    idQuestionChoice: number
+    idQuestionChoice: number,
+    keyJWT: string
   ): Promise<listChoicesById> {
     return new Promise<listChoicesById>(async (resolve, reject) => {
       await axios
-        .get(`${this.baseURL}/question/${idQuestionChoice}/choices`)
+        .get(`${this.baseURL}/question/${idQuestionChoice}/choices`, {
+          headers: {
+            Authorization: `Bearer ${keyJWT}`,
+          },
+        })
         .then((result: AxiosResponse) => {
           resolve(result.data);
         })
@@ -73,11 +94,16 @@ export class ApiPaneja {
   }
 
   public async listJustifyChoiceById(
-    idChoiceJustifyChoice: number
+    idChoiceJustifyChoice: number,
+    keyJWT: string
   ): Promise<listJustifyChoiceById> {
     return new Promise<listJustifyChoiceById>(async (resolve, reject) => {
       await axios
-        .get(`${this.baseURL}/choice/${idChoiceJustifyChoice}/justifyChoice`)
+        .get(`${this.baseURL}/choice/${idChoiceJustifyChoice}/justifyChoice`, {
+          headers: {
+            Authorization: `Bearer ${keyJWT}`,
+          },
+        })
         .then((result: AxiosResponse) => {
           resolve(result.data);
         })
@@ -90,9 +116,12 @@ export class ApiPaneja {
   public async answerQuestion(
     idQuestionChoice: number,
     idChoiceJustifyChoice: number,
-    data: answerData,
-    keyJWT: string
+    data: answerData
   ): Promise<answerQuestion> {
+    const keyJWT: string = this.getKeyJWT();
+
+    if (keyJWT == null) return null;
+
     return new Promise<answerQuestion>(async (resolve, reject) => {
       await axios
         .post(
@@ -119,11 +148,14 @@ export class ApiPaneja {
   }
 
   public async getAllofCourse(idCourse: number) {
+    const keyJWT = this.getKeyJWT();
+
+    if (keyJWT == null) return null;
+
     try {
-      // Fazendo as duas chamadas assíncronas em paralelo
       const [course, questions] = await Promise.all([
-        this.listCourse(idCourse),
-        this.listQuestionByCourse(idCourse),
+        this.listCourse(idCourse, keyJWT),
+        this.listQuestionByCourse(idCourse, keyJWT),
       ]);
 
       const questionsAll: QuestionAll[] = [];
@@ -133,23 +165,26 @@ export class ApiPaneja {
           const newChoice: ChoiceAll[] = [];
           for (const idchoice of question.question.idchoice) {
             if (idchoice !== null) {
-              await this.listChoicesById(idchoice).then(async (choice) => {
-                if (choice.choice.JustifyChoice != null) {
-                  await this.listJustifyChoiceById(
-                    choice.choice.JustifyChoice
-                  ).then((justify) => {
+              await this.listChoicesById(idchoice, keyJWT).then(
+                async (choice) => {
+                  if (choice.choice.JustifyChoice != null) {
+                    await this.listJustifyChoiceById(
+                      choice.choice.JustifyChoice,
+                      keyJWT
+                    ).then((justify) => {
+                      newChoice.push({
+                        choice: choice.choice,
+                        JustifyChoice: justify,
+                      });
+                    });
+                  } else {
                     newChoice.push({
                       choice: choice.choice,
-                      JustifyChoice: justify,
+                      JustifyChoice: null,
                     });
-                  });
-                } else {
-                  newChoice.push({
-                    choice: choice.choice,
-                    JustifyChoice: null,
-                  });
+                  }
                 }
-              });
+              );
             }
           }
           questionsAll.push({
@@ -164,10 +199,20 @@ export class ApiPaneja {
         questions: questionsAll,
       };
 
-      console.log(returnObject);
       return returnObject;
     } catch (error) {
       console.error("Ocorreu um erro ao obter os dados do curso:", error);
+    }
+  }
+
+  public getKeyJWT(): string {
+    const key = localStorage.getItem("token");
+
+    // Verifica se o token existe e não está vazio
+    if (key && key.trim() !== "") {
+      return "" + key;
+    } else {
+      return null;
     }
   }
 }
