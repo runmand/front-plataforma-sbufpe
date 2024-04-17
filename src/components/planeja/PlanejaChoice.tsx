@@ -101,13 +101,18 @@ const PlanejaChoice: React.FC<PlanejaChoiceProps> = ({
     setSizeChoice(loader);
   }, []);
 
-  function getChoices(line: number, choices: ChoiceAll[]): ChoiceAll[] {
+  function getChoices(
+    line: number,
+    choices: ChoiceAll[],
+    indexMap: number
+  ): ChoiceAll[] {
     const actualChoices: ChoiceAll[] = [];
 
     for (let i = 0; i < line; i++) {
       actualChoices.push(choices[index]);
       index++;
     }
+
     return actualChoices;
   }
 
@@ -124,11 +129,12 @@ const PlanejaChoice: React.FC<PlanejaChoiceProps> = ({
         {text[indexMap]}
       </FormLabel>
       <RadioGroup id={question.question.id.toString()} aria-required="true">
-        {getChoices(line, question.choices).map((choice) => (
+        {getChoices(line, question.choices, indexMap).map((choice) => (
           <FormControlLabel
             onClick={(e) => respondChoice(choice, indexMap)}
             value={choice.choice.idQuestionChoice}
             key={choice.choice.idQuestionChoice}
+            checked={line <= 1 ? true : false}
             control={<Radio />}
             label={
               <Typography fontWeight="bold" color={"black"}>

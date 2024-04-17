@@ -2,7 +2,7 @@
 import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { CourseAll } from "src/core/typePlaneja";
@@ -14,9 +14,10 @@ import { QuestionResponse } from "@components/planeja/type";
 
 export default function Index() {
   const [courses, setCourses] = useState<CourseAll>();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(7);
   const [data, setData] = useState<QuestionResponse[]>([]);
   const [sendData, setSendData] = useState(false);
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +25,7 @@ export default function Index() {
         const api = new ApiPaneja();
         const response = await api.getAllofCourse(1);
         setCourses(response);
+        setLoad(false);
       } catch (error) {
         console.error("Erro ao obter os dados:", error);
       }
@@ -49,10 +51,6 @@ export default function Index() {
     setPage(page - 1);
   }
 
-  if (!courses) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Base
       appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
@@ -70,21 +68,32 @@ export default function Index() {
             paddingY: "20px",
           }}
         >
-          {!sendData ? (
-            <>
-              {courses.questions.map((question, index) => (
+          {!load ? (
+            !sendData ? (
+              courses.questions.map((question, index) => (
                 <PlanejaQuestion
                   question={question}
                   nextPage={nextPage}
-                  last={index == courses.questions.length - 1}
+                  last={index === courses.questions.length - 1}
                   hidden={index !== page}
                   previusPage={previusPage}
                   key={question.question.id}
                 />
-              ))}
-            </>
+              ))
+            ) : (
+              <SendData key={1} data={data} />
+            )
           ) : (
-            <SendData key={1} data={data} />
+            <>
+              <div className="loader"></div>
+              <Typography
+                sx={{
+                  textAlign: "justify",
+                }}
+              >
+                Lendo questões por favor aguarde
+              </Typography>
+            </>
           )}
         </Box>
       }
