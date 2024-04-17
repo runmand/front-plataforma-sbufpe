@@ -1,69 +1,146 @@
-import { Box, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material"
+import React, { ChangeEvent, MouseEventHandler, useEffect } from "react";
+import {
+  ChoiceAll,
+  JustifyChoiceObject,
+  QuestionAll,
+} from "src/core/typePlaneja";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+
 import { theme } from "src/core/theme";
-import { PlanejaQuestionProps } from "./type";
 import { useState } from "react";
+import { QuestionResponse } from "./type";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { extractHeader, extractTextBetweenTags } from "./service";
+import TextPlaneja from "./TextPlanejaProps";
+import PlanejaChoice from "./PlanejaChoice";
 
-export const PlanejaQuestion = (
-  { id = 0, title = '', description = '',
-    yesDescr = '', noDescr = '',
-    noHasJustify = true, campoMensagem,
-  }: PlanejaQuestionProps) => {
+interface PlanejaProps {
+  question: QuestionAll;
+  hidden: boolean;
+  nextPage: (data: QuestionResponse[]) => void;
+  previusPage: () => void;
+  last: boolean;
+}
 
-   function handleQuestion(id: string, response: string, justify: string){
-    const data ={
-      id :id,
-      respondido : response,
-      justify : justify
+const PlanejaQuestion: React.FC<PlanejaProps> = ({
+  question,
+  hidden,
+  nextPage,
+  previusPage,
+  last,
+}) => {
+  const [data, setData] = useState<QuestionResponse[]>([]);
+  const [text, setText] = useState([1, 2, 3, 4]);
+  function next() {
+    const haveQuestion: boolean = question.choices.length > 0;
+
+    if (haveQuestion) {
+      let errors: boolean = false;
+      if (data.length == 0) errors = true;
+      data.forEach((dataLoad) => {
+        if (dataLoad) {
+          if (dataLoad.response.split("").length == 0) {
+            errors = true;
+          }
+          return;
+        }
+
+        if (dataLoad == undefined) {
+          errors = true;
+          return;
+        }
+      });
+
+      if (errors) {
+        alert("Preencha todas as perguntas");
+
+        return;
+      }
+      nextPage(data);
+    } else {
+      nextPage(null);
     }
-    return data;
   }
 
-  const [respondido, setRespondido] = useState('');
-  const [justify, setJustify] = useState('');
-
-  if (respondido === 'Sim') {
-    { description = yesDescr }
-  } else if (respondido === 'Não') {
-    { description = noDescr }
+  function previus() {
+    previusPage();
   }
 
-  if (noHasJustify === true && respondido != '') {
-    campoMensagem = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify(e.target.value)} value={justify} sx={{ backgroundColor: theme.white }}/>;
-  } else if (respondido === 'Sim') {
-    campoMensagem = <TextField required fullWidth multiline rows={4} onChange={(e) => setJustify(e.target.value)} value={justify} sx={{ backgroundColor: theme.white }}/>;
+  function handleDataUpdate(newData: QuestionResponse[], response: string) {
+    setData(newData);
   }
 
   return (
-    <Box>
-      <Box
+    <Box style={{ display: hidden ? "none" : "block" }}>
+      <Typography
         sx={{
-          padding: '1rem',
-          width: '100%',
-          borderRadius: theme.borderRadiusSmooth,
+          margin: "auto",
+          paddingBottom: "2rem",
+          fontWeight: "bold",
         }}
       >
-        <FormLabel component="legend"
-          sx={{ fontSize: '1.3rem', color: 'black' }}>
-          {title}
-        </FormLabel>
-        <RadioGroup
-          id={id.toString()}
-          row
-          name={'question' + id}
-          value={respondido}
-          aria-required="true"
-        >
-          <FormControlLabel onClick={() => setRespondido('Sim')} value='Sim' control={<Radio />} label={
-            <Typography fontWeight='bold' color={'black'}>Sim</Typography>} />
-          <FormControlLabel onClick={() => setRespondido('Não')} value='Não' control={<Radio />} label={
-            <Typography fontWeight='bold' color={'black'}>Não</Typography>} />
-        </RadioGroup>
-        <FormLabel component="legend" sx={{ fontSize: '1.2rem', color: 'black' }}>
-          {description}
-        </FormLabel>
-        {campoMensagem}
-      </Box>
-    </Box>
+        {extractHeader(question.question.text)}
+      </Typography>
 
+      {text.map((line, index) => (
+        <React.Fragment key={`line_${index}`}>
+          {/* Mapeamento para parâmetro 't' = text */}
+          {extractTextBetweenTags(
+            question.question.text,
+            `_t${line}_`,
+            `_t${line}_`
+          )?.map((line, index) => (
+            <TextPlaneja key={`t${line}_${index}`} line={line}></TextPlaneja>
+          ))}
+
+          {/* Mapeamento para parâmetro 'q' = question */}
+          {extractTextBetweenTags(
+            question.question.text,
+            `_q${line}_`,
+            `_q${line}_`
+          )?.map((line, index) => (
+            <PlanejaChoice
+              key={`q${line}_${index}`}
+              question={question}
+              onDataUpdate={handleDataUpdate}
+              size={line}
+            ></PlanejaChoice>
+          ))}
+        </React.Fragment>
+      ))}
+
+      <Stack direction="row">
+        <Button
+          onClick={previus}
+          color="error"
+          variant="contained"
+          startIcon={<ArrowBackIcon />}
+        >
+          Voltar
+        </Button>
+
+        <Button
+          color="success"
+          variant="contained"
+          endIcon={<ArrowForwardIcon />}
+          onClick={next}
+        >
+          {last ? "Enviar" : "Continuar"}
+        </Button>
+      </Stack>
+    </Box>
   );
-}
+};
+
+export default PlanejaQuestion;
