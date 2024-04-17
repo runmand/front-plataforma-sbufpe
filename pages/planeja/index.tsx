@@ -14,7 +14,7 @@ import { QuestionResponse } from "@components/planeja/type";
 
 export default function Index() {
   const [courses, setCourses] = useState<CourseAll>();
-  const [page, setPage] = useState(7);
+  const [page, setPage] = useState(0);
   const [data, setData] = useState<QuestionResponse[]>([]);
   const [sendData, setSendData] = useState(false);
   const [load, setLoad] = useState(true);
