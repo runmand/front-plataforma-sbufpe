@@ -92,7 +92,7 @@ const SendData: React.FC<sendDataInterface> = ({ data }) => {
               color="success"
               variant="contained"
               onClick={() => {
-                router.push("/");
+                router.push("/form");
               }}
             >
               Voltar para pagina inicial
