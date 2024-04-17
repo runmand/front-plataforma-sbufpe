@@ -134,7 +134,6 @@ const PlanejaChoice: React.FC<PlanejaChoiceProps> = ({
             onClick={(e) => respondChoice(choice, indexMap)}
             value={choice.choice.idQuestionChoice}
             key={choice.choice.idQuestionChoice}
-            checked={line <= 1 ? true : false}
             control={<Radio />}
             label={
               <Typography fontWeight="bold" color={"black"}>
