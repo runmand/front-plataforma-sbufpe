@@ -251,7 +251,7 @@ export default function Index() {
 							variant="h6"
 							color={theme.black}
 						>
-							329
+							720
 						</Typography>
 					</Grid>
 
@@ -338,33 +338,36 @@ export default function Index() {
 				marginBottom: '1rem',
 			}}
 			>
-				<Typography 
-				sx={{ padding: 2, fontWeight: 'bold' }}
+				{/* 2024 */}
+				<Typography
+					sx={{ padding: 2, fontWeight: 'bold' }}
 					textAlign={'center'}
 					variant="h4"
 					color={theme.black}
-					>
-						2024
-					</Typography>
-					<Grid container spacing={2}>
+				>
+					2024
+				</Typography>
+				<Grid container spacing={2}>
 					{rows2024.map((row) => (
 						<Grid key={row.month} item xs={4}
 						>
 							<Typography textAlign={'center'}
-								sx={{fontWeight: 'bold'}}
+								sx={{ fontWeight: 'bold' }}
 								variant="h6"
 								color={theme.black}>
-									{row.month}
-								</Typography>
-								<Typography textAlign={'center'}
+								{row.month}
+							</Typography>
+							<Typography textAlign={'center'}
 								variant="h6"
 								color={theme.black}>
-									{row.qty}
-								</Typography>
+								{row.qty}
+							</Typography>
 						</Grid>
 					))}
 				</Grid>
-				
+
+
+				{/* 2023 */}
 				<Typography
 					sx={{ padding: 2, fontWeight: 'bold' }}
 					textAlign={'center'}
@@ -378,16 +381,16 @@ export default function Index() {
 						<Grid key={row.month} item xs={4}
 						>
 							<Typography textAlign={'center'}
-								sx={{fontWeight: 'bold'}}
+								sx={{ fontWeight: 'bold' }}
 								variant="h6"
 								color={theme.black}>
-									{row.month}
-								</Typography>
-								<Typography textAlign={'center'}
+								{row.month}
+							</Typography>
+							<Typography textAlign={'center'}
 								variant="h6"
 								color={theme.black}>
-									{row.qty}
-								</Typography>
+								{row.qty}
+							</Typography>
 						</Grid>
 					))}
 				</Grid>
