@@ -23,7 +23,8 @@ export default function Index() {
     const fetchData = async () => {
       try {
         const api = new ApiPaneja();
-        const response = await api.getAllofCourse(1);
+        const response = await api.tempGetAllofCourse(1);
+        console.log(response);
         setCourses(response);
         setLoad(false);
       } catch (error) {

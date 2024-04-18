@@ -35,7 +35,7 @@ const SendData: React.FC<sendDataInterface> = ({ data }) => {
           const { idQuestionChoice, idJustifyChoiceByQuestion, response } =
             question;
           const result = await api
-            .answerQuestion(idQuestionChoice, idJustifyChoiceByQuestion, {
+            .tempanswerQuestion(idQuestionChoice, idJustifyChoiceByQuestion, {
               response,
             })
             .then((r) => {
