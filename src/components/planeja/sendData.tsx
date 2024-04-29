@@ -13,7 +13,7 @@ import {
 } from "src/core/typePlaneja";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { QuestionResponse } from "./type";
-import { ApiPaneja } from "src/core/apiPlaneja";
+
 import { useRouter } from "next/router";
 
 interface sendDataInterface {
@@ -30,18 +30,6 @@ const SendData: React.FC<sendDataInterface> = ({ data }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const api = new ApiPaneja();
-        data.forEach(async (question) => {
-          const { idQuestionChoice, idJustifyChoiceByQuestion, response } =
-            question;
-          const result = await api
-            .tempanswerQuestion(idQuestionChoice, idJustifyChoiceByQuestion, {
-              response,
-            })
-            .then((r) => {
-              setDataSended((old) => old + 1);
-            });
-        });
       } catch (error) {
         console.error("Erro ao obter os dados:", error);
       }
