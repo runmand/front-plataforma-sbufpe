@@ -23,7 +23,12 @@ export const FinishedForm = () => {
             paddingX: "40px",
           }}
         >
-          <Typography textAlign={"center"} variant="h1" color={"ActiveBorder"}>
+          <Typography
+            textAlign={"center"}
+            variant="h1"
+            fontSize={40}
+            sx={{ color: "#1b1b1b" }}
+          >
             Formulário Enviado! Obrigado.
           </Typography>
           <Image width={400} height={400} src={"/plan-finished-form.svg"} />

@@ -10,7 +10,7 @@ export default function Index() {
 
   return (
     <>
-      {!isCompleted ? (
+      {isCompleted ? (
         <FinishedForm />
       ) : (
         <PlanForm onFinish={() => setIsCompleted(true)} />

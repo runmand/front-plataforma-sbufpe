@@ -13,6 +13,7 @@ import {
   TextField,
   Button,
   FormHelperText,
+  Alert,
 } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -26,6 +27,7 @@ import { IChoices } from "src/core/IPlanejaResponse";
 import { ProgressBarAnswer } from "@components/progressBarAnswer";
 import { LoadingButton } from "@mui/lab";
 import { PlanFormProps } from "./types";
+import { localStorageKeyEnum } from "src/core/enums";
 
 interface IPlanejaResponse {
   id: number;
@@ -36,26 +38,28 @@ interface IPlanejaResponse {
 }
 
 interface ISavedData {
-  plan_question_id: number;
-  user_id: number;
-  answer: string;
+  planQuestion: number;
+  userId: number;
+  question_answer: string;
   justify: string;
 }
 
 interface IAnswer {
   questionId: number;
-  answer?: string;
+  question_answer?: string;
   justify?: string;
 }
 
 export default function PlanForm({ onFinish }: PlanFormProps) {
   const [isSendingData, setIsSendingData] = useState(false);
   const [error, setError] = useState("");
+  const [errorOnSendForm, setErrorOnSendForm] = useState(false);
   const [data, setData] = useState<IPlanejaResponse[]>([]);
   const [savedDataToSend, setSavedDataToSend] = useState<ISavedData[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
+  const isLastIndex = activeIndex + 1 === data.length;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,17 +85,17 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     fetchData();
   }, []);
 
-  function handleAnswer({ questionId, answer, justify }: IAnswer) {
+  function handleAnswer({ questionId, question_answer, justify }: IAnswer) {
     const savedData = {
-      plan_question_id: questionId,
-      user_id: 1,
-      answer,
+      planQuestion: questionId,
+      userId: Number(localStorage.getItem(localStorageKeyEnum.USER_ID)),
+      question_answer,
       justify,
     };
 
     //check if the answer is already saved
     const existingData = savedDataToSend.find(
-      (item) => item.plan_question_id === questionId
+      (item) => item.planQuestion === questionId
     );
 
     console.log(existingData);
@@ -99,10 +103,10 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     if (existingData) {
       //update the existing answer
       const updatedData = savedDataToSend.map((item) => {
-        if (item.plan_question_id === questionId) {
+        if (item.planQuestion === questionId) {
           return {
             ...item,
-            answer,
+            question_answer,
             justify,
           };
         }
@@ -125,7 +129,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
   function findChoiceByQuestionId() {
     return savedDataToSend.find(
-      (item) => item.plan_question_id === data[activeIndex].position
+      (item) => item.planQuestion === data[activeIndex].position
     );
   }
 
@@ -170,11 +174,15 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     return true;
   }
 
-  async function sendData() {
+  async function sendData(payload: ISavedData[]) {
     try {
       setIsSendingData(true);
-      await http.post("/plan-question-answer");
-      onFinish();
+      const { status } = await http.post("/plan-question-answer", payload);
+      if (status === 201) {
+        onFinish();
+      } else {
+        setErrorOnSendForm(true);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -185,7 +193,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (validateIfCanProcced() && savedDataToSend.length === data.length) {
-      sendData();
+      sendData(savedDataToSend);
     } else {
       setError("Preencha a questão e justificativa antes de continuar");
     }
@@ -263,7 +271,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                           >
                             <FormControlLabel
                               checked={
-                                findChoiceByQuestionId()?.answer ===
+                                findChoiceByQuestionId()?.question_answer ===
                                 choice.option_label
                               }
                               value={choice.option_label}
@@ -272,12 +280,12 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                               onChange={() =>
                                 handleAnswer({
                                   questionId: data[activeIndex].id,
-                                  answer: choice.option_label,
+                                  question_answer: choice.option_label,
                                   justify: findChoiceByQuestionId()?.justify,
                                 })
                               }
                             />
-                            {findChoiceByQuestionId()?.answer ===
+                            {findChoiceByQuestionId()?.question_answer ===
                               choice.option_label && (
                               <Box>
                                 <TextField
@@ -290,7 +298,9 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                   onChange={(e) =>
                                     handleAnswer({
                                       questionId: data[activeIndex].id,
-                                      answer: findChoiceByQuestionId()?.answer,
+                                      question_answer:
+                                        findChoiceByQuestionId()
+                                          ?.question_answer,
                                       justify: e.target.value,
                                     })
                                   }
@@ -312,34 +322,45 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                   </Grid>
                 </Grid>
                 {error && <Typography color="error">{error}</Typography>}
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent={"flex-end"}
-                  gap={4}
-                >
-                  <Button onClick={previusQuestion} variant="outlined">
-                    Anterior
-                  </Button>
-                  {isSendingData ? (
-                    <LoadingButton
-                      size="small"
-                      loading={true}
-                      variant="outlined"
-                      disabled
-                    >
-                      <span>Enviando...</span>
-                    </LoadingButton>
-                  ) : (
-                    <Button
-                      disabled={isSendingData}
-                      onClick={nextQuestion}
-                      variant="contained"
-                    >
-                      {activeIndex + 1 === data.length
-                        ? "Finalizar"
-                        : "Próxima"}
+                <Box display={"flex"} flexDirection={"column"} gap={1}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent={"flex-end"}
+                    gap={4}
+                  >
+                    <Button onClick={previusQuestion} variant="outlined">
+                      Anterior
                     </Button>
+                    {isSendingData ? (
+                      <LoadingButton
+                        size="small"
+                        loading={true}
+                        variant="outlined"
+                        disabled
+                      >
+                        <span>Enviando...</span>
+                      </LoadingButton>
+                    ) : (
+                      <Button
+                        disabled={isSendingData}
+                        onClick={nextQuestion}
+                        variant="contained"
+                        color="primary"
+                        type={isLastIndex ? "submit" : "button"}
+                      >
+                        {isLastIndex ? "Finalizar" : "Próxima"}
+                      </Button>
+                    )}
+                  </Box>
+
+                  {errorOnSendForm && (
+                    <Alert
+                      sx={{ maxWidth: "max-content", ml: "auto" }}
+                      severity="error"
+                    >
+                      Ocorreu um erro ao enviar o formulário
+                    </Alert>
                   )}
                 </Box>
               </Paper>
