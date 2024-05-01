@@ -246,14 +246,19 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                     </Typography>
 
                     <Box sx={{ width: "100%" }}></Box>
-                    <Typography sx={{ color: "black" }} variant="h5">
-                      {data[activeIndex].title}
-                    </Typography>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: data[activeIndex].title,
+                      }}
+                    ></div>
                   </Grid>
                   <Grid item xs={2}>
-                    <Typography sx={{ color: "black" }} variant="h6">
-                      {data[activeIndex].content}
-                    </Typography>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: data[activeIndex].content,
+                      }}
+                    ></div>
+
                     <Divider sx={{ mt: 4 }} />
                   </Grid>
                   <Grid item xs={2}>
