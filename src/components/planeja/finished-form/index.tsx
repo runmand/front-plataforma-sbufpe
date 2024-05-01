@@ -3,7 +3,7 @@ import React from "react";
 import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 export const FinishedForm = () => {
   return (
     <Base
@@ -32,6 +32,10 @@ export const FinishedForm = () => {
             Formulário Enviado! Obrigado.
           </Typography>
           <Image width={400} height={400} src={"/plan-finished-form.svg"} />
+
+          <Button href="/" variant="contained">
+            Voltar ao inicio
+          </Button>
         </Box>
       }
     />

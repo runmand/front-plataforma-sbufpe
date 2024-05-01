@@ -177,8 +177,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   async function sendData(payload: ISavedData[]) {
     try {
       setIsSendingData(true);
-      const { status } = await http.post("/plan-question-answer", payload);
-      if (status === 201) {
+      const { data } = await http.post("/plan-question-answer", payload);
+      if (data === "Sucesso") {
         onFinish();
       } else {
         setErrorOnSendForm(true);
