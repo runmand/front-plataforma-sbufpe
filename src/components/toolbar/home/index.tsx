@@ -17,6 +17,7 @@ export default function Index() {
 		{ id: 0, title: 'Questionário Inicial', url: routerEnum.QUESTION },
 		{ id: 1, title: 'Questionários', url: routerEnum.FORM },
 		{ id: 3, title: 'Planeja SD', url: routerEnum.PLANEJA },
+		{ id: 2, title: 'Pratico SD', url: routerEnum.PRATICO }
 	];
 
 	const handleLogout = () => {

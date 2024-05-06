@@ -9,6 +9,7 @@ export enum routerEnum {
   QUESTION = "/question",
   INITIAL = "/",
   PLANEJA = "/planeja",
+  PRATICO= "pratico-sd"
 }
 
 export enum localStorageKeyEnum {
