@@ -25,7 +25,6 @@ import Direction from '@components/container/direction';
 import ApsData from '@components/container/aps-data';
 import CeoData from '@components/container/ceo-data';
 import UserData from '@components/container/user-data';
-import Informes from '@components/container/informes';
 import WhatIs from '@components/container/what-is';
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -44,10 +43,6 @@ export default function Index() {
 				{
 					title: 'Artigos',
 					onClick: () => setContainerBodyType(containerBodyTypeEnum.COLLECTION),
-				},
-				{
-					title: 'InformeSBPE',
-					onClick: () => setContainerBodyType(containerBodyTypeEnum.INFORMES),
 				},
 			],
 		},
@@ -311,7 +306,6 @@ export default function Index() {
 						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
 						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle/>}
 						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
-						{containerBodyType === containerBodyTypeEnum.INFORMES && <Informes/>}
 						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
 						{containerBodyType === containerBodyTypeEnum.APS_DATA && <ApsData/>}
 						{containerBodyType === containerBodyTypeEnum.CEO_DATA && <CeoData/>}
