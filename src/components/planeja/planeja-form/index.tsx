@@ -73,7 +73,9 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
             position: item.position,
           };
         });
-        console.log(data);
+        formattedData.sort(
+          (a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position
+        );
         setData(formattedData);
       } catch (error) {
         console.error("Erro ao obter os dados:", error);
@@ -98,8 +100,6 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       (item) => item.planQuestion === questionId
     );
 
-    console.log(existingData);
-
     if (existingData) {
       //update the existing answer
       const updatedData = savedDataToSend.map((item) => {
@@ -122,7 +122,6 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   function formatChoice(choice: string): IChoices[] {
     const newStr = choice.replace(/''/g, '""');
     const formattedJSON = newStr.replace(/'/g, '"');
-    console.log(formattedJSON);
 
     return JSON.parse(formattedJSON);
   }
