@@ -6,6 +6,8 @@ import { useState } from "react";
 import { FirstStep } from "@components/planeja-pratico/steps/FirstStep";
 import { SecondStep } from "@components/planeja-pratico/steps/SecondStep";
 import { Welcome } from "@components/planeja-pratico/steps/Welcome";
+import { ThirdStep } from "@components/planeja-pratico/steps/ThirdStep";
+import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
 
 interface IStepsValues {
   firstStep: IFirstStep;
@@ -24,11 +26,18 @@ interface IFirstStep {
   third_indicator: string;
 }
 
-interface ISecondStep {}
+interface ISecondStep {
+  defined_problems: IDefinedProblem[];
+}
+
+interface IDefinedProblem {
+  id: number;
+  answer: string;
+}
 
 export default function Index() {
   const [savedDataToSend, setSavedDataToSend] = useState<any[]>([]);
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(4);
   const [stepsValues, setStepsValues] = useState<IStepsValues>({
     firstStep: {
       first_domain: "",
@@ -41,7 +50,14 @@ export default function Index() {
       third_degree: null,
       third_indicator: "",
     },
-    secondStep: {},
+    secondStep: {
+      defined_problems: [
+        {
+          id: 1,
+          answer: "",
+        },
+      ],
+    },
   });
   const [error, setError] = useState("");
   const data = [];
@@ -133,6 +149,18 @@ export default function Index() {
               <SecondStep
                 stepValues={stepsValues.secondStep}
                 onSubmit={(data) => handleUpdateSecondStep(data)}
+                onClickNextStep={nextQuestion}
+                onClickPrevStep={previusQuestion}
+              />
+            )}
+            {activeIndex === 3 && (
+              <ThirdStep
+                onClickNextStep={nextQuestion}
+                onClickPrevStep={previusQuestion}
+              />
+            )}
+            {activeIndex === 4 && (
+              <FourthStep
                 onClickNextStep={nextQuestion}
                 onClickPrevStep={previusQuestion}
               />
