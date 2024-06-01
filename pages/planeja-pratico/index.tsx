@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
@@ -12,6 +12,7 @@ import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
 interface IStepsValues {
   firstStep: IFirstStep;
   secondStep: ISecondStep;
+  thirdStep: IThirdStep;
 }
 
 interface IFirstStep {
@@ -28,6 +29,28 @@ interface IFirstStep {
 
 interface ISecondStep {
   defined_problems: IDefinedProblem[];
+}
+interface IThirdStep {
+  mentalMapUrl: string;
+  criticalNode: string;
+  actions: IThirdFormStructure[];
+}
+
+interface IThirdFormStructure {
+  name: string;
+  responsibles: IResponsible[];
+  resources: IResource[];
+}
+
+interface IResponsible {
+  responsible: string;
+  motivation: string;
+  strategies: string;
+}
+interface IResource {
+  resource: string;
+  itsCricticalResource: string;
+  described_strategies: string;
 }
 
 interface IDefinedProblem {
@@ -58,6 +81,29 @@ export default function Index() {
         },
       ],
     },
+    thirdStep: {
+      mentalMapUrl: "",
+      criticalNode: "",
+      actions: [
+        {
+          name: "",
+          responsibles: [
+            {
+              responsible: "",
+              motivation: "",
+              strategies: "",
+            },
+          ],
+          resources: [
+            {
+              described_strategies: "",
+              itsCricticalResource: "",
+              resource: "",
+            },
+          ],
+        },
+      ],
+    },
   });
   const [error, setError] = useState("");
   const data = [];
@@ -78,6 +124,14 @@ export default function Index() {
     setStepsValues({
       ...stepsValues,
       secondStep: values,
+    });
+  }
+  //atualizar os valores do primeiro passo
+  function handleUpdateThirdStep(values: IThirdStep) {
+    console.log(values);
+    setStepsValues({
+      ...stepsValues,
+      thirdStep: values,
     });
   }
 
@@ -125,47 +179,51 @@ export default function Index() {
             paddingX: "40px",
           }}
         >
-          <Box
-            width={"100%"}
-            height={"100%"}
-            my={4}
-            display="flex"
-            flexDirection={"column"}
-            gap={4}
-            color={"black"}
-          >
-            {activeIndex === 0 && (
-              <Welcome onClickNextQuestion={nextQuestion} />
-            )}
-            {activeIndex === 1 && (
-              <FirstStep
-                stepValues={stepsValues.firstStep}
-                onSubmit={(data) => handleUpdateFirstStep(data)}
-                onClickNextStep={nextQuestion}
-                onClickPrevStep={previusQuestion}
-              />
-            )}
-            {activeIndex === 2 && (
-              <SecondStep
-                stepValues={stepsValues.secondStep}
-                onSubmit={(data) => handleUpdateSecondStep(data)}
-                onClickNextStep={nextQuestion}
-                onClickPrevStep={previusQuestion}
-              />
-            )}
-            {activeIndex === 3 && (
-              <ThirdStep
-                onClickNextStep={nextQuestion}
-                onClickPrevStep={previusQuestion}
-              />
-            )}
-            {activeIndex === 4 && (
-              <FourthStep
-                onClickNextStep={nextQuestion}
-                onClickPrevStep={previusQuestion}
-              />
-            )}
-          </Box>
+          <Paper elevation={1} sx={{ p: 3, my: 2, width: "100%" }}>
+            <Box
+              width={"100%"}
+              height={"100%"}
+              my={4}
+              display="flex"
+              flexDirection={"column"}
+              gap={4}
+              color={"black"}
+            >
+              {activeIndex === 0 && (
+                <Welcome onClickNextQuestion={nextQuestion} />
+              )}
+              {activeIndex === 1 && (
+                <FirstStep
+                  stepValues={stepsValues.firstStep}
+                  onSubmit={(data) => handleUpdateFirstStep(data)}
+                  onClickNextStep={nextQuestion}
+                  onClickPrevStep={previusQuestion}
+                />
+              )}
+              {activeIndex === 2 && (
+                <SecondStep
+                  stepValues={stepsValues.secondStep}
+                  onSubmit={(data) => handleUpdateSecondStep(data)}
+                  onClickNextStep={nextQuestion}
+                  onClickPrevStep={previusQuestion}
+                />
+              )}
+              {activeIndex === 3 && (
+                <ThirdStep
+                  onClickNextStep={nextQuestion}
+                  onClickPrevStep={previusQuestion}
+                />
+              )}
+              {activeIndex === 4 && (
+                <FourthStep
+                  stepValues={stepsValues.thirdStep}
+                  onSubmit={(data) => handleUpdateThirdStep(data)}
+                  onClickNextStep={nextQuestion}
+                  onClickPrevStep={previusQuestion}
+                />
+              )}
+            </Box>
+          </Paper>
         </Box>
       }
     />
