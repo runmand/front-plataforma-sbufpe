@@ -8,6 +8,7 @@ import { SecondStep } from "@components/planeja-pratico/steps/SecondStep";
 import { Welcome } from "@components/planeja-pratico/steps/Welcome";
 import { ThirdStep } from "@components/planeja-pratico/steps/ThirdStep";
 import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
+import { FinishFormStep } from "@components/planeja-pratico/steps/FinishFormStep";
 
 interface IStepsValues {
   firstStep: IFirstStep;
@@ -38,6 +39,7 @@ interface IThirdStep {
 
 interface IThirdFormStructure {
   name: string;
+  deadline_compliance: string;
   responsibles: IResponsible[];
   resources: IResource[];
 }
@@ -87,6 +89,7 @@ export default function Index() {
       actions: [
         {
           name: "",
+          deadline_compliance: "",
           responsibles: [
             {
               responsible: "",
@@ -96,9 +99,9 @@ export default function Index() {
           ],
           resources: [
             {
+              resource: "",
               described_strategies: "",
               itsCricticalResource: "",
-              resource: "",
             },
           ],
         },
@@ -219,6 +222,12 @@ export default function Index() {
                   stepValues={stepsValues.thirdStep}
                   onSubmit={(data) => handleUpdateThirdStep(data)}
                   onClickNextStep={nextQuestion}
+                  onClickPrevStep={previusQuestion}
+                />
+              )}
+              {activeIndex === 5 && (
+                <FinishFormStep
+                  stepValues={stepsValues}
                   onClickPrevStep={previusQuestion}
                 />
               )}

@@ -31,6 +31,7 @@ interface IValues {
 
 interface IActiontructure {
   name: string;
+  deadline_compliance: string;
   responsibles: IResponsible[];
   resources: IResource[];
 }
@@ -86,8 +87,45 @@ export const FourthStep = ({
     onClickNextStep();
   }
 
+  function updateAction(actionIndex: number, name: string, value: string) {
+    setValues((prevInputValues) => ({
+      ...prevInputValues,
+      actions: prevInputValues.actions.map((item, index) => {
+        if (actionIndex === index) {
+          return {
+            ...item,
+            [name]: value,
+          };
+        }
+        return item;
+      }),
+    }));
+  }
+
+  function addResponsible(actionIndex: number) {
+    setValues((prevInputValues) => ({
+      ...prevInputValues,
+      actions: prevInputValues.actions.map((item, index) => {
+        if (actionIndex === index) {
+          return {
+            ...item,
+            responsibles: [
+              ...item.responsibles,
+              {
+                motivation: "",
+                responsible: "",
+                strategies: "",
+              },
+            ],
+          };
+        }
+        return item;
+      }),
+    }));
+  }
+
   function updateResponsible(
-    action: IActiontructure,
+    actionIndex: number,
     index: number,
     field: string,
     value: string
@@ -95,7 +133,7 @@ export const FourthStep = ({
     setValues((prevInputValues) => ({
       ...prevInputValues,
       actions: prevInputValues.actions.map((item) => {
-        if (item.name === action.name) {
+        if (actionIndex === actionIndex) {
           return {
             ...item,
             responsibles: item.responsibles.map((responsible, i) => {
@@ -114,19 +152,19 @@ export const FourthStep = ({
     }));
   }
 
-  function addResponsible(action: IActiontructure) {
+  function addResource(actionIndex: number) {
     setValues((prevInputValues) => ({
       ...prevInputValues,
-      actions: prevInputValues.actions.map((item) => {
-        if (item.name === action.name) {
+      actions: prevInputValues.actions.map((item, index) => {
+        if (actionIndex === index) {
           return {
             ...item,
-            responsibles: [
-              ...item.responsibles,
+            resources: [
+              ...item.resources,
               {
-                motivation: "",
-                responsible: "",
-                strategies: "",
+                described_strategies: "",
+                itsCricticalResource: "",
+                resource: "",
               },
             ],
           };
@@ -136,7 +174,33 @@ export const FourthStep = ({
     }));
   }
 
-  function addResource(action: IActiontructure) {}
+  function updateResource(
+    actionIndex: number,
+    index: number,
+    field: string,
+    value: string
+  ) {
+    setValues((prevInputValues) => ({
+      ...prevInputValues,
+      actions: prevInputValues.actions.map((item) => {
+        if (actionIndex === actionIndex) {
+          return {
+            ...item,
+            resources: item.resources.map((resource, i) => {
+              if (i === index) {
+                return {
+                  ...resource,
+                  [field]: value,
+                };
+              }
+              return resource;
+            }),
+          };
+        }
+        return item;
+      }),
+    }));
+  }
 
   function addFormStructure() {
     if (values.actions.length === 4) return;
@@ -146,6 +210,7 @@ export const FourthStep = ({
         ...prevInputValues.actions,
         {
           name: "",
+          deadline_compliance: "",
           responsibles: [
             {
               motivation: "",
@@ -310,16 +375,11 @@ export const FourthStep = ({
               mb={5}
             >
               <Box width={"100%"}>
-                <InputLabel id="second_domain">Ação {index + 1}</InputLabel>
+                <InputLabel id="name">Ação {index + 1}</InputLabel>
                 <TextField
                   fullWidth
-                  value={values.mentalMapUrl}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "mentalMapUrl",
-                      value: e.target.value,
-                    })
-                  }
+                  value={form.name}
+                  onChange={(e) => updateAction(index, "name", e.target.value)}
                   required
                 />
               </Box>
@@ -328,21 +388,21 @@ export const FourthStep = ({
               {form.responsibles.map((responsible, responsibleIndex) => (
                 <Box pl={2} display={"flex"} flexDirection={"column"} gap={3}>
                   <Box width={"100%"}>
-                    <InputLabel id="second_domain">
-                      Responsável 1...n para ação 1 (indicar e analisar
-                      motivação de tantos atores quanto forem necessários)*
+                    <InputLabel id={`responsible-${responsibleIndex}`}>
+                      Responsável {responsibleIndex + 1}...n para ação{" "}
+                      {index + 1} (indicar e analisar motivação de tantos atores
+                      quanto forem necessários)*
                     </InputLabel>
                     <TextField
                       fullWidth
-                      value={
-                        values.actions[index].responsibles[responsibleIndex]
-                          .responsible
-                      }
+                      value={responsible.responsible}
                       onChange={(e) =>
-                        updateValues({
-                          name: "mentalMapUrl",
-                          value: e.target.value,
-                        })
+                        updateResponsible(
+                          index,
+                          responsibleIndex,
+                          "responsible",
+                          e.target.value
+                        )
                       }
                       required
                     />
@@ -362,7 +422,7 @@ export const FourthStep = ({
                       }
                       onChange={(e) =>
                         updateResponsible(
-                          form,
+                          index,
                           responsibleIndex,
                           "motivation",
                           e.target.value
@@ -380,107 +440,118 @@ export const FourthStep = ({
                   {responsible.motivation !== "1-Apoiador" &&
                     responsible.motivation !== "" && (
                       <Box width={"100%"}>
-                        <InputLabel id="second_domain">
+                        <InputLabel id="strategies">
                           Descreva as estratégias:
                         </InputLabel>
                         <TextField
                           fullWidth
-                          value={
-                            values.actions[index].responsibles[responsibleIndex]
-                              .strategies
-                          }
+                          value={responsible.strategies}
                           onChange={(e) =>
-                            updateValues({
-                              name: "mentalMapUrl",
-                              value: e.target.value,
-                            })
+                            updateResponsible(
+                              index,
+                              responsibleIndex,
+                              "strategies",
+                              e.target.value
+                            )
                           }
                           required
                         />
                       </Box>
                     )}
+                  <Divider />
                 </Box>
               ))}
 
               <Box width={"100%"}>
-                <Button onClick={() => addResponsible(form)}>
+                <Button onClick={() => addResponsible(index)}>
                   Adicionar outro responsável
                 </Button>
               </Box>
 
               <Divider />
 
+              {form.resources.map((resource, resourceIndex) => (
+                <Box pl={2} display={"flex"} flexDirection={"column"} gap={3}>
+                  <Box width={"100%"}>
+                    <InputLabel id={`resource-${resourceIndex}`}>
+                      Recurso {resourceIndex + 1}...n para ação {index + 1}
+                    </InputLabel>
+                    <TextField
+                      fullWidth
+                      value={resource.resource}
+                      onChange={(e) =>
+                        updateResource(
+                          index,
+                          resourceIndex,
+                          "resource",
+                          e.target.value
+                        )
+                      }
+                      required
+                    />
+                  </Box>
+
+                  <Box width={"100%"}>
+                    <InputLabel id={`described_strategies-${resourceIndex}`}>
+                      Este recurso é crítico?:
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      labelId={`its_crictical_resource-${resourceIndex}`}
+                      id={`its_crictical_resource-${resourceIndex}`}
+                      value={resource.itsCricticalResource}
+                      onChange={(e) =>
+                        updateResource(
+                          index,
+                          resourceIndex,
+                          "itsCricticalResource",
+                          e.target.value
+                        )
+                      }
+                    >
+                      <MenuItem value="Sim">Sim</MenuItem>
+                      <MenuItem value="Não">Não</MenuItem>
+                    </Select>
+                  </Box>
+
+                  <Box width={"100%"}>
+                    <InputLabel id={`described_strategies-${resourceIndex}`}>
+                      DESCREVA AS ESTRATÉGIAS:
+                    </InputLabel>
+                    <TextField
+                      fullWidth
+                      value={resource.described_strategies}
+                      onChange={(e) =>
+                        updateResource(
+                          index,
+                          resourceIndex,
+                          "described_strategies",
+                          e.target.value
+                        )
+                      }
+                      required
+                    />
+                  </Box>
+
+                  <Divider />
+                </Box>
+              ))}
+
               <Box width={"100%"}>
-                <InputLabel id="second_domain">
-                  Recursos 1... n para ação 1:
+                <Button onClick={() => addResource(index)}>
+                  Abrir outro recurso?
+                </Button>
+              </Box>
+
+              <Box width={"100%"}>
+                <InputLabel id="deadline_compliance">
+                  Prazo para cumprimento da Ação {index + 1}:
                 </InputLabel>
                 <TextField
                   fullWidth
-                  value={values.mentalMapUrl}
+                  value={form.deadline_compliance}
                   onChange={(e) =>
-                    updateValues({
-                      name: "mentalMapUrl",
-                      value: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </Box>
-
-              <Box width={"100%"}>
-                <InputLabel id="first_degree">
-                  Este recurso é crítico?:
-                </InputLabel>
-                <Select
-                  fullWidth
-                  labelId="first_degree"
-                  id="first_degree"
-                  value={values.criticalNode}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "first_degree",
-                      value: e.target.value,
-                    })
-                  }
-                >
-                  <MenuItem value="Sim">Sim</MenuItem>
-                  <MenuItem value="Não">Não</MenuItem>
-                </Select>
-              </Box>
-
-              <Box width={"100%"}>
-                <InputLabel id="second_domain">
-                  DESCREVA AS ESTRATÉGIAS:
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  value={values.mentalMapUrl}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "mentalMapUrl",
-                      value: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </Box>
-
-              <Box width={"100%"}>
-                <Button>Abrir outro recurso?</Button>
-              </Box>
-
-              <Box width={"100%"}>
-                <InputLabel id="second_domain">
-                  Prazo para cumprimento da Ação 1:
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  value={values.mentalMapUrl}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "mentalMapUrl",
-                      value: e.target.value,
-                    })
+                    updateAction(index, "deadline_compliance", e.target.value)
                   }
                   required
                 />
