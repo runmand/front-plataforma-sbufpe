@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -85,7 +86,55 @@ export const FourthStep = ({
     onClickNextStep();
   }
 
-  function addResponsible(action: IActiontructure) {}
+  function updateResponsible(
+    action: IActiontructure,
+    index: number,
+    field: string,
+    value: string
+  ) {
+    setValues((prevInputValues) => ({
+      ...prevInputValues,
+      actions: prevInputValues.actions.map((item) => {
+        if (item.name === action.name) {
+          return {
+            ...item,
+            responsibles: item.responsibles.map((responsible, i) => {
+              if (i === index) {
+                return {
+                  ...responsible,
+                  [field]: value,
+                };
+              }
+              return responsible;
+            }),
+          };
+        }
+        return item;
+      }),
+    }));
+  }
+
+  function addResponsible(action: IActiontructure) {
+    setValues((prevInputValues) => ({
+      ...prevInputValues,
+      actions: prevInputValues.actions.map((item) => {
+        if (item.name === action.name) {
+          return {
+            ...item,
+            responsibles: [
+              ...item.responsibles,
+              {
+                motivation: "",
+                responsible: "",
+                strategies: "",
+              },
+            ],
+          };
+        }
+        return item;
+      }),
+    }));
+  }
 
   function addResource(action: IActiontructure) {}
 
@@ -275,68 +324,91 @@ export const FourthStep = ({
                 />
               </Box>
 
-              <Box width={"100%"}>
-                <InputLabel id="second_domain">
-                  Responsável 1...n para ação 1 (indicar e analisar motivação de
-                  tantos atores quanto forem necessários)*
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  value={values.mentalMapUrl}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "mentalMapUrl",
-                      value: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </Box>
+              <Divider />
+              {form.responsibles.map((responsible, responsibleIndex) => (
+                <Box pl={2} display={"flex"} flexDirection={"column"} gap={3}>
+                  <Box width={"100%"}>
+                    <InputLabel id="second_domain">
+                      Responsável 1...n para ação 1 (indicar e analisar
+                      motivação de tantos atores quanto forem necessários)*
+                    </InputLabel>
+                    <TextField
+                      fullWidth
+                      value={
+                        values.actions[index].responsibles[responsibleIndex]
+                          .responsible
+                      }
+                      onChange={(e) =>
+                        updateValues({
+                          name: "mentalMapUrl",
+                          value: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </Box>
+
+                  <Box width={"100%"}>
+                    <InputLabel id="motivation">
+                      Motivação de cada ator:
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      labelId="motivation"
+                      id="motivation"
+                      value={
+                        values.actions[index].responsibles[responsibleIndex]
+                          .motivation
+                      }
+                      onChange={(e) =>
+                        updateResponsible(
+                          form,
+                          responsibleIndex,
+                          "motivation",
+                          e.target.value
+                        )
+                      }
+                    >
+                      {motivationOptions.map((item) => (
+                        <MenuItem key={item.id} value={item.option}>
+                          {item.option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+
+                  {responsible.motivation !== "1-Apoiador" &&
+                    responsible.motivation !== "" && (
+                      <Box width={"100%"}>
+                        <InputLabel id="second_domain">
+                          Descreva as estratégias:
+                        </InputLabel>
+                        <TextField
+                          fullWidth
+                          value={
+                            values.actions[index].responsibles[responsibleIndex]
+                              .strategies
+                          }
+                          onChange={(e) =>
+                            updateValues({
+                              name: "mentalMapUrl",
+                              value: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </Box>
+                    )}
+                </Box>
+              ))}
 
               <Box width={"100%"}>
-                <InputLabel id="first_degree">
-                  Motivação de cada ator:
-                </InputLabel>
-                <Select
-                  fullWidth
-                  labelId="first_degree"
-                  id="first_degree"
-                  value={values.criticalNode}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "first_degree",
-                      value: e.target.value,
-                    })
-                  }
-                >
-                  {motivationOptions.map((item) => (
-                    <MenuItem key={item.id} value={item.option}>
-                      {item.option}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Button onClick={() => addResponsible(form)}>
+                  Adicionar outro responsável
+                </Button>
               </Box>
 
-              <Box width={"100%"}>
-                <InputLabel id="second_domain">
-                  Descreva as estratégias:
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  value={values.mentalMapUrl}
-                  onChange={(e) =>
-                    updateValues({
-                      name: "mentalMapUrl",
-                      value: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </Box>
-
-              <Box width={"100%"}>
-                <Button>Adicionar outro responsável</Button>
-              </Box>
+              <Divider />
 
               <Box width={"100%"}>
                 <InputLabel id="second_domain">
