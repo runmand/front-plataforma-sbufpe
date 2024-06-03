@@ -30,15 +30,20 @@ export const ThirdStep = ({ onClickNextStep, onClickPrevStep }: IProps) => {
         relação causal.
       </Typography>
 
-      <Box width={"100%"} mt={5}>
+      <Box
+        width={"100%"}
+        mt={5}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+      >
         <Image
-          layout="fill"
-          src="/images/fluxograma.png"
+          width={"800"}
+          height={"600"}
+          objectFit="contain"
+          src="/fluxograma.png"
           alt="Exemplo de Fluxograma explicativo"
         />
-        <Typography fontWeight={700} fontSize={12}>
-          Figura 1- Exemplo de Fluxograma explicativo
-        </Typography>
       </Box>
 
       <Typography fontWeight={700} fontSize={24} textAlign={"center"}>
