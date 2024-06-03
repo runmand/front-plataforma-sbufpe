@@ -4,7 +4,8 @@ import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
 import { Box, Button, Typography } from "@mui/material";
-export const FinishedForm = () => {
+
+export default function Index() {
   return (
     <Base
       appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
@@ -40,4 +41,4 @@ export const FinishedForm = () => {
       }
     />
   );
-};
+}

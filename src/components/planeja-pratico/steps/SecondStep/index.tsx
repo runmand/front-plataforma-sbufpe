@@ -41,6 +41,7 @@ export const SecondStep = ({
   }
 
   function addDefinedProblemValue() {
+    if (values.defined_problems.length === 5) return;
     updateValues({
       name: "defined_problems",
       value: [
@@ -75,7 +76,7 @@ export const SecondStep = ({
       </Typography>
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={10}>
-        {values.defined_problems.map((item) => (
+        {values.defined_problems.map((item, index) => (
           <Box key={item.id} width={"100%"}>
             <InputLabel id="second_domain">
               Problemas definidos na intervenção:
@@ -86,9 +87,12 @@ export const SecondStep = ({
               onChange={(e) =>
                 updateDefinedProblemValue(item.id, e.target.value)
               }
+              required={index === 0}
             />
           </Box>
         ))}
+
+        <Button onClick={addDefinedProblemValue}>Adicionar</Button>
       </Box>
 
       <Box

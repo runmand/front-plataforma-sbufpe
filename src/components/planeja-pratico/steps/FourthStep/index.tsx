@@ -2,19 +2,14 @@ import {
   Box,
   Button,
   Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   InputLabel,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface IProps {
   onSubmit: (values: IValues) => void;
@@ -132,8 +127,8 @@ export const FourthStep = ({
   ) {
     setValues((prevInputValues) => ({
       ...prevInputValues,
-      actions: prevInputValues.actions.map((item) => {
-        if (actionIndex === actionIndex) {
+      actions: prevInputValues.actions.map((item, actionValIndex) => {
+        if (actionIndex === actionValIndex) {
           return {
             ...item,
             responsibles: item.responsibles.map((responsible, i) => {
@@ -380,7 +375,7 @@ export const FourthStep = ({
                   fullWidth
                   value={form.name}
                   onChange={(e) => updateAction(index, "name", e.target.value)}
-                  required
+                  required={index === 0}
                 />
               </Box>
 
@@ -404,7 +399,7 @@ export const FourthStep = ({
                           e.target.value
                         )
                       }
-                      required
+                      required={responsibleIndex === 0}
                     />
                   </Box>
 
@@ -428,6 +423,7 @@ export const FourthStep = ({
                           e.target.value
                         )
                       }
+                      required={responsibleIndex === 0}
                     >
                       {motivationOptions.map((item) => (
                         <MenuItem key={item.id} value={item.option}>
@@ -454,7 +450,7 @@ export const FourthStep = ({
                               e.target.value
                             )
                           }
-                          required
+                          required={responsibleIndex === 0}
                         />
                       </Box>
                     )}
@@ -487,7 +483,7 @@ export const FourthStep = ({
                           e.target.value
                         )
                       }
-                      required
+                      required={resourceIndex === 0}
                     />
                   </Box>
 
@@ -508,6 +504,7 @@ export const FourthStep = ({
                           e.target.value
                         )
                       }
+                      required={resourceIndex === 0}
                     >
                       <MenuItem value="Sim">Sim</MenuItem>
                       <MenuItem value="Não">Não</MenuItem>
@@ -529,7 +526,7 @@ export const FourthStep = ({
                           e.target.value
                         )
                       }
-                      required
+                      required={resourceIndex === 0}
                     />
                   </Box>
 
@@ -553,7 +550,7 @@ export const FourthStep = ({
                   onChange={(e) =>
                     updateAction(index, "deadline_compliance", e.target.value)
                   }
-                  required
+                  required={index === 0}
                 />
               </Box>
             </Box>
@@ -576,7 +573,7 @@ export const FourthStep = ({
           </Button>
 
           <Button variant="contained" color="primary" type={"submit"}>
-            Próxima
+            {"Próxima"}
           </Button>
         </Box>
       </form>

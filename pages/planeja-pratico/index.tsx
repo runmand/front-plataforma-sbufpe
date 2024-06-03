@@ -61,8 +61,7 @@ interface IDefinedProblem {
 }
 
 export default function Index() {
-  const [savedDataToSend, setSavedDataToSend] = useState<any[]>([]);
-  const [activeIndex, setActiveIndex] = useState(4);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [stepsValues, setStepsValues] = useState<IStepsValues>({
     firstStep: {
       first_domain: "",
