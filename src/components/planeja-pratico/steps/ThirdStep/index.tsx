@@ -31,7 +31,11 @@ export const ThirdStep = ({ onClickNextStep, onClickPrevStep }: IProps) => {
       </Typography>
 
       <Box width={"100%"} mt={5}>
-        <Image layout="fill" src="/images/fluxograma.png" alt="" />
+        <Image
+          layout="fill"
+          src="/images/fluxograma.png"
+          alt="Exemplo de Fluxograma explicativo"
+        />
         <Typography fontWeight={700} fontSize={12}>
           Figura 1- Exemplo de Fluxograma explicativo
         </Typography>
