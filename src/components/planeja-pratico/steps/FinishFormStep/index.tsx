@@ -248,13 +248,19 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={5}>
         {stepValues.thirdStep.actions.map((item, index) => (
-          <Paper>
+          <Paper key={index}>
             <Box p={4} display={"flex"} flexDirection={"column"} gap={2}>
               <Typography fontWeight={500} fontSize={16}>
                 Ação: <b>{item.name}</b>
               </Typography>
               {item.responsibles.map((responsible, responsibleIndex) => (
-                <Box pl={2} display={"flex"} flexDirection={"column"} gap={2}>
+                <Box
+                  key={responsibleIndex}
+                  pl={2}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={2}
+                >
                   <Typography fontWeight={500} fontSize={16}>
                     Responsável {responsibleIndex + 1}...n para ação {item.name}
                     : <b>{responsible.responsible}</b>
@@ -272,7 +278,13 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                 </Box>
               ))}
               {item.resources.map((resource, resourceIndex) => (
-                <Box pl={2} display={"flex"} flexDirection={"column"} gap={2}>
+                <Box
+                  key={resourceIndex}
+                  pl={2}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={2}
+                >
                   <Typography fontWeight={500} fontSize={16}>
                     Recurso {resourceIndex + 1}...n para ação {index + 1}:{" "}
                     <b>{resource.resource}</b>

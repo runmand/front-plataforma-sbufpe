@@ -8,7 +8,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { http } from "src/core/axios";
 
 interface IProps {
   onSubmit: (values: IValues) => void;
@@ -29,6 +30,12 @@ interface IValues {
   third_indicator: string;
 }
 
+interface IResponse {
+  id: number;
+  title: string;
+  step: number;
+}
+
 export const FirstStep = ({
   onSubmit,
   stepValues,
@@ -47,6 +54,19 @@ export const FirstStep = ({
     third_indicator: stepValues.third_indicator,
   });
 
+  const [questions, setQuestions] = useState<IResponse[]>([]);
+
+  async function getQuestion() {
+    try {
+      const { data } = await http.get<IResponse[]>("/practical-plan-question");
+
+      setQuestions(data);
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   function updateValues({ name, value }: { name: string; value: any }) {
     setValues((prevInputValues) => ({
       ...prevInputValues,
@@ -59,6 +79,10 @@ export const FirstStep = ({
     onSubmit(values);
     onClickNextStep();
   }
+
+  useEffect(() => {
+    getQuestion();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -83,12 +107,11 @@ export const FirstStep = ({
         maior o grau de governabilidade sobre o problema, mais viabilidade você
         /equipe terá para resolvê-lo.
       </Typography>
-      <Typography fontWeight={400} fontSize={16} mt={5}>
-        Como o PA-SB deve intervir sobre problemas, recomenda-se a seleção de
-        pelo menos, 2 domínios / 3 indicadores com as piores classificações dos
-        módulos avaliativos. E, pelo menos 2 indicadores do perfil
-        socioepidemiológicos em piores condições. <b>Digite-os abaixo:</b>
-      </Typography>
+      {questions.length > 0 && (
+        <Typography fontWeight={600} fontSize={16} mt={5}>
+          {questions[0].title}
+        </Typography>
+      )}
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={10}>
         <Box display={"flex"} flexDirection={"column"} gap={5}>

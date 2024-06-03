@@ -234,12 +234,14 @@ export const FourthStep = ({
         src={"/exemplo-mapa-mental.png"}
         width={800}
         height={600}
+        alt="Exemplo de um mapa mental"
         objectFit="contain"
       />
       <Typography fontWeight={500} fontSize={14} textAlign={"center"}>
         Uma nova aba vai abrir para você criar seu mapa mental, após finalizar o
-        seu mapa mental, clique em <b>"Compartilhar"</b> e marque a opção{" "}
-        <b>"Link para compartilhar"</b>. Após isso, cole o link no campo abaixo
+        seu mapa mental, clique em <b>&quot;Compartilhar&quot;</b> e marque a
+        opção <b>&quot;Link para compartilhar&quot;</b>. Após isso, cole o link
+        no campo abaixo
       </Typography>
       <form
         action="https://www.mindmeister.com/external/show"
@@ -381,7 +383,13 @@ export const FourthStep = ({
 
               <Divider />
               {form.responsibles.map((responsible, responsibleIndex) => (
-                <Box pl={2} display={"flex"} flexDirection={"column"} gap={3}>
+                <Box
+                  key={responsibleIndex}
+                  pl={2}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={3}
+                >
                   <Box width={"100%"}>
                     <InputLabel id={`responsible-${responsibleIndex}`}>
                       Responsável {responsibleIndex + 1}...n para ação{" "}
@@ -467,7 +475,13 @@ export const FourthStep = ({
               <Divider />
 
               {form.resources.map((resource, resourceIndex) => (
-                <Box pl={2} display={"flex"} flexDirection={"column"} gap={3}>
+                <Box
+                  key={resourceIndex}
+                  pl={2}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  gap={3}
+                >
                   <Box width={"100%"}>
                     <InputLabel id={`resource-${resourceIndex}`}>
                       Recurso {resourceIndex + 1}...n para ação {index + 1}
