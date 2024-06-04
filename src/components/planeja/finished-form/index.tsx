@@ -33,9 +33,19 @@ export const FinishedForm = () => {
           </Typography>
           <Image width={400} height={400} src={"/plan-finished-form.svg"} />
 
-          <Button href="/form" variant="contained">
-            Voltar ao inicio
-          </Button>
+          <Box
+            display={"flex"}
+            gap={5}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Button href="/form" variant="text">
+              Voltar ao inicio
+            </Button>
+            <Button href="/planeja-pratico" variant="contained">
+              Ir para o formulário Planeja Prático
+            </Button>
+          </Box>
         </Box>
       }
     />

@@ -12,21 +12,17 @@ interface IProps {
 }
 
 interface IStepsValues {
-  firstStep: IFirstStep;
+  firstStep: IFirstStep[];
   secondStep: ISecondStep;
   thirdStep: IThirdStep;
 }
 
 interface IFirstStep {
-  first_domain: string;
-  first_degree: number;
+  domain: string;
   first_indicator: string;
-  second_domain: string;
-  second_degree: number;
+  first_degree: number;
   second_indicator: string;
-  third_domain: string;
-  third_degree: number;
-  third_indicator: string;
+  second_degree: number;
 }
 
 interface ISecondStep {
@@ -112,50 +108,26 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
           dos módulos avaliativos. E, pelo menos 2 indicadores do perfil
           socioepidemiológicos em piores condições. Digite-os abaixo:
         </Typography>
-        <Box display={"flex"} flexDirection={"column"} gap={5} mt={5}>
-          <Box pl={2} display={"flex"} flexDirection={"column"} gap={2}>
-            <Typography fontWeight={700} fontSize={16}>
-              DOMÍNIO SELECIONADO: {stepValues.firstStep.first_domain}
-            </Typography>
-            <Typography fontWeight={700} fontSize={16}>
-              Grau de governabilidade: {stepValues.firstStep.first_degree}
-            </Typography>
-            <Typography fontWeight={700} fontSize={16}>
-              Indicador: {stepValues.firstStep.first_indicator}
-            </Typography>
-
-            {Boolean(stepValues.firstStep.second_domain.length) && (
+        <Box display={"flex"} flexDirection={"column"} gap={3} mt={5}>
+          {stepValues.firstStep.map((item, index) => (
+            <Box key={index} display={"flex"} flexDirection={"column"} gap={2}>
               <Typography fontWeight={700} fontSize={16}>
-                DOMÍNIO SELECIONADO: {stepValues.firstStep.second_domain}
+                {item.domain}
               </Typography>
-            )}
-            {Boolean(stepValues.firstStep.second_degree) && (
               <Typography fontWeight={700} fontSize={16}>
-                Grau de governabilidade: {stepValues.firstStep.second_degree}
+                Indicador: {item.first_indicator}
               </Typography>
-            )}
-            {Boolean(stepValues.firstStep.second_indicator) && (
               <Typography fontWeight={700} fontSize={16}>
-                Indicador: {stepValues.firstStep.second_indicator}
+                Grau de governabilidade: {item.first_degree}
               </Typography>
-            )}
-
-            {Boolean(stepValues.firstStep.third_domain.length) && (
               <Typography fontWeight={700} fontSize={16}>
-                DOMÍNIO SELECIONADO: {stepValues.firstStep.third_domain}
+                Indicador: {item.second_indicator}
               </Typography>
-            )}
-            {Boolean(stepValues.firstStep.third_degree) && (
               <Typography fontWeight={700} fontSize={16}>
-                Grau de governabilidade: {stepValues.firstStep.third_degree}
+                Grau de governabilidade: {item.second_degree}
               </Typography>
-            )}
-            {Boolean(stepValues.firstStep.third_indicator) && (
-              <Typography fontWeight={700} fontSize={16}>
-                Indicador: {stepValues.firstStep.third_indicator}
-              </Typography>
-            )}
-          </Box>
+            </Box>
+          ))}
         </Box>
       </Paper>
 

@@ -11,21 +11,17 @@ import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
 import { FinishFormStep } from "@components/planeja-pratico/steps/FinishFormStep";
 
 interface IStepsValues {
-  firstStep: IFirstStep;
+  firstStep: IFirstStep[];
   secondStep: ISecondStep;
   thirdStep: IThirdStep;
 }
 
 interface IFirstStep {
-  first_domain: string;
-  first_degree: number;
+  domain: string;
   first_indicator: string;
-  second_domain: string;
-  second_degree: number;
+  first_degree: number;
   second_indicator: string;
-  third_domain: string;
-  third_degree: number;
-  third_indicator: string;
+  second_degree: number;
 }
 
 interface ISecondStep {
@@ -63,17 +59,15 @@ interface IDefinedProblem {
 export default function Index() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [stepsValues, setStepsValues] = useState<IStepsValues>({
-    firstStep: {
-      first_domain: "",
-      first_degree: null,
-      first_indicator: "",
-      second_domain: "",
-      second_degree: null,
-      second_indicator: "",
-      third_domain: "",
-      third_degree: null,
-      third_indicator: "",
-    },
+    firstStep: [
+      {
+        domain: "",
+        first_indicator: "",
+        first_degree: null,
+        second_indicator: "",
+        second_degree: null,
+      },
+    ],
     secondStep: {
       defined_problems: [
         {
@@ -112,7 +106,7 @@ export default function Index() {
   const isLastIndex = activeIndex + 1 === data.length;
 
   //atualizar os valores do primeiro passo
-  function handleUpdateFirstStep(values: IFirstStep) {
+  function handleUpdateFirstStep(values: IFirstStep[]) {
     console.log(values);
     setStepsValues({
       ...stepsValues,
