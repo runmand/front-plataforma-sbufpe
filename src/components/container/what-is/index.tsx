@@ -10,7 +10,8 @@ const rows2024 = [
 	createMonthlyAccess('Fevereiro', '235'),
 	createMonthlyAccess('Março', '246'),
 	createMonthlyAccess('Abril', '439'),
-	createMonthlyAccess('Maio - Até 14/05', '149'),
+	createMonthlyAccess('Maio', '397'),
+	createMonthlyAccess('Junho - Até dia 18/06', '310'),
 ];
 
 const rows2023 = [
@@ -253,7 +254,7 @@ export default function Index() {
 							variant="h6"
 							color={theme.black}
 						>
-							1327
+							1567
 						</Typography>
 					</Grid>
 
