@@ -16,8 +16,8 @@ export default function Index() {
 	const menu: MENU_ITEM[] = [
 		{ id: 0, title: 'Questionário Inicial', url: routerEnum.QUESTION },
 		{ id: 1, title: 'Questionários', url: routerEnum.FORM },
-		{ id: 3, title: 'Planeja SD', url: routerEnum.PLANEJA },
-		{ id: 2, title: 'Pratico SD', url: routerEnum.PRATICO }
+		{ id: 3, title: 'Planeja SD - Teórico', url: routerEnum.PLANEJA },
+		{ id: 2, title: 'Planeja SD - Pratico', url: routerEnum.PRATICO }
 	];
 
 	const handleLogout = () => {
