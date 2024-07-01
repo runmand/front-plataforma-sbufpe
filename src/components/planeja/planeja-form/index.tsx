@@ -84,6 +84,17 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       }
     };
 
+    let planData: ISavedData[] = JSON.parse(localStorage.getItem("plan-form"));
+
+    if (planData){
+      if (Number(localStorage.getItem("userId")) == planData[0].userId){
+        setSavedDataToSend(planData);
+        planData.reverse();
+        setActiveIndex(planData[0].planQuestion);
+        
+      }
+    }
+
     fetchData();
   }, []);
 
@@ -141,7 +152,26 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   function nextQuestion() {
     if (!validateIfCanProcced()) return;
     if (activeIndex === data.length - 1) return;
+    saveQuestionResponse(savedDataToSend[activeIndex])
     setActiveIndex(activeIndex + 1);
+  }
+
+  function saveQuestionResponse(data: ISavedData) {
+    let newData: ISavedData[] = []; 
+    let isNew = true;
+    if (localStorage.getItem("plan-form")){
+      newData = JSON.parse(localStorage.getItem("plan-form"));
+      newData.forEach(element => {
+        if (data.planQuestion == element.planQuestion){
+          element.justify = data.justify
+          isNew = false;
+          return;
+        }
+      });
+    }
+    if (isNew) newData.push(data);
+
+    localStorage.setItem("plan-form", JSON.stringify(newData))
   }
 
   function previusQuestion() {
@@ -151,7 +181,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
   function validateIfCanProcced() {
     //validate if all questions are answered
-
+    console.log(savedDataToSend[activeIndex])
     if (
       !Boolean(savedDataToSend[activeIndex]) ||
       !savedDataToSend[activeIndex].justify

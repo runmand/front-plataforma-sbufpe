@@ -14,7 +14,7 @@ export default function Index() {
   const [menu, setMenu] = useState([
     { id: 0, title: "Questionário Inicial", url: routerEnum.QUESTION },
     { id: 1, title: "Questionários", url: routerEnum.FORM },
-    { id: 3, title: "Planeja SD", url: routerEnum.PLANEJA },
+    { id: 3, title: "Planeja SD - Teórico", url: routerEnum.PLANEJA },
   ]);
   const [isDrawerMenuOpen, setIsDrawerMenuOpen] =
     React.useState<boolean>(false);
@@ -40,7 +40,7 @@ export default function Index() {
             ...prevState,
             {
               id: 3,
-              title: "Prático SD",
+              title: "Planeja SD - Pratico",
               url: routerEnum.PLANEJA_PRATICO,
             },
           ];
