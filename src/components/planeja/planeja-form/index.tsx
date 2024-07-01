@@ -91,7 +91,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
         setSavedDataToSend(planData);
         planData.reverse();
         setActiveIndex(planData[0].planQuestion);
-        
+      }else{
+        localStorage.removeItem("plan-form")
       }
     }
 
