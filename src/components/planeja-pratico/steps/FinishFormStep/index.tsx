@@ -179,6 +179,18 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
 
   return (
     <form onSubmit={handleSendForm}>
+
+      <Typography fontWeight={1000} fontSize={16} marginBottom={"15px"}>
+        Parabéns!!! Você (s) tem um Plano de Ação em Saúde Bucal, incluindo as estratégias para aumentar sua governabilidade e viabilidade, para intervenção sobre seu estabelecimento de saúde (ou rede de atenção). Você pode baixá-lo em PDF e utilizá-lo à execução das ações idealizadas.
+      </Typography>
+      <Typography fontWeight={500} fontSize={16}  marginBottom={"15px"}>
+        <b>Lembre-se!</b> O PA-SB pode ser revisto e adequado sempre que necessário ao longo de sua execução e monitoramento das ações previstas! Faz-se importante dar um tempo maior (quadrimestralmente, por exemplo) para realização de novas avaliações (avaliações formativas) para averiguação da melhoria da situação local. Os demais módulos do GestBucalSD servirão para essa finalidade.
+      </Typography>
+      <Typography fontWeight={1000} fontSize={16}  marginBottom={"15px"}>
+      Agradecemos sua participação, esperando que o GestBucalSD esteja promovendo governança inteligente e melhoria da qualidade dos serviços de saúde bucal e fortalecimento do Sistema Único de Saúde
+      </Typography>
+
+
       <Typography fontWeight={700} fontSize={24} mb={10} textAlign={"center"}>
         Confirmar o envio do formulário
       </Typography>
