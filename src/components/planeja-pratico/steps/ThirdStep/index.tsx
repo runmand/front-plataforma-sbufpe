@@ -12,6 +12,9 @@ export const ThirdStep = ({ onClickNextStep, onClickPrevStep }: IProps) => {
       <Typography fontWeight={700} fontSize={20} textAlign={"center"}>
         COMO EXPLICAR O PROBLEMA?
       </Typography>
+      <Typography fontWeight={500} fontSize={16}>
+        Apesar de você já ter chegado na definição do (s) problema (s) à intervenção, na verdade o plano de ação não é para intervir diretamente o sobre ele, mas sim sobre a sua causa principal, denominado nó-crítico. Por isso, é necessário explicar o problema. Obs: caso você/equipe tenha definido mais de um problema à intervenção, particularmente de domínios ou módulos operacionais diferentes, talvez seja necessário fazer mais de um Plano de Ação. Estes PA-SB podem ser juntados, formando um programa de intervenção local! 
+      </Typography>
       <Typography fontWeight={500} fontSize={24}>
         Explicação do problema
       </Typography>

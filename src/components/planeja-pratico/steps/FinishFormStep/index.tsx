@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { localStorageKeyEnum } from "src/core/enums";
 import { useRouter } from "next/router";
 import { ErrorOutlineOutlined } from "@mui/icons-material";
+import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
 
 interface IProps {
   stepValues: IStepsValues;
@@ -95,8 +96,101 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
     });
   }
 
+  const stylesPDF = StyleSheet.create({
+    page: { padding: 30 },
+    section: { margin: 10, padding: 10, flexGrow: 1 },
+    flex: { display: "flex", flexDirection: "row" },
+    title: { fontSize: 16, fontWeight: "bold" },
+    subtitle: { fontSize: 14, fontWeight: "bold", marginTop: 10 },
+    text: { fontSize: 12, marginTop: 5 },
+  });
+  
+  const GeneratePdf = () => (
+    <Document>
+      <Page style={stylesPDF.page}>
+        {/* First Step */}
+        <View style={stylesPDF.section}>
+          <Text style={stylesPDF.title}>Primeira Etapa</Text>
+          {stepValues.firstStep.map((item, index) => (
+            <View key={index}>
+              <Text style={stylesPDF.subtitle}>Domínio: {item.domain}</Text>
+              <Text style={stylesPDF.text}>Primeiro Indicador: {item.first_indicator}</Text>
+              <Text style={stylesPDF.text}>Grau do Primeiro Indicador: {item.first_degree}</Text>
+              <Text style={stylesPDF.text}>Segundo Indicador: {item.second_indicator}</Text>
+              <Text style={stylesPDF.text}>Grau do Segundo Indicador: {item.second_degree}</Text>
+            </View>
+          ))}
+        </View>
+  
+        {/* Second Step */}
+        <View style={stylesPDF.section}>
+          <Text style={stylesPDF.title}>Segunda Etapa</Text>
+          {stepValues.secondStep.defined_problems.map((problem, index) => (
+            <View key={index}>
+              <Text style={stylesPDF.subtitle}>Problema Definido {problem.id}</Text>
+              <Text style={stylesPDF.text}>{problem.answer}</Text>
+            </View>
+          ))}
+        </View>
+  
+        {/* Third Step */}
+        <View style={stylesPDF.section}>
+          <Text style={stylesPDF.title}>Terceira Etapa</Text>
+          <Text style={stylesPDF.text}>URL do Mapa Mental: {stepValues.thirdStep.mentalMapUrl}</Text>
+          <Text style={stylesPDF.text}>Nó Crítico: {stepValues.thirdStep.criticalNode}</Text>
+          {stepValues.thirdStep.actions.map((action, index) => (
+            <View key={index}>
+              <Text style={stylesPDF.subtitle}>Ação: {action.name}</Text>
+              <Text style={stylesPDF.text}>Prazo: {action.deadline_compliance}</Text>
+              <Text style={stylesPDF.text}>Responsáveis:</Text>
+              {action.responsibles.map((responsible, i) => (
+                <View key={i}>
+                  <Text style={stylesPDF.text}>Responsável: {responsible.responsible}</Text>
+                  <Text style={stylesPDF.text}>Motivação: {responsible.motivation}</Text>
+                  <Text style={stylesPDF.text}>Estratégias: {responsible.strategies}</Text>
+                </View>
+              ))}
+              <Text style={stylesPDF.text}>Recursos:</Text>
+              {action.resources.map((resource, i) => (
+                <View key={i}>
+                  <Text style={stylesPDF.text}>Recurso: {resource.resource}</Text>
+                  <Text style={stylesPDF.text}>É Recurso Crítico: {resource.itsCricticalResource}</Text>
+                  <Text style={stylesPDF.text}>Estratégias Descritas: {resource.described_strategies}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+        </View>
+      </Page>
+    </Document>
+  );
+
+  async function downloadPdf() {
+    const blob = await pdf(<GeneratePdf />).toBlob();
+  
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `relatorio_${new Date().toLocaleDateString()}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   return (
     <form onSubmit={handleSendForm}>
+
+      <Typography fontWeight={1000} fontSize={16} marginBottom={"15px"}>
+        Parabéns!!! Você (s) tem um Plano de Ação em Saúde Bucal, incluindo as estratégias para aumentar sua governabilidade e viabilidade, para intervenção sobre seu estabelecimento de saúde (ou rede de atenção). Você pode baixá-lo em PDF e utilizá-lo à execução das ações idealizadas.
+      </Typography>
+      <Typography fontWeight={500} fontSize={16}  marginBottom={"15px"}>
+        <b>Lembre-se!</b> O PA-SB pode ser revisto e adequado sempre que necessário ao longo de sua execução e monitoramento das ações previstas! Faz-se importante dar um tempo maior (quadrimestralmente, por exemplo) para realização de novas avaliações (avaliações formativas) para averiguação da melhoria da situação local. Os demais módulos do GestBucalSD servirão para essa finalidade.
+      </Typography>
+      <Typography fontWeight={1000} fontSize={16}  marginBottom={"15px"}>
+      Agradecemos sua participação, esperando que o GestBucalSD esteja promovendo governança inteligente e melhoria da qualidade dos serviços de saúde bucal e fortalecimento do Sistema Único de Saúde
+      </Typography>
+
+
       <Typography fontWeight={700} fontSize={24} mb={10} textAlign={"center"}>
         Confirmar o envio do formulário
       </Typography>
@@ -302,9 +396,15 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
           Voltar
         </Button>
 
+        <Button onClick={downloadPdf} variant="contained" color="primary" type={"submit"}>
+          {"Baixar PDF"}
+        </Button>
+
         <Button variant="contained" color="primary" type={"submit"}>
           {"Finalizar"}
         </Button>
+
+
       </Box>
     </form>
   );

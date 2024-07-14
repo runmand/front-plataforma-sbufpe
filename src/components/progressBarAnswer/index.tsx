@@ -16,7 +16,6 @@ export const ProgressBarAnswer = ({
   };
 
   const percentageCompleted = calculatePercentage();
-  console.log(percentageCompleted);
   return (
     <LinearProgress
       color="info"

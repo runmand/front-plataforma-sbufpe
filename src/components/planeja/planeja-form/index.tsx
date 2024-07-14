@@ -149,7 +149,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     if (limit - text.length < 0) return 0;
     return limit - text.length;
   }
-
+  
   function nextQuestion() {
     if (!validateIfCanProcced()) return;
     if (activeIndex === data.length - 1) return;
