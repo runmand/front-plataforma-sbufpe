@@ -86,13 +86,13 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
     let planData: ISavedData[] = JSON.parse(localStorage.getItem("plan-form"));
 
-    if (planData){
-      if (Number(localStorage.getItem("userId")) == planData[0].userId){
+    if (planData) {
+      if (Number(localStorage.getItem("userId")) == planData[0].userId) {
         setSavedDataToSend(planData);
         planData.reverse();
         setActiveIndex(planData[0].planQuestion);
-      }else{
-        localStorage.removeItem("plan-form")
+      } else {
+        localStorage.removeItem("plan-form");
       }
     }
 
@@ -149,22 +149,22 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     if (limit - text.length < 0) return 0;
     return limit - text.length;
   }
-
+  
   function nextQuestion() {
     if (!validateIfCanProcced()) return;
     if (activeIndex === data.length - 1) return;
-    saveQuestionResponse(savedDataToSend[activeIndex])
+    saveQuestionResponse(savedDataToSend[activeIndex]);
     setActiveIndex(activeIndex + 1);
   }
 
   function saveQuestionResponse(data: ISavedData) {
-    let newData: ISavedData[] = []; 
+    let newData: ISavedData[] = [];
     let isNew = true;
-    if (localStorage.getItem("plan-form")){
+    if (localStorage.getItem("plan-form")) {
       newData = JSON.parse(localStorage.getItem("plan-form"));
-      newData.forEach(element => {
-        if (data.planQuestion == element.planQuestion){
-          element.justify = data.justify
+      newData.forEach((element) => {
+        if (data.planQuestion == element.planQuestion) {
+          element.justify = data.justify;
           isNew = false;
           return;
         }
@@ -172,7 +172,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
     if (isNew) newData.push(data);
 
-    localStorage.setItem("plan-form", JSON.stringify(newData))
+    localStorage.setItem("plan-form", JSON.stringify(newData));
   }
 
   function previusQuestion() {
@@ -182,7 +182,14 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
   function validateIfCanProcced() {
     //validate if all questions are answered
-    console.log(savedDataToSend[activeIndex])
+    console.log(savedDataToSend[activeIndex]);
+
+    // se é a última questão, então não existe uma quantidade minima de caracteres, já que se trata da opinião e o email
+    if (activeIndex === 8) {
+      setError("");
+      return true;
+    }
+
     if (
       !Boolean(savedDataToSend[activeIndex]) ||
       !savedDataToSend[activeIndex].justify
@@ -207,6 +214,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   async function sendData(payload: ISavedData[]) {
     try {
       setIsSendingData(true);
+      console.log(payload);
       const { data } = await http.post("/plan-question-answer", payload);
       if (data === "Sucesso") {
         onFinish();
@@ -225,7 +233,12 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     if (validateIfCanProcced() && savedDataToSend.length === data.length) {
       sendData(savedDataToSend);
     } else {
-      setError("Preencha a questão e justificativa antes de continuar");
+      // caso seja a última questão(opinião e email), nós limpamos os erros
+      if (activeIndex === 8) {
+        setError("");
+      } else {
+        setError("Preencha a questão e justificativa antes de continuar");
+      }
     }
   }
 
@@ -293,66 +306,116 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl fullWidth>
-                      <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="female"
-                        name="radio-buttons-group"
-                        sx={{ display: "flex", flexDirection: "column" }}
-                      >
-                        {data[activeIndex].choices.map((choice, index) => (
-                          <div
-                            style={{ display: "flex", flexDirection: "column" }}
-                            key={index}
-                          >
-                            <FormControlLabel
-                              checked={
-                                findChoiceByQuestionId()?.question_answer ===
-                                choice.option_label
-                              }
-                              value={choice.option_label}
-                              control={<Radio />}
-                              label={choice.option_label}
-                              onChange={() =>
-                                handleAnswer({
-                                  questionId: data[activeIndex].id,
-                                  question_answer: choice.option_label,
-                                  justify: findChoiceByQuestionId()?.justify,
-                                })
-                              }
-                            />
-                            {findChoiceByQuestionId()?.question_answer ===
-                              choice.option_label && (
-                              <Box>
-                                <TextField
-                                  sx={{ my: 2, maxWidth: "50%" }}
-                                  label={choice.justify_answer_label}
-                                  fullWidth
-                                  value={
-                                    findChoiceByQuestionId()?.justify ?? ""
-                                  }
-                                  onChange={(e) =>
-                                    handleAnswer({
-                                      questionId: data[activeIndex].id,
-                                      question_answer:
-                                        findChoiceByQuestionId()
-                                          ?.question_answer,
-                                      justify: e.target.value,
-                                    })
-                                  }
-                                />
-                                <FormHelperText id={index + ""}>
-                                  O campo deve conter pelo menos 100 caracteres
-                                  e menos que 500 caracteres - Faltam{" "}
-                                  {calculateLeftCaracteres(
-                                    findChoiceByQuestionId()?.justify,
-                                    100
-                                  )}
-                                </FormHelperText>
-                              </Box>
+                      {/* Verificar se o id da questão é 9, se for, devemos exibir o input de texto da opinião e o campo de email */}
+                      {data[activeIndex].id === 9 ? (
+                        <>
+                          <TextField
+                            label="Opinião"
+                            multiline
+                            rows={4}
+                            fullWidth
+                            value={findChoiceByQuestionId()?.justify ?? ""}
+                            onChange={(e) =>
+                              handleAnswer({
+                                questionId: data[activeIndex].id,
+                                question_answer:
+                                  findChoiceByQuestionId()?.question_answer,
+                                justify: e.target.value,
+                              })
+                            }
+                          />
+                          <FormHelperText>
+                            O campo deve conter pelo menos 100 caracteres e
+                            menos que 500 caracteres - Faltam{" "}
+                            {calculateLeftCaracteres(
+                              findChoiceByQuestionId()?.justify,
+                              100
                             )}
-                          </div>
-                        ))}
-                      </RadioGroup>
+                          </FormHelperText>
+                          <TextField
+                            label="Seu melhor e-mail"
+                            rows={4}
+                            sx={{ mt: 3 }}
+                            fullWidth
+                            type="email"
+                            value={
+                              findChoiceByQuestionId()?.question_answer ?? ""
+                            }
+                            onChange={(e) =>
+                              handleAnswer({
+                                questionId: data[activeIndex].id,
+                                question_answer: e.target.value,
+                                justify: findChoiceByQuestionId()?.justify,
+                              })
+                            }
+                          />
+                        </>
+                      ) : (
+                        <RadioGroup
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          defaultValue="female"
+                          name="radio-buttons-group"
+                          sx={{ display: "flex", flexDirection: "column" }}
+                        >
+                          {data[activeIndex].choices.map((choice, index) => (
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                              key={index}
+                            >
+                              <FormControlLabel
+                                checked={
+                                  findChoiceByQuestionId()?.question_answer ===
+                                  choice.option_label
+                                }
+                                value={choice.option_label}
+                                control={<Radio />}
+                                label={choice.option_label}
+                                onChange={() =>
+                                  handleAnswer({
+                                    questionId: data[activeIndex].id,
+                                    question_answer: choice.option_label,
+                                    justify: findChoiceByQuestionId()?.justify,
+                                  })
+                                }
+                              />
+                              {findChoiceByQuestionId()?.question_answer ===
+                                choice.option_label && (
+                                <Box>
+                                  <TextField
+                                    sx={{ my: 2, maxWidth: "50%" }}
+                                    label={choice.justify_answer_label}
+                                    fullWidth
+                                    value={
+                                      findChoiceByQuestionId()?.justify ?? ""
+                                    }
+                                    onChange={(e) =>
+                                      handleAnswer({
+                                        questionId: data[activeIndex].id,
+                                        question_answer:
+                                          findChoiceByQuestionId()
+                                            ?.question_answer,
+                                        justify: e.target.value,
+                                      })
+                                    }
+                                  />
+                                  <FormHelperText id={index + ""}>
+                                    O campo deve conter pelo menos 100
+                                    caracteres e menos que 500 caracteres -
+                                    Faltam{" "}
+                                    {calculateLeftCaracteres(
+                                      findChoiceByQuestionId()?.justify,
+                                      100
+                                    )}
+                                  </FormHelperText>
+                                </Box>
+                              )}
+                            </div>
+                          ))}
+                        </RadioGroup>
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>
