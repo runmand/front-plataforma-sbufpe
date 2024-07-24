@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import YouTube from 'react-youtube';
 
 interface IProps {
   onClickNextStep: () => void;
@@ -74,6 +75,10 @@ export const ThirdStep = ({ onClickNextStep, onClickPrevStep }: IProps) => {
         Agora, faça seu (s) fluxograma (s) explicativo(s) e identificação do
         nó-crítico!!!
       </Typography>
+
+      <Box width="100%" display="flex" justifyContent="center" mt={4}>
+        <YouTube videoId="dePREs-CK9E" />
+      </Box>
 
       <Box
         display="flex"
