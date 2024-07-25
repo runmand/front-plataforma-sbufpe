@@ -56,6 +56,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   const [errorOnSendForm, setErrorOnSendForm] = useState(false);
   const [data, setData] = useState<IPlanejaResponse[]>([]);
   const [savedDataToSend, setSavedDataToSend] = useState<ISavedData[]>([]);
+  const [estabelecimentoSaude, setEstabelecimentoSaude] = useState("");
+  const [municipio, setMunicipio] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -149,7 +151,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     if (limit - text.length < 0) return 0;
     return limit - text.length;
   }
-  
+
   function nextQuestion() {
     if (!validateIfCanProcced()) return;
     if (activeIndex === data.length - 1) return;
@@ -215,6 +217,13 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     try {
       setIsSendingData(true);
       console.log(payload);
+      //procura a questão com id 9 e adciona os valores no question_answer com os valores estabelecimentoSaude e municipio
+      payload.forEach((item) => {
+        if (item.planQuestion === 9) {
+          item.question_answer = `${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}`;
+        }
+      });
+
       const { data } = await http.post("/plan-question-answer", payload);
       if (data === "Sucesso") {
         onFinish();
@@ -306,7 +315,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl fullWidth>
-                      {/* Verificar se o id da questão é 9, se for, devemos exibir o input de texto da opinião e o campo de email */}
+                      {/* Verificar se o id da questão é 9, se for, devemos exibir o input de texto da opinião e o campo de email: TODO - Melhorar esse tipo de valição de id por algo diferente, como tag ou tipo de pergunta */}
                       {data[activeIndex].id === 9 ? (
                         <>
                           <TextField
@@ -349,6 +358,32 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                               })
                             }
                           />
+                          <TextField
+                            label="Estabelecimento de Saúde"
+                            rows={4}
+                            sx={{ mt: 3 }}
+                            fullWidth
+                            type="text"
+                            value={estabelecimentoSaude}
+                            onChange={(e) =>
+                              setEstabelecimentoSaude(e.target.value)
+                            }
+                          />
+                          <FormHelperText>
+                            (caso seja pesquisador, deixe esse campo em branco)
+                          </FormHelperText>
+                          <TextField
+                            label="Município"
+                            rows={4}
+                            sx={{ mt: 3 }}
+                            fullWidth
+                            type="text"
+                            value={municipio}
+                            onChange={(e) => setMunicipio(e.target.value)}
+                          />
+                          <FormHelperText>
+                            (caso seja pesquisador, deixe esse campo em branco)
+                          </FormHelperText>
                         </>
                       ) : (
                         <RadioGroup
@@ -420,7 +455,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                   </Grid>
                 </Grid>
                 {error && <Typography color="error">{error}</Typography>}
-                <Box display={"flex"} flexDirection={"column"} gap={1}>
+                <Box display={"flex"} flexDirection={"column"} gap={1} mt={4}>
                   <Box
                     display="flex"
                     alignItems="center"
