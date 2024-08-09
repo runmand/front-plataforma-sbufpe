@@ -184,7 +184,6 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
   function validateIfCanProcced() {
     //validate if all questions are answered
-    console.log(savedDataToSend[activeIndex]);
 
     // se é a última questão, então não existe uma quantidade minima de caracteres, já que se trata da opinião e o email
     if (activeIndex === 8) {
@@ -216,15 +215,16 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   async function sendData(payload: ISavedData[]) {
     try {
       setIsSendingData(true);
-      console.log(payload);
+
       //procura a questão com id 9 e adciona os valores no question_answer com os valores estabelecimentoSaude e municipio
-      payload.forEach((item) => {
+      const payloadToSend: ISavedData[] = payload.map(item => ({ ...item }));
+      payloadToSend.forEach((item) => {
         if (item.planQuestion === 9) {
           item.question_answer = `${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}`;
         }
       });
 
-      const { data } = await http.post("/plan-question-answer", payload);
+      const { data } = await http.post("/plan-question-answer", payloadToSend);
       if (data === "Sucesso") {
         onFinish();
       } else {

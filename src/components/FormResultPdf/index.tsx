@@ -86,7 +86,7 @@ export const ResultFormPdf = ({
         </View>
         <View style={stylesPDF.section}>
           <View style={stylesPDF.flex}>
-            <Text>Nome do CEO:</Text>
+            <Text>Nome do estabelecimento:</Text>
             <Text style={{ maxWidth: "300px", marginLeft: "10px" }}>
               {answer.title}
             </Text>
