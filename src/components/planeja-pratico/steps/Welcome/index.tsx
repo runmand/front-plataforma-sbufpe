@@ -17,7 +17,7 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
         Vamos vivenciar o PLANEJAMENTO, entendendo-o como ação humana para
         REDUÇÃO DE INCERTEZAS E INTERVENÇÃO NA REALIDADE. Este módulo operativo
         é baseado numa adaptação do Planejamento Estratégico Situacional (PES).
-        No final do seu uso, você terá um Plano de Ação em Saúde Bucal (PA-SB),
+        No final do seu uso, você terá um Plano de Ação em Saúde Bucal (PA-SB) elaborado,
         que deve ser exequível ou possível à intervenção e consequentemente
         melhoria de qualidade da sua realidade.
       </Typography>
@@ -27,7 +27,7 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
       <Typography fontWeight={500} fontSize={16}>
         Um planejamento deve partir da análise do diagnóstico situacional local.
         Você tem disponibilizado em <b>nossos dados SD/GestBucalSD</b> as
-        informações necessárias ao diagnóstico situacional dos módulos:
+        informações necessárias para um diagnóstico situacional do estabelecimento de saúde que você trabalha, vinda dos seguintes módulos:
       </Typography>
       <ul>
         <li>
@@ -44,7 +44,7 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
         </li>
         <li>
           <Typography mt={2} fontWeight={500} fontSize={16}>
-            <b> ⦁ Avalia-Satisfação dos Usuários</b> - avaliação do grau de
+            <b> ⦁ AvaliaUsuários </b> - avaliação do grau de
             satisfação dos usuários
           </Typography>
         </li>
@@ -56,8 +56,8 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
       </ul>
 
       <Typography fontWeight={500} fontSize={16}>
-        <b>Obs:</b> Na ausência de informações, provavelmente é porque o módulo
-        não foi utilizado
+        <b>Obs:</b> Na ausência de informações no Nossos Dados SD, provavelmente é porque o módulo
+        ainda não foi utilizado
       </Typography>
 
       <Box
