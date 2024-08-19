@@ -521,7 +521,6 @@ export const FourthStep = ({
                       required={resourceIndex === 0}
                     >
                       <MenuItem value="Sim">Sim</MenuItem>
-                      <MenuItem value="Não">Não</MenuItem>
                     </Select>
                   </Box>
 

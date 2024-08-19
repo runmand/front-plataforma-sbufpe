@@ -20,9 +20,7 @@ export const ThirdStep = ({ onClickNextStep, onClickPrevStep }: IProps) => {
         Explicação do problema
       </Typography>
       <Typography fontWeight={500} fontSize={16}>
-        A explicação do problema advém da descrição das causas e consequências
-        do problema definido. Aqui sugerimos o uso da técnica de elaboração do
-        Fluxograma explicativo, Exemplo na Figura 1.
+      Geralmente, no momento explicativo do PES, a explicação do problema advém da descrição das causas e consequências com uso de técnicas como Árvore explicativa do problema ou Fluxograma situacional do problema (Moysés & Goes, 2012). Ver figura 1
       </Typography>
 
       <Typography fontWeight={500} fontSize={16}>
@@ -52,6 +50,15 @@ export const ThirdStep = ({ onClickNextStep, onClickPrevStep }: IProps) => {
 
       <Typography fontWeight={700} fontSize={24} textAlign={"center"}>
         Figura 1- Exemplo de Fluxograma explicativo
+      </Typography>
+      <Typography fontWeight={500} fontSize={16}>
+      No entanto, aqui recorreremos a uma simplificação da técnica. Deve-se descrever, tanto quanto necessárias, as possíveis causas do problema definido e posteriormente após discussão da equipe, escolher a principal que poderá ser considerada como <b>nó-crítico.</b>
+      </Typography>
+      <Typography fontWeight={500} fontSize={16}>
+      <b>Dica:</b> Cada causa descrita, deve vir acompanhada implicitamente da pergunta “o que a causou o problema?”, e assim por diante, até esgotar sua explicação. 
+      Provavelmente, estabelece-se uma relação causal entre as causas para se obter a causa principal, ou causa das causas. 
+      Por isso, pode-se mudar as causas descritas de posição e caso necessário incluir outras causas, basta clicar em ADICIONAR
+
       </Typography>
 
       <Typography fontWeight={500} fontSize={24}>
