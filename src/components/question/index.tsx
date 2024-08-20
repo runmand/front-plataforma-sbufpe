@@ -9,6 +9,7 @@ import { theme } from 'src/core/theme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ID } from 'src/core/types';
 import { droplist } from 'src/shared/dataBase';
+import Image from "next/image";
 
 export default function Index(props: TPROPS) {
 	const selectOptions:ID[] = droplist 
@@ -100,7 +101,7 @@ export default function Index(props: TPROPS) {
 				</CardContent>
 				<div>
 					{props.question.formQuestionFormRegisterId === 234 && isMedicalExam && (
-						<img src="/tabela.jpg" />
+						<Image src="/tabela.jpg" alt=''/>
 					)}
 					{props.question.childrenQuestion.reverse().map((child, index) => (
 						<Index
