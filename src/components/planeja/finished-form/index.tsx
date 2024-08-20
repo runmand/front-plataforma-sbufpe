@@ -31,7 +31,7 @@ export const FinishedForm = () => {
           >
             Formulário Enviado! Obrigado.
           </Typography>
-          <Image width={400} height={400} src={"/plan-finished-form.svg"} />
+          <Image width={400} height={400} src={"/plan-finished-form.svg"} alt='' />
 
           <Box
             display={"flex"}

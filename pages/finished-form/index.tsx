@@ -32,7 +32,7 @@ export default function Index() {
           >
             Formulário Enviado! Obrigado.
           </Typography>
-          <Image width={400} height={400} src={"/plan-finished-form.svg"} />
+          <Image width={400} height={400} src={"/plan-finished-form.svg"} alt='' />
 
           <Button href="/form" variant="contained">
             Voltar ao inicio
