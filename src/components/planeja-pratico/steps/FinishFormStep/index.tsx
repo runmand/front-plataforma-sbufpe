@@ -24,7 +24,6 @@ import {
 
 interface IProps {
   stepValues: IStepsValues;
-
   onClickPrevStep: () => void;
 }
 
@@ -32,6 +31,13 @@ interface IStepsValues {
   firstStep: IFirstStep[];
   secondStep: ISecondStep;
   thirdStep: IThirdStep;
+  fourthStep: IFourthStep;
+}
+
+interface IFourthStep {
+  mentalMapUrl: string;
+  criticalNode: string;
+  actions: IThirdFormStructure[];
 }
 
 interface IFirstStep {
@@ -46,9 +52,13 @@ interface ISecondStep {
   defined_problems: IDefinedProblem[];
 }
 interface IThirdStep {
-  mentalMapUrl: string;
-  criticalNode: string;
-  actions: IThirdFormStructure[];
+  causas: ICouse[];
+}
+
+interface ICouse {
+  id: number;
+  causa: string;
+  explicacao: string;
 }
 
 interface IThirdFormStructure {
@@ -126,7 +136,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
     sendData({
       userId: Number(localStorage.getItem(localStorageKeyEnum.USER_ID)),
       question_answer: strifiedData,
-      flowchart_file: stepValues.thirdStep.mentalMapUrl,
+      flowchart_file: stepValues.fourthStep.mentalMapUrl,
     });
   }
 
@@ -177,16 +187,27 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
           ))}
         </View>
 
+        <View style={stylesPDF.section}>
+          <Text style={stylesPDF.title}>Terceira Etapa</Text>
+          {stepValues.thirdStep.causas.map((causa, index) => (
+            <View key={index}>
+              <Text style={stylesPDF.subtitle}>Causa {causa.id}</Text>
+              <Text style={stylesPDF.text}>{causa.causa}</Text>
+              <Text style={stylesPDF.text}>{causa.explicacao}</Text>
+            </View>
+          ))}
+        </View>
+
         {/* Third Step */}
         <View style={stylesPDF.section}>
           <Text style={stylesPDF.title}>Terceira Etapa</Text>
           <Text style={stylesPDF.text}>
-            URL do Mapa Mental: {stepValues.thirdStep.mentalMapUrl}
+            URL do Mapa Mental: {stepValues.fourthStep.mentalMapUrl}
           </Text>
           <Text style={stylesPDF.text}>
-            Nó Crítico: {stepValues.thirdStep.criticalNode}
+            Nó Crítico: {stepValues.fourthStep.criticalNode}
           </Text>
-          {stepValues.thirdStep.actions.map((action, index) => (
+          {stepValues.fourthStep.actions.map((action, index) => (
             <View key={index}>
               <Text style={stylesPDF.subtitle}>Ação: {action.name}</Text>
               <Text style={stylesPDF.text}>
@@ -276,7 +297,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
           {stepValues.firstStep.map((item, index) => (
             <Box key={index} display={"flex"} flexDirection={"column"} gap={2}>
               <Typography fontWeight={700} fontSize={16}>
-                {item.domain}
+                Domínio:{item.domain}
               </Typography>
               <Typography fontWeight={700} fontSize={16}>
                 Indicador: {item.first_indicator}
@@ -319,6 +340,43 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
               ))}
             </Typography>
           </Box>
+        </Box>
+      </Paper>
+
+      <Paper sx={{ mt: 5, p: 4 }}>
+        <Typography fontWeight={700} fontSize={20}>
+          COMO EXPLICAR O PROBLEMA?
+        </Typography>
+        <Typography fontWeight={700} fontSize={20} mt={5}>
+          Apesar de você já ter chegado na definição do (s) problema (s) para a
+          intervenção, na verdade o plano de ação não é para intervir
+          diretamente o sobre ele, mas sim sobre a sua causa principal,
+          denominado nó-crítico. Por isso, é necessário explicar o problema.
+          Obs: caso você/equipe tenha definido mais de um problema à intervenção
+          de domínios ou módulos operacionais diferentes, talvez seja necessário
+          fazer Planos distintos Ação de Saúde Bucal. Estes PA-SB podem ser
+          juntados, formando um programa de intervenção local!
+        </Typography>
+        <Box display={"flex"} flexDirection={"column"} gap={5} mt={5}>
+          <Typography fontWeight={700} fontSize={16}>
+            Causas:{" "}
+          </Typography>
+          {stepValues.thirdStep.causas.map((causa, index) => (
+            <Box
+              key={index}
+              pl={2}
+              display={"flex"}
+              flexDirection={"column"}
+              gap={2}
+            >
+              <Typography fontWeight={700} fontSize={16}>
+                Causa: {causa.causa}
+              </Typography>
+              <Typography key={causa.id} fontWeight={700} fontSize={16}>
+                Explicação: {causa.explicacao}
+              </Typography>
+            </Box>
+          ))}
         </Box>
       </Paper>
 
@@ -370,20 +428,20 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         <Box mt={3} display={"flex"} flexDirection={"column"} gap={2}>
           <Typography fontWeight={500} fontSize={16}>
             Link do arquivo(Mapa mental):{" "}
-            <b>{stepValues.thirdStep.mentalMapUrl}</b>
+            <b>{stepValues.fourthStep.mentalMapUrl}</b>
           </Typography>
         </Box>
 
         <Box mt={3} display={"flex"} flexDirection={"column"} gap={2}>
           <Typography fontWeight={500} fontSize={16}>
             Digite o Nó crítico identificado:{" "}
-            <b>{stepValues.thirdStep.criticalNode}</b>
+            <b>{stepValues.fourthStep.criticalNode}</b>
           </Typography>
         </Box>
       </Paper>
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={5}>
-        {stepValues.thirdStep.actions.map((item, index) => (
+        {stepValues.fourthStep.actions.map((item, index) => (
           <Paper key={index}>
             <Box p={4} display={"flex"} flexDirection={"column"} gap={2}>
               <Typography fontWeight={500} fontSize={16}>
