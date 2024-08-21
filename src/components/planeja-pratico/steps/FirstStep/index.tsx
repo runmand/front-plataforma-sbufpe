@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import { http } from "src/core/axios";
 import Image from "next/image";
 
-
 interface IProps {
   onSubmit: (values: IValues[]) => void;
   stepValues: IValues[];
@@ -105,12 +104,19 @@ export const FirstStep = ({
         Análise situacional
       </Typography>
       <Typography fontWeight={400} fontSize={16}>
-      &nbsp;&nbsp;Primeiramente, você/equipe deve explorar as informações disponíveis no módulo Nossos Dados SD, pelo filtro USUÁRIOS, 
-      CEO ou APS. A busca se dá pela escolha de Estado-cidade-estabelecimento de saúde do qual será feito o planejamento em saúde.
-      <br/>&nbsp;&nbsp;Salienta-se que as informações estão sistematizadas em Classificações com notas: Geral e para os Domínios de qualidade; e, o 
-      cumprimento (ou não) dos indicadores avaliativos de cada Domínio
-      <br/>&nbsp;&nbsp;Na figura abaixo você tem a sumarização dos Domínios de Qualidade, dimensões e indicadores avaliativos que vieram da matriz avaliativa construída
-      para os módulos avaliativos: AvaliaAPS, AvaliaCEO e AvaliaUsuários (GestBucalSD, 2024).
+        &nbsp;&nbsp;Primeiramente, você/equipe deve explorar as informações
+        disponíveis no módulo Nossos Dados SD, pelo filtro USUÁRIOS, CEO ou APS.
+        A busca se dá pela escolha de Estado-cidade-estabelecimento de saúde do
+        qual será feito o planejamento em saúde.
+        <br />
+        &nbsp;&nbsp;Salienta-se que as informações estão sistematizadas em
+        Classificações com notas: Geral e para os Domínios de qualidade; e, o
+        cumprimento (ou não) dos indicadores avaliativos de cada Domínio
+        <br />
+        &nbsp;&nbsp;Na figura abaixo você tem a sumarização dos Domínios de
+        Qualidade, dimensões e indicadores avaliativos que vieram da matriz
+        avaliativa construída para os módulos avaliativos: AvaliaAPS, AvaliaCEO
+        e AvaliaUsuários (GestBucalSD, 2024).
       </Typography>
 
       <Box
@@ -120,7 +126,7 @@ export const FirstStep = ({
         flexDirection={"column"}
         alignItems={"center"}
       >
-        <Typography fontWeight={700} fontSize={16} textAlign={'center'}>
+        <Typography fontWeight={700} fontSize={16} textAlign={"center"}>
           Figura 1 – Sumarização das matrizes avaliativas. GestBucalSD, 2024.
         </Typography>
         <Image
@@ -131,24 +137,29 @@ export const FirstStep = ({
           alt="Sumarização das matrizes avaliativas"
         />
       </Box>
-      <Typography fontWeight={700} fontSize={24}>
+      <Typography fontWeight={700} fontSize={24} mt={10}>
         Seleção e Priorização/hierarquização dos problemas
       </Typography>
-      <Typography fontWeight={400} fontSize={16}>
-      &nbsp;&nbsp;Como o Plano de Ação em Saúde Bucal (PA-SB) deve intervir sobre problemas identificados no diagnóstico situacional do planejamento, a seleção dos problemas deve estar voltada principalmente para os Domínios de qualidade com piores notas. E consequente, especificamente para os piores indicadores contidos naquele Domínio.
-      <br/>&nbsp;&nbsp;Mas não basta selecionar os Domínios e indicadores piores como os problemas. Estrategicamente, importa hierarquizá-los para uma priorização e definição do problema (s) para o planejamento e elaboração do PA-SB que possa ser viável, exequível para mudança.
-      <br/>&nbsp;&nbsp;No PES, a governabilidade (poder) sobre os problemas, ou melhor, para resolução deles, é um dos parâmetros para ajudar nessa definição.
-      </Typography>
+
       <Typography fontWeight={700} fontSize={24}>
-        Governabilidade – diz respeito às variáveis ou recursos que a equipe controla ou não, e que são necessários para implementar o plano de ação elaborado (Moysés & Goes, 2012).
+        Governabilidade – diz respeito às variáveis ou recursos que a equipe
+        controla ou não, e que são necessários para implementar o plano de ação
+        elaborado (Moysés & Goes, 2012).
       </Typography>
       <Typography fontWeight={400} fontSize={16}>
-      &nbsp;&nbsp;Para cada Domínio selecionado, pode-se ser escolher até 2 indicadores. Pontue o grau de governabilidade de cada indicador, usando uma escala 0-10, onde 0 corresponde a nenhuma governabilidade e 10 a maior governabilidade sobre problema. Quanto maior o grau de governabilidade sobre o problema, mais viabilidade você /equipe terá para resolvê-lo.
-      <br/>&nbsp;&nbsp;Agora, faça o preenchimento do Domínio e indicadores selecionados pontuando o grau de governabilidade.
+        &nbsp;&nbsp;Para cada Domínio selecionado, pode-se escolher até 2
+        indicadores. Pontue o grau de governabilidade de cada indicador, usando
+        uma escala 0-10, onde 0 corresponde a nenhuma governabilidade e 10 a
+        maior governabilidade sobre problema. Quanto maior o grau de
+        governabilidade sobre o problema, mais viabilidade você /equipe terá
+        para resolvê-lo.
+        <br />
+        &nbsp;&nbsp;Agora, faça o preenchimento do Domínio e indicadores
+        selecionados pontuando o grau de governabilidade.
       </Typography>
       <Typography fontWeight={400} fontSize={16}>
-      <b>Atenção!!!</b> Você pode selecionar mais Domínio/indicadores, caso queira! 
-      Basta clicar em ADICIONAR
+        <b>Atenção!!!</b> Você pode selecionar mais Domínio/indicadores, caso
+        queira! Basta clicar em ADICIONAR
       </Typography>
       {questions.length > 0 && (
         <Typography fontWeight={600} fontSize={16} mt={5}>

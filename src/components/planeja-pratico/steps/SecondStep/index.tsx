@@ -67,7 +67,9 @@ export const SecondStep = ({
       </Typography>
       <Typography fontWeight={500} fontSize={16} mt={4}>
         Diante da técnica de priorização/hierarquização dos problemas, quais
-        problemas foram definidos para a intervenção? Clique em ADICIONAR, caso tenha definido mais de um problema. <br/>Digite-os abaixo: 
+        problemas foram definidos para a intervenção? Clique em ADICIONAR, caso
+        tenha definido mais de um problema. <br />
+        Digite-os abaixo:
       </Typography>
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={10}>
@@ -89,12 +91,16 @@ export const SecondStep = ({
 
         <Button onClick={addDefinedProblemValue}>Adicionar</Button>
       </Box>
-      <Typography fontWeight={700} fontSize={16}>
-        Reflita bem, você pode repetir a técnica de seleção e priorização, até chegar à definição do problema que seja exequível!!!
+      <Typography fontWeight={700} fontSize={16} mt={10}>
+        Reflita bem, você pode repetir a técnica de seleção e priorização, até
+        chegar à definição do problema que seja exequível!!!
       </Typography>
 
       <Typography fontWeight={500} fontSize={16}>
-        <b>Obs:</b> Pode ser definido mais de 1 problema para a intervenção. No entanto, se forem de domínios ou módulos diferentes, talvez seja necessário que no próximo momento do planejamento, denominado a explicação do problema, seja feito separadamente para cada problema.
+        <b>Obs:</b> Pode ser definido mais de 1 problema para a intervenção. No
+        entanto, se forem de domínios ou módulos diferentes, talvez seja
+        necessário que no próximo momento do planejamento, denominado a
+        explicação do problema, seja feito separadamente para cada problema.
       </Typography>
       <Box
         display="flex"

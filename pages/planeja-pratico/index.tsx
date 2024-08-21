@@ -14,6 +14,7 @@ interface IStepsValues {
   firstStep: IFirstStep[];
   secondStep: ISecondStep;
   thirdStep: IThirdStep;
+  fourthStep: IFourthStep;
 }
 
 interface IFirstStep {
@@ -27,7 +28,18 @@ interface IFirstStep {
 interface ISecondStep {
   defined_problems: IDefinedProblem[];
 }
+
 interface IThirdStep {
+  causas: ICouses[];
+}
+
+interface ICouses {
+  id: number;
+  causa: string;
+  explicacao: string;
+}
+
+interface IFourthStep {
   mentalMapUrl: string;
   criticalNode: string;
   actions: IThirdFormStructure[];
@@ -77,6 +89,30 @@ export default function Index() {
       ],
     },
     thirdStep: {
+      causas: [
+        {
+          id: 1,
+          causa: "",
+          explicacao: "",
+        },
+        {
+          id: 2,
+          causa: "",
+          explicacao: "",
+        },
+        {
+          id: 3,
+          causa: "",
+          explicacao: "",
+        },
+        {
+          id: 4,
+          causa: "",
+          explicacao: "",
+        },
+      ],
+    },
+    fourthStep: {
       mentalMapUrl: "",
       criticalNode: "",
       actions: [
@@ -128,6 +164,14 @@ export default function Index() {
     setStepsValues({
       ...stepsValues,
       thirdStep: values,
+    });
+  }
+
+  function handleUpdateFourthStep(values: IFourthStep) {
+    console.log(values);
+    setStepsValues({
+      ...stepsValues,
+      fourthStep: values,
     });
   }
 
@@ -208,12 +252,14 @@ export default function Index() {
                 <ThirdStep
                   onClickNextStep={nextQuestion}
                   onClickPrevStep={previusQuestion}
+                  stepValues={stepsValues.thirdStep}
+                  onSubmit={(data) => handleUpdateThirdStep(data)}
                 />
               )}
               {activeIndex === 4 && (
                 <FourthStep
-                  stepValues={stepsValues.thirdStep}
-                  onSubmit={(data) => handleUpdateThirdStep(data)}
+                  stepValues={stepsValues.fourthStep}
+                  onSubmit={(data) => handleUpdateFourthStep(data)}
                   onClickNextStep={nextQuestion}
                   onClickPrevStep={previusQuestion}
                 />

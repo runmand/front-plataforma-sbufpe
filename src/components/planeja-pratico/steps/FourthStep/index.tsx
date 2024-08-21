@@ -227,81 +227,9 @@ export const FourthStep = ({
 
   return (
     <>
-      <Typography fontWeight={500} fontSize={24} textAlign={"center"}>
-        Crie o seu mapa mental
-      </Typography>
-      <Image
-        src={"/exemplo-mapa-mental.png"}
-        width={800}
-        height={600}
-        alt="Exemplo de um mapa mental"
-        objectFit="contain"
-      />
-      <Typography fontWeight={500} fontSize={14} textAlign={"center"}>
-        Uma nova aba vai abrir para você criar seu mapa mental, após finalizar o
-        seu mapa mental, clique em <b>&quot;Compartilhar&quot;</b> e marque a
-        opção <b>&quot;Link para compartilhar&quot;</b>. Após isso, cole o link
-        no campo abaixo
-      </Typography>
-      <form
-        action="https://www.mindmeister.com/external/show"
-        target="new"
-        method="POST"
-        encType="multipart/form-data"
-      >
-        {" "}
-        <input hidden type="text" name="file[save_action]" value="o" readOnly />
-        <input
-          hidden
-          type="text"
-          name="file[newcopy_url]"
-          readOnly
-          value="http://localhost:2000/practical-plan-question-answer/"
-        />
-        <input hidden type="text" name="file[id]" value="-1" />
-        <input
-          hidden
-          type="text"
-          name="file[success_url]"
-          readOnly
-          value="http://localhost:3000/planeja-pratico"
-        />
-        <input
-          hidden
-          type="text"
-          name="file[name]"
-          readOnly
-          value="plano-pratico.mind"
-        />
-        <input
-          hidden
-          type="text"
-          name="api_key"
-          readOnly
-          value="9e25c37325f5039b4ae2342f483633fc70b1b9d325711e1f5751e893c0dae0fa66ba8efea151567f7dba46406a13359c18bed70416c81524a06b47edeab2300a"
-        />{" "}
-        <Button sx={{ mx: "auto" }} variant="contained" type="submit">
-          Criar mapa mental
-        </Button>
-      </form>
-
       <form onSubmit={handleSubmit}>
         <Box display={"flex"} flexDirection={"column"} gap={3} mt={10} mb={5}>
-          <Box width={"100%"}>
-            <InputLabel id="second_domain">
-              Link do arquivo(Mapa mental)*
-            </InputLabel>
-            <TextField
-              fullWidth
-              value={values.mentalMapUrl}
-              onChange={(e) =>
-                updateValues({ name: "mentalMapUrl", value: e.target.value })
-              }
-              required
-            />
-          </Box>
-
-          <Typography fontWeight={70} fontSize={24}>
+          <Typography fontWeight={700} fontSize={24}>
             PLANO DE AÇÃO EM SAÚDE BUCAL (PA-SB)
           </Typography>
           <Typography fontWeight={400} fontSize={16}>
@@ -310,10 +238,11 @@ export const FourthStep = ({
             positiva do problema.
           </Typography>
           <Typography fontWeight={400} fontSize={16}>
-            <b>LEMBRE-SE!</b> Você pode consultar a Carta de recomendações
-            gerada e disponibilizada pelo GestBucalSD após as avaliações. E
-            ainda, consultar o acervo da plataforma que contém produção técnica
-            e científica para propor as ações ao plano.
+            <b>LEMBRE-SE!</b> Você pode consultar a Carta de recomendações (em
+            Baixar PDF) gerada e disponibilizada para você após as avaliações. E
+            ainda, consultar no acervo da plataforma as matrizes de avaliação
+            que contém as recomendações para cada indicador avaliado, e ainda a
+            produção técnica e científica para propor as ações ao PA-SB.
           </Typography>
           <Typography fontWeight={400} fontSize={16}>
             Para cada ação definida, <b>deve-se ter:</b> a identificação de
@@ -372,7 +301,10 @@ export const FourthStep = ({
               mb={5}
             >
               <Box width={"100%"}>
-                <InputLabel id="name">Ação {index + 1}</InputLabel>
+                <InputLabel id="name">
+                  Ação {index + 1} (descreva detalhadamente a ação que será
+                  executada)
+                </InputLabel>
                 <TextField
                   fullWidth
                   value={form.name}
@@ -392,9 +324,8 @@ export const FourthStep = ({
                 >
                   <Box width={"100%"}>
                     <InputLabel id={`responsible-${responsibleIndex}`}>
-                      Responsável {responsibleIndex + 1}...n para ação{" "}
-                      {index + 1} (indicar e analisar motivação de tantos atores
-                      quanto forem necessários)*
+                      Responsável {responsibleIndex + 1} para ação {index + 1}{" "}
+                      (analise a motivação deste ator)*
                     </InputLabel>
                     <TextField
                       fullWidth
@@ -445,7 +376,8 @@ export const FourthStep = ({
                     responsible.motivation !== "" && (
                       <Box width={"100%"}>
                         <InputLabel id="strategies">
-                          Descreva as estratégias:
+                          Descreva as estratégias para tentar convencer este
+                          ator em apoiador
                         </InputLabel>
                         <TextField
                           fullWidth
@@ -484,7 +416,7 @@ export const FourthStep = ({
                 >
                   <Box width={"100%"}>
                     <InputLabel id={`resource-${resourceIndex}`}>
-                      Recurso {resourceIndex + 1}...n para ação {index + 1}
+                      Recurso {resourceIndex + 1} para ação {index + 1}
                     </InputLabel>
                     <TextField
                       fullWidth
@@ -549,13 +481,15 @@ export const FourthStep = ({
 
               <Box width={"100%"}>
                 <Button onClick={() => addResource(index)}>
-                  Abrir outro recurso?
+                  Adicionar outro recurso
                 </Button>
               </Box>
 
               <Box width={"100%"}>
                 <InputLabel id="deadline_compliance">
-                  Prazo para cumprimento da Ação {index + 1}:
+                  Prazo para cumprimento da Ação {index + 1} (pode ser descrita
+                  a data ou período de realização: dias, meses, frequência de
+                  realização, etc)
                 </InputLabel>
                 <TextField
                   fullWidth
