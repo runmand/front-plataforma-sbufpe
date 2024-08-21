@@ -141,8 +141,22 @@ export const FirstStep = ({
         Seleção e Priorização/hierarquização dos problemas
       </Typography>
 
-      <Typography fontWeight={700} fontSize={24}>
-        Governabilidade – diz respeito às variáveis ou recursos que a equipe
+      <Typography fontWeight={400} fontSize={16}>
+        Como o Plano de Ação em Saúde Bucal (PA-SB) deve intervir sobre
+        problemas identificados no diagnóstico situacional do planejamento, a
+        seleção dos problemas deve estar voltada principalmente para os Domínios
+        de qualidade com piores notas. E consequente, especificamente para os
+        piores indicadores contidos naquele Domínio. Mas não basta selecionar os
+        Domínios e indicadores piores como os problemas. Estrategicamente,
+        importa hierarquizá-los para uma priorização e definição do problema (s)
+        para o planejamento e elaboração do PA-SB que possa ser viável,
+        exequível para mudança. No PES, a governabilidade (poder) sobre os
+        problemas, ou melhor, para resolução deles, é um dos parâmetros para
+        ajudar nessa definição.
+      </Typography>
+
+      <Typography fontWeight={700} fontSize={24} mt={5}>
+        Governabilidade - diz respeito às variáveis ou recursos que a equipe
         controla ou não, e que são necessários para implementar o plano de ação
         elaborado (Moysés & Goes, 2012).
       </Typography>
