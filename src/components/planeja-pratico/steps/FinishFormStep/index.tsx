@@ -201,9 +201,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         {/* Third Step */}
         <View style={stylesPDF.section}>
           <Text style={stylesPDF.title}>Terceira Etapa</Text>
-          <Text style={stylesPDF.text}>
-            URL do Mapa Mental: {stepValues.fourthStep.mentalMapUrl}
-          </Text>
+
           <Text style={stylesPDF.text}>
             Nó Crítico: {stepValues.fourthStep.criticalNode}
           </Text>
@@ -288,10 +286,8 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
 
       <Paper sx={{ mt: 5, p: 4 }}>
         <Typography fontWeight={700} fontSize={20}>
-          Como o PA-SB deve intervir sobre problemas, recomenda-se a seleção de
-          pelo menos, 2 domínios / 3 indicadores com as piores classificações
-          dos módulos avaliativos. E, pelo menos 2 indicadores do perfil
-          socioepidemiológicos em piores condições. Digite-os abaixo:
+          Indique para cada Domínio, até 2 indicadores com piores
+          classificações. Digite-os abaixo:
         </Typography>
         <Box display={"flex"} flexDirection={"column"} gap={3} mt={5}>
           {stepValues.firstStep.map((item, index) => (

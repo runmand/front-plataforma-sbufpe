@@ -2,7 +2,7 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FirstStep } from "@components/planeja-pratico/steps/FirstStep";
 import { SecondStep } from "@components/planeja-pratico/steps/SecondStep";
 import { Welcome } from "@components/planeja-pratico/steps/Welcome";
@@ -143,36 +143,46 @@ export default function Index() {
 
   //atualizar os valores do primeiro passo
   function handleUpdateFirstStep(values: IFirstStep[]) {
-    console.log(values);
-    setStepsValues({
+    const payload = {
       ...stepsValues,
       firstStep: values,
-    });
+    };
+
+    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setStepsValues(payload);
   }
 
-  //atualizar os valores do primeiro passo
+  //atualizar os dados do segundo passo
   function handleUpdateSecondStep(values: ISecondStep) {
-    console.log(values);
-    setStepsValues({
+    const payload = {
       ...stepsValues,
       secondStep: values,
-    });
-  }
-  //atualizar os valores do primeiro passo
-  function handleUpdateThirdStep(values: IThirdStep) {
-    console.log(values);
-    setStepsValues({
-      ...stepsValues,
-      thirdStep: values,
-    });
+    };
+
+    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setStepsValues(payload);
   }
 
+  //atualizar os valores do terceiro passo
+  function handleUpdateThirdStep(values: IThirdStep) {
+    const payload = {
+      ...stepsValues,
+      thirdStep: values,
+    };
+
+    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setStepsValues(payload);
+  }
+
+  //atualizar os valores do quarto passo
   function handleUpdateFourthStep(values: IFourthStep) {
-    console.log(values);
-    setStepsValues({
+    const payload = {
       ...stepsValues,
       fourthStep: values,
-    });
+    };
+
+    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setStepsValues(payload);
   }
 
   function nextQuestion() {
@@ -200,6 +210,13 @@ export default function Index() {
     return true;
   }
   //enviar o formulário
+
+  useEffect(() => {
+    const storedValues = localStorage.getItem("planeja-pratica");
+    if (storedValues) {
+      setStepsValues(JSON.parse(storedValues));
+    }
+  }, []);
 
   return (
     <Base

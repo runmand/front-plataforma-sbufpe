@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 interface IProps {
   onSubmit: (values: IValues) => void;
@@ -63,6 +63,8 @@ export const FourthStep = ({
   onSubmit,
   stepValues,
 }: IProps) => {
+  const [isCriticalResource, setIsCriticalResource] = useState("");
+
   const [values, setValues] = React.useState<IValues>({
     mentalMapUrl: stepValues.mentalMapUrl,
     criticalNode: stepValues.criticalNode,
@@ -421,59 +423,66 @@ export const FourthStep = ({
                     <TextField
                       fullWidth
                       value={resource.resource}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         updateResource(
                           index,
                           resourceIndex,
                           "resource",
                           e.target.value
-                        )
-                      }
+                        );
+                      }}
                       required={resourceIndex === 0}
                     />
                   </Box>
 
                   <Box width={"100%"}>
                     <InputLabel id={`described_strategies-${resourceIndex}`}>
-                      Este recurso é crítico?:
+                      Este recurso é crítico? (não está disponivel ou é difícil
+                      obtenção, mas essencial para execução da ação);
                     </InputLabel>
                     <Select
                       fullWidth
                       labelId={`its_crictical_resource-${resourceIndex}`}
                       id={`its_crictical_resource-${resourceIndex}`}
                       value={resource.itsCricticalResource}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         updateResource(
                           index,
                           resourceIndex,
                           "itsCricticalResource",
                           e.target.value
-                        )
-                      }
+                        );
+
+                        setIsCriticalResource(e.target.value);
+                      }}
                       required={resourceIndex === 0}
                     >
                       <MenuItem value="Sim">Sim</MenuItem>
+                      <MenuItem value="Não">Não</MenuItem>
                     </Select>
                   </Box>
 
-                  <Box width={"100%"}>
-                    <InputLabel id={`described_strategies-${resourceIndex}`}>
-                      DESCREVA AS ESTRATÉGIAS:
-                    </InputLabel>
-                    <TextField
-                      fullWidth
-                      value={resource.described_strategies}
-                      onChange={(e) =>
-                        updateResource(
-                          index,
-                          resourceIndex,
-                          "described_strategies",
-                          e.target.value
-                        )
-                      }
-                      required={resourceIndex === 0}
-                    />
-                  </Box>
+                  {isCriticalResource === "Sim" && (
+                    <Box width={"100%"}>
+                      <InputLabel id={`described_strategies-${resourceIndex}`}>
+                        Descreva as estratégias para obtenção do recurso, se ele
+                        foi considerado crítico.
+                      </InputLabel>
+                      <TextField
+                        fullWidth
+                        value={resource.described_strategies}
+                        onChange={(e) =>
+                          updateResource(
+                            index,
+                            resourceIndex,
+                            "described_strategies",
+                            e.target.value
+                          )
+                        }
+                        required={resourceIndex === 0}
+                      />
+                    </Box>
+                  )}
 
                   <Divider />
                 </Box>
