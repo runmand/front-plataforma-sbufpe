@@ -175,11 +175,13 @@ export const FirstStep = ({
         <b>Atenção!!!</b> Você pode selecionar mais Domínio/indicadores, caso
         queira! Basta clicar em ADICIONAR
       </Typography>
-      {questions.length > 0 && (
-        <Typography fontWeight={600} fontSize={16} mt={5}>
-          {questions[0].title}
-        </Typography>
-      )}
+
+      <Typography fontWeight={600} fontSize={16} mt={5}>
+        Como o PA-SB deve intervir sobre problemas, recomenda-se a seleção de
+        pelo menos, 2 domínios / 3 indicadores com as piores classificações dos
+        módulos avaliativos. E, pelo menos 2 indicadores do perfil
+        socioepidemiológicos em piores condições. Digite-os abaixo:
+      </Typography>
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={10}>
         {values.map((item, index) => (
