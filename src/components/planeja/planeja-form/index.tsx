@@ -199,13 +199,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       return false;
     }
 
-    if (
-      savedDataToSend[activeIndex].justify.length < 100 ||
-      savedDataToSend[activeIndex].justify.length > 500
-    ) {
-      setError(
-        "O campo de justificativa deve ter pelo menos 100 caracteres e menos que 500 caracteres"
-      );
+    if (savedDataToSend[activeIndex].justify.length < 100) {
+      setError("O campo de justificativa deve ter pelo menos 100 caracteres");
       return false;
     }
     setError("");
@@ -217,7 +212,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       setIsSendingData(true);
 
       //procura a questão com id 9 e adciona os valores no question_answer com os valores estabelecimentoSaude e municipio
-      const payloadToSend: ISavedData[] = payload.map(item => ({ ...item }));
+      const payloadToSend: ISavedData[] = payload.map((item) => ({ ...item }));
       payloadToSend.forEach((item) => {
         if (item.planQuestion === 9) {
           item.question_answer = `${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}`;
@@ -334,8 +329,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                             }
                           />
                           <FormHelperText>
-                            O campo deve conter pelo menos 100 caracteres e
-                            menos que 500 caracteres - Faltam{" "}
+                            O campo deve conter pelo menos 100 caracteres -
+                            Faltam{" "}
                             {calculateLeftCaracteres(
                               findChoiceByQuestionId()?.justify,
                               100
@@ -438,8 +433,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                   />
                                   <FormHelperText id={index + ""}>
                                     O campo deve conter pelo menos 100
-                                    caracteres e menos que 500 caracteres -
-                                    Faltam{" "}
+                                    caracteres. Faltam{" "}
                                     {calculateLeftCaracteres(
                                       findChoiceByQuestionId()?.justify,
                                       100
