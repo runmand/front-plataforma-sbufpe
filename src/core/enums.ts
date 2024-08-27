@@ -10,6 +10,8 @@ export enum routerEnum {
   INITIAL = "/",
   PLANEJA = "/planeja",
   PLANEJA_PRATICO = "/planeja-pratico",
+  DATACEO = "/ceo",
+  DATAAPS = "/aps"
 }
 
 export enum localStorageKeyEnum {
