@@ -58,6 +58,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   const [savedDataToSend, setSavedDataToSend] = useState<ISavedData[]>([]);
   const [estabelecimentoSaude, setEstabelecimentoSaude] = useState("");
   const [municipio, setMunicipio] = useState("");
+  const [nome, setNome] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -215,10 +216,13 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       const payloadToSend: ISavedData[] = payload.map((item) => ({ ...item }));
       payloadToSend.forEach((item) => {
         if (item.planQuestion === 9) {
-          item.question_answer = `${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}`;
+          item.question_answer = `Email: ${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}, Nome completo: ${nome}`;
         }
       });
 
+      console.log(payloadToSend);
+
+      //descomentar
       const { data } = await http.post("/plan-question-answer", payloadToSend);
       if (data === "Sucesso") {
         onFinish();
@@ -336,6 +340,15 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                               100
                             )}
                           </FormHelperText>
+                          <TextField
+                            label="Seu nome completo"
+                            rows={4}
+                            sx={{ mt: 3 }}
+                            fullWidth
+                            type="text"
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                          />
                           <TextField
                             label="Seu melhor e-mail"
                             rows={4}
