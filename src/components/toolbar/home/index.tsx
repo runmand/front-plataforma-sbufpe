@@ -15,6 +15,8 @@ export default function Index() {
     { id: 0, title: "Questionário Inicial", url: routerEnum.QUESTION },
     { id: 1, title: "Questionários", url: routerEnum.FORM },
     { id: 3, title: "Planeja SD - Teórico", url: routerEnum.PLANEJA },
+    { id: 5, title: "Nossos dados: CEO", url: routerEnum.DATACEO},
+    { id: 5, title: "Nossos dados: APS", url: routerEnum.DATAAPS}
   ]);
   const [isDrawerMenuOpen, setIsDrawerMenuOpen] =
     React.useState<boolean>(false);
