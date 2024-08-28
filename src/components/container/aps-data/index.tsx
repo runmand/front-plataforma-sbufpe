@@ -21,11 +21,11 @@ export default function Index() {
       </Typography>
       <Box>
         <iframe
-          title="Report Section"
+          title="Aps respondentes"
           style={{
             minHeight:'600px',
             width:'100%'}}   
-          src="https://app.powerbi.com/view?r=eyJrIjoiZWE5YWYxNzgtNWI5ZS00YzBkLTlkOTktNTVmMWQzNjM2ZDFjIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"></iframe>
+          src="https://app.powerbi.com/view?r=eyJrIjoiMDAxYWIzYzAtOGJhZS00ZmVmLWIyNTUtMjlkZTJjZmM3OTY4IiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9" allow="fullscreen"></iframe>
         </Box>
   </Box>
   )
