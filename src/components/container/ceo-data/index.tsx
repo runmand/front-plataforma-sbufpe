@@ -21,11 +21,11 @@ export default function Index() {
       </Typography>
       <Box>
         <iframe
-          title="Report Section"
+          title="Ceo respondentes"
           style={{
             minHeight:'600px',
             width:'100%'}}   
-          src="https://app.powerbi.com/view?r=eyJrIjoiZDY3NGI0MmYtOGM5NC00OWNjLTg1M2QtODA0YTFkZDVhOGYyIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9&pageName=ReportSection"
+          src="https://app.powerbi.com/view?r=eyJrIjoiMzYzMmEzZGQtYmM4ZS00NmViLWE0MGMtOGQ5NGMwMTc0NzdiIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"
           allow="fullscreen"></iframe>
         </Box>
   </Box>
