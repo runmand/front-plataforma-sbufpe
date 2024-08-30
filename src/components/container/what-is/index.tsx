@@ -11,7 +11,10 @@ const rows2024 = [
 	createMonthlyAccess('Março', '246'),
 	createMonthlyAccess('Abril', '439'),
 	createMonthlyAccess('Maio', '397'),
-	createMonthlyAccess('Junho - Até dia 18/06', '310'),
+	createMonthlyAccess('Junho', '515'),
+	createMonthlyAccess('Julho', '658'),
+	createMonthlyAccess('Agosto - até 29/09', '642'),
+
 ];
 
 const rows2023 = [

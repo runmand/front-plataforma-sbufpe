@@ -5,6 +5,9 @@ import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
 import { Box, Button, Typography } from "@mui/material";
 export const FinishedForm = () => {
+
+  localStorage.removeItem("plan-form");
+
   return (
     <Base
       appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
