@@ -9,8 +9,14 @@ import LoginButton from '@components/button/log-in';
 import SimpleMenu from '@components/menu/simple-menu';
 import { TProps } from './type';
 import { theme } from 'src/core/theme';
+import { useEffect } from 'react';
 
 export default function Index(props: TProps) {
+
+	useEffect(() => {
+		document.title = "GestBucal SD";
+	}, []);
+
 	return (
 		<Toolbar 
 			sx={{
@@ -23,7 +29,7 @@ export default function Index(props: TProps) {
 				
 			}}
 		>
-			<Avatar alt="Logo de Odontologia" src="/logo-transparent.png" />
+			<Avatar alt="GestBucal SD" src="/logo-transparent.png" />
 			<Box
 				sx={{
 					display:'flex',

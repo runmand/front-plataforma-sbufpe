@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar } from "@mui/material";
 import LoginButton from '@components/button/log-in';
 import SimpleMenu from '@components/menu/simple-menu';
@@ -17,6 +17,10 @@ export default function Index (props: TPROPS){
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+		document.title = "GestBucal SD";
+	}, []);
+
   return(
     <Toolbar 
 			sx={{
@@ -29,7 +33,7 @@ export default function Index (props: TPROPS){
 				
 			}}
 		>
-      <Avatar alt="Logo de Odontologia" src="/logo-transparent.png" />
+      <Avatar alt="GestBucal SD" src="/logo-transparent.png" />
       <Box>
       <LoginButton 
 					onClick={() => props.openLoginModal()} />
