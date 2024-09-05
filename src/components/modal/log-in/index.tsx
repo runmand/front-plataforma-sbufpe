@@ -92,6 +92,10 @@ export default function Index(props: TPROPS) {
     props.openContact();
   };
 
+  const handleResetPassword = () => {
+    router.push("/recuperar")
+  }
+
   return (
     <Modal
       open={props.isOpen}
@@ -141,7 +145,7 @@ export default function Index(props: TPROPS) {
 
         <Typography style={optionsStyle}>
           Esqueceu sua senha?&nbsp;
-          <Typography onClick={() => handleContact()} style={optionsLinkStyle}>
+          <Typography onClick={() => handleResetPassword()} style={optionsLinkStyle}>
             Recuperar senha!
           </Typography>
         </Typography>

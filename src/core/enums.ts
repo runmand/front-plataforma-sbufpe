@@ -11,7 +11,8 @@ export enum routerEnum {
   PLANEJA = "/planeja",
   PLANEJA_PRATICO = "/planeja-pratico",
   DATACEO = "/ceo",
-  DATAAPS = "/aps"
+  DATAAPS = "/aps",
+  RESETPWD = "/recuperar"
 }
 
 export enum localStorageKeyEnum {
