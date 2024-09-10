@@ -15,6 +15,7 @@ export default function Index() {
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
 	const largeQuery = useMediaQuery('(min-width:720px)')
+  const [viewportHeight, setViewportHeight] = React.useState<number>(0);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -140,7 +141,12 @@ export default function Index() {
 		if(router.query.containerBody){
 			setContainerBodyType(router.query.containerBody as string)
 		}
+
 	},[router])
+
+	useEffect(()=>{
+		setViewportHeight(window.innerHeight);
+	}, [])
   
   return (
     <Base
@@ -163,11 +169,11 @@ export default function Index() {
     mainContainerChild= {
       <Box
       style={{
-        width:'30%',
-        height: "60vh",
+        width: largeQuery ? '30vw' : '80vw',
+        height: largeQuery ? "70vh": `${(viewportHeight * 0.8)}px`,
         backgroundColor: "#6D141A",
         margin: "auto",
-        marginTop: "20vh",
+        marginTop: largeQuery ? "20vh" : `${(viewportHeight *0.15)}px`,
         borderRadius: "20px",
         padding: "30px",
         display: "grid",
@@ -190,6 +196,8 @@ export default function Index() {
         <Typography textAlign={"center"} width={"100%"} fontSize={"10pt"}  color={"#ffffff"} marginTop={"auto"}>OBS: Precisa ter um email cadastrado previamente, caso não tenha entre em contato conosco!!</Typography>
         </Box>}
       />
+
   );
+	
 }
 

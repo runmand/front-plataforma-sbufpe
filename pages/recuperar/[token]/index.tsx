@@ -17,6 +17,7 @@ export default function Index() {
 	const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
 	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
 	const largeQuery = useMediaQuery('(min-width:720px)')
+	const [viewportHeight, setViewportHeight] = React.useState<number>(0);
   const { enqueueSnackbar } = useSnackbar();
   
 	async function handleResetConfirm(password: string, token: string){
@@ -143,6 +144,10 @@ export default function Index() {
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
 
+	useEffect(()=>{
+		setViewportHeight(window.innerHeight);
+	}, [])
+
   useEffect(()=>{
 		if(router.query.containerBody){
 			setContainerBodyType(router.query.containerBody as string)
@@ -170,11 +175,11 @@ export default function Index() {
     mainContainerChild= {
       <Box
       style={{
-        width:'30%',
-        height: "60vh",
+        width: largeQuery ? '30vw' : '80vw',
+        height: largeQuery ? "70vh": `${(viewportHeight * 0.8)}px`,
         backgroundColor: "#6D141A",
         margin: "auto",
-        marginTop: "20vh",
+        marginTop: largeQuery ? "20vh" : `${(viewportHeight *0.15)}px`,
         borderRadius: "20px",
         padding: "30px",
         display: "grid",
@@ -190,9 +195,9 @@ export default function Index() {
             display: "grid",
           }}
         >
-          <InputLabel style={{color:"#ffffff"}} >Digite sua nova senha: </InputLabel>
+          <InputLabel style={{color:"#ffffff" , marginTop: "10px",}} >Digite sua nova senha: </InputLabel>
           <TextField style={{color:"#ffffff", marginTop: "10px", backgroundColor: "#ffffff" , borderRadius: "5px",}} fullWidth value={pwd} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPwd(e.target.value)}/>
-          <InputLabel style={{color:"#ffffff"}} >Confirme sua senha: </InputLabel>
+          <InputLabel style={{color:"#ffffff" , marginTop: "10px",}} >Confirme sua senha: </InputLabel>
           <TextField style={{color:"#ffffff", marginTop: "10px", backgroundColor: "#ffffff" , borderRadius: "5px",}} fullWidth value={pwdConfirm} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPwdConfirm(e.target.value)}/>
           <Button sx={{width: '120px', background: "#921c22", color:"#ffffff", margin: "auto", marginTop: "50px"}} onClick={sendReset}> Alterar</Button>
         </Box>
