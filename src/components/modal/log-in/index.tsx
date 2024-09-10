@@ -22,7 +22,7 @@ import LoginService from "./service";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
-import LoginUtils from "src/utils/loginUtils";
+import { LoginUtilsEmail } from "src/utils/loginUtils";
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Redirecionar para modal de cadastro.
@@ -30,7 +30,7 @@ import LoginUtils from "src/utils/loginUtils";
 
 export default function Index(props: TPROPS) {
   let clearLoginField = () => console.log("Trying clear login field...");
-  const loginUtils = new LoginUtils();
+  const loginUtils = new LoginUtilsEmail();
   const loginService = new LoginService();
   const [login, setLogin] = React.useState<string>(null);
   const [pwd, setPwd] = React.useState<string>(null);
