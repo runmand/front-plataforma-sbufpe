@@ -22,6 +22,7 @@ import LoginUtils from 'src/utils/loginUtils';
 import SignupService from './service';
 import { CheckBox, Label } from '@mui/icons-material';
 import { theme } from 'src/core/theme';
+import { validateCPF, validateEmail, validatePhone } from 'src/utils/validators';
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar limpeza de campos apartir do callback fornecido por cada campo.
@@ -32,6 +33,7 @@ export default function Index(props: TPROPS) {
 	const loginUtils = new LoginUtils();
 	const router = useRouter();
 	const [login, setLogin] = React.useState<string | null>(null);
+	const [email, setEmail] = React.useState<string | null>(null);
 	const [pwd, setPwd] = React.useState<string | null>(null);
 	const [userType, setUserType] = React.useState<USER_TYPE | null>(null);
 	const [userTypeList, setUserTypeList] = React.useState<USER_TYPE[]>([]);
@@ -61,11 +63,57 @@ export default function Index(props: TPROPS) {
 		props.openTclePage()
 
 	}
+
+
+	const validateForm = () =>{
+		//Valida o campo email
+		if (!validateEmail(email)){
+			enqueueSnackbar('Email invalido'); 
+			return false;
+		}
+
+		//Valida o campo password, tamanho e se está igual
+		if (pwd.length < 8){
+			enqueueSnackbar('A senha deve conter 8 caracteres'); 
+			return false;
+		}
+
+		if (pwd !== confirmPwd){
+			enqueueSnackbar('As senhas devem ser igual, caso tenha esquecido clique no icone do olho ao lado da senha'); 
+			return false;
+		}
+
+		//Valida baseado no type de "register escolhido"
+			switch (loginType) {
+				case loginTypeEnum.CPF:
+					if (!validateCPF(login)){
+						enqueueSnackbar('Cpf inserido é invalido, verifique tente novamente.'); 
+						return false;
+					}
+					break;
+			
+				case loginTypeEnum.DDI_DDD_CELLPHONE: 
+					if (!validatePhone(login)){
+						enqueueSnackbar('Numero celular inserido é invalido, verifique tente novamente.');
+						return false; 
+					}
+					break;
+			}
+
+			return true;
+		
+	}
+
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
+		if (!validateForm()) {
+			setIsLoading(false);
+			return;
+		}
+		
 		signupService
-			.handleSignup({ login, pwd, typeId: userType.id })
+			.handleSignup({ login, email, pwd, typeId: userType.id })
 			.then(res => {
 				if (res.data?.token) {
 					
@@ -124,7 +172,7 @@ export default function Index(props: TPROPS) {
 					</RadioGroup>
 
 					<CustomTextField
-						title='CPF, Celular, E-mail ou Username'
+						title='CPF, Celular ou Username'
 						maskType={loginType}
 						onBlur={v => setLogin(v)}
 						onClear={toInvoke => (clearLoginField = toInvoke)}
@@ -137,6 +185,14 @@ export default function Index(props: TPROPS) {
 						renderInput={params => <TextField {...params} label='Tipo de Participante' />}
 						onChange={(event: any, newValue: USER_TYPE | null) => setUserType(newValue)}
 					/>
+
+					<Box
+						sx={{ marginTop: '1rem' }}>
+					<CustomTextField
+						title='Email'
+						onBlur={email => setEmail(email)}
+					/>
+					</Box>
 
 					<Box
 						sx={{ marginTop: '1rem' }}>

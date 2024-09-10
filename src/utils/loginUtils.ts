@@ -11,10 +11,6 @@ export default class LoginUtils {
 			key: loginTypeEnum.DDI_DDD_CELLPHONE,
 		},
 		{
-			title: 'E-mail',
-			key: loginTypeEnum.EMAIL,
-		},
-		{
 			title: 'Username',
 			key: loginTypeEnum.USERNAME,
 		},
