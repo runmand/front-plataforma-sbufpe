@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { ID } from '../../../core/types';
-import { QUESTION_ANSWER } from '../../question/type';
+import { QUESTION, QUESTION_ANSWER } from '../../question/type';
 import QuestionCard from '../../question';
 import SendIcon from '@mui/icons-material/Send';
 import Alert from '@components/alert/index';
@@ -50,6 +50,24 @@ export default function Index(props: TPROPS) {
 		}
 	};
 	const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
+
+	const formatted = (array: QUESTION[]) =>{
+		if (props.formattedForm.id == 2){			
+			//Formatação baseado em uma questão especifica do form 2
+			return [
+				...array.slice(0, 4),
+				...array.splice(array.length-1, array.length),
+				...array.splice(4, array.length-1),
+			]
+		}else{
+			return array;
+		}
+		
+
+		
+
+	}
+
 
 	const handleSubmit = () => {
 		setLoading(true);
@@ -100,7 +118,7 @@ export default function Index(props: TPROPS) {
 						{props.formattedForm.title}
 					</Typography>
 					<>
-						{props.formattedForm.questions.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId).map((question, index) => (
+						{formatted(props.formattedForm.questions.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId)).map((question, index) => (
 							<QuestionCard
 								key={index}
 								index={index}
