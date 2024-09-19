@@ -452,7 +452,7 @@ export const planejaTable06 = [
   }
 ]
 
-export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174]
+export const droplist: number [] = [ 109, 1, 6, 8, 48, 46, 66, 68, 116, 121, 123, 175, 174, 306]
 
 export const acervo = [
   { 

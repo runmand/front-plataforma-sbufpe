@@ -30,7 +30,9 @@ export default function Index(props: TPROPS) {
 
 		/** Criando evento de escuta no filho. */
 		emitter.addListener(listenerKey, (parentAnswer: QUESTION_ANSWER) => {
-			const isSameAnswer = parentAnswer.answer.replace(/[1-9]\d*/g, '1') === JSON.stringify(props.question.condition?.userAnswer);
+			const arrayAnswer = JSON.parse(parentAnswer.answer.replace(/[1-9]\d*/g, '1'));
+			const index = arrayAnswer.indexOf(1);
+			const isSameAnswer = props.question.condition?.userAnswer[index] == arrayAnswer[index]
 			setCanShow(isSameAnswer);
 		
 			/** Caso a questão fique oculta novamente, deleta a resposta dela do vetor de respostas do formulário. */
