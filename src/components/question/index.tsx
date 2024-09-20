@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { emitterEnum } from '../../core/enums';
 import { emitter } from '../../core/events';
 import ChoiceAnswer from '../answer/choice';
@@ -16,6 +16,8 @@ export default function Index(props: TPROPS) {
 	const [canShow, setCanShow] = useState(false);
 	const [isMedicalExam, setIsMedicalExam] = useState(false)
 	const smQuery = useMediaQuery('(min-width:500px)')
+	const [viewportHeight, setViewportHeight] = useState<number>(0);
+	const [viewportWidth, setViewportWidth] = useState<number>(0);
 
 	/** Criando evento de emissão em todas as questões. */
 	const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
@@ -39,6 +41,11 @@ export default function Index(props: TPROPS) {
 			if (!canShow) props.onHideQuestion(props.question.formQuestionFormRegisterId);
 		});
 	}
+
+	useEffect(()=>{
+		setViewportHeight(window.innerHeight);
+		setViewportWidth(window.innerWidth);
+	}, [])
 
 	if (!props.parent || canShow) {
 		return (
@@ -87,11 +94,11 @@ export default function Index(props: TPROPS) {
 								console.log(data)
 								
 								// Caso a questão respondida seja "Será feito exame médico?", e caso seja "Sim", exibiremos a imagem
-								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[1336,0]") {
+								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[1336,0]" || props.question.formQuestionFormRegisterId === 330 && data.answer === "[1737,0]") {
 									setIsMedicalExam(true);
 								}
 								// Caso seja não, vamos colocar a variável como false
-								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[0,1337]") {
+								if (props.question.formQuestionFormRegisterId === 234 && data.answer === "[0,1337]" || props.question.formQuestionFormRegisterId === 330 && data.answer === "[0, 1738]") {
 									setIsMedicalExam(false);
 								}
 
@@ -103,7 +110,10 @@ export default function Index(props: TPROPS) {
 				</CardContent>
 				<div>
 					{props.question.formQuestionFormRegisterId === 234 && isMedicalExam && (
-						<Image src="/tabela.jpg" alt=''/>
+						<Image src="/tabela.jpg" alt='' width={viewportWidth*0.6+'px'} height={viewportHeight*0.8+'px'} style={{margin:'center'}}/>
+					)}
+					{props.question.formQuestionFormRegisterId === 330 && isMedicalExam && (
+						<Image src="/tabela.jpg" alt='' width={viewportWidth*0.6+'px'} height={viewportHeight*0.8+'px'} style={{margin:'center'}}/>
 					)}
 					{props.question.childrenQuestion.reverse().map((child, index) => (
 						<Index
