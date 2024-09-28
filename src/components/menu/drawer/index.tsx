@@ -19,7 +19,6 @@ export default function Index(props: TPROPS) {
         formId
       );
       setFormData(formResult);
-      console.log("formResult:", formResult);
     } catch (err: any) {
       console.error(err);
     }
@@ -149,7 +148,7 @@ export default function Index(props: TPROPS) {
             margin: "0 auto",
           }}
         >
-          Baixar PDF
+          Baixar PDF - Avaliações
         </button>
       )}
     </Drawer>
