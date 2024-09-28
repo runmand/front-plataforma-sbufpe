@@ -15,7 +15,9 @@ export default function Index() {
     { id: 0, title: "Questionário Inicial", url: routerEnum.QUESTION },
     { id: 1, title: "Questionários", url: routerEnum.FORM },
     { id: 3, title: "Planeja SD - Teórico", url: routerEnum.PLANEJA },
-
+    { id: 4, title: "Planeja SD - Pratico", url: routerEnum.PLANEJA_PRATICO,},    
+    { id: 5, title: "Nossos dados: APS", url: routerEnum.DATAAPS},
+    { id: 6, title: "Nossos dados: CEO", url: routerEnum.DATACEO}
   ]);
   const [isDrawerMenuOpen, setIsDrawerMenuOpen] =
     React.useState<boolean>(false);
@@ -27,45 +29,12 @@ export default function Index() {
   //   { id: 3, title: "Planeja SD", url: routerEnum.PLANEJA },
   // ];
 
-  async function checkUserPlanejaForm() {
-    try {
-      const { data } = await http.get(
-        `plan-question-answer/user/${Number(
-          localStorage.getItem(localStorageKeyEnum.USER_ID)
-        )}`
-      );
-
-      if (data.length > 0) {
-        setMenu((prevState) => {
-          return [
-            ...prevState,
-            {
-              id: 4,
-              title: "Planeja SD - Pratico",
-              url: routerEnum.PLANEJA_PRATICO,
-              
-            },    
-            { id: 5, title: "Nossos dados: APS", url: routerEnum.DATAAPS},
-            { id: 6, title: "Nossos dados: CEO", url: routerEnum.DATACEO}
-          ];
-        });
-      }
-
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   const handleLogout = () => {
     localStorage.removeItem(localStorageKeyEnum.TOKEN);
     localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
     router.push(routerEnum.INITIAL);
   };
-
-  useEffect(() => {
-    checkUserPlanejaForm();
-  }, []);
 
   return (
     <Toolbar style={toolbarStyle}>
