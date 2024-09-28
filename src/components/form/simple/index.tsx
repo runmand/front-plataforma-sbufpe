@@ -151,7 +151,7 @@ export default function Index(props: TPROPS) {
 
 			<Alert
 				title='Confirmar envio do formulário?'
-				msg='Atenção! Ao enviar o formulário suas respostas antigas serão sobreescritas! Esta ação não poderá ser desfeita neste momento!'
+				msg='Atenção! Ao enviar o formulário suas respostas não poderão ser alteradas!'
 				isOpen={isOpenSubmitFormDialog}
 				isLoading={loading}
 				canSkip={false}
