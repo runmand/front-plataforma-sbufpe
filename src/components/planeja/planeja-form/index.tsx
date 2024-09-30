@@ -21,16 +21,15 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
 import { useEffect, useState } from "react";
-import { pdf, Document, Page, Text, View } from "@react-pdf/renderer";
 
 import { http } from "src/core/axios";
 import { IChoices } from "src/core/IPlanejaResponse";
 import { ProgressBarAnswer } from "@components/progressBarAnswer";
 import { LoadingButton } from "@mui/lab";
-import { PlanFormProps } from "./types";
+import { nameForm, PlanFormProps } from "./types";
 import { localStorageKeyEnum } from "src/core/enums";
-import { ResultFormPdf, stylesPDF } from "@components/FormResultPdf";
 import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types';
+import React from 'react';
 
 interface IPlanejaResponse {
   id: number;
@@ -80,7 +79,6 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
   const isLastIndex = activeIndex + 1 === data.length;
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const { data } = await http.get("plan-question");
@@ -104,20 +102,68 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       }
     };
 
-    let planData: ISavedData[] = JSON.parse(localStorage.getItem("plan-form"));
 
-    if (planData) {
-      if (Number(localStorage.getItem("userId")) == planData[0].userId) {
-        setSavedDataToSend(planData);
-        planData.reverse();
-        setActiveIndex(planData[0].planQuestion);
-      } else {
-        localStorage.removeItem("plan-form");
+    const loadHistory = async () =>{      
+      const historyData = await getHistory()
+      let planData: ISavedData[] = historyData;
+
+      if (planData) {
+        if (Number(localStorage.getItem("userId")) == planData[0].userId) {
+          setSavedDataToSend(planData);
+          planData.reverse();
+          setActiveIndex(planData[0].planQuestion);
+        } else {
+          localStorage.removeItem("plan-form");
+        }
       }
     }
 
     fetchData();
+    loadHistory();
   }, []);
+
+  async function getHistory(){
+    const payload = {
+      id: localStorage.getItem("userId"),
+      form: nameForm
+    }    
+
+    const result = await http.post("/history/", payload).then(r => {
+      return r.data as ISavedData[];
+    }).catch(error => {
+      console.error('Erro ao obter o histórico:', error);
+      throw error; // Lançar erro para tratamento posterior
+    });
+
+    return result;
+  }
+
+  async function setHistory(newData: ISavedData[]) {
+    const payload = {
+      id: localStorage.getItem("userId"),
+      form: nameForm,
+      data: newData,
+      finished: false,
+    }    
+
+    const result = await http.put("/history/", payload).then(r => {
+      return r.data as ISavedData[];
+    }).catch(error => {
+      console.error('Erro ao obter o histórico:', error);
+      throw error; // Lançar erro para tratamento posterior
+    });
+  }
+
+  async function finishHistory(newData: IPlanejaDataPDF[]) {
+    const payload = {
+      id: localStorage.getItem("userId"),
+      form: nameForm,
+      data: newData,
+      finished: true,
+    }    
+
+    const result = await http.put("/history/", payload)
+  }
 
   function handleAnswer({ questionId, question_answer, justify }: IAnswer) {
     const savedData = {
@@ -177,11 +223,12 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     setActiveIndex(activeIndex + 1);
   }
 
-  function saveQuestionResponse(data: ISavedData) {
+  async function saveQuestionResponse(data: ISavedData) {
     let newData: ISavedData[] = [];
     let isNew = true;
-    if (localStorage.getItem("plan-form")) {
-      newData = JSON.parse(localStorage.getItem("plan-form"));
+    const history = await getHistory();
+    if (history) {
+      newData = history
       newData.forEach((element) => {
         if (data.planQuestion == element.planQuestion) {
           element.justify = data.justify;
@@ -192,7 +239,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
     if (isNew) newData.push(data);
 
-    localStorage.setItem("plan-form", JSON.stringify(newData));
+    setHistory(newData);
   }
 
   function previusQuestion() {
@@ -231,14 +278,12 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
       //procura a questão com id 9 e adciona os valores no question_answer com os valores estabelecimentoSaude e municipio
       const payloadToSend: ISavedData[] = payload.map((item) => ({ ...item }));
-      savePDF(payloadToSend);
+      saveFinished(payloadToSend);
       payloadToSend.forEach((item) => {
         if (item.planQuestion === 9) {
           item.question_answer = `Email: ${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}, Nome completo: ${nome}`;
         }
       });
-
-      console.log(payloadToSend);
 
       //descomentar
       const { data } = await http.post("/plan-question-answer", payloadToSend);
@@ -268,7 +313,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
   }
 
-  async function savePDF(dataToSend :ISavedData[]) {
+  async function saveFinished(dataToSend :ISavedData[]) {
     const dataPDF: IPlanejaDataPDF[] = []
     const localStorageAnswer: IlocalStorageAnswer[] = dataToSend;
 
@@ -283,8 +328,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       if (element.id != 9) dataPDF.push({content: titleQuestion, choices: choice, position: element.position})
     });
 
-    localStorage.setItem("typePlaneja", "teorico")
-    localStorage.setItem("plan-last", btoa((JSON.stringify(dataPDF))))
+    finishHistory(dataPDF);
   }
 
   return (

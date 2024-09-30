@@ -9,6 +9,8 @@ import { pdf, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer
 import { FormResultProps } from "@components/FormResultPdf/FormResultProps.types";
 import { IPlanejaDataPDF } from '@components/planeja/planeja-form';
 import { IStepsValues } from '@components/planeja-pratico/steps/FinishFormStep';
+import { http } from 'src/core/axios';
+import ModifiedPdfPlanejaTeorico from '@components/pdf/PlanejaPDF';
 
 //TODO: Permitir configuração da posição do drawer menu
 export default function Index(props: TPROPS) {
@@ -22,6 +24,11 @@ export default function Index(props: TPROPS) {
   type typeDataPratico = {
     stepValues: IStepsValues
   };
+
+  type requestResponse = {
+    type: string,
+    data: IPlanejaDataPDF[] |IStepsValues
+  }
 
   const stylesPDFTeorico = StyleSheet.create({
     page: { padding: 30 },
@@ -144,18 +151,34 @@ export default function Index(props: TPROPS) {
     }
   }, [getFormResult]);
 
+
+
+
+  async function getPDF(){
+    const payload = {
+      id: localStorage.getItem("userId"),
+    }    
+
+    const result = await http.post("/history/pdf", payload).then(r => {
+      return r.data as requestResponse;
+    }).catch(error => {
+      console.error('Erro ao obter o histórico:', error);
+      throw error; // Lançar erro para tratamento posterior
+    });
+
+    return result;
+  }
+
   async function downloadPlanejaPDF() {
-    const typePlaneja = localStorage.getItem("typePlaneja")
     
+    const {data, type} = await getPDF();
 
     let blob = null;
-
-    if (typePlaneja == "teorico"){
-      const data: IPlanejaDataPDF[] = JSON.parse(atob(localStorage.getItem("plan-last")))
-      blob = await pdf(<ModifiedPdfTeorico data={data}/>).toBlob();
+    
+    if (type == "PLANEJATEORICO"){
+      blob = await pdf(<ModifiedPdfPlanejaTeorico data={data as IPlanejaDataPDF[]}/>).toBlob();
     }else{
-      const data: IStepsValues = JSON.parse(atob(localStorage.getItem("plan-last")))
-      blob = await pdf(<ModifiedPdfPratico stepValues={data} />).toBlob();
+      blob = await pdf(<ModifiedPdfPratico stepValues={data as IStepsValues} />).toBlob();
     }
 
     // Create a URL for the blob object
@@ -187,33 +210,6 @@ export default function Index(props: TPROPS) {
     document.body.removeChild(a);
   }
 
-  const ModifiedPdfTeorico = ({
-    data
-  }: typeDataTeorico) =>{
-    return (
-    <Document>
-      <Page wrap={true}>
-        <View style={stylesPDF.section}>
-          
-            <View style={stylesPDF.sectionSpacing}>
-              <Text style={stylesPDF.title}>PlanejaSD</Text>
-              {data.map((data) => (
-                <View key={data.position}>
-                    <Text style={stylesPDF.sectionSubtitle}>{data.content.replace("\r\n", "")}</Text>
-                    <Text style={stylesPDF.sectionText}>
-                        Opção: {data.choices.question_answer}
-                    </Text>
-                    <Text style={stylesPDF.sectionTextPlaneja} >
-                        Justificativa: {data.choices.justify}
-                    </Text>
-                </View>
-              ))}
-            </View>
-          </View>    
-      </Page>
-    </Document>
-    );
-  }
 
   const ModifiedPdfPratico = ({stepValues}: typeDataPratico ) => (
     <Document>
@@ -335,6 +331,7 @@ export default function Index(props: TPROPS) {
             cursor: "pointer",
             width: "90%",
             margin: "0 auto",
+            color: "white"
           }}
         >
           Baixar PDF - Avaliações
@@ -354,6 +351,7 @@ export default function Index(props: TPROPS) {
             cursor: "pointer",
             width: "90%",
             margin: "0 auto",
+            color: "white"
           }}
         >
           Baixar PDF - PlanejaSD

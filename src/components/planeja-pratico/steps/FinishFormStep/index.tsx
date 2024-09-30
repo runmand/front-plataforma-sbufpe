@@ -13,14 +13,9 @@ import React, { useState } from "react";
 import { localStorageKeyEnum } from "src/core/enums";
 import { useRouter } from "next/router";
 import { ErrorOutlineOutlined } from "@mui/icons-material";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  pdf,
-} from "@react-pdf/renderer";
+
+import { nameForm } from 'pages/planeja-pratico/types';
+import { downloadPdfPlanejaPratico } from '@components/pdf/PlanejaPraticoPDF';
 
 interface IProps {
   stepValues: IStepsValues;
@@ -124,6 +119,23 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
     }
   }
 
+    //Seta o historico para proxima abertura
+    async function setHistory(newData: IStepsValues) {
+      const payload = {
+        id: localStorage.getItem("userId"),
+        form: nameForm,
+        data: newData,
+        finished: true,
+      }    
+  
+      const result = await http.put("/history/", payload).then(r => {
+        return r.data as IStepsValues;
+      }).catch(error => {
+        console.error('Erro ao obter o histórico:', error);
+        throw error; // Lançar erro para tratamento posterior
+      });
+    }
+
   function handleSendForm(e: React.FormEvent) {
     e.preventDefault();
     const strifiedData = JSON.stringify({
@@ -132,8 +144,8 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         ...values,
       },
     })
-    localStorage.setItem("typePlaneja", "pratico")
-    localStorage.setItem("plan-last", btoa(JSON.stringify(stepValues)));
+    
+    setHistory(stepValues);
     sendData({
       userId: Number(localStorage.getItem(localStorageKeyEnum.USER_ID)),
       question_answer: strifiedData,
@@ -141,122 +153,8 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
     });
   }
 
-  const stylesPDF = StyleSheet.create({
-    page: { padding: 30 },
-    section: { margin: 10, padding: 10, flexGrow: 1 },
-    flex: { display: "flex", flexDirection: "row" },
-    title: { fontSize: 16, fontWeight: "bold" },
-    subtitle: { fontSize: 14, fontWeight: "bold", marginTop: 10 },
-    text: { fontSize: 12, marginTop: 5 },
-  });
-
-  const GeneratePdf = () => (
-    <Document>
-      <Page style={stylesPDF.page}>
-        {/* First Step */}
-        <View style={stylesPDF.section}>
-          <Text style={stylesPDF.title}>Primeira Etapa</Text>
-          {stepValues.firstStep.map((item, index) => (
-            <View key={index}>
-              <Text style={stylesPDF.subtitle}>Domínio: {item.domain}</Text>
-              <Text style={stylesPDF.text}>
-                Primeiro Indicador: {item.first_indicator}
-              </Text>
-              <Text style={stylesPDF.text}>
-                Grau do Primeiro Indicador: {item.first_degree}
-              </Text>
-              <Text style={stylesPDF.text}>
-                Segundo Indicador: {item.second_indicator}
-              </Text>
-              <Text style={stylesPDF.text}>
-                Grau do Segundo Indicador: {item.second_degree}
-              </Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Second Step */}
-        <View style={stylesPDF.section}>
-          <Text style={stylesPDF.title}>Segunda Etapa</Text>
-          {stepValues.secondStep.defined_problems.map((problem, index) => (
-            <View key={index}>
-              <Text style={stylesPDF.subtitle}>
-                Problema Definido {problem.id}
-              </Text>
-              <Text style={stylesPDF.text}>{problem.answer}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={stylesPDF.section}>
-          <Text style={stylesPDF.title}>Terceira Etapa</Text>
-          {stepValues.thirdStep.causas.map((causa, index) => (
-            <View key={index}>
-              <Text style={stylesPDF.subtitle}>Causa {causa.id}</Text>
-              <Text style={stylesPDF.text}>{causa.causa}</Text>
-              <Text style={stylesPDF.text}>{causa.explicacao}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Third Step */}
-        <View style={stylesPDF.section}>
-          <Text style={stylesPDF.title}>Terceira Etapa</Text>
-
-          <Text style={stylesPDF.text}>
-            Nó Crítico: {stepValues.fourthStep.criticalNode}
-          </Text>
-          {stepValues.fourthStep.actions.map((action, index) => (
-            <View key={index}>
-              <Text style={stylesPDF.subtitle}>Ação: {action.name}</Text>
-              <Text style={stylesPDF.text}>
-                Prazo: {action.deadline_compliance}
-              </Text>
-              <Text style={stylesPDF.text}>Responsáveis:</Text>
-              {action.responsibles.map((responsible, i) => (
-                <View key={i}>
-                  <Text style={stylesPDF.text}>
-                    Responsável: {responsible.responsible}
-                  </Text>
-                  <Text style={stylesPDF.text}>
-                    Motivação: {responsible.motivation}
-                  </Text>
-                  <Text style={stylesPDF.text}>
-                    Estratégias: {responsible.strategies}
-                  </Text>
-                </View>
-              ))}
-              <Text style={stylesPDF.text}>Recursos:</Text>
-              {action.resources.map((resource, i) => (
-                <View key={i}>
-                  <Text style={stylesPDF.text}>
-                    Recurso: {resource.resource}
-                  </Text>
-                  <Text style={stylesPDF.text}>
-                    É Recurso Crítico: {resource.itsCricticalResource}
-                  </Text>
-                  <Text style={stylesPDF.text}>
-                    Estratégias Descritas: {resource.described_strategies}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          ))}
-        </View>
-      </Page>
-    </Document>
-  );
-
-  async function downloadPdf() {
-    const blob = await pdf(<GeneratePdf />).toBlob();
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `relatorio_${new Date().toLocaleDateString()}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  function downloadPDF() {
+    downloadPdfPlanejaPratico(stepValues);
   }
 
   return (
@@ -582,7 +480,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         </Button>
 
         <Button
-          onClick={downloadPdf}
+          onClick={downloadPDF}
           variant="contained"
           color="primary"
           type={"submit"}

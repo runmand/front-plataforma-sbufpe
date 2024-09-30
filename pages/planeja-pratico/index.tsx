@@ -9,6 +9,8 @@ import { Welcome } from "@components/planeja-pratico/steps/Welcome";
 import { ThirdStep } from "@components/planeja-pratico/steps/ThirdStep";
 import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
 import { FinishFormStep } from "@components/planeja-pratico/steps/FinishFormStep";
+import { nameForm } from './types';
+import { http } from 'src/core/axios';
 
 interface IStepsValues {
   firstStep: IFirstStep[];
@@ -69,7 +71,7 @@ interface IDefinedProblem {
 }
 
 export default function Index() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [stepsValues, setStepsValues] = useState<IStepsValues>({
     firstStep: [
       {
@@ -137,6 +139,7 @@ export default function Index() {
       ],
     },
   });
+  const [next, setNext] = useState<Boolean>(false);
   const [error, setError] = useState("");
   const data = [];
   const isLastIndex = activeIndex + 1 === data.length;
@@ -148,7 +151,7 @@ export default function Index() {
       firstStep: values,
     };
 
-    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setHistory(payload);
     setStepsValues(payload);
   }
 
@@ -159,7 +162,7 @@ export default function Index() {
       secondStep: values,
     };
 
-    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setHistory(payload);
     setStepsValues(payload);
   }
 
@@ -170,7 +173,7 @@ export default function Index() {
       thirdStep: values,
     };
 
-    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setHistory(payload);
     setStepsValues(payload);
   }
 
@@ -181,13 +184,13 @@ export default function Index() {
       fourthStep: values,
     };
 
-    localStorage.setItem("planeja-pratica", JSON.stringify(payload));
+    setHistory(payload);
     setStepsValues(payload);
   }
 
   function nextQuestion() {
     if (!validateIfCanProcced()) return;
-
+    setNext(true);
     setActiveIndex(activeIndex + 1);
   }
 
@@ -209,14 +212,73 @@ export default function Index() {
 
     return true;
   }
+
+  //Seta o historico para proxima abertura
+  async function setHistory(newData: IStepsValues) {
+    const payload = {
+      id: localStorage.getItem("userId"),
+      form: nameForm,
+      data: newData,
+      finished: false,
+    }    
+
+    const result = await http.put("/history/", payload).then(r => {
+      return r.data as IStepsValues;
+    }).catch(error => {
+      console.error('Erro ao obter o histórico:', error);
+      throw error; // Lançar erro para tratamento posterior
+    });
+  }
+
+    //Pega o historico
+    async function getHistory() {
+      const payload = {
+        id: localStorage.getItem("userId"),
+        form: nameForm,
+      }    
+  
+      const result = await http.post("/history/", payload).then(r => {
+        return r.data as IStepsValues;
+      }).catch(error => {
+        console.error('Erro ao obter o histórico:', error);
+        throw error; // Lançar erro para tratamento posterior
+      });
+
+      return result;
+    }
+
   //enviar o formulário
+  useEffect(() => {
+    const loadHistory = (async () => {
+      const storedValues = await getHistory();
+      if (storedValues) {
+        setStepsValues(storedValues);
+      }
+    })
+
+    loadHistory()
+  }, []);
 
   useEffect(() => {
-    const storedValues = localStorage.getItem("planeja-pratica");
-    if (storedValues) {
-      setStepsValues(JSON.parse(storedValues));
+    // Só após stepsValues ser atualizado, esse efeito será acionado
+    if(!next){
+      if (stepsValues.firstStep[0].domain == "") {
+          setActiveIndex(0);
+        } else if (stepsValues.secondStep.defined_problems[0].answer == "") {
+          setActiveIndex(2);
+        } else if (
+          stepsValues.thirdStep.causas.every((causa) => causa.causa === "")
+        ) {
+          setActiveIndex(3);
+        } else if (stepsValues.fourthStep.actions[0].name == "") {
+          setActiveIndex(4);
+        }else{
+          setActiveIndex(5);
+        }
     }
-  }, []);
+
+
+  }, [stepsValues]);
 
   return (
     <Base

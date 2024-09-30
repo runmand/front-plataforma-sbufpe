@@ -4,6 +4,7 @@ import React from "react";
 interface IProps {
   onClickNextQuestion: () => void;
 }
+
 export const Welcome = ({ onClickNextQuestion }: IProps) => {
   return (
     <>
@@ -54,12 +55,10 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
           </Typography>
         </li>
       </ul>
-
       <Typography fontWeight={500} fontSize={16}>
         <b>Obs:</b> Na ausência de informações no Nossos Dados SD, provavelmente é porque o módulo
         ainda não foi utilizado
       </Typography>
-
       <Box
         display="flex"
         alignItems="center"
