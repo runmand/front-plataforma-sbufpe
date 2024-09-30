@@ -45,6 +45,12 @@ export const stylesPDF = StyleSheet.create({
     color: "#888",
     fontSize: "13px",
   },
+  sectionTextPlaneja: {
+    color: "#888",
+    fontSize: "13px",
+    wordBreak: "break-all", // Adiciona quebra automática de linha
+    maxWidth: "100%", // Garante que o conteúdo respeite a largura do contêiner
+  },
   section: {
     margin: 5,
     padding: 5,

@@ -21,6 +21,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
 import { useEffect, useState } from "react";
+import { pdf, Document, Page, Text, View } from "@react-pdf/renderer";
 
 import { http } from "src/core/axios";
 import { IChoices } from "src/core/IPlanejaResponse";
@@ -28,6 +29,8 @@ import { ProgressBarAnswer } from "@components/progressBarAnswer";
 import { LoadingButton } from "@mui/lab";
 import { PlanFormProps } from "./types";
 import { localStorageKeyEnum } from "src/core/enums";
+import { ResultFormPdf, stylesPDF } from "@components/FormResultPdf";
+import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types';
 
 interface IPlanejaResponse {
   id: number;
@@ -35,6 +38,18 @@ interface IPlanejaResponse {
   content: string;
   choices: IChoices[];
   position: number;
+}
+
+export interface IPlanejaDataPDF {
+  content: string;
+  choices: IlocalStorageAnswer;
+  position: number;
+}
+
+interface IlocalStorageAnswer {
+  planQuestion: number;
+  question_answer: string;
+  justify: string;
 }
 
 interface ISavedData {
@@ -61,9 +76,11 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   const [nome, setNome] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState<FormResultProps>();
 
   const isLastIndex = activeIndex + 1 === data.length;
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const { data } = await http.get("plan-question");
@@ -214,6 +231,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
       //procura a questão com id 9 e adciona os valores no question_answer com os valores estabelecimentoSaude e municipio
       const payloadToSend: ISavedData[] = payload.map((item) => ({ ...item }));
+      savePDF(payloadToSend);
       payloadToSend.forEach((item) => {
         if (item.planQuestion === 9) {
           item.question_answer = `Email: ${item.question_answer}, Estabelecimento: ${estabelecimentoSaude}, Municipio: ${municipio}, Nome completo: ${nome}`;
@@ -248,6 +266,25 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
         setError("Preencha a questão e justificativa antes de continuar");
       }
     }
+  }
+
+  async function savePDF(dataToSend :ISavedData[]) {
+    const dataPDF: IPlanejaDataPDF[] = []
+    const localStorageAnswer: IlocalStorageAnswer[] = dataToSend;
+
+    data.forEach(element => {
+      const init: string = element.content.slice(element.content.search("REFLETINDO<br />"));
+      const indexText: number = init.search("/>")
+      const indexStyle: number = init.search("</p>")
+      const titleQuestion: string = init.slice(indexText+2, indexStyle)
+
+      const choice = localStorageAnswer.find(item => item.planQuestion == element.id)
+
+      if (element.id != 9) dataPDF.push({content: titleQuestion, choices: choice, position: element.position})
+    });
+
+    localStorage.setItem("typePlaneja", "teorico")
+    localStorage.setItem("plan-last", btoa((JSON.stringify(dataPDF))))
   }
 
   return (

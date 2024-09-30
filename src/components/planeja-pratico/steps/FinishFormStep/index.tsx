@@ -27,7 +27,7 @@ interface IProps {
   onClickPrevStep: () => void;
 }
 
-interface IStepsValues {
+export interface IStepsValues {
   firstStep: IFirstStep[];
   secondStep: ISecondStep;
   thirdStep: IThirdStep;
@@ -126,13 +126,14 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
 
   function handleSendForm(e: React.FormEvent) {
     e.preventDefault();
-    console.log(stepValues);
     const strifiedData = JSON.stringify({
       ...stepValues,
       dados_para_certificado: {
         ...values,
       },
-    });
+    })
+    localStorage.setItem("typePlaneja", "pratico")
+    localStorage.setItem("plan-last", btoa(JSON.stringify(stepValues)));
     sendData({
       userId: Number(localStorage.getItem(localStorageKeyEnum.USER_ID)),
       question_answer: strifiedData,
