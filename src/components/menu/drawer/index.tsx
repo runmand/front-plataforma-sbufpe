@@ -11,11 +11,13 @@ import { IPlanejaDataPDF } from '@components/planeja/planeja-form';
 import { IStepsValues } from '@components/planeja-pratico/steps/FinishFormStep';
 import { http } from 'src/core/axios';
 import ModifiedPdfPlanejaTeorico from '@components/pdf/PlanejaPDF';
+import { useSnackbar } from 'notistack';
 
 //TODO: Permitir configuração da posição do drawer menu
 export default function Index(props: TPROPS) {
   const [formData, setFormData] = useState<FormResultProps>();
   const formAnwerService = useMemo(() => new FormAnswerService(), []);
+  const { enqueueSnackbar } = useSnackbar();
 
   type typeDataTeorico = {
     data: IPlanejaDataPDF[]
@@ -151,16 +153,23 @@ export default function Index(props: TPROPS) {
     }
   }, [getFormResult]);
 
-
-
-
   async function getPDF(){
     const payload = {
       id: localStorage.getItem("userId"),
     }    
 
     const result = await http.post("/history/pdf", payload).then(r => {
-      return r.data as requestResponse;
+      const data = r.data as requestResponse;
+      
+      
+      if (data){
+        if (data.data){
+          return data;
+        }
+      }
+
+      enqueueSnackbar("Não existem documentos para baixar!", { variant: "error" });
+      throw "Não existem documentos para baixar"; // Lançar erro para tratamento posterior
     }).catch(error => {
       console.error('Erro ao obter o histórico:', error);
       throw error; // Lançar erro para tratamento posterior

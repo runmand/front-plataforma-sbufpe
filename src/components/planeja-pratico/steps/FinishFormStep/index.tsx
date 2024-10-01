@@ -13,8 +13,7 @@ import React, { useState } from "react";
 import { localStorageKeyEnum } from "src/core/enums";
 import { useRouter } from "next/router";
 import { ErrorOutlineOutlined } from "@mui/icons-material";
-
-import { nameForm } from 'pages/planeja-pratico/types';
+import { nameForm } from 'src/constants/constantsPlaneja';
 import { downloadPdfPlanejaPratico } from '@components/pdf/PlanejaPraticoPDF';
 
 interface IProps {
@@ -123,7 +122,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
     async function setHistory(newData: IStepsValues) {
       const payload = {
         id: localStorage.getItem("userId"),
-        form: nameForm,
+        form: nameForm.pratic,
         data: newData,
         finished: true,
       }    
