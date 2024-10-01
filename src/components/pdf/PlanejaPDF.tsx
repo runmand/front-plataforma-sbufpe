@@ -2,7 +2,7 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
 import { IPlanejaDataPDF } from '@components/planeja/planeja-form';
 import { stylesPDF } from '@components/FormResultPdf';
-import { nameForm } from '@components/planeja/planeja-form/types';
+import { nameForm } from 'src/constants/constantsPlaneja';
 import { http } from 'src/core/axios';
 
 type PlanejaPDF = {
@@ -41,7 +41,7 @@ export default ModifiedPdfPlanejaTeorico;
 async function getHistory(){
   const payload = {
     id: localStorage.getItem("userId"),
-    form: nameForm
+    form: nameForm.teoric
   }    
 
   const result = await http.post("/history/pdf", payload).then(r => {

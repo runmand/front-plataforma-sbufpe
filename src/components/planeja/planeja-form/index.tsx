@@ -26,7 +26,8 @@ import { http } from "src/core/axios";
 import { IChoices } from "src/core/IPlanejaResponse";
 import { ProgressBarAnswer } from "@components/progressBarAnswer";
 import { LoadingButton } from "@mui/lab";
-import { nameForm, PlanFormProps } from "./types";
+import { PlanFormProps } from "./types";
+import { nameForm } from 'src/constants/constantsPlaneja';
 import { localStorageKeyEnum } from "src/core/enums";
 import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types';
 import React from 'react';
@@ -125,7 +126,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   async function getHistory(){
     const payload = {
       id: localStorage.getItem("userId"),
-      form: nameForm
+      form: nameForm.teoric
     }    
 
     const result = await http.post("/history/", payload).then(r => {
@@ -141,7 +142,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   async function setHistory(newData: ISavedData[]) {
     const payload = {
       id: localStorage.getItem("userId"),
-      form: nameForm,
+      form: nameForm.teoric,
       data: newData,
       finished: false,
     }    
@@ -157,7 +158,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   async function finishHistory(newData: IPlanejaDataPDF[]) {
     const payload = {
       id: localStorage.getItem("userId"),
-      form: nameForm,
+      form: nameForm.teoric,
       data: newData,
       finished: true,
     }    

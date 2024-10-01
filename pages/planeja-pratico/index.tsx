@@ -9,7 +9,7 @@ import { Welcome } from "@components/planeja-pratico/steps/Welcome";
 import { ThirdStep } from "@components/planeja-pratico/steps/ThirdStep";
 import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
 import { FinishFormStep } from "@components/planeja-pratico/steps/FinishFormStep";
-import { nameForm } from './types';
+import { nameForm } from 'src/constants/constantsPlaneja';
 import { http } from 'src/core/axios';
 
 interface IStepsValues {
@@ -217,7 +217,7 @@ export default function Index() {
   async function setHistory(newData: IStepsValues) {
     const payload = {
       id: localStorage.getItem("userId"),
-      form: nameForm,
+      form: nameForm.pratic,
       data: newData,
       finished: false,
     }    
@@ -234,7 +234,7 @@ export default function Index() {
     async function getHistory() {
       const payload = {
         id: localStorage.getItem("userId"),
-        form: nameForm,
+        form: nameForm.pratic,
       }    
   
       const result = await http.post("/history/", payload).then(r => {
@@ -278,7 +278,7 @@ export default function Index() {
     }
 
 
-  }, [stepsValues]);
+  }, [stepsValues, next]);
 
   return (
     <Base
