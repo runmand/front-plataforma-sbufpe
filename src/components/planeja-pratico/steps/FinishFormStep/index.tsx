@@ -118,6 +118,11 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
     }
   }
 
+    function clearHistory() {
+      localStorage.removeItem("historyPratical")
+      localStorage.removeItem("pratical-config")
+    }
+
     //Seta o historico para proxima abertura
     async function setHistory(newData: IStepsValues) {
       const payload = {
@@ -125,9 +130,12 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         form: nameForm.pratic,
         data: newData,
         finished: true,
-      }    
+      }  
+      
+      
   
       const result = await http.put("/history/", payload).then(r => {
+        clearHistory();
         return r.data as IStepsValues;
       }).catch(error => {
         console.error('Erro ao obter o histórico:', error);

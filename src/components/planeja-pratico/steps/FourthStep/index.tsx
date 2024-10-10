@@ -1,3 +1,4 @@
+import SaveButton from '@components/saveButton';
 import {
   Box,
   Button,
@@ -16,6 +17,8 @@ interface IProps {
   stepValues: IValues;
   onClickNextStep: () => void;
   onClickPrevStep: () => void;
+  saveData: () => void;
+  dataSaved: boolean
 }
 
 interface IValues {
@@ -62,6 +65,8 @@ export const FourthStep = ({
   onClickPrevStep,
   onSubmit,
   stepValues,
+  saveData,
+  dataSaved
 }: IProps) => {
   const [isCriticalResource, setIsCriticalResource] = useState("");
 
@@ -527,6 +532,8 @@ export const FourthStep = ({
           <Button onClick={onClickPrevStep} variant="outlined">
             Voltar
           </Button>
+
+          <SaveButton dataSaved={dataSaved} saveData={saveData} />
 
           <Button variant="contained" color="primary" type={"submit"}>
             {"Próxima"}

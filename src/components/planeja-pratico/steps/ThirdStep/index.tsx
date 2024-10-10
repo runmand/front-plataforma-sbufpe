@@ -1,3 +1,4 @@
+import SaveButton from '@components/saveButton';
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
@@ -7,6 +8,8 @@ interface IProps {
   onClickPrevStep: () => void;
   stepValues: IValues;
   onSubmit: (values: IValues) => void;
+  saveData: () => void;
+  dataSaved: boolean
 }
 
 interface IThirdStep {
@@ -29,6 +32,8 @@ export const ThirdStep = ({
   onClickPrevStep,
   stepValues,
   onSubmit,
+  saveData,
+  dataSaved
 }: IProps) => {
   const [values, setValues] = React.useState<IValues>({
     causas: stepValues.causas,
@@ -199,6 +204,8 @@ export const ThirdStep = ({
         <Button onClick={onClickPrevStep} variant="outlined">
           Voltar
         </Button>
+
+        <SaveButton dataSaved={dataSaved} saveData={saveData} />
 
         <Button variant="contained" color="primary" type={"submit"}>
           Próxima

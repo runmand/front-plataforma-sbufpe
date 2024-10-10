@@ -11,6 +11,8 @@ import { FourthStep } from "@components/planeja-pratico/steps/FourthStep";
 import { FinishFormStep } from "@components/planeja-pratico/steps/FinishFormStep";
 import { nameForm } from 'src/constants/constantsPlaneja';
 import { http } from 'src/core/axios';
+import { Info, Update } from '@mui/icons-material';
+import LoadHistory from '@components/loadHistory';
 
 interface IStepsValues {
   firstStep: IFirstStep[];
@@ -68,6 +70,10 @@ interface IResource {
 interface IDefinedProblem {
   id: number;
   answer: string;
+}
+
+interface IPraticalConfig{
+  thisPrincial: boolean
 }
 
 export default function Index() {
@@ -143,7 +149,9 @@ export default function Index() {
   const [error, setError] = useState("");
   const data = [];
   const isLastIndex = activeIndex + 1 === data.length;
-
+  const [thisPrincipal, setThisPrincipal] = useState(true);
+  const [dataSaved, setDataSaved] = useState(false);
+  const [stepsValuesDatabase, setStepsValuesDatabase] = useState<IStepsValues>()
   //atualizar os valores do primeiro passo
   function handleUpdateFirstStep(values: IFirstStep[]) {
     const payload = {
@@ -213,8 +221,12 @@ export default function Index() {
     return true;
   }
 
-  //Seta o historico para proxima abertura
   async function setHistory(newData: IStepsValues) {
+    localStorage.setItem("historyPratical", btoa(JSON.stringify(newData))); 
+  }
+
+  //Seta o historico para proxima abertura
+  async function setHistoryDatabase(newData: IStepsValues) {
     const payload = {
       id: localStorage.getItem("userId"),
       form: nameForm.pratic,
@@ -250,10 +262,32 @@ export default function Index() {
   //enviar o formulário
   useEffect(() => {
     const loadHistory = (async () => {
-      const storedValues = await getHistory();
-      if (storedValues) {
-        setStepsValues(storedValues);
+      const historyBD : IStepsValues = await getHistory();
+      const localData: IStepsValues = getLocalHistory();
+      let data : IStepsValues  = null;
+
+    
+      if (historyBD !== undefined){
+        if (localData !== null){ 
+            setStepsValuesDatabase(historyBD);
+            setThisPrincipal(false);
+        }else{
+          setThisPrincipal(false);
+        }
+      }else{
+        setThisPrincipal(true);
       }
+      
+
+      if (localData !== null){
+        data = localData;   
+      }  
+
+      if (data !== null){
+        setStepsValues(data);
+      }
+
+
     })
 
     loadHistory()
@@ -276,9 +310,51 @@ export default function Index() {
           setActiveIndex(5);
         }
     }
-
-
   }, [stepsValues, next]);
+
+  async function updateForm() {
+    setThisPrincipal(true); 
+    const data = stepsValuesDatabase;   
+    setStepsValues(data)
+    setHistory(data);
+  }
+
+  function useThis() {
+    localStorage.setItem("pratical-config", JSON.stringify({thisPrincipal: true}))
+    updateConfig();
+  }
+
+  function updateConfig() {
+    const config = getConfig()
+    setThisPrincipal(config.thisPrincial);
+  }
+
+  function getConfig() : IPraticalConfig {
+    try{
+      const principal = JSON.parse(localStorage.getItem("pratical-config"))
+      return principal
+    }catch{
+      return null;
+    }
+  }
+
+  function getLocalHistory(): IStepsValues {
+    try {
+      return JSON.parse(atob(localStorage.getItem("historyPratical")));
+    } catch (error) {
+      return null
+    }
+  }
+
+  async function saveData(){
+    setDataSaved(true);
+    setHistoryDatabase(stepsValues);
+  }
+
+  useEffect(() =>{
+    setDataSaved(false);
+  }, [stepsValues])
+
 
   return (
     <Base
@@ -298,6 +374,11 @@ export default function Index() {
             paddingX: "40px",
           }}
         >
+          <LoadHistory
+            thisPrincipal={thisPrincipal} 
+            updateForm={updateForm} 
+            useThis={useThis} 
+          /> 
           <Paper elevation={1} sx={{ p: 3, my: 2, width: "100%" }}>
             <Box
               width={"100%"}
@@ -317,6 +398,8 @@ export default function Index() {
                   onSubmit={(data) => handleUpdateFirstStep(data)}
                   onClickNextStep={nextQuestion}
                   onClickPrevStep={previusQuestion}
+                  dataSaved={dataSaved}
+                  saveData={saveData}
                 />
               )}
               {activeIndex === 2 && (
@@ -325,6 +408,8 @@ export default function Index() {
                   onSubmit={(data) => handleUpdateSecondStep(data)}
                   onClickNextStep={nextQuestion}
                   onClickPrevStep={previusQuestion}
+                  dataSaved={dataSaved}
+                  saveData={saveData}
                 />
               )}
               {activeIndex === 3 && (
@@ -333,6 +418,8 @@ export default function Index() {
                   onClickPrevStep={previusQuestion}
                   stepValues={stepsValues.thirdStep}
                   onSubmit={(data) => handleUpdateThirdStep(data)}
+                  dataSaved={dataSaved}
+                  saveData={saveData}
                 />
               )}
               {activeIndex === 4 && (
@@ -341,6 +428,8 @@ export default function Index() {
                   onSubmit={(data) => handleUpdateFourthStep(data)}
                   onClickNextStep={nextQuestion}
                   onClickPrevStep={previusQuestion}
+                  dataSaved={dataSaved}
+                  saveData={saveData}
                 />
               )}
               {activeIndex === 5 && (

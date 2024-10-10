@@ -1,3 +1,4 @@
+import SaveButton from '@components/saveButton';
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import React from "react";
 
@@ -6,6 +7,8 @@ interface IProps {
   stepValues: IValues;
   onClickNextStep: () => void;
   onClickPrevStep: () => void;
+  saveData: () => void;
+  dataSaved: boolean
 }
 
 interface IValues {
@@ -22,6 +25,8 @@ export const SecondStep = ({
   stepValues,
   onClickNextStep,
   onClickPrevStep,
+  saveData,
+  dataSaved
 }: IProps) => {
   const [values, setValues] = React.useState<IValues>({
     defined_problems: stepValues.defined_problems,
@@ -112,6 +117,8 @@ export const SecondStep = ({
         <Button onClick={onClickPrevStep} variant="outlined">
           Voltar
         </Button>
+
+        <SaveButton dataSaved={dataSaved} saveData={saveData} />
 
         <Button variant="contained" color="primary" type={"submit"}>
           {"Próxima"}
