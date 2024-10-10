@@ -19,7 +19,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-
+import {Update, Info, Save} from "@mui/icons-material"
 import { useEffect, useState } from "react";
 
 import { http } from "src/core/axios";
@@ -31,6 +31,8 @@ import { nameForm } from 'src/constants/constantsPlaneja';
 import { localStorageKeyEnum } from "src/core/enums";
 import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types';
 import React from 'react';
+import LoadHistory from '@components/loadHistory';
+import SaveButton from '@components/saveButton';
 
 interface IPlanejaResponse {
   id: number;
@@ -45,6 +47,7 @@ export interface IPlanejaDataPDF {
   choices: IlocalStorageAnswer;
   position: number;
 }
+
 
 interface IlocalStorageAnswer {
   planQuestion: number;
@@ -65,6 +68,10 @@ interface IAnswer {
   justify?: string;
 }
 
+interface ITeoricConfig{
+  thisPrincial: boolean
+}
+
 export default function PlanForm({ onFinish }: PlanFormProps) {
   const [isSendingData, setIsSendingData] = useState(false);
   const [error, setError] = useState("");
@@ -77,51 +84,81 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState<FormResultProps>();
-
+  const [thisPrincipal, setThisPrincipal] = useState(false);
+  const [dataSaved, setDataSaved] = useState(false);
+  const [databaseHistory, setDatabaseHistory] = useState<ISavedData[]>([]);
   const isLastIndex = activeIndex + 1 === data.length;
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const { data } = await http.get("plan-question");
-        const formattedData = data.map((item: any) => {
-          return {
-            id: item.id,
-            title: item.title,
-            content: item.content,
-            choices: formatChoice(item.choices),
-            position: item.position,
-          };
-        });
-        formattedData.sort(
-          (a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position
-        );
-        setData(formattedData);
-      } catch (error) {
-        console.error("Erro ao obter os dados:", error);
-      } finally {
-        setIsLoading(false);
-      }
+        try {
+          const { data } = await http.get("plan-question");
+          const formattedData = data.map((item: any) => {
+            return {
+              id: item.id,
+              title: item.title,
+              content: item.content,
+              choices: formatChoice(item.choices),
+              position: item.position,
+            };
+          });
+          formattedData.sort(
+            (a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position
+          );          
+          setData(formattedData);
+        } catch (error) {
+          console.error("Erro ao obter os dados:", error);
+        } finally {
+          setIsLoading(false);
+        }
     };
 
 
     const loadHistory = async () =>{      
-      const historyData = await getHistory()
-      let planData: ISavedData[] = historyData;
+      let localData: ISavedData[] = getLocalHistory();
+      let data : ISavedData[]  = []
+      let index: number = 0
 
-      if (planData) {
-        if (Number(localStorage.getItem("userId")) == planData[0].userId) {
-          setSavedDataToSend(planData);
-          planData.reverse();
-          setActiveIndex(planData[0].planQuestion);
-        } else {
-          localStorage.removeItem("plan-form");
+      let historyBD = await getHistory()      
+      
+      if (historyBD !== undefined){
+        if (localData !== null){ 
+          if (localData[localData.length - 1].planQuestion == historyBD[0].planQuestion){
+            if (localData[localData.length - 1].justify == historyBD[0].justify){
+                //Se forem iguais
+                setThisPrincipal(true);
+            }else{
+              //Exitem ambos mas são diferentes
+              setDatabaseHistory(historyBD)
+              setThisPrincipal(false);
+            }
+          }
+        }else{
+          //Se só tiver history
+          setThisPrincipal(false);
         }
+      }else{
+        setThisPrincipal(true);
       }
+    
+      if (localData !== null){
+        data = localData.reverse();   
+      }
+
+      if (data.length > 0){
+        index = data[0].planQuestion;
+      }      
+
+      setSavedDataToSend(data)
+      setActiveIndex(index);
     }
 
     fetchData();
     loadHistory();
   }, []);
+
+  useEffect(() => {
+    setDataSaved(false);
+  }, [savedDataToSend])
 
   async function getHistory(){
     const payload = {
@@ -137,6 +174,11 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     });
 
     return result;
+  }
+
+  async function saveData(){
+    setDataSaved(true);
+    setHistory(savedDataToSend);
   }
 
   async function setHistory(newData: ISavedData[]) {
@@ -155,6 +197,26 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     });
   }
 
+  async function setLocalHistory(newData: ISavedData[]) {
+    localStorage.setItem("historyTeoric", btoa(JSON.stringify(newData)))
+  }
+
+  async function clearLocalHistory() {
+    localStorage.removeItem("historyTeoric");
+  }
+
+  async function setLocalFinishHistory(newData: IPlanejaDataPDF[]) {
+    localStorage.setItem("historyTeoric", btoa(JSON.stringify(newData)))
+  }  
+
+  function getLocalHistory(): ISavedData[] {
+    try {
+      return JSON.parse(atob(localStorage.getItem("historyTeoric")));
+    } catch (error) {
+      return null
+    }
+  }
+
   async function finishHistory(newData: IPlanejaDataPDF[]) {
     const payload = {
       id: localStorage.getItem("userId"),
@@ -162,7 +224,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       data: newData,
       finished: true,
     }    
-
+    setLocalFinishHistory(newData);
     const result = await http.put("/history/", payload)
   }
 
@@ -224,23 +286,56 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     setActiveIndex(activeIndex + 1);
   }
 
-  async function saveQuestionResponse(data: ISavedData) {
+  async function saveQuestionResponse(questionData: ISavedData) {
     let newData: ISavedData[] = [];
     let isNew = true;
-    const history = await getHistory();
-    if (history) {
-      newData = history
+    let data = savedDataToSend;
+
+    if (data) {
+      newData = data
       newData.forEach((element) => {
-        if (data.planQuestion == element.planQuestion) {
-          element.justify = data.justify;
+        if (questionData.planQuestion == element.planQuestion) {
+          element.justify = questionData.justify;
           isNew = false;
           return;
         }
       });
     }
-    if (isNew) newData.push(data);
+    if (isNew) newData.push(questionData);    
 
-    setHistory(newData);
+    setLocalHistory(newData);
+  }
+
+  function getConfig() : ITeoricConfig {
+    try{
+      const principal = JSON.parse(localStorage.getItem("teoric-config"))
+      return principal
+    }catch{
+      return null;
+    }
+  }
+
+  function updateConfig() {
+    const config = getConfig()
+    setThisPrincipal(config.thisPrincial);
+  }
+
+  function useThis() {
+    localStorage.setItem("teoric-config", JSON.stringify({thisPrincipal: true}))
+    updateConfig();
+  }
+
+  function noUseThis() {
+    localStorage.setItem("teoric-config", JSON.stringify({thisPrincipal: false}))
+    updateConfig();
+  }
+
+  async function updateForm() {
+    setThisPrincipal(true); 
+    const data = databaseHistory.reverse();   
+    setSavedDataToSend(data)
+    setLocalHistory(data);
+    setActiveIndex(data.length);
   }
 
   function previusQuestion() {
@@ -289,6 +384,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
       //descomentar
       const { data } = await http.post("/plan-question-answer", payloadToSend);
       if (data === "Sucesso") {
+        clearLocalHistory();
         onFinish();
       } else {
         setErrorOnSendForm(true);
@@ -363,6 +459,11 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
             </Grid>
           ) : (
             <>
+              <LoadHistory
+                thisPrincipal={thisPrincipal} 
+                updateForm={updateForm} 
+                useThis={useThis} 
+              /> 
               <ProgressBarAnswer
                 answeredQuestions={activeIndex + 1}
                 totalQuestions={data.length}
@@ -373,8 +474,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                     <Typography
                       sx={{ color: "ButtonFace" }}
                       textAlign={"center"}
-                      variant="subtitle1"
-                    >
+                      variant="subtitle1">
                       Questão {activeIndex + 1} / {data.length}
                     </Typography>
 
@@ -554,6 +654,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                     <Button onClick={previusQuestion} variant="outlined">
                       Anterior
                     </Button>
+                    <SaveButton dataSaved={dataSaved} saveData={saveData} />
                     {isSendingData ? (
                       <LoadingButton
                         size="small"

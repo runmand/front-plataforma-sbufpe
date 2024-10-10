@@ -8,9 +8,6 @@ import { downloadPDFPlaneja } from '@components/pdf/PlanejaPDF';
 
 
 export const FinishedForm = () => {
-
-
-  
   return (
     <Base
       appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}

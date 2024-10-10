@@ -11,12 +11,16 @@ import {
 import React, { useEffect, useState } from "react";
 import { http } from "src/core/axios";
 import Image from "next/image";
+import { Save } from '@mui/icons-material';
+import SaveButton from '@components/saveButton';
 
 interface IProps {
   onSubmit: (values: IValues[]) => void;
   stepValues: IValues[];
   onClickNextStep: () => void;
   onClickPrevStep: () => void;
+  saveData: () => void;
+  dataSaved: boolean
 }
 
 interface IValues {
@@ -38,6 +42,8 @@ export const FirstStep = ({
   stepValues,
   onClickNextStep,
   onClickPrevStep,
+  saveData,
+  dataSaved
 }: IProps) => {
   const [values, setValues] = React.useState<IValues[]>(stepValues);
 
@@ -279,6 +285,8 @@ export const FirstStep = ({
         <Button onClick={onClickPrevStep} variant="outlined">
           Voltar
         </Button>
+
+        <SaveButton dataSaved={dataSaved} saveData={saveData} />
 
         <Button variant="contained" color="primary" type={"submit"}>
           {"Próxima"}

@@ -41,23 +41,23 @@ export default function Index(props: TPROPS) {
     text: { fontSize: 12, marginTop: 5 },
   });
 
-  const getFormResult = useCallback(async (formId: number) => {
-    try {
-      const { data: formResult } = await formAnwerService.getUserResultFromForm(
-        formId
-      );
-      setFormData(formResult);
-    } catch (err: any) {
-      console.error(err);
-    }
-  }, [formAnwerService])
+  // const getFormResult = useCallback(async (formId: number) => {
+  //   try {
+  //     const { data: formResult } = await formAnwerService.getUserResultFromForm(
+  //       formId
+  //     );
+  //     setFormData(formResult);
+  //   } catch (err: any) {
+  //     console.error(err);
+  //   }
+  // }, [formAnwerService])
 
-  useEffect(() => {
-    const formIdFromLocalStorage = localStorage.getItem("lastFormSubmited");
-    if (formIdFromLocalStorage) {
-      getFormResult(Number(formIdFromLocalStorage));
-    }
-  }, [getFormResult]);
+  // useEffect(() => {
+  //   const formIdFromLocalStorage = localStorage.getItem("lastFormSubmited");
+  //   if (formIdFromLocalStorage) {
+  //     getFormResult(Number(formIdFromLocalStorage));
+  //   }
+  // }, [getFormResult]);
 
   const ModifiedPdf = ({
     maxScore,
@@ -115,43 +115,53 @@ export default function Index(props: TPROPS) {
 
   async function downloadPdf() {
     const localStorageAnswer = localStorage.getItem("selectedAnswer");
-    const { domainList, maxScore, score, formTitle, date } = formData;
-    const blob = await pdf(
-      <ModifiedPdf
-        domainList={domainList}
-        maxScore={maxScore}
-        score={score}
-        answer={JSON.parse(localStorageAnswer)}
-        formTitle={formTitle}
-        date={date}
-      />
-    ).toBlob();
-
-    // Create a URL for the blob object
-    const url = URL.createObjectURL(blob);
-    // Create an anchor element and set its href to the PDF URL
-    const a = document.createElement("a");
-    a.href = url;
-
-    // Set the anchor element's download attribute to the PDF file name
-    a.download = new Date() + "";
-
-    // Append the anchor element to the document body
-    document.body.appendChild(a);
-
-    // Click the anchor element to initiate the download
-    a.click();
-
-    // Remove the anchor element from the document body
-    document.body.removeChild(a);
-  }
-
-  useEffect(() => {
-    const formIdFromLocalStorage = localStorage.getItem("lastFormSubmited");
-    if (formIdFromLocalStorage) {
-      getFormResult(Number(formIdFromLocalStorage));
+    let data: FormResultProps = null;
+    if (!formData){
+      const formIdFromLocalStorage = localStorage.getItem("lastFormSubmited");
+      if (Number(formIdFromLocalStorage)) {
+        const formId = Number(formIdFromLocalStorage);
+        data = await http.get(`/user-answers/${formId}`).then(r => {
+          return r.data as FormResultProps;
+        })
+      }
     }
-  }, [getFormResult]);
+
+    
+
+    try {
+      const { domainList, maxScore, score, formTitle, date } = data;
+      const blob = await pdf(
+        <ModifiedPdf
+          domainList={domainList}
+          maxScore={maxScore}
+          score={score}
+          answer={JSON.parse(localStorageAnswer)}
+          formTitle={formTitle}
+          date={date}
+        />
+      ).toBlob();
+
+      // Create a URL for the blob object
+      const url = URL.createObjectURL(blob);
+      // Create an anchor element and set its href to the PDF URL
+      const a = document.createElement("a");
+      a.href = url;
+
+      // Set the anchor element's download attribute to the PDF file name
+      a.download = new Date() + "";
+
+      // Append the anchor element to the document body
+      document.body.appendChild(a);
+
+      // Click the anchor element to initiate the download
+      a.click();
+
+      // Remove the anchor element from the document body
+      document.body.removeChild(a);
+    } catch (error) {
+      enqueueSnackbar("Não existem documentos para baixar!", { variant: "error" });
+    }
+  }
 
   async function getPDF(){
     const payload = {
@@ -327,7 +337,7 @@ export default function Index(props: TPROPS) {
     >
 
       <ListMenu items={props.menuItems} />
-      {formData && (
+      
         <button
           onClick={() => downloadPdf()}
           style={{
@@ -345,9 +355,7 @@ export default function Index(props: TPROPS) {
         >
           Baixar PDF - Avaliações
         </button>
-      )}
-
-      {formData && (
+      
         <button
           onClick={() => downloadPlanejaPDF()}
           style={{
@@ -365,7 +373,7 @@ export default function Index(props: TPROPS) {
         >
           Baixar PDF - PlanejaSD
         </button>
-      )}
+      
     </Drawer>
   );
 }
