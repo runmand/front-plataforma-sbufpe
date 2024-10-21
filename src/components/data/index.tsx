@@ -13,22 +13,27 @@ import { useSnackbar } from 'notistack';
 import DownloadCSV from "../csv/index"
 
 export default function Index() {
-  const [typeData, setTypeData] = useState<typeData>('teorico');
+  const [typeData, setTypeData] = useState<typeData>('teorico');  
   const [tempDataTeoric, setTempDataTeoric] = useState<planAnswer[][]>();
-  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const [lastUpdate, setLastUpdate] = useState<Date>(null);
 	const { enqueueSnackbar } = useSnackbar();
   const [loadingData, setLoadingData] = useState<boolean>(true);
 
   function formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
+    if (date != null){
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
     
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-  
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
+
+    return "Bucando dados..."
+
   }
   
   async function setTeoric() {
@@ -42,7 +47,9 @@ export default function Index() {
   async function getDataTeoric() {
     setLoadingData(true);
     const { data } = await http.get("/data/teoric")
+    setLastUpdate(new Date());
     setTempDataTeoric(data);
+    setLoadingData(false);
   }
 
   async function reloadData() {
@@ -52,20 +59,13 @@ export default function Index() {
 
 
   useEffect(()=>{
-    if (typeData == 'teorico'){
-      getDataTeoric();
-    }
-
-    if (typeData == 'pratico'){
-      getDataTeoric();
-    }
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+    getDataTeoric();
 	},[])
 
-  useEffect(()=>{
-    setLoadingData(false);
-    setLastUpdate(new Date)
-	},[tempDataTeoric])
+  // useEffect(()=>{
+  //   setLoadingData(false);
+  //   setLastUpdate(new Date)
+	// },[tempDataTeoric])
 
   return (
     <MainContainer>
@@ -93,7 +93,7 @@ export default function Index() {
         </GridContainer>
         {!loadingData ? (
         <>
-          {typeData == 'teorico' ? (
+          {typeData == 'teorico'  ? (
             <TableComponent planAnswer={tempDataTeoric} />
           ): 
             <TableComponent planAnswer={tempDataTeoric} />
