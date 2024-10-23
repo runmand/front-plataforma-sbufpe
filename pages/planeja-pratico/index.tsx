@@ -14,14 +14,14 @@ import { http } from 'src/core/axios';
 import { Info, Update } from '@mui/icons-material';
 import LoadHistory from '@components/loadHistory';
 
-interface IStepsValues {
+export interface IStepsValues {
   firstStep: IFirstStep[];
   secondStep: ISecondStep;
   thirdStep: IThirdStep;
   fourthStep: IFourthStep;
 }
 
-interface IFirstStep {
+export interface IFirstStep {
   domain: string;
   first_indicator: string;
   first_degree: number;
@@ -29,11 +29,11 @@ interface IFirstStep {
   second_degree: number;
 }
 
-interface ISecondStep {
+export interface ISecondStep {
   defined_problems: IDefinedProblem[];
 }
 
-interface IThirdStep {
+export interface IThirdStep {
   causas: ICouses[];
 }
 
@@ -43,7 +43,7 @@ interface ICouses {
   explicacao: string;
 }
 
-interface IFourthStep {
+export interface IFourthStep {
   mentalMapUrl: string;
   criticalNode: string;
   actions: IThirdFormStructure[];

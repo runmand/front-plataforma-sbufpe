@@ -29,6 +29,17 @@ export default function Index() {
   //   { id: 3, title: "Planeja SD", url: routerEnum.PLANEJA },
   // ];
 
+  useEffect(() => {
+    const id = Number(localStorage.getItem("typeId"));
+    if (id <= 2) {
+      // Atualiza o estado do menu usando setMenu
+      setMenu(prevMenu => [
+        ...prevMenu,
+        { id: 7, title: "Exportar Dados", url: routerEnum.DATA }
+      ]);
+    }
+  }, []);
+
 
   const handleLogout = () => {
     localStorage.removeItem(localStorageKeyEnum.TOKEN);
