@@ -50,11 +50,11 @@ export default function Index() {
   
   async function setTeoric() {  
     setTypeData('teorico')    
-    if (tempDataPratical== undefined) await getDataTeoric();
+    if (tempDataTeoric== undefined) await getDataTeoric();
   }
 
   async function setPratical(){
-    setTypeData('pratico')
+    setTypeData('pratico')    
     if (tempDataPratical == undefined) await getDataPratical();
   }
 
@@ -84,10 +84,8 @@ export default function Index() {
         setTeoric();
       }
     }
-
-
   }
-
+/* eslint-disable react-hooks/exhaustive-deps */
   async function setLocalStorage() {
     const data: LocalData = {
       pratical: tempDataPratical,
@@ -125,8 +123,8 @@ export default function Index() {
       setHaveError(true);
       setErrorMessage(res.errors[0])
     }else{
-      setLastUpdateTeoric(new Date());
-      setTempDataTeoric(res.data);
+      setLastUpdatePratical(new Date());
+      setTempDataPratical(res.data);
       setLoadingData(false);
     }
   }
