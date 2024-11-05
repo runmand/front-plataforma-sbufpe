@@ -124,6 +124,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -136,6 +137,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
@@ -207,6 +209,7 @@ export default function Index() {
 							}}>
 							<Typography
 								variant='h4'
+								style={{ fontSize: item.name.split(" ")[0].length > 9 ? '1.7rem' : '' }}
 								color={theme.secundaryColor}>
 								{item.name}
 							</Typography>
@@ -227,6 +230,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -239,6 +243,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
@@ -351,6 +356,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -363,6 +369,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
@@ -454,6 +461,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -466,6 +474,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
+												sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>

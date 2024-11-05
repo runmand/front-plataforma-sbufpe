@@ -77,35 +77,6 @@ export const teacherTeamGI = [
 
 export const studentTeamTI = [
   {
-    name: 'Marcelo Dias',
-    role: 'CEO - Tear Technology',
-    photo: './profile-image/MarceloDias.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/marcelo-dias-979003210/',
-      },
-    ],
-  },
-  {
-    name: 'Giovanna Petraglia',
-    role: 'Desenvolvedora',
-    photo: './profile-image/GiovannaPetraglia.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/giovannapetraglia/',
-      },
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/8505607576671441',
-      },
-    ],
-  },
-  {
     name: 'Stephany Carvalho',
     role: 'Estudante',
     photo:
@@ -120,24 +91,6 @@ export const studentTeamTI = [
         id: 'cnpq',
         title: 'CNPq',
         url: 'http://lattes.cnpq.br/6759587473072785',
-      },
-    ],
-  },
-  {
-    name: 'Marcelo Arruda',
-    role: 'Estudante',
-    photo:
-      './profile-image/MarceloArruda.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/marcelo-arruda-one/',
-      },
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'https://lattes.cnpq.br/6204735805360993',
       },
     ],
   },
@@ -167,86 +120,69 @@ export const studentTeamTI = [
     ],
   },
   {
-    name: 'Juarez Júnior',
+    name: 'Igor Pereira',
     role: 'Estudante',
     photo:
-      './profile-image/JuarezJunior.jpg',
+      './profile-image/IgorPereira.jpg',
     contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/juarez-jose/',
-      },
       {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'https://lattes.cnpq.br/5639341487446822',
+        url: 'http://lattes.cnpq.br/3448063622652979',
+      },
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/igor-pereira-lins-01a1691a1/',
       },
     ],
   },
   {
-    name: 'Marcos Capella',
+    name: 'Natalia Nascimento',
     role: 'Estudante',
-    photo: './profile-image/MarcosCapella.jpg',
+    photo:
+      './profile-image/NataliaNascimento.jpg',
     contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/capella-marcosfilipe/',
-      },
       {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'http://lattes.cnpq.br/1227411864151388',
+        url: 'http://lattes.cnpq.br/6690631071055195',
+      },
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/natalia-nascimento6/',
       },
     ],
   },
   {
-    name: 'Dayane Climaco',
+    name: 'Bruno Moura',
     role: 'Estudante',
     photo:
-      './profile-image/DayaneClimaco.jpeg',
+      './profile-image/BrunoMoura.jpeg',
     contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/dayane-climaco/',
-      },
       {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'https://lattes.cnpq.br/2355344882170453',
+        url: 'http://lattes.cnpq.br/7765354524705477',
+      },
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/bruno-moura-java',
       },
     ],
   },
   {
-    name: 'Beatriz Gonçalves',
+    name: 'Matheus Antônio',
     role: 'Estudante',
     photo:
-      './profile-image/BeatrizGonçalves.jpeg',
+      './profile-image/MatheusAntonio.jpeg',
     contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/dayane-climaco/',
-      },
       {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'https://lattes.cnpq.br/9265147279029313',
-      },
-    ],
-  },
-  {
-    name: 'Victor Vilaça',
-    role: 'Estudante',
-    photo:
-      './profile-image/VictorVilaca.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/victorvila%C3%A7a/',
+        url: 'https://lattes.cnpq.br/9669494357503848',
       },
     ],
   },
@@ -301,6 +237,42 @@ export const studentsTeamGI = [
         id: 'cnpq',
         title: 'CNPq',
         url: 'http://lattes.cnpq.br/6729363004080110',
+      },
+    ],
+  },
+  {
+    name: 'Raylana Vitória',
+    role: 'Estudante',
+    photo: './profile-image/RaylanaVitoria.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/3058313837056118',
+      },
+    ],
+  },
+  {
+    name: 'Hudson Israel',
+    role: 'Estudante',
+    photo: './profile-image/HudsonIsrael.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/5584629390266623',
+      },
+    ],
+  },
+  {
+    name: 'Emmanuella Lins',
+    role: 'Estudante',
+    photo: './profile-image/EmmanuellaLins.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/9354687806411813',
       },
     ],
   },
