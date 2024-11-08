@@ -123,25 +123,25 @@ export default function Index() {
 		if (!isLogged && url == routerEnum.FORM) {
 			setIsOpenLogin(true)
 			return;
-		}if (isLogged && url == routerEnum.FORM) {
+		} if (isLogged && url == routerEnum.FORM) {
 			router.push(routerEnum.FORM)
 			return;
 		} else {
-			setContainerBodyType(url) 
+			setContainerBodyType(url)
 		}
 	}
 	const handleShowPageContact = () => {
 		setContainerBodyType(containerBodyTypeEnum.CONTACT_US)
 	}
-	const handleShowTclePage = () =>{
+	const handleShowTclePage = () => {
 		setContainerBodyType(containerBodyTypeEnum.TCLE)
 	}
 
-	useEffect(()=>{
-		if(router.query.containerBody){
+	useEffect(() => {
+		if (router.query.containerBody) {
 			setContainerBodyType(router.query.containerBody as string)
 		}
-	},[router])
+	}, [router])
 
 	return (
 		<div>
@@ -155,9 +155,9 @@ export default function Index() {
 								openSignupModal={() => setIsOpenSignup(true)}
 								menuList={indexToolbarMenuList}
 							/> : <IndexToolbarMobile
-							onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
-							openLoginModal={() => setIsOpenLogin(true)}
-							menuList={indexToolbarMenuList}
+								onClickInitialButton={() => setContainerBodyType(containerBodyTypeEnum.MAIN)}
+								openLoginModal={() => setIsOpenLogin(true)}
+								menuList={indexToolbarMenuList}
 							/>
 						}
 					/>
@@ -166,13 +166,13 @@ export default function Index() {
 					<Box
 						sx={{
 							background: theme.greyLight,
-							marginTop:'5rem',
-							paddingTop:!largeQuery? '2rem' : '1rem',
-							minHeight:'88vh',
-							display:'flex',
-							flexDirection:'column',
-							justifyContent:'center'
-							
+							marginTop: '5rem',
+							paddingTop: !largeQuery ? '2rem' : '1rem',
+							minHeight: '88vh',
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center'
+
 						}}>
 						{containerBodyType === containerBodyTypeEnum.MAIN && (
 							<Box
@@ -302,18 +302,18 @@ export default function Index() {
 							</Box>)}
 						{containerBodyType === containerBodyTypeEnum.ABOUT_US && <AboutUsContainer />}
 						{containerBodyType === containerBodyTypeEnum.CONTACT_US && <ContactUsContainer />}
-						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer/>}
-						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq/>}
-						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle/>}
-						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction/>}
-						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs/>}
-						{containerBodyType === containerBodyTypeEnum.APS_DATA && <ApsData/>}
-						{containerBodyType === containerBodyTypeEnum.CEO_DATA && <CeoData/>}
-						{containerBodyType === containerBodyTypeEnum.USER_DATA && <UserData/>}
+						{containerBodyType === containerBodyTypeEnum.COLLECTION && <CollectionContainer />}
+						{containerBodyType === containerBodyTypeEnum.FAQ && <Faq />}
+						{containerBodyType === containerBodyTypeEnum.TCLE && <Tcle />}
+						{containerBodyType === containerBodyTypeEnum.DIRECTION && <Direction />}
+						{containerBodyType === containerBodyTypeEnum.WHAT_IS && <WhatIs />}
+						{containerBodyType === containerBodyTypeEnum.APS_DATA && <ApsData />}
+						{containerBodyType === containerBodyTypeEnum.CEO_DATA && <CeoData />}
+						{containerBodyType === containerBodyTypeEnum.USER_DATA && <UserData />}
 					</Box>
 				}
 				footerChild={<FooterMain
-					handleClick={(url) => setContainerBodyType(url) }
+					handleClick={(url) => setContainerBodyType(url)}
 				/>}
 			/>
 

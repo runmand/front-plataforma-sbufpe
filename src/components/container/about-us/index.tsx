@@ -50,9 +50,12 @@ export default function Index() {
 				bgcolor: theme.primaryColor,
 				marginX: 'auto',
 				maxWidth: '50rem',
-				height: 'auto'
+				height: 'auto',
 			}}>
-				<Typography sx={{ padding: 2 }}
+				<Typography
+					sx={{
+						padding: 1.5,
+					}}
 					textAlign={'center'}
 					variant='h4'
 					color={theme.white}>
@@ -69,52 +72,63 @@ export default function Index() {
 					<Paper
 						key={index}
 						sx={{
-							width: '21rem',
-							height: '13rem',
+							width: '20rem',
+							height: '8rem',
 							display: 'flex',
-							alignContent: 'center',
-							padding: '1px',
+							alignItems: 'center',
+							padding: '1rem',
 							margin: '0.75rem',
 							bgcolor: 'white',
+							gap: '1rem'
 						}}
 					>
 						<Box
 							sx={{
-								width: '50%',
+								width: '30%',
 								display: 'flex',
 								justifyContent: 'center',
-								alignContent: 'center',
 								flexWrap: 'wrap',
 							}}>
 							<Avatar
 								alt={item.name}
 								src={item.photo}
 								sx={{
-									height: 1,
-									width: '100%',
+									height: '95px',
+									width: '95px',
 								}} />
 						</Box>
 						<Box
 							sx={{
-								width: '8rem',
+								width: '70%',
 								display: 'flex',
 								flexDirection: 'column',
-								textAlign: 'center',
-								gap: '0.5rem',
+								alignItems: 'flex-start',
+								textAlign: 'left',
+								gap: '0.3rem',
 							}}>
 							<Typography
-								variant='h4'
-								color={theme.secundaryColor}>
+								variant='h5'
+								color={theme.secundaryColor}
+								sx={{
+									fontSize: '1.1rem',
+									fontWeight: 'bold',
+								}}
+							>
 								{item.name}
 							</Typography>
 							<Typography
-								color={theme.primaryColor}>
+								color={theme.primaryColor}
+								sx={{
+									fontSize: '0.9rem',
+								}}
+							>
 								{item.role}
 							</Typography>
 							<Box
 								sx={{
 									display: 'flex',
-									justifyContent: 'space-around',
+									gap: '0.5rem',
+									marginTop: '0.5rem',
 
 								}}>
 								<>
@@ -124,7 +138,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -137,7 +151,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
@@ -157,7 +171,7 @@ export default function Index() {
 				maxWidth: '50rem',
 				height: 'auto'
 			}}>
-				<Typography sx={{ padding: 2 }}
+				<Typography sx={{ padding: 1.5 }}
 					textAlign={'center'}
 					variant='h4'
 					color={theme.white}>
@@ -174,42 +188,46 @@ export default function Index() {
 					<Paper
 						key={index}
 						sx={{
-							width: '21rem',
-							height: '13rem',
+							width: '20rem',
+							height: '8rem',
 							display: 'flex',
-							alignContent: 'center',
-							padding: '1px',
+							alignItems: 'center',
+							padding: '1rem',
 							margin: '0.75rem',
 							bgcolor: 'white',
+							gap: '1rem'
 						}}
 					>
 						<Box
 							sx={{
-								width: '50%',
+								width: '30%',
 								display: 'flex',
 								justifyContent: 'center',
-								alignContent: 'center',
 								flexWrap: 'wrap',
 							}}>
 							<Avatar
 								alt={item.name}
 								src={item.photo}
 								sx={{
-									height: 1,
-									width: '100%',
+									height: '95px',
+									width: '95px',
 								}} />
 						</Box>
 						<Box
 							sx={{
-								width: '8rem',
+								width: '70%',
 								display: 'flex',
 								flexDirection: 'column',
-								textAlign: 'center',
-								gap: '0.5rem',
+								alignItems: 'flex-start',
+								textAlign: 'left',
+								gap: '0.3rem',
 							}}>
 							<Typography
-								variant='h4'
-								style={{ fontSize: item.name.split(" ")[0].length > 9 ? '1.7rem' : '' }}
+								variant='h5'
+								sx={{
+									fontSize: '1.1rem',
+									fontWeight: 'bold',
+								}}
 								color={theme.secundaryColor}>
 								{item.name}
 							</Typography>
@@ -230,7 +248,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -243,7 +261,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
@@ -284,7 +302,7 @@ export default function Index() {
 				maxWidth: '50rem',
 				height: 'auto'
 			}}>
-				<Typography sx={{ padding: 2 }}
+				<Typography sx={{ padding: 1.5 }}
 					textAlign={'center'}
 					variant='h4'
 					color={theme.white}>
@@ -301,41 +319,46 @@ export default function Index() {
 					<Paper
 						key={index}
 						sx={{
-							width: '21rem',
-							height: '13rem',
+							width: '20rem',
+							height: '8rem',
 							display: 'flex',
-							alignContent: 'center',
-							padding: '1px',
+							alignItems: 'center',
+							padding: '1rem',
 							margin: '0.75rem',
 							bgcolor: 'white',
+							gap: '1rem'
 						}}
 					>
 						<Box
 							sx={{
-								width: '50%',
+								width: '30%',
 								display: 'flex',
 								justifyContent: 'center',
-								alignContent: 'center',
 								flexWrap: 'wrap',
 							}}>
 							<Avatar
 								alt={item.name}
 								src={item.photo}
 								sx={{
-									height: 1,
-									width: '100%',
+									height: '95px',
+									width: '95px',
 								}} />
 						</Box>
 						<Box
 							sx={{
-								width: '8rem',
+								width: '70%',
 								display: 'flex',
 								flexDirection: 'column',
-								textAlign: 'center',
-								gap: '0.5rem',
+								alignItems: 'flex-start',
+								textAlign: 'left',
+								gap: '0.3rem',
 							}}>
 							<Typography
-								variant='h4'
+								variant='h5'
+								sx={{
+									fontSize: '1.1rem',
+									fontWeight: 'bold',
+								}}
 								color={theme.secundaryColor}>
 								{item.name}
 							</Typography>
@@ -356,7 +379,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -369,7 +392,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
@@ -389,7 +412,7 @@ export default function Index() {
 				maxWidth: '50rem',
 				height: 'auto'
 			}}>
-				<Typography sx={{ padding: 2 }}
+				<Typography sx={{ padding: 1.5 }}
 					textAlign={'center'}
 					variant='h4'
 					color={theme.white}>
@@ -406,41 +429,46 @@ export default function Index() {
 					<Paper
 						key={index}
 						sx={{
-							width: '21rem',
-							height: '13rem',
+							width: '20rem',
+							height: '8rem',
 							display: 'flex',
-							alignContent: 'center',
-							padding: '1px',
+							alignItems: 'center',
+							padding: '1rem',
 							margin: '0.75rem',
 							bgcolor: 'white',
+							gap: '1rem'
 						}}
 					>
 						<Box
 							sx={{
-								width: '50%',
+								width: '30%',
 								display: 'flex',
 								justifyContent: 'center',
-								alignContent: 'center',
 								flexWrap: 'wrap',
 							}}>
 							<Avatar
 								alt={item.name}
 								src={item.photo}
 								sx={{
-									height: 1,
-									width: '100%',
+									height: '95px',
+									width: '95px',
 								}} />
 						</Box>
 						<Box
 							sx={{
-								width: '8rem',
+								width: '70%',
 								display: 'flex',
 								flexDirection: 'column',
-								textAlign: 'center',
-								gap: '0.5rem',
+								alignItems: 'flex-start',
+								textAlign: 'left',
+								gap: '0.3rem',
 							}}>
 							<Typography
-								variant='h4'
+								variant='h5'
+								sx={{
+									fontSize: '1.1rem',
+									fontWeight: 'bold',
+								}}
 								color={theme.secundaryColor}>
 								{item.name}
 							</Typography>
@@ -461,7 +489,7 @@ export default function Index() {
 										if (linkedInObj) {
 											return (
 												<LinkedInIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(linkedInObj.url, '_blank')}
 												/>
@@ -474,7 +502,7 @@ export default function Index() {
 										if (cnpq) {
 											return (
 												<AccountCircleIcon
-												sx={{ cursor: 'pointer' }}
+													sx={{ cursor: 'pointer' }}
 													color='action'
 													onClick={() => window.open(cnpq.url, '_blank')}
 												/>
