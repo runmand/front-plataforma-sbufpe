@@ -3,6 +3,7 @@ import { Box, IconButton } from '@mui/material';
 
 export const MainContainer = styled(Box)`
   margin-top: 12vh;
+  margin-bottom: 12vh;
   width: 100%;
   height: 85vh;
   display: flex;

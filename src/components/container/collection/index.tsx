@@ -1,5 +1,5 @@
 import { SetStateAction, useState } from "react";
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Grid, Link, Typography, useMediaQuery } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -10,12 +10,21 @@ import { theme } from 'src/core/theme'
 
 export default function Index(){
   const [search, setSearch] = useState("");
+  const largeQuery = useMediaQuery('(min-width:720px)')
   const newAcervo = acervo.filter((type) => type.type.includes(search) )
   const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSearch(event.target.value);}
 
     return(
-    <>
+    <Box sx={{
+      background: theme.greyLight,
+      marginTop:'5rem',
+      paddingTop:!largeQuery? '2rem' : '1rem',
+      minHeight:'88vh',
+      display:'flex',
+      flexDirection:'column',
+      justifyContent:'center'
+    }}>
     <Box sx = {{
         marginTop:'3rem',
         position:'justify',
@@ -71,6 +80,6 @@ export default function Index(){
         ))}
       </Grid>
     </Box>
-    </>
+    </Box>
   )
 }

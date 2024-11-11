@@ -4,6 +4,7 @@ import {
 	Typography,
 	Avatar,
 	Paper,
+	useMediaQuery,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -11,8 +12,17 @@ import { theme } from 'src/core/theme';
 import { teacherTeamGI, teacherTeamTI, studentTeamTI, studentsTeamGI } from "src/shared/dataBase";
 
 export default function Index() {
+	const largeQuery = useMediaQuery('(min-width:720px)')
+
 	return (
-		<>
+		<Box sx={{
+			background: theme.greyLight,
+			marginTop:'5rem',
+			paddingTop:!largeQuery? '2rem' : '1rem',
+			minHeight:'88vh',
+			display:'flex',
+			flexDirection:'column',
+			justifyContent:'center'}}>
 			<Typography
 				variant='h2'
 				sx={{
@@ -515,6 +525,6 @@ export default function Index() {
 					</Paper>
 				)))}
 			</Grid>
-		</>
+		</Box>
 	);
 }

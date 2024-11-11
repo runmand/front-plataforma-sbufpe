@@ -13,7 +13,39 @@ export enum routerEnum {
   DATACEO = "/ceo",
   DATAAPS = "/aps",
   RESETPWD = "/recuperar",
-  DATA = '/data'
+  DATA = '/data',
+  PROJECT = '/project',
+  TEAM = '/team',
+  ARTICLES = '/articles',
+  CONTACTUS = '/contactus',
+  FAQ = '/faq',
+  CEO = '/ceodata',
+  APS = '/apsdata',
+  USER = '/userdata',
+  TCLE = '/tcle',
+  DIRECTION = "/direction"
+}
+
+export enum titleEnumPtBr {
+  '/ceodata' = "Dados CEO",
+  '/apsdata' = "Dados APS",
+  '/userdata' = 'Dados usuario',
+  '/faq' = "F.A.Q",
+  '/contactus' = "Contato",
+  '/articles' = "Artigos",
+  '/team' = "Quem somos?",
+  '/project' = "Projeto",
+  '/' = 'Início',
+  '/home' = 'Início',
+  '/tcle' = 'TCLE',
+  '/direction' = "Endereço",
+  '/form' = 'Formularios',
+  '/question' = 'Questionario inicial',
+  '/planeja' = 'PlanejaSD Teorico',
+  '/planeja-pratico' = 'PlanejaSD Pratico',
+  '/ceo' = "Dados CEO",
+  '/aps' = "Dados APS",
+  '/data' = "Exportar dados"
 }
 
 export enum localStorageKeyEnum {
