@@ -33,6 +33,8 @@ import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types
 import React from 'react';
 import LoadHistory from '@components/loadHistory';
 import SaveButton from '@components/saveButton';
+import NewMenu from '@components/newMenu/index'
+import FooterMain from '@components/footer/main/index';
 
 interface IPlanejaResponse {
   id: number;
@@ -430,7 +432,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
   return (
     <Base
-      appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+      appBarChild={<NewMenu/>}
       mainContainerChild={
         <Box
           component={"form"}
@@ -691,6 +693,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
           )}
         </Box>
       }
+      footerChild={<FooterMain />}
+
     />
   );
 }

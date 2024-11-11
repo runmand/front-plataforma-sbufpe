@@ -1,12 +1,14 @@
 import Base from '@components/base-layout/index';
-import Appbar from '@components/app-bar/index';
-import HomeToolbar from '@components/toolbar/home';
+import NewMenu from '@components/newMenu/index'
+import HomeComponent from '@components/container/home'
+import FooterMain from '@components/footer/main/index';
 
 export default function Index() {
 	return (
 		<Base
-			appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
-			mainContainerChild={<div></div>} //TODO: Remover essa div e acidionar o component body da home page
+			appBarChild={<NewMenu/>}
+			mainContainerChild={<HomeComponent/>}
+			footerChild={<FooterMain />}
 		/>
 	);
 }

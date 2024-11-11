@@ -3,7 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Paper } from '@mui/material';
+import { Paper, useMediaQuery } from '@mui/material';
+import { theme } from "src/core/theme";
 
 
 interface TabPanelProps {
@@ -12,25 +13,6 @@ interface TabPanelProps {
   value: number;
 }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 4 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 function a11yProps(index: number) {
   return {
@@ -41,22 +23,32 @@ function a11yProps(index: number) {
 
 export default function Index() {
   const [value, setValue] = React.useState(0);
+	const largeQuery = useMediaQuery('(min-width:720px)')
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
-    <Box sx={{ width: '100%', margin:'auto'}}>
+		<Box 
+		sx={{
+			background: theme.greyLight,
+			marginTop:'5rem',
+			paddingTop:!largeQuery? '2rem' : '1rem',
+			minHeight:'88vh',
+			display:'flex',
+			flexDirection:'column',
+			justifyContent:'center'
+		}}
+		>
+			    <Box sx={{ width: '100%', margin:'auto'}}>
       <Box sx={{ borderBottom: 1,display:'flex',justifyContent:'center'}}>
         <Tabs value={value} onChange={handleChange} aria-label="TCLE - GESTBUCAL">
           <Tab label="PROFISSIONAIS" {...a11yProps(0)} />
           <Tab label="USUÁRIOS" {...a11yProps(1)} />
-
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-				<Paper 
+				<Paper style={{ width: '95%', margin: 'auto', display: value == 0 ? 'block' : 'none' }} 
 					sx={{
 						width:'100%',
 						padding:'1rem'
@@ -119,9 +111,7 @@ export default function Index() {
 
 						</Typography>
 				</Paper>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-			<Paper 
+				<Paper style={{ width: '95%', margin: 'auto', display: value == 1 ? 'block' : 'none' }} 
 					sx={{
 						width:'100%',
 						padding:'1rem'
@@ -185,8 +175,7 @@ export default function Index() {
 
 						</Typography>
 				</Paper>
-      </TabPanel>
-
     </Box>
+		</Box>
   );
 }

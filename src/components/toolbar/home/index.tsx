@@ -31,6 +31,10 @@ export default function Index() {
 
   useEffect(() => {
     const id = Number(localStorage.getItem("typeId"));
+    console.log(id);
+    console.log(id <= 2);
+    
+    
     if (id <= 2) {
       // Atualiza o estado do menu usando setMenu
       setMenu(prevMenu => [

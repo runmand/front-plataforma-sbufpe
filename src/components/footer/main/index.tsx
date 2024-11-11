@@ -1,7 +1,8 @@
 import { Box, List, ListItem, ListItemButton, Typography } from '@mui/material';
 import { theme } from 'src/core/theme';
 import { TPROPS } from './type';
-import { containerBodyTypeEnum, } from 'src/core/enums';
+import { containerBodyTypeEnum, routerEnum, } from 'src/core/enums';
+import { useRouter } from 'next/router';
 
 const infoList = [
 
@@ -10,15 +11,15 @@ const infoList = [
 		items: [
 			{
 				title: 'Quem somos?',
-				url: containerBodyTypeEnum.ABOUT_US,
+				url: routerEnum.TEAM,
 			},
 			{
 				title: 'O que é GestBucal',
-				url: containerBodyTypeEnum.WHAT_IS,
+				url: routerEnum.PROJECT,
 			},
 			{
 				title: 'TCLE',
-				url: containerBodyTypeEnum.TCLE,
+				url: routerEnum.TCLE,
 			},
 		],
 	},
@@ -36,15 +37,19 @@ const infoList = [
 		items: [
 			{
 				title: 'Central SAC | +55(81)3194-4900\nDuvidas | +55(81)3038-6405',
-				url: containerBodyTypeEnum.CONTACT_US,
+				url: routerEnum.CONTACTUS,
 			},
 			
 		],
 	},
 ];
 
-export default function Index(props: TPROPS) {
-	
+export default function Index() {
+	const router = useRouter();
+
+	function handleClick(url: string) {
+		router.push(url)
+	}
 
 	return (
 		<Box
@@ -92,7 +97,7 @@ export default function Index(props: TPROPS) {
 											whiteSpace: 'pre-line',
 											marginLeft:'1rem'
 										}}
-										onClick={()=>props.handleClick(item.url)}
+										onClick={()=> handleClick(item.url)}
 											>
 										{item.title}
 									</ListItemButton>

@@ -1,4 +1,4 @@
-import { Box, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, CardMedia, Grid, Typography, useMediaQuery } from "@mui/material";
 import { theme } from "src/core/theme";
 
 function createMonthlyAccess(month: string, qty: string) {
@@ -30,8 +30,19 @@ const rows2023 = [
 ];
 
 export default function Index() {
+	const largeQuery = useMediaQuery('(min-width:720px)')
+
+
 	return (
-		<>
+		<Box sx={{
+			background: theme.greyLight,
+			marginTop:'5rem',
+			paddingTop:!largeQuery? '2rem' : '1rem',
+			minHeight:'88vh',
+			display:'flex',
+			flexDirection:'column',
+			justifyContent:'center'
+		}}>
 			<Box sx={{
 				position: 'justify',
 				bgcolor: theme.primaryColor,
@@ -401,6 +412,6 @@ export default function Index() {
 					))}
 				</Grid>
 			</Box>
-		</>
+		</Box>
 	)
 }

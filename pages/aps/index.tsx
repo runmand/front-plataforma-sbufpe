@@ -1,7 +1,7 @@
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
-import { Avatar, Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography, useMediaQuery } from '@mui/material';
 import FormService from '../../src/pages/form/service';
 import React, { useEffect } from 'react';
 import { INDEX_RES } from '../../src/pages/form/type';
@@ -12,10 +12,13 @@ import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { theme } from 'src/core/theme';
 import FormAnswerService from 'src/pages/form-answer/service';
+import NewMenu from '@components/newMenu/index'
+import FooterMain from '@components/footer/main/index';
 
 export default function Index() {
 	const formService = new FormService();
 	const formAnwerService = new FormAnswerService();
+  const largeQuery = useMediaQuery('(min-width:720px)')
 
 	const { enqueueSnackbar } = useSnackbar();
 	const [forms, setForms] = React.useState<INDEX_RES[]>();
@@ -71,24 +74,24 @@ export default function Index() {
 
   return (
     <Base
-      appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+      appBarChild={<NewMenu/>}
       mainContainerChild= {
       <Box
-      style={{
+			sx={{
         marginTop: "12vh",
         width:'100%',
-        height: "85vh"
-      }}>
+        height: "85vh"}}
+			>
         <Typography textAlign={"center"} fontSize={"32pt"} color={"#6D141A"} margin={"auto"}>APS</Typography>
         <iframe
           title="APS data analytics"
           style={{
             minHeight:'600px',
-            background: "red",
             width:'100%'}}   
           src="https://app.powerbi.com/view?r=eyJrIjoiODc2N2M0OTQtOWE0OC00ZjdkLTljNTItYTIyOGQ0MDI4ZjVjIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"></iframe>
       </Box>}
-      />
+      footerChild={<FooterMain />}
+			/>
   );
 }
 

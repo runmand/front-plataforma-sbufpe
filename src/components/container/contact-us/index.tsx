@@ -1,5 +1,5 @@
 import { Padding } from "@mui/icons-material";
-import { Box, Button, FormControl, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Stack, TextField, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { theme } from 'src/core/theme';
 
@@ -7,6 +7,7 @@ export default function Index() {
     const [name, setName] = useState('');
     const [assunto, setAssunto] = useState('');
     const [message, setMessage] = useState('');
+	const largeQuery = useMediaQuery('(min-width:720px)')
 
     function sendEmail(e: { preventDefault: () => void; }) {
         e.preventDefault();
@@ -14,7 +15,15 @@ export default function Index() {
     }
 
     return (
-        <>
+        <Box sx={{
+            background: theme.greyLight,
+            marginTop:'5rem',
+            paddingTop:!largeQuery? '2rem' : '1rem',
+            minHeight:'88vh',
+            display:'flex',
+            flexDirection:'column',
+            justifyContent:'center'
+        }}>
             <Box sx={{
                 position: 'justify',
                 bgcolor: theme.greyLight,
@@ -82,7 +91,7 @@ export default function Index() {
                     </Stack>
                 </form>
             </Box>
-        </>
+        </Box>
 
     );
 }
