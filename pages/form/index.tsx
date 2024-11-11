@@ -77,7 +77,7 @@ export default function Index() {
 			mainContainerChild={
 				forms ? (
 					forms.length === 0 ? (
-						<NotFound msg={'Nenhum questionário encontrado.'} />
+						<Typography>Sem formularios</Typography>
 					) : (
 						<Box
 							sx={{      background: theme.greyLight,
