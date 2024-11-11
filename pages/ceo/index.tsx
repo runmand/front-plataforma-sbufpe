@@ -12,6 +12,8 @@ import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { theme } from 'src/core/theme';
 import FormAnswerService from 'src/pages/form-answer/service';
+import NewMenu from '@components/newMenu/index'
+import FooterMain from '@components/footer/main/index';
 
 export default function Index() {
 	const formService = new FormService();
@@ -71,7 +73,7 @@ export default function Index() {
 
   return (
     <Base
-      appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+      appBarChild={<NewMenu/>}
       mainContainerChild= {
       <Box
       style={{
@@ -84,11 +86,12 @@ export default function Index() {
           title="Ceo data analytics"
           style={{
             minHeight:'600px',
-            background: "red",
             width:'100%'}}   
           src="https://app.powerbi.com/view?r=eyJrIjoiZjcxYTJhMTctOWQ5Mi00NDNjLWFiYzAtZjZmZGU1ODEyMzUxIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"></iframe>
       </Box>}
+			footerChild={<FooterMain />}
       />
+
   );
 }
 

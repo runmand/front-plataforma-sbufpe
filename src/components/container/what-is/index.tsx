@@ -1,4 +1,4 @@
-import { Box, CardMedia, Grid, Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material";
+import { Box, CardMedia, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { theme } from "src/core/theme";
@@ -72,8 +72,19 @@ export default function Index() {
 
 	const rowsToShow: AccessData[] = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+	const largeQuery = useMediaQuery('(min-width:720px)')
+
+
 	return (
-		<>
+		<Box sx={{
+			background: theme.greyLight,
+			marginTop: '5rem',
+			paddingTop: !largeQuery ? '2rem' : '1rem',
+			minHeight: '88vh',
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center'
+		}}>
 			<Box sx={{
 				position: 'justify',
 				bgcolor: theme.primaryColor,
@@ -369,6 +380,6 @@ export default function Index() {
 					/>
 				</TableContainer>
 			</Box>
-		</>
+		</Box>
 	)
 }

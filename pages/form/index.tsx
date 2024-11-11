@@ -1,7 +1,7 @@
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
-import { Avatar, Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography, useMediaQuery } from '@mui/material';
 import FormService from '../../src/pages/form/service';
 import React, { useEffect } from 'react';
 import { INDEX_RES } from '../../src/pages/form/type';
@@ -12,11 +12,13 @@ import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
 import { theme } from 'src/core/theme';
 import FormAnswerService from 'src/pages/form-answer/service';
+import NewMenu from '@components/newMenu/index'
+import FooterMain from '@components/footer/main/index';
 
 export default function Index() {
 	const formService = new FormService();
 	const formAnwerService = new FormAnswerService();
-
+  const largeQuery = useMediaQuery('(min-width:720px)')
 	const { enqueueSnackbar } = useSnackbar();
 	const [forms, setForms] = React.useState<INDEX_RES[]>();
 	const handleSelectForm = (id: ID) => {
@@ -71,13 +73,20 @@ export default function Index() {
 
 	return (
 		<Base
-			appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+			appBarChild={<NewMenu/>}
 			mainContainerChild={
 				forms ? (
 					forms.length === 0 ? (
-						<NotFound msg={'Nenhum questionário encontrado.'} />
+						<Typography>Sem formularios</Typography>
 					) : (
 						<Box
+							sx={{      background: theme.greyLight,
+								minHeight:'88vh',
+								display:'flex',
+								flexDirection:'column',
+								justifyContent:'center'}}
+						>
+													<Box
 							sx={{
 								marginY:{xs:'10rem',sm:'7rem' },
 								marginX:{xs:'1rem', sm:'2rem'},
@@ -136,12 +145,14 @@ export default function Index() {
 							))}
 							</Box>
 						</Box>
+						</Box>
 						
 					)
 				) : (
 					<div></div>
 				)
 			}
+			footerChild={<FooterMain/>}
 		/>
 	);
 }

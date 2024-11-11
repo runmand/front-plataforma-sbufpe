@@ -13,7 +13,8 @@ import { nameForm } from 'src/constants/constantsPlaneja';
 import { http } from 'src/core/axios';
 import { Info, Update } from '@mui/icons-material';
 import LoadHistory from '@components/loadHistory';
-
+import NewMenu from '@components/newMenu/index'
+import FooterMain from '@components/footer/main/index';
 export interface IStepsValues {
   firstStep: IFirstStep[];
   secondStep: ISecondStep;
@@ -358,7 +359,7 @@ export default function Index() {
 
   return (
     <Base
-      appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+      appBarChild={<NewMenu/>}
       mainContainerChild={
         <Box
           sx={{
@@ -442,6 +443,8 @@ export default function Index() {
           </Paper>
         </Box>
       }
+      footerChild={<FooterMain />}
+
     />
   );
 }
