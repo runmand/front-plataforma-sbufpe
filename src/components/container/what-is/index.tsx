@@ -1,35 +1,77 @@
-import { Box, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, CardMedia, Grid, Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import Carousel from "react-material-ui-carousel";
 import { theme } from "src/core/theme";
 
-function createMonthlyAccess(month: string, qty: string) {
-	return { month, qty };
+interface AccessData {
+	year: number;
+	month: string;
+	qty: string;
 }
 
-const rows2024 = [
-	createMonthlyAccess('Janeiro', '267'),
-	createMonthlyAccess('Fevereiro', '235'),
-	createMonthlyAccess('Março', '246'),
-	createMonthlyAccess('Abril', '439'),
-	createMonthlyAccess('Maio', '397'),
-	createMonthlyAccess('Junho', '515'),
-	createMonthlyAccess('Julho', '658'),
-	createMonthlyAccess('Agosto - até 29/09', '642'),
+function createMonthlyAccess({ year, month, qty }: AccessData) {
+	return { year, month, qty };
+}
 
+const rows2024: AccessData[] = [
+	createMonthlyAccess({ year: 2024, month: 'Janeiro', qty: '267' }),
+	createMonthlyAccess({ year: 2024, month: 'Fevereiro', qty: '235' }),
+	createMonthlyAccess({ year: 2024, month: 'Março', qty: '246' }),
+	createMonthlyAccess({ year: 2024, month: 'Abril', qty: '439' }),
+	createMonthlyAccess({ year: 2024, month: 'Maio', qty: '397' }),
+	createMonthlyAccess({ year: 2024, month: 'Junho', qty: '515' }),
+	createMonthlyAccess({ year: 2024, month: 'Julho', qty: '658' }),
+	createMonthlyAccess({ year: 2024, month: 'Agosto', qty: '684' }),
+	createMonthlyAccess({ year: 2024, month: 'Setembro', qty: '523' }),
+	createMonthlyAccess({ year: 2024, month: 'Outubro', qty: '428' }),
 ];
 
 const rows2023 = [
-	createMonthlyAccess('Abril', '50'),
-	createMonthlyAccess('Maio', '197'),
-	createMonthlyAccess('Junho', '259'),
-	createMonthlyAccess('Julho', '206'),
-	createMonthlyAccess('Agosto', '298'),
-	createMonthlyAccess('Setembro', '458'),
-	createMonthlyAccess('Outubro', '465'),
-	createMonthlyAccess('Novembro', '587'),
-	createMonthlyAccess('Dezembro', '448'),
+	createMonthlyAccess({ year: 2023, month: 'Abril', qty: '50' }),
+	createMonthlyAccess({ year: 2023, month: 'Maio', qty: '197' }),
+	createMonthlyAccess({ year: 2023, month: 'Junho', qty: '259' }),
+	createMonthlyAccess({ year: 2023, month: 'Julho', qty: '206' }),
+	createMonthlyAccess({ year: 2023, month: 'Agosto', qty: '298' }),
+	createMonthlyAccess({ year: 2023, month: 'Setembro', qty: '458' }),
+	createMonthlyAccess({ year: 2023, month: 'Outubro', qty: '465' }),
+	createMonthlyAccess({ year: 2023, month: 'Novembro', qty: '587' }),
+	createMonthlyAccess({ year: 2023, month: 'Dezembro', qty: '448' }),
 ];
 
+const rows = [...rows2024, ...rows2023];
+
 export default function Index() {
+	const images = [
+		{ src: 'https://i.imgur.com/cI60QB5.png', alt: 'Logo SUS' },
+		{ src: 'https://i.imgur.com/n2myEZg.png', alt: 'Logo Conselho Regional de Odontologia de Pernambuco' },
+		{ src: 'https://i.imgur.com/9UbYlhV.png', alt: 'Logo FACEPE' },
+		{ src: 'https://i.imgur.com/ZedrNah.png', alt: 'Logo CNPq' },
+		{ src: 'https://i.imgur.com/Z1oobdG.png', alt: 'Logo UFPE' },
+		{ src: 'https://i.imgur.com/B1VsMhf.png', alt: 'Logo do Governo do Estado de Pernambuco' },
+	];
+
+	const [yearFilter, setYearFilter] = useState('');
+	const [monthFilter, setMonthFilter] = useState('');
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+
+	const filteredRows: AccessData[] = rows.filter((row) => (
+		(yearFilter === '' || row.year.toString().includes(yearFilter)) &&
+		(monthFilter === '' || row.month.toLowerCase().includes(monthFilter.toLowerCase()))
+	));
+
+
+	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	};
+
+	const rowsToShow: AccessData[] = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
 	return (
 		<>
 			<Box sx={{
@@ -38,7 +80,8 @@ export default function Index() {
 				marginX: 'auto',
 				maxWidth: '50rem',
 				height: 'auto',
-				marginTop: '6rem',
+				marginTop: '4rem',
+				marginBottom: '2rem',
 			}}
 			>
 				<Typography
@@ -55,48 +98,50 @@ export default function Index() {
 				position: 'justify',
 				bgcolor: theme.greyLight,
 				marginX: 'auto',
-				maxWidth: '50rem',
+				maxWidth: '80rem',
 				height: 'auto',
-				marginBottom: '1rem',
+				marginBottom: '2rem',
 			}}
 			>
 				<Typography
-					sx={{ padding: 1.5 }}
-					textAlign={'center'}
+					sx={{ padding: 0.2 }}
+					textAlign="start"
 					variant="body1"
 					color={theme.black}
 				>
-					A plataforma GestBucalSD é uma ferramenta web-based de autoprocessamento de dados para monitorar e avaliar a saúde bucal.
+					A plataforma <strong>GestBucalSD</strong> é uma ferramenta web-based de autoprocessamento de dados projetada para o monitoramento e avaliação da saúde bucal.
 				</Typography>
 				<Typography
-					sx={{ padding: 1.5 }}
-					textAlign={'center'}
+					sx={{ padding: 0.2 }}
+					textAlign="start"
 					variant="body1"
 					color={theme.black}
 				>
-					Ela permite o processamento automático de dados coletados nas unidades de saúde, gerando informações úteis para monitorar e avaliar a situação da saúde bucal da população.
+					Através dela, é possível realizar o processamento automático de dados coletados nas unidades de saúde, gerando informações essenciais para avaliar a situação de saúde bucal da população.
 				</Typography>
 				<Typography
-					sx={{ padding: 1.5 }}
-					textAlign={'center'}
+					sx={{ padding: 0.2 }}
+					textAlign="start"
 					variant="body1"
 					color={theme.black}
 				>
-					Com essa plataforma, os usuários podem acessar diferentes módulos operacionais que oferecem indicadores, gráficos, mapas e relatórios sobre a qualidade e a efetividade dos serviços de atenção em saúde bucal.
+					Com diversos módulos operacionais, a plataforma disponibiliza indicadores, gráficos, mapas e relatórios que auxiliam na compreensão da qualidade e efetividade dos serviços de atenção em saúde bucal.
 				</Typography>
 				<Typography
-					sx={{ padding: 1.5 }}
-					textAlign={'center'}
+					sx={{ padding: 0.2 }}
+					textAlign="start"
 					variant="body1"
 					color={theme.black}
 				>
-					Assim, a GestBucalSD contribui para a governança inteligente e a melhoria contínua da rede de atenção em saúde bucal.
+					Dessa forma, o <strong>GestBucalSD</strong> contribui para uma governança inteligente e para a melhoria contínua da rede de atenção em saúde bucal.
 				</Typography>
 			</Box>
+
 			<Box sx={{
 				position: 'justify',
 				bgcolor: theme.primaryColor,
 				marginX: 'auto',
+				marginTop: '2rem',
 				maxWidth: '50rem',
 				height: 'auto',
 			}}
@@ -117,93 +162,42 @@ export default function Index() {
 				position: 'justify',
 				bgcolor: theme.greyLight,
 				marginX: 'auto',
-				maxWidth: '50rem',
+				width: '50%',
 				height: 'auto',
-				marginBottom: '1rem',
+				marginBottom: '4rem',
 			}}
 			>
-				<Grid
-					container
-					justifyContent="center"
-					alignItems="center"
+				<Box
+					sx={{
+						height: '14rem',
+						margin: 9
+					}}
 				>
-					<Grid item xs>
-						<CardMedia
-							component="img"
-							image="https://i.imgur.com/cI60QB5.png"
-							alt="Logo SUS"
-							sx={{
-								marginLeft: '10px',
-								width: '90%',
-							}}
-						/>
-					</Grid>
-
-					<Grid item xs>
-						<CardMedia
-							component="img"
-							image="https://i.imgur.com/n2myEZg.png"
-							alt="Logo Conselho Regional de Odontologia de Pernambuco"
-							sx={{
-								width: '80%',
-							}}
-						/>
-
-					</Grid>
-
-					<Grid item xs>
-						<CardMedia
-							component="img"
-							image="https://i.imgur.com/9UbYlhV.png"
-							alt="Logo FACEPE"
-							sx={{
-								width: '80%',
-							}}
-						/>
-					</Grid>
-
-				</Grid>
-
-				<Grid
-					container
-					justifyContent="center"
-					alignItems="center"
-				>
-					<Grid item xs>
-						<CardMedia
-							component="img"
-							image="https://i.imgur.com/ZedrNah.png"
-							alt="Logo CNPq"
-							sx={{
-								marginLeft: '10px',
-								width: '80%',
-							}}
-						/>
-					</Grid>
-
-					<Grid item xs>
-						<CardMedia
-							component="img"
-							image="https://i.imgur.com/Z1oobdG.png"
-							alt="Logo UFPE"
-							sx={{
-								width: '80%',
-								marginBottom: '1rem'
-							}}
-						/>
-					</Grid>
-
-					<Grid item xs>
-						<CardMedia
-							component="img"
-							image="https://i.imgur.com/B1VsMhf.png"
-							alt="Logo do Governo do Estado de Pernambuco"
-							sx={{
-								width: '80%',
-							}}
-						/>
-					</Grid>
-				</Grid>
+					<Carousel indicators={true} autoPlay>
+						{images.map((image, index) => (
+							<Grid
+								container
+								justifyContent="center"
+								alignItems="center"
+								key={index}
+							>
+								<Grid item xs>
+									<CardMedia
+										component="img"
+										src={image.src}
+										alt={`Image ${index + 1}`}
+										sx={{
+											width: "600px",
+											height: "300px",
+											objectFit: "contain",
+											margin: "0 auto"
+										}}
+									/>
+								</Grid>
+							</Grid>
+						))}
+					</Carousel>
+				</Box>
 
 				<Grid
 					container
@@ -224,6 +218,7 @@ export default function Index() {
 				position: 'justify',
 				bgcolor: theme.primaryColor,
 				marginX: 'auto',
+				marginTop: '2rem',
 				maxWidth: '50rem',
 				height: 'auto',
 			}}
@@ -237,94 +232,64 @@ export default function Index() {
 					Números do GestBucal SD
 				</Typography>
 			</Box>
-			<Box sx={{
-				position: 'justify',
-				bgcolor: theme.greyLight,
-				marginX: 'auto',
-				maxWidth: '50rem',
-				height: 'auto',
-				marginBottom: '1rem',
-			}}
+			<Box
+				sx={{
+					bgcolor: theme.greyLight,
+					marginX: 'auto',
+					width: '65%',
+					marginY: '4rem',
+				}}
 			>
-				<Grid
-					container
-					justifyContent="center"
-					alignItems="center"
-				>
-					<Grid item xs>
-						<Typography
-							textAlign={'center'}
-							variant="h6"
-							color={theme.black}
-						>
-							1567
-						</Typography>
-					</Grid>
-
-					<Grid item xs>
-						<Typography
-							textAlign={'center'}
-							variant="h6"
-							color={theme.black}
-						>
-							24
-						</Typography>
-					</Grid>
-
-					<Grid item xs>
-						<Typography
-							textAlign={'center'}
-							variant="h6"
-							color={theme.black}
-						>
-							256
-						</Typography>
-					</Grid>
-				</Grid>
-
-				<Grid
-					container
-					justifyContent="center"
-					alignItems="center"
-				>
-					<Grid item xs>
-						<Typography
-							textAlign={'center'}
-							variant="h6"
-							color={theme.black}
-						>
-							Usuários Cadastrados
-						</Typography>
-					</Grid>
-
-					<Grid item xs>
-						<Typography
-							textAlign={'center'}
-							variant="h6"
-							color={theme.black}
-						>
-							Municípios Parceiros
-						</Typography>
-					</Grid>
-
-					<Grid item xs>
-						<Typography
-							textAlign={'center'}
-							variant="h6"
-							color={theme.black}
-						>
-							Artigos no Acervo
-						</Typography>
-					</Grid>
-				</Grid>
+				<TableContainer component={Paper}>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell align="center">
+									<Typography variant="h6" color={theme.black} sx={{ fontSize: '1.5rem' }}>
+										Usuários Cadastrados
+									</Typography>
+								</TableCell>
+								<TableCell align="center">
+									<Typography variant="h6" color={theme.black} sx={{ fontSize: '1.5rem' }}>
+										Municípios Parceiros
+									</Typography>
+								</TableCell>
+								<TableCell align="center">
+									<Typography variant="h6" color={theme.black} sx={{ fontSize: '1.5rem' }}>
+										Artigos no Acervo
+									</Typography>
+								</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							<TableRow>
+								<TableCell align="center">
+									<Typography variant="h6" color={theme.black} sx={{ fontWeight: 'bold' }}>
+										1567
+									</Typography>
+								</TableCell>
+								<TableCell align="center">
+									<Typography variant="h6" color={theme.black} sx={{ fontWeight: 'bold' }}>
+										24
+									</Typography>
+								</TableCell>
+								<TableCell align="center">
+									<Typography variant="h6" color={theme.black} sx={{ fontWeight: 'bold' }}>
+										256
+									</Typography>
+								</TableCell>
+							</TableRow>
+						</TableBody>
+					</Table>
+				</TableContainer>
 			</Box>
-			<Box sx={{
-				position: 'justify',
-				bgcolor: theme.primaryColor,
-				marginX: 'auto',
-				maxWidth: '50rem',
-				height: 'auto',
-			}}
+			<Box
+				sx={{
+					bgcolor: theme.primaryColor,
+					marginX: 'auto',
+					maxWidth: '50rem',
+					marginBottom: '1rem',
+				}}
 			>
 				<Typography
 					sx={{ padding: 2 }}
@@ -335,71 +300,74 @@ export default function Index() {
 					Acessos Mensais
 				</Typography>
 			</Box>
-			<Box sx={{
-				position: 'justify',
-				bgcolor: theme.greyLight,
-				marginX: 'auto',
-				maxWidth: '50rem',
-				height: 'auto',
-				marginBottom: '1rem',
-			}}
+			{/* \*/}
+			<Box
+				sx={{
+					bgcolor: theme.greyLight,
+					marginX: 'auto',
+					width: '65%',
+					marginY: '4rem',
+				}}
 			>
-				{/* 2024 */}
-				<Typography
-					sx={{ padding: 2, fontWeight: 'bold' }}
-					textAlign={'center'}
-					variant="h4"
-					color={theme.black}
-				>
-					2024
-				</Typography>
-				<Grid container spacing={2}>
-					{rows2024.map((row) => (
-						<Grid key={row.month} item xs={4}
-						>
-							<Typography textAlign={'center'}
-								sx={{ fontWeight: 'bold' }}
-								variant="h6"
-								color={theme.black}>
-								{row.month}
-							</Typography>
-							<Typography textAlign={'center'}
-								variant="h6"
-								color={theme.black}>
-								{row.qty}
-							</Typography>
-						</Grid>
-					))}
-				</Grid>
-
-
-				{/* 2023 */}
-				<Typography
-					sx={{ padding: 2, fontWeight: 'bold' }}
-					textAlign={'center'}
-					variant="h4"
-					color={theme.black}
-				>
-					2023
-				</Typography>
-				<Grid container spacing={2}>
-					{rows2023.map((row) => (
-						<Grid key={row.month} item xs={4}
-						>
-							<Typography textAlign={'center'}
-								sx={{ fontWeight: 'bold' }}
-								variant="h6"
-								color={theme.black}>
-								{row.month}
-							</Typography>
-							<Typography textAlign={'center'}
-								variant="h6"
-								color={theme.black}>
-								{row.qty}
-							</Typography>
-						</Grid>
-					))}
-				</Grid>
+				<TableContainer component={Paper}>
+					<Table>
+						<TableHead>
+							<TableRow>
+								{/* Filtro de Ano */}
+								<TableCell align="center" sx={{ paddingLeft: "2rem", fontSize: "1.2rem" }}>
+									<TextField
+										label="Filtrar por ano"
+										variant="outlined"
+										size="small"
+										value={yearFilter}
+										onChange={(e) => setYearFilter(e.target.value)}
+									/>
+								</TableCell>
+								{/* Filtro de Mês */}
+								<TableCell align="center" sx={{ fontSize: "1.2rem" }}>
+									<TextField
+										label="Filtrar por mês"
+										variant="outlined"
+										size="small"
+										value={monthFilter}
+										onChange={(e) => setMonthFilter(e.target.value)}
+									/>
+								</TableCell>
+								<TableCell align="center" sx={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+									<Typography variant="h6" color={theme.black}>
+										Acessos
+									</Typography>
+								</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{rowsToShow.map((row) => (
+								<TableRow key={`${row.year}-${row.month}`}>
+									<TableCell align="center" sx={{ paddingLeft: "2rem", fontWeight: "bold" }}>
+										{row.year}
+									</TableCell>
+									<TableCell align="center" sx={{ fontWeight: "bold" }}>
+										{row.month}
+									</TableCell>
+									<TableCell align="center" sx={{ fontWeight: "bold" }}>
+										{row.qty}
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+					{/* Paginação */}
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 15]}
+						component="div"
+						count={filteredRows.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onPageChange={handleChangePage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+						labelRowsPerPage="Linhas por página"
+					/>
+				</TableContainer>
 			</Box>
 		</>
 	)
