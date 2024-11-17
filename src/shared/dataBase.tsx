@@ -251,6 +251,23 @@ export const studentsTeamGI = [
       },
     ],
   },
+  {
+    name: 'Danielle Ramalho',
+    role: 'Estudante',
+    photo: './profile-image/DanielleRamalho.jpeg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/7154610332730996',
+      },
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/danielle-ramalho-902957324/',
+      }
+    ]
+  }
 ]
 
 export const planejaTable01 = [
