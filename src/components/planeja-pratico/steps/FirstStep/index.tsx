@@ -119,10 +119,10 @@ export const FirstStep = ({
         Classificações com notas: Geral e para os Domínios de qualidade; e, o
         cumprimento (ou não) dos indicadores avaliativos de cada Domínio
         <br />
-        &nbsp;&nbsp;Na figura abaixo você tem a sumarização dos Domínios de
-        Qualidade, dimensões e indicadores avaliativos que vieram da matriz
+        &nbsp;&nbsp;Na figura a sumarização dos Domínios de Qualidade com o 
+        quantitativo dos indicadores avaliativos que vieram da matriz
         avaliativa construída para os módulos avaliativos: AvaliaAPS, AvaliaCEO
-        e AvaliaUsuários (GestBucalSD, 2024).
+        e AvaliaUsuários (vide acervo - GestBucalSD, 2024).
       </Typography>
 
       <Box
@@ -139,7 +139,7 @@ export const FirstStep = ({
           width={"800"}
           height={"600"}
           objectFit="contain"
-          src="/sumarizacao.png"
+          src="/sumarizacao-2.png"
           alt="Sumarização das matrizes avaliativas"
         />
       </Box>
@@ -154,7 +154,7 @@ export const FirstStep = ({
         de qualidade com piores notas. E consequente, especificamente para os
         piores indicadores contidos naquele Domínio. Mas não basta selecionar os
         Domínios e indicadores piores como os problemas. Estrategicamente,
-        importa hierarquizá-los para uma priorização e definição do problema (s)
+        importa hierarquizá-los para uma priorização e definição do problema
         para o planejamento e elaboração do PA-SB que possa ser viável,
         exequível para mudança. No PES, a governabilidade (poder) sobre os
         problemas, ou melhor, para resolução deles, é um dos parâmetros para
@@ -167,8 +167,8 @@ export const FirstStep = ({
         elaborado (Moysés & Goes, 2012).
       </Typography>
       <Typography fontWeight={400} fontSize={16}>
-        &nbsp;&nbsp;Para cada Domínio selecionado, pode-se escolher até 2
-        indicadores. Pontue o grau de governabilidade de cada indicador, usando
+        &nbsp;&nbsp;Para cada Domínio selecionado como problemático, especifique com a escolha de até 2 indicadores insatisfatórios.
+        Pontue o grau de governabilidade sobre cada indicador, usando
         uma escala 0-10, onde 0 corresponde a nenhuma governabilidade e 10 a
         maior governabilidade sobre problema. Quanto maior o grau de
         governabilidade sobre o problema, mais viabilidade você /equipe terá
@@ -180,13 +180,6 @@ export const FirstStep = ({
       <Typography fontWeight={400} fontSize={16}>
         <b>Atenção!!!</b> Você pode selecionar mais Domínio/indicadores, caso
         queira! Basta clicar em ADICIONAR
-      </Typography>
-
-      <Typography fontWeight={600} fontSize={16} mt={5}>
-        Como o PA-SB deve intervir sobre problemas, recomenda-se a seleção de
-        pelo menos, 2 domínios / 3 indicadores com as piores classificações dos
-        módulos avaliativos. E, pelo menos 2 indicadores do perfil
-        socioepidemiológicos em piores condições. Digite-os abaixo:
       </Typography>
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={10}>

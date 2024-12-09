@@ -71,17 +71,14 @@ export const SecondStep = ({
         Definição do problema
       </Typography>
       <Typography fontWeight={500} fontSize={16} mt={4}>
-        Diante da técnica de priorização/hierarquização dos problemas, quais
-        problemas foram definidos para a intervenção? Clique em ADICIONAR, caso
-        tenha definido mais de um problema. <br />
-        Digite-os abaixo:
+      Diante da técnica de seleção, priorização/hierarquização dos problemas feita anteriormente, qual problema foi definido para a intervenção? 
       </Typography>
 
       <Box display={"flex"} flexDirection={"column"} gap={5} mt={10}>
         {values.defined_problems.map((item, index) => (
           <Box key={item.id} width={"100%"}>
             <InputLabel id="second_domain">
-              Problemas definidos na intervenção:
+              Problemas definido à intervenção:
             </InputLabel>
             <TextField
               fullWidth
@@ -102,10 +99,11 @@ export const SecondStep = ({
       </Typography>
 
       <Typography fontWeight={500} fontSize={16}>
-        <b>Obs:</b> Pode ser definido mais de 1 problema para a intervenção. No
-        entanto, se forem de domínios ou módulos diferentes, talvez seja
-        necessário que no próximo momento do planejamento, denominado a
-        explicação do problema, seja feito separadamente para cada problema.
+        <b>Obs:</b> Para facilitar o andamento do planejamento aqui, no módulo PlanejaSD-prático, 
+        você/equipe vai construir um PA-SB para um problema por vez.<br></br> 
+        Então, caso se queira intervir noutros problemas, será necessário repetir o processo para cada problema separadamente. 
+        Estes PA-SB podem ser juntados, formando um programa de intervenção local!
+
       </Typography>
       <Box
         display="flex"
