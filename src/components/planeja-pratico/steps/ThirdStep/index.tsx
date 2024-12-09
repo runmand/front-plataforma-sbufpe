@@ -90,14 +90,10 @@ export const ThirdStep = ({
         COMO EXPLICAR O PROBLEMA?
       </Typography>
       <Typography fontWeight={500} fontSize={16}>
-        Apesar de você já ter chegado na definição do (s) problema (s) para a
+        Apesar de você já ter chegado na definição do problema para a
         intervenção, na verdade o plano de ação não é para intervir diretamente
         sobre ele, mas sim sobre a sua causa principal, denominado nó-crítico.
-        Por isso, é necessário explicar o problema. Obs: caso você/equipe tenha
-        definido mais de um problema à intervenção, particularmente de domínios
-        ou módulos operacionais diferentes, talvez seja necessário fazer mais de
-        um Plano de Ação. Estes PA-SB podem ser juntados, formando um programa
-        de intervenção local!
+        Por isso, é necessário explicar o problema.
       </Typography>
       <Typography fontWeight={500} fontSize={24}>
         Explicação do problema
@@ -128,23 +124,23 @@ export const ThirdStep = ({
       <Typography fontWeight={700} fontSize={24} textAlign={"center"} mb={5}>
         Figura 1- Exemplo de Fluxograma situacional do problema
       </Typography>
-      <Typography fontWeight={500} fontSize={16}>
-        No entanto, aqui recorreremos a uma simplificação da técnica. Deve-se
-        descrever, tanto quanto necessárias, as possíveis causas do problema
-        definido e posteriormente após discussão da equipe, escolher a principal
-        que poderá ser considerada como <b>nó-crítico.</b>
+      <Typography fontWeight={500} fontSize={24}>
+        Técnica simplificada
       </Typography>
       <Typography fontWeight={500} fontSize={16}>
-        <b>Dica:</b> Cada causa descrita, deve vir acompanhada implicitamente da
-        pergunta “o que a causou o problema?”, e assim por diante, até esgotar
-        sua explicação.
-        <br />
-        Provavelmente, estabelece-se uma relação causal entre as causas para se
-        obter a causa principal, ou causa das causas. Por isso, pode-se mudar as
-        causas descritas de posição e caso necessário incluir outras causas,
-        basta clicar em ADICIONAR
+        Aqui recorreremos a uma simplificação da técnica para explicação do problema. 
+        Deve-se descrever, tanto quanto necessárias, as possíveis causas do problema definido, 
+        explicando-as. A explicação pode ser uma maior descrição da causa com informações de 
+        quantitativas ou qualitativas da causa indicada.
       </Typography>
-
+      <Typography fontWeight={500} fontSize={16}>
+        <b>Dica:</b> Para cada causa descrita e explicada, deve-se ter implicitamente a pergunta “o que a causou?”, e assim por diante, até esgotar sua explicação
+      </Typography>
+      <Typography fontWeight={500} fontSize={16}>
+        Deve-se estabelecer uma relação causal entre as causas para se obter a causa principal, 
+        ou causa das causas. Por isso, pode-se mudar as causas e explicações descritas de posição 
+        nos quadros abaixo. E, caso necessário, incluir outras causas, basta clicar em ADICIONAR
+      </Typography>
       <Typography fontWeight={500} fontSize={24}>
         Identificação do Nó-crítico
       </Typography>
@@ -178,7 +174,7 @@ export const ThirdStep = ({
             </Box>
             <Box pl={2}>
               <InputLabel id="second_domain">
-                Explicação {index + 1} {index < 3 && "*"}
+                Explicação para causa {index + 1} {index < 3 && "*"}
               </InputLabel>
               <TextField
                 fullWidth

@@ -18,7 +18,7 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
         Vamos vivenciar o PLANEJAMENTO, entendendo-o como ação humana para
         REDUÇÃO DE INCERTEZAS E INTERVENÇÃO NA REALIDADE. Este módulo operativo
         é baseado numa adaptação do Planejamento Estratégico Situacional (PES).
-        No final do seu uso, você terá um Plano de Ação em Saúde Bucal (PA-SB) elaborado,
+        No final do seu uso, você terá um Plano de Ação em Saúde Bucal (PA-SB) elaborado para enfrentamento de um problema prioritário,
         que deve ser exequível ou possível à intervenção e consequentemente
         melhoria de qualidade da sua realidade.
       </Typography>
