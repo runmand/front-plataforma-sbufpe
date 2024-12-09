@@ -1,6 +1,8 @@
 import { Box, CardMedia, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography, useMediaQuery } from "@mui/material";
+import Link from "next/link";
 import { useState } from "react";
 import Carousel from "react-material-ui-carousel";
+import { routerEnum } from "src/core/enums";
 import { theme } from "src/core/theme";
 
 interface AccessData {
@@ -42,7 +44,6 @@ const rows = [...rows2024, ...rows2023];
 
 export default function Index() {
 	const images = [
-		{ src: 'https://i.imgur.com/cI60QB5.png', alt: 'Logo SUS' },
 		{ src: 'https://i.imgur.com/n2myEZg.png', alt: 'Logo Conselho Regional de Odontologia de Pernambuco' },
 		{ src: 'https://i.imgur.com/9UbYlhV.png', alt: 'Logo FACEPE' },
 		{ src: 'https://i.imgur.com/ZedrNah.png', alt: 'Logo CNPq' },
@@ -145,6 +146,18 @@ export default function Index() {
 					color={theme.black}
 				>
 					Dessa forma, o <strong>GestBucalSD</strong> contribui para uma governança inteligente e para a melhoria contínua da rede de atenção em saúde bucal.
+				</Typography>
+				<Typography
+					sx={{ padding: 0.2 }}
+					textAlign="start"
+					variant="body1"
+					color={theme.black}
+				>
+					Acesse a{' '}
+					<Link href={routerEnum.HOME}>
+						<a style={{ color: theme.primaryColor, textDecoration: 'none' }}>tela inicial</a>
+					</Link>{' '}
+					para explorar suas funcionalidades.
 				</Typography>
 			</Box>
 
