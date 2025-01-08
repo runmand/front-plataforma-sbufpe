@@ -20,7 +20,7 @@ export type praticalAnswer = {
   question_answer: string
 }
 
-type DataUser = {
+export type DataUser = {
   names: string;
   email: string;
   health_establishment: string;
@@ -35,11 +35,11 @@ export type praticalJSON = {
 }
 
 export type praticalResponse = {
-  firstStep: string;
-  secondStep: string;
+  firstStep: string[];
+  secondStep: string[];
   thirdStep: string;
-  fourthStep: string;
-  dados_para_certificado: DataUser
+  fourthStep: string[];
+  dataUser: string
 }
 
 export type praticalCSV= {
@@ -54,7 +54,6 @@ export type praticalCSV= {
 }
 
 export type praticalAnswerObj = {
-  id: number;
   createdAt: string;
   deletedAt: string;
   userId: number;
@@ -64,6 +63,11 @@ export type praticalAnswerObj = {
 export type PROPS = {
   planAnswer?: planAnswer[][];
   praticalAnswer?: praticalAnswer[];
+  filterTeoric?: filterTeoric;
+  filterPratical?: filterPratical;
+  setFilterPratical?: React.Dispatch<React.SetStateAction<filterPratical>>
+  setFilterTeoric?: React.Dispatch<React.SetStateAction<filterTeoric>>
+  filterApply: filterApply
 }
 
 export type LocalData = {
@@ -76,6 +80,23 @@ export type LocalData = {
 export type requestResponse = {
   data: any;
   errors: string[]
+}
+
+export type filterTeoric = {
+  establishment: string[],
+  city: string[]
+}
+
+export type filterPratical = {
+  establishment: string[],
+}
+
+
+export type filterApply = {
+  establishment: string,
+  city?: string,
+  myData: boolean,
+  type: typeData,
 }
 
 export type typeData = 'pratico' | 'teorico'
