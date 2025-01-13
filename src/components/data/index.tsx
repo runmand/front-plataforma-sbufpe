@@ -1,20 +1,21 @@
 import styled from '@emotion/styled';
-import TableComponent from "@components/table/";
 import { ButtonContainer, GridContainer, MainContainer, UpdateContainer, UpdateInfo, Title, DivLoad} from './styled';
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
-import { Button, Box, Grid, Skeleton, CircularProgress } from '@mui/material';
-import { Download, Refresh, Error } from '@mui/icons-material';
-import { LocalData, planAnswer, praticalAnswer, requestResponse, typeData } from './type';
+import { Button, Box, Grid, Skeleton, CircularProgress, Drawer, Select, MenuItem } from '@mui/material';
+import { filterApply, filterPratical, filterTeoric, LocalData, planAnswer, praticalAnswer, requestResponse, typeData } from './type';
 import { useEffect, useState } from 'react';
 import { http } from 'src/core/axios';
 import { useSnackbar } from 'notistack';
 import DownloadCSV from "../csv/index"
-import { LoadingButton } from '@mui/lab';
-import { IStepsValues } from 'pages/planeja-pratico';
+import CustomSelect from "../select" 
+import CustomSwitch from "../switch"
+import RefreshData from "../updateButton/index"
 import router from 'next/router';
 import { routerEnum } from 'src/core/enums';
+import TableComponentTeoric from "@components/newTable/teoric"
+import TableComponentPratical from "@components/newTable/pratical"
 
 export default function Index() {
   const [typeData, setTypeData] = useState<typeData>('teorico');  
@@ -26,34 +27,52 @@ export default function Index() {
   const [loadingData, setLoadingData] = useState<boolean>(true);
   const [haveError, setHaveError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [filterTeoric, setFilterTeoric] = useState<filterTeoric>(null);
+  const [filterPratical, setFilterPratical] = useState<filterPratical>(null);
+  const [filterApply, setFilterAplly] = useState<filterApply>({establishment: "*", city: "*" ,type: "teorico", myData: false});
+  const [filterApplyPratical, setFilterApplyPratical] = useState<filterApply>({establishment: "*", type: "pratico", myData: false});
 
-  function formatDate(date: Date): string {
-    if (typeof date == 'string'){
-      date = new Date(date);
-    }
+  function setFilter(type: 'city' | 'establishment' | '*', data:string, typeForm?: 'pratico' | 'teorico'){
+    const oldFilter:filterApply = {...filterApply};   
+    if (type == 'city' || type == '*') oldFilter.city = data;
+    if (type == 'establishment' || type == '*') oldFilter.establishment = data;
+    if (typeForm) oldFilter.type = typeForm;    
+    setFilterAplly(oldFilter);
+  }
 
-    if (date != null){
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
-    
-      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-    }
+  function setPraticalFilter(type: 'establishment' | '*', data:string, typeForm?: 'pratico' | 'teorico'){
+    const oldFilter:filterApply = {...filterApplyPratical};   
 
-    return "Bucando dados..."
+    if (type == 'establishment' || type == '*') oldFilter.establishment = data;
 
+    if (typeForm) oldFilter.type = typeForm;    
+    setFilterApplyPratical(oldFilter);
+  }
+
+  function setMyDataFilter(myFilter: boolean){
+    const oldFilter:filterApply = {...filterApply};   
+    oldFilter.myData = myFilter;
+    setFilterAplly(oldFilter);
+  }
+
+  function setMydataFilterPratical(myFilter: boolean){
+    const oldFilter:filterApply = {...filterApplyPratical};   
+    oldFilter.myData = myFilter;
+    setFilterApplyPratical(oldFilter);
   }
   
-  async function setTeoric() {  
-    setTypeData('teorico')    
-    if (tempDataTeoric== undefined) await getDataTeoric();
+  async function setTeoric() {
+    if (typeData !== 'teorico'){
+      setFilter("*", "*", "teorico")
+      setMyDataFilter(false);  
+      setTypeData('teorico')    
+      if (tempDataTeoric== undefined) await getDataTeoric();
+    }
   }
 
   async function setPratical(){
+    setPraticalFilter("*", "*", "pratico")  
+    setMydataFilterPratical(false);  
     setTypeData('pratico')    
     if (tempDataPratical == undefined) await getDataPratical();
   }
@@ -137,7 +156,6 @@ export default function Index() {
   function goInitial() {
     router.push({ pathname: routerEnum.INITIAL})
     localStorage.removeItem('data')
-
   }
 
   useEffect(()=>{
@@ -167,29 +185,39 @@ export default function Index() {
             <Title>Dados Do planeja Teorico</Title>
           ):
             <Title>Dados Do planeja Pratico</Title>}
-          <UpdateContainer>
-            <UpdateInfo>
-                {
-                  typeData === 'teorico' ? (
-                    <>Atualizado: {formatDate(lastUpdateTeoric)}</>
-                  ) : (
-                    <>Atualizado: {formatDate(lastUpdatePratical)}</>
-                  )
-                }
-              <Button variant="contained" style={{ margin: 'auto' }} onClick={reloadData}>
-                Atualizar <Refresh />
-              </Button>             
-            </UpdateInfo>
-          </UpdateContainer>
+
+        {filterTeoric != null && typeData == 'teorico'? (
+            <>
+            <UpdateContainer>
+              <UpdateInfo>
+                <CustomSelect className='grid-establishment' list={filterTeoric.establishment} type='establishment' title='Estabelecimento' setFilter={setFilter} filter={filterApply}></CustomSelect>
+                <CustomSelect className="grid-city" list={filterTeoric.city} type='city' title='Cidade' setFilter={setFilter} filter={filterApply}></CustomSelect>
+                <CustomSwitch setMyDataFilter={setMyDataFilter}></CustomSwitch>
+              </UpdateInfo>
+            </UpdateContainer>
+          </>
+        ): (<></>)}
+
+        {filterPratical != null && typeData == 'pratico'? (
+            <>
+              <UpdateContainer>
+              <UpdateInfo>
+                <CustomSelect className='grid-establishment' list={filterPratical.establishment} type='establishment' title='Estabelecimento' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
+                <CustomSwitch setMyDataFilter={setMydataFilterPratical}></CustomSwitch>
+              </UpdateInfo>
+            </UpdateContainer>
+          </>
+        ): (<></>)}
         </GridContainer>
         {!loadingData ? (
         <>
           {typeData == 'teorico'  ? (
-            <TableComponent planAnswer={tempDataTeoric} />
+            <TableComponentTeoric planAnswer={tempDataTeoric} filterTeoric={filterTeoric} setFilterTeoric={setFilterTeoric} filterApply={filterApply} />
           ): 
-            <TableComponent praticalAnswer={tempDataPratical} />
+            <TableComponentPratical praticalAnswer={tempDataPratical} filterApply={filterApplyPratical} filterPratical={filterPratical} setFilterPratical={setFilterPratical}/>
           }
-          <DownloadCSV key={1} pratical={tempDataPratical} teoric={tempDataTeoric} typeUsed={typeData} ></DownloadCSV>
+          <RefreshData key={2} click={reloadData} ></RefreshData>
+          <DownloadCSV key={1} pratical={tempDataPratical} teoric={tempDataTeoric} typeUsed={typeData} filterApply={filterApply} filterApplyPratical={filterApplyPratical}></DownloadCSV>
         </>
       ) : (
         <>

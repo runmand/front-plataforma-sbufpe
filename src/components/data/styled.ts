@@ -20,10 +20,12 @@ export const GridContainer = styled.div`
   width: 90vw;
   @media (max-width: 768px) {
     grid-template-columns: 100%;
-    grid-template-areas: "Type"
+    grid-template-areas: 
+    "Type"
     "Update"
     "title";
     row-gap: 10px;
+    height: 22vh;
   }
 `;
 
@@ -76,6 +78,13 @@ export const UpdateInfo = styled.div`
   margin-right: 0px;
   display: flex;
   flex-wrap: nowrap;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    grid-template-areas: 'establishment my' 'city city';
+  }
 `;
 
 
