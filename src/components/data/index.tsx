@@ -148,9 +148,9 @@ export default function Index() {
     }
   }
 
-  async function reloadData() {
+  async function reloadData() {        
     if (typeData == 'teorico' && loadingData == false) getDataTeoric()
-    else if(typeData == 'pratico' && loadingData == false) setPratical();
+    else if(typeData == 'pratico' && loadingData == false) getDataPratical();
   }
 
   function goInitial() {
