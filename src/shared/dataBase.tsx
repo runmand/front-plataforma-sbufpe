@@ -73,6 +73,23 @@ export const teacherTeamGI = [
       },
     ],
   },
+  {
+    name: 'Danielle Ramalho',
+    role: 'Docente - UFPE',
+    photo: './profile-image/DanielleRamalho.jpeg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/7154610332730996',
+      },
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/danielle-ramalho-902957324/',
+      }
+    ]
+  }
 ]
 
 export const studentTeamTI = [
@@ -250,23 +267,6 @@ export const studentsTeamGI = [
         url: 'http://lattes.cnpq.br/9354687806411813',
       },
     ],
-  },
-  {
-    name: 'Danielle Ramalho',
-    role: 'Estudante',
-    photo: './profile-image/DanielleRamalho.jpeg',
-    contacts: [
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/7154610332730996',
-      },
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/danielle-ramalho-902957324/',
-      }
-    ]
   }
 ]
 
