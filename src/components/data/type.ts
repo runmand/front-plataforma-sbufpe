@@ -8,6 +8,7 @@ export type planAnswer = {
   questionId: number
   title: string;
   answer: string;
+  typeUser: string
   titleJustify?: string;
   justify?: string;
 }
@@ -18,12 +19,15 @@ export type praticalAnswer = {
   deletedAt: string;
   userId: number;
   question_answer: string
+  typeUser: string
 }
 
-type DataUser = {
+export type DataUser = {
   names: string;
   email: string;
   health_establishment: string;
+  city: string;
+  typeUser: string;
 }
 
 export type praticalJSON = {
@@ -35,11 +39,11 @@ export type praticalJSON = {
 }
 
 export type praticalResponse = {
-  firstStep: string;
-  secondStep: string;
+  firstStep: string[];
+  secondStep: string[];
   thirdStep: string;
-  fourthStep: string;
-  dados_para_certificado: DataUser
+  fourthStep: string[];
+  dataUser: string
 }
 
 export type praticalCSV= {
@@ -54,7 +58,6 @@ export type praticalCSV= {
 }
 
 export type praticalAnswerObj = {
-  id: number;
   createdAt: string;
   deletedAt: string;
   userId: number;
@@ -64,6 +67,11 @@ export type praticalAnswerObj = {
 export type PROPS = {
   planAnswer?: planAnswer[][];
   praticalAnswer?: praticalAnswer[];
+  filterTeoric?: filter;
+  filterPratical?: filter;
+  setFilterPratical?: React.Dispatch<React.SetStateAction<filter>>
+  setFilterTeoric?: React.Dispatch<React.SetStateAction<filter>>
+  filterApply: filterApply
 }
 
 export type LocalData = {
@@ -76,6 +84,21 @@ export type LocalData = {
 export type requestResponse = {
   data: any;
   errors: string[]
+}
+
+export type filter = {
+  establishment: string[],
+  city: string[]
+  participant: string[]
+}
+
+
+export type filterApply = {
+  establishment: string,
+  city: string,
+  myData: boolean,
+  type: typeData,
+  participant: string
 }
 
 export type typeData = 'pratico' | 'teorico'

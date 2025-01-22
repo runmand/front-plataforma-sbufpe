@@ -91,6 +91,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
   const [values, setValues] = useState({
     names: "",
     email: "",
+    city: "",
     health_establishment: "",
   });
 
@@ -446,6 +447,22 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                 />
               </Box>
 
+              <Box width={"100%"}>
+                <InputLabel id="health_establishment">
+                  Municipio do(s) Participante(s)
+                </InputLabel>
+                <TextField
+                  fullWidth
+                  value={values.city}
+                  onChange={(e) =>
+                    updateValues({
+                      name: "city",
+                      value: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
               <Box width={"100%"}>
                 <InputLabel id="email">
                   E-mail do Responsável (para recebimento do certificado)

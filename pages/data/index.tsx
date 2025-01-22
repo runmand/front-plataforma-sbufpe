@@ -10,7 +10,6 @@ export default function Index() {
     <Base
       appBarChild={<NewMenu/>}
       mainContainerChild={<Data/>}
-      footerChild={<FooterMain />}
     />
   )
 }
