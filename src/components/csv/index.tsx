@@ -3,7 +3,7 @@ import { Download } from '@mui/icons-material';
 import { DownloadButton } from './styled';
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
-import { filterApply, filterTeoric, planAnswer, praticalAnswer, praticalAnswerObj, praticalCSV, praticalJSON, praticalResponse, typeData } from '@components/data/type';
+import { filterApply, planAnswer, praticalAnswer, praticalAnswerObj, praticalCSV, praticalJSON, praticalResponse, typeData } from '@components/data/type';
 import { firstStep, fourthStep, secondStep, thirdStep } from '@components/newTable/pratical';
 import { useSnackbar } from 'notistack';
 
@@ -67,10 +67,7 @@ export default function Index(prop: PROP) {
         if (element.title == "Nome") headers.push("Profissional: ")
         
         if (element.questionId !== 9) headers.push(element.titleJustify)
-      });
-  
-      console.log(data);
-      
+      });      
 
       data.forEach(element =>{
         const tempData: string[]= [];
