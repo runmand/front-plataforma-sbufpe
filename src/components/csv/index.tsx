@@ -64,14 +64,20 @@ export default function Index(prop: PROP) {
   
       data[0].forEach(element => {
         headers.push(element.title)
+        if (element.title == "Nome") headers.push("Profissional: ")
+        
         if (element.questionId !== 9) headers.push(element.titleJustify)
       });
   
+      console.log(data);
+      
+
       data.forEach(element =>{
         const tempData: string[]= [];
         element.forEach(item => {
           tempData.push(item.answer)
           if (item.questionId !== 9) tempData.push(item.justify)
+          if (item.title == "Nome") tempData.push(item.typeUser) 
         });
         formattedData.push(tempData);
       })
@@ -105,6 +111,8 @@ export default function Index(prop: PROP) {
     'Nomes',
     'Estabelecimento',
     'Email',
+    'Municipio',
+    'Profissional',
     "Primeiro passo 1° Indicador",
     "Primeiro passo 2° Indicador",
     "Primeiro passo 3° Indicador",
@@ -119,6 +127,7 @@ export default function Index(prop: PROP) {
     "Quarto passo 3° Ação",
     "Quarto passo 4° Ação"]
 
+    
     pratical.forEach((element, index) => {
       const dataJson: praticalJSON = JSON.parse(element.question_answer);   
       const first = formattedArray(firstStep(dataJson.firstStep), 3)
@@ -128,8 +137,10 @@ export default function Index(prop: PROP) {
       const data: string[] = [
         index.toString(),
         dataJson.dados_para_certificado?.names || "Não informado",
-        dataJson.dados_para_certificado?.health_establishment,
-        dataJson.dados_para_certificado?.email,
+        dataJson.dados_para_certificado?.health_establishment || "Não informado",
+        dataJson.dados_para_certificado?.email || "Não informado",
+        dataJson.dados_para_certificado?.city || "Não informado",
+        element.typeUser,
         first[0],
         first[1],
         first[2],

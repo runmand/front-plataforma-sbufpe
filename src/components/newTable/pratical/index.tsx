@@ -1,45 +1,8 @@
-import { DataUser, planAnswer, praticalAnswerObj, praticalJSON, praticalResponse, PROPS } from '@components/data/type';
+import { DataUser, praticalAnswerObj, praticalJSON, praticalResponse, PROPS } from '@components/data/type';
 import React, { useEffect, useState } from "react";
-import styled from '@emotion/styled';
 import { IFirstStep, IFourthStep, ISecondStep, IStepsValues, IThirdStep } from 'pages/planeja-pratico';
-
-const TableWrapper = styled.div`
-  width: 90%;
-  overflow-x: auto;
-  overflow-y: auto;
-  margin: auto;
-  border: 1px solid black;
-  border-radius: 10px;
-  height: 80vh;
-  max-height: 70vh;
-  @media (max-width: 768px) {
-    height: 60vh
-  }
-`;
-
-const Table = styled.table`
-  border-collapse: collapse;
-  table-layout: auto;
-`;
-
-const Th = styled.th`
-  padding: 20px;
-  border: 1px solid black;
-  background-color: #6D141A;
-  color: white;
-  width: 20vw;
-  min-width: 20vw;
-  word-break: keep-all;
-`;
-
-const Td = styled.td`
-  padding: 10px;
-  border: 1px solid black;
-  color: black;
-`;
-
-const Tr = styled.tr`
-`;
+import { TableWrapper, Table,Td, Th, Tr } from '../styled';
+import { filterBy, removeDuplicates } from '../functions';
 
 export function firstStep(data: IFirstStep[]):string[] {  
   let response: string[] = []
@@ -100,34 +63,18 @@ export default function Index(props: PROPS) {
   const [tempAllDataPratical, setTempAllDataPratical] = useState<praticalAnswerObj[]>();
   const [build, setBuild] = useState<boolean>(false);
 
-  function removeDuplicates(stringsArray: string[]): string[] {
-    return Array.from(new Set(stringsArray));
-  }
-
-  function capitalizeFirstLetter(text: string): string {
-    if (!text) return ""; // Verifica se a string é válida
-    const lowerCaseText = text.toLowerCase(); // Converte toda a string para minúsculas
-    return lowerCaseText.charAt(0).toUpperCase() + lowerCaseText.slice(1); // Primeira letra maiúscula
-  }
-
-  function filterByEstablishment(establishment: string, filter: string){
-    if (establishment == "*"){
-      return true;
-    }else{      
-      if (establishment.toLocaleLowerCase().search(`estabelecimento: ${filter.toLocaleLowerCase()}`) != -1) return true;
-      else return false;
-    }
-  }
-
-  function filterPratical(establishment: string, mydata: boolean){
-    if (establishment == "*" && mydata == false){
+  function filterPratical(establishment: string, mydata: boolean, city: string, participant: string){
+    if (establishment == "*" && mydata == false && city == "*" && participant == '*'){
       setTempDataPratical(tempAllDataPratical)
     }else{
       const tempData:praticalAnswerObj[] = []
       const myId = Number(localStorage.getItem("userId"))   
 
       tempAllDataPratical.forEach(data =>{
-        if (filterByEstablishment(data.dataAnwser.dataUser, establishment)){
+        if (filterBy(data.dataAnwser.dataUser, establishment, "estabelecimento") && 
+            filterBy(data.dataAnwser.dataUser, city, "município") &&
+            filterBy(data.dataAnwser.dataUser, participant, "profissional")
+          ){            
           if (mydata == true && myId == data.userId){
             tempData.push(data)
           }else if(mydata == false){
@@ -139,24 +86,29 @@ export default function Index(props: PROPS) {
     }
   }
 
-  function createIdentifier(dataUser: DataUser): string{    
+  function createIdentifier(dataUser: DataUser, typeUser: string): string{    
     const name = dataUser?.names == undefined ? "Não informado" : dataUser?.names
     const establishment = dataUser?.health_establishment == undefined ? "Não informado" : dataUser?.health_establishment
     const email = dataUser?.email == undefined ? "Não informado" : dataUser?.email
-    return `Nome: ${name} \n Estabelecimento: ${establishment} \n Email: ${email}`
+    const city = dataUser?.city == undefined ? "Não informado" : dataUser?.city
+    const type = typeUser == undefined ? "Sem dados, Atualize" : typeUser
+    return `Nome: ${name} \n Estabelecimento: ${establishment} \n Município: ${city}\n Email: ${email} \n Profissional: ${type}`
   }
 
   useEffect(() =>{    
       const tempData:praticalAnswerObj[] = []
-      const establishmentArray: string[] = [];      
-      praticalAnswer.forEach(element => {        
+      let establishmentArray: string[] = [];      
+      let cityArray: string[] = [];      
+      let participantArray: string[] = [];
+      praticalAnswer.forEach(element => {                
         const dataJson: praticalJSON = JSON.parse(element.question_answer);   
+
         const data: praticalResponse = {
           firstStep: firstStep(dataJson.firstStep),
           secondStep: secondStep(dataJson.secondStep),
           thirdStep: thirdStep(dataJson.thirdStep),
           fourthStep: fourthStep(dataJson.fourthStep),
-          dataUser: createIdentifier(dataJson.dados_para_certificado)
+          dataUser: createIdentifier(dataJson.dados_para_certificado, element.typeUser)
         }            
         tempData.push(
           {
@@ -165,20 +117,27 @@ export default function Index(props: PROPS) {
             dataAnwser: data,
             userId: element.userId,
           }) 
+                
         establishmentArray.push(dataJson?.dados_para_certificado?.health_establishment == undefined ? "Não informado" : dataJson?.dados_para_certificado?.health_establishment)
+        cityArray.push(dataJson?.dados_para_certificado?.city == undefined ? "Não informado" : dataJson?.dados_para_certificado?.city)
+        participantArray.push(element.typeUser == undefined ? "Não informado" : element.typeUser)
+        
+        establishmentArray = removeDuplicates(establishmentArray);
+        cityArray = removeDuplicates(cityArray);
+        participantArray = removeDuplicates(participantArray)
+        
       });
       setTempDataPratical(tempData)
       setTempAllDataPratical(tempData)       
-      props.setFilterPratical({establishment: establishmentArray})
+      props.setFilterPratical({establishment: establishmentArray, city: cityArray, participant: participantArray})
     
   }, [praticalAnswer])
 
   useEffect(() => {
     if (props.filterApply) {
-      const filter = props.filterApply;      
-
+      const filter = props.filterApply;            
       if (filter.type == "pratico"){           
-        if (build) filterPratical(filter.establishment, filter.myData);
+        if (build) filterPratical(filter.establishment, filter.myData, filter.city, filter.participant);
         else setBuild(true);    
         
       }

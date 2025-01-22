@@ -90,8 +90,6 @@ export const SecondStep = ({
             />
           </Box>
         ))}
-
-        <Button onClick={addDefinedProblemValue}>Adicionar</Button>
       </Box>
       <Typography fontWeight={700} fontSize={16} mt={10}>
         Reflita bem, você pode repetir a técnica de seleção e priorização, até

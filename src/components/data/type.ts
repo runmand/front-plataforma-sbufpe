@@ -8,6 +8,7 @@ export type planAnswer = {
   questionId: number
   title: string;
   answer: string;
+  typeUser: string
   titleJustify?: string;
   justify?: string;
 }
@@ -18,12 +19,15 @@ export type praticalAnswer = {
   deletedAt: string;
   userId: number;
   question_answer: string
+  typeUser: string
 }
 
 export type DataUser = {
   names: string;
   email: string;
   health_establishment: string;
+  city: string;
+  typeUser: string;
 }
 
 export type praticalJSON = {
@@ -63,10 +67,10 @@ export type praticalAnswerObj = {
 export type PROPS = {
   planAnswer?: planAnswer[][];
   praticalAnswer?: praticalAnswer[];
-  filterTeoric?: filterTeoric;
-  filterPratical?: filterPratical;
-  setFilterPratical?: React.Dispatch<React.SetStateAction<filterPratical>>
-  setFilterTeoric?: React.Dispatch<React.SetStateAction<filterTeoric>>
+  filterTeoric?: filter;
+  filterPratical?: filter;
+  setFilterPratical?: React.Dispatch<React.SetStateAction<filter>>
+  setFilterTeoric?: React.Dispatch<React.SetStateAction<filter>>
   filterApply: filterApply
 }
 
@@ -82,21 +86,19 @@ export type requestResponse = {
   errors: string[]
 }
 
-export type filterTeoric = {
+export type filter = {
   establishment: string[],
   city: string[]
-}
-
-export type filterPratical = {
-  establishment: string[],
+  participant: string[]
 }
 
 
 export type filterApply = {
   establishment: string,
-  city?: string,
+  city: string,
   myData: boolean,
   type: typeData,
+  participant: string
 }
 
 export type typeData = 'pratico' | 'teorico'
