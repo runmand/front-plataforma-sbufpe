@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
 import { itemType, Tprop } from './type';
 import { useEffect, useState } from 'react';
+import { theme } from 'src/core/theme';
 
 export default function Index(props: Tprop) {
   const [item, setItem] = useState<String>('*');  
@@ -18,7 +19,8 @@ export default function Index(props: Tprop) {
 
   return(
     <>
-      <FormControl size="small" className={props.className} sx={{m: 1, minWidth: 170, 
+      <FormControl size="small" className={props.className} sx={{
+        m: 1, minWidth: 170, 
         ...(props.className === "grid-establishment" && {
           gridArea: "establishment",
         }),
@@ -28,6 +30,10 @@ export default function Index(props: Tprop) {
           gridColumnEnd: 5,
           m: 'auto',
         }),
+        [theme.breakpoints.down('sm')]: {
+          m: 1, 
+          minWidth: 100
+        },
       }}>
         <InputLabel sx={{fontSize: "15px", color: "#fff", fontWeight: "bold"}} id="demo-select-small-label">{props.title}</InputLabel>
         <Select

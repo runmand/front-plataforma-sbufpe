@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: false,
   env: {
-    API_URL: process.env.API_URL,
+    API_URL: "http://127.0.0.1:2000",
     JWT_SECRET: process.env.JWT_SECRET,
   },
 };
