@@ -192,16 +192,16 @@ export default function Index() {
         <GridContainer>
           <ButtonContainer>
             <Button variant="contained" style={{ marginLeft: 'auto', backgroundColor: "#921c22" }} onClick={setTeoric}>
-              Planeja Teorico
+              PLANEJA TEÓRICO
             </Button>
             <Button variant="contained" style={{ marginLeft: 'auto', backgroundColor: "#921c22" }} onClick={setPratical}>
-              Planeja Pratico
+              PLANEJA PRÁTICO
             </Button>
           </ButtonContainer>
           {typeData == 'teorico' ? (
-            <Title>Dados Do planeja Teorico</Title>
+            <Title>DADOS DO PLANEJA TEÓRICO</Title>
           ):
-            <Title>Dados Do planeja Pratico</Title>}
+            <Title>DADOS DO PLANEJA PRÁTICO</Title>}
         <ReloadContainer>
           <Reload>
               <>
@@ -224,9 +224,9 @@ export default function Index() {
           <>
             <UpdateContainer>
               <UpdateInfo>
-                <CustomSelect className='grid-establishment' list={filterTeoric.establishment} type='establishment' title='Estabelecimento' setFilter={setFilter} filter={filterApply}></CustomSelect>
-                <CustomSelect className="grid-city" list={filterTeoric.city} type='city' title='Cidade' setFilter={setFilter} filter={filterApply}></CustomSelect>
-                <CustomSelect className="grid-profission" list={filterTeoric.participant} type='participant' title='Participante' setFilter={setFilter} filter={filterApply}></CustomSelect>
+                <CustomSelect className='grid-establishment' list={filterTeoric.establishment} type='establishment' title='ESTABELECIMENTO' setFilter={setFilter} filter={filterApply}></CustomSelect>
+                <CustomSelect className="grid-city" list={filterTeoric.city} type='city' title='CIDADE' setFilter={setFilter} filter={filterApply}></CustomSelect>
+                <CustomSelect className="grid-profission" list={filterTeoric.participant} type='participant' title='PARTICIPANTE' setFilter={setFilter} filter={filterApply}></CustomSelect>
                 <CustomSwitch setMyDataFilter={setMyDataFilter}></CustomSwitch>
               </UpdateInfo>
             </UpdateContainer>
@@ -237,9 +237,9 @@ export default function Index() {
             <>
               <UpdateContainer>
               <UpdateInfo>
-                <CustomSelect className='grid-establishment' list={filterPratical.establishment} type='establishment' title='Estabelecimento' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
-                <CustomSelect className='grid-city' list={filterPratical.city} type='city' title='Cidade' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
-                <CustomSelect className='grid-profission' list={filterPratical.participant} type='participant' title='Participante' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
+                <CustomSelect className='grid-establishment' list={filterPratical.establishment} type='establishment' title='ESTABELECIMENTO' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
+                <CustomSelect className='grid-city' list={filterPratical.city} type='city' title='CIDADE' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
+                <CustomSelect className='grid-profission' list={filterPratical.participant} type='participant' title='PARTICIPANTE' setFilter={setPraticalFilter} filter={filterApplyPratical}></CustomSelect>
                 <CustomSwitch setMyDataFilter={setMydataFilterPratical}></CustomSwitch>
               </UpdateInfo>
             </UpdateContainer>
