@@ -15,9 +15,9 @@ export default function Index() {
     { id: 0, title: "Questionário Inicial", url: routerEnum.QUESTION },
     { id: 1, title: "Questionários", url: routerEnum.FORM },
     { id: 3, title: "Planeja SD - Teórico", url: routerEnum.PLANEJA },
-    { id: 4, title: "Planeja SD - Pratico", url: routerEnum.PLANEJA_PRATICO,},    
-    { id: 5, title: "Nossos dados: APS", url: routerEnum.DATAAPS},
-    { id: 6, title: "Nossos dados: CEO", url: routerEnum.DATACEO}
+    { id: 4, title: "Planeja SD - Pratico", url: routerEnum.PLANEJA_PRATICO },
+    { id: 5, title: "Nossos dados: APS", url: routerEnum.DATAAPS },
+    { id: 6, title: "Nossos dados: CEO", url: routerEnum.DATACEO },
   ]);
   const [isDrawerMenuOpen, setIsDrawerMenuOpen] =
     React.useState<boolean>(false);
@@ -31,19 +31,15 @@ export default function Index() {
 
   useEffect(() => {
     const id = Number(localStorage.getItem("typeId"));
-    console.log(id);
-    console.log(id <= 2);
-    
-    
+
     if (id <= 2) {
       // Atualiza o estado do menu usando setMenu
-      setMenu(prevMenu => [
+      setMenu((prevMenu) => [
         ...prevMenu,
-        { id: 7, title: "Exportar Dados", url: routerEnum.DATA }
+        { id: 7, title: "Exportar Dados", url: routerEnum.DATA },
       ]);
     }
   }, []);
-
 
   const handleLogout = () => {
     localStorage.removeItem(localStorageKeyEnum.TOKEN);

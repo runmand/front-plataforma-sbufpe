@@ -13,14 +13,13 @@ import { ID } from "src/core/types";
 import React from "react";
 import FormResultModal from "@components/modal/form/result";
 import { routerEnum } from "src/core/enums";
-import styled from "@emotion/styled";
 import FormResultFeedBack from "@components/modal/FormResultFeedBack";
 
 //TODO: Corrigir ID quando o usuario da F5 na page.
 export default function Index() {
   const router = useRouter();
-  const [formId, setFormId] = React.useState<ID>(Number(router.query.id));
-  
+  const [formId, setFormId] = React.useState<ID>(Number(router.query.formId));
+
   const formAnwerService = new FormAnswerService();
   const [formattedForm, setFormattedForm] = useState<GET_FORMATTED_FORM_SHOW>();
   const [isOpenFormResult, setIsOpenFormResult] = useState<boolean>(false);
@@ -29,22 +28,33 @@ export default function Index() {
     useState<GET_USER_RESULT_FROM_FORM_RES | null>();
 
   useEffect(() => {
+    if (!router.isReady) return;
+
+    setFormId(Number(router.query.formId));
+  }, [router.isReady, router.query.formId]);
+
+  useEffect(() => {
+    if (formId === null || Number.isNaN(formId)) return;
+
     formAnwerService
       .getFormattedFormShow(formId)
       .then((res) => {
-        const sortedData = res.data.questions.sort((a, b) => +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId)
-        console.log(sortedData)
+        const sortedData = res.data.questions.sort(
+          (a, b) =>
+            +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId
+        );
+        console.log(sortedData);
         res.data.questions = sortedData;
-        setFormattedForm(res.data)
+        setFormattedForm(res.data);
       })
       .catch((e) => console.error(e));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [formId]);
 
   const getUserResultFromForm = () => {
-    if(formId === 5){
-      setFormThanks(true)
-      return
+    if (formId === 5) {
+      setFormThanks(true);
+      return;
     }
     setIsOpenFormResult(true);
     formAnwerService
@@ -67,34 +77,37 @@ export default function Index() {
       mainContainerChild={
         <div style={{ paddingTop: "4.5rem" }}>
           {formattedForm && (
-            <SimpleForm
-              formattedForm={formattedForm}
-              onFinish={() => getUserResultFromForm()}
-            />
+            <>
+              <SimpleForm
+                formattedForm={formattedForm}
+                onFinish={() => getUserResultFromForm()}
+              />
+            </>
           )}
 
           {formThanks && (
-            <FormResultFeedBack 
-            formId={formId as number}
-            formTitle={formattedForm?.title}
-            isOpen={formThanks}
-            canSkip={true}
-            onClose={() => handleCloseFormResultModal()}
+            <FormResultFeedBack
+              formId={formId as number}
+              formTitle={formattedForm?.title}
+              isOpen={formThanks}
+              canSkip={true}
+              onClose={() => handleCloseFormResultModal()}
             />
           )}
 
           {formResult && (
-         <FormResultModal
-           formId={formId as number}
-           formTitle={formattedForm.title}
-           formResult={formResult}
-           isOpen={isOpenFormResult}
-           canSkip={true}
-           onClose={() => handleCloseFormResultModal()}
-         />
-       )}
-
-         
+            <>
+              <FormResultModal
+                formId={formId as number}
+                formTitle={formattedForm.title}
+                formResult={formResult}
+                isOpen={isOpenFormResult}
+                canSkip={true}
+                onClose={() => handleCloseFormResultModal()}
+              />
+              <h1>Teste</h1>
+            </>
+          )}
         </div>
       }
     />
