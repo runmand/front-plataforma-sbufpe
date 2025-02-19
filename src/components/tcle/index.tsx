@@ -14,6 +14,7 @@ import {
 import TCLE from "./tcle-document/TCLE";
 import TALEU18 from "./tcle-document/TALEU18";
 import TALEU13 from "./tcle-document/TALEU13";
+import TCLE2 from "./tcle-document/TCLE2";
 import { ID } from "src/core/types";
 import { http } from "src/core/axios";
 import { useSnackbar } from "notistack";
@@ -41,6 +42,7 @@ export type DataTerm = {
 
 export default function TcleModal(props: Props) {
   const TCLERef = useRef(null);
+  const TCLE2Ref = useRef(null);
   const TALERef = useRef(null);
   const TALEURef = useRef(null);
   const [open, setOpen] = useState(true);
@@ -55,12 +57,20 @@ export default function TcleModal(props: Props) {
   const snackBar = useSnackbar();
 
   const [termSelected, setTermSelected] = useState<
-    "TCLE" | "TALE18" | "TALEU13"
-  >("TCLE");
+    "TCLE" | "TCLE2" | "TALE18" | "TALEU13"
+  >("TCLE2");
 
   const confirmTerm = async () => {
     if (termSelected == "TCLE") {
       const states = await TCLERef.current.getStates();
+      if (states) {
+        setCheckedTCLE(true);
+        setOpenForm(false);
+        states.form = Number(props.idForm);
+        setDataTCLE(states);
+      }
+    } else if (termSelected == "TCLE2") {
+      const states = await TCLE2Ref.current.getStates();
       if (states) {
         setCheckedTCLE(true);
         setOpenForm(false);
@@ -85,6 +95,8 @@ export default function TcleModal(props: Props) {
       }
     }
   };
+
+  function equals(arr: string[]) {}
 
   async function iCanGo() {
     if (dataTCLE) {
@@ -149,6 +161,14 @@ export default function TcleModal(props: Props) {
             <CardTitle>Termo de Consentimento Livre e Esclarecido</CardTitle>
             <TermsContainer>
               <TermsText
+                style={{
+                  display:
+                    props.idForm == "5" ||
+                    props.idForm == "6" ||
+                    props.idForm == "2"
+                      ? ""
+                      : "none",
+                }}
                 onClick={() => {
                   setOpenForm(true);
                   setTermSelected("TCLE");
@@ -158,6 +178,28 @@ export default function TcleModal(props: Props) {
                 E ESCLARECIDO (PARA RESPONSÁVEL LEGAL PELO MENOR)
               </TermsText>
               <TermsText
+                style={{
+                  display:
+                    props.idForm == "1" ||
+                    props.idForm == "2" ||
+                    props.idForm == "4" ||
+                    props.idForm == "3"
+                      ? ""
+                      : "none",
+                }}
+                onClick={() => {
+                  setOpenForm(true);
+                  setTermSelected("TCLE2");
+                }}
+              >
+                <Checkbox checked={checkedTCLE} />* TERMO DE CONSENTIMENTO LIVRE
+                E ESCLARECIDO (PARA MAIORES DE 18 ANOS)
+              </TermsText>
+              <TermsText
+                style={{
+                  display:
+                    props.idForm == "6" || props.idForm == "2" ? "" : "none",
+                }}
                 onClick={() => {
                   setOpenForm(true);
                   setTermSelected("TALE18");
@@ -167,6 +209,10 @@ export default function TcleModal(props: Props) {
                 E ESCLARECIDO (PARA MENORES DE 13 a 18 ANOS)
               </TermsText>
               <TermsText
+                style={{
+                  display:
+                    props.idForm == "5" || props.idForm == "2" ? "" : "none",
+                }}
                 onClick={() => {
                   setOpenForm(true);
                   setTermSelected("TALEU13");
@@ -232,6 +278,17 @@ export default function TcleModal(props: Props) {
                   a 18 ANOS)
                 </DocumentTitle>
                 <TALEU18 ref={TALERef}></TALEU18>
+              </>
+            ) : (
+              <></>
+            )}
+            {termSelected == "TCLE2" ? (
+              <>
+                <DocumentTitle>
+                  TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO (PARA MAIORES DE 18
+                  ANOS)
+                </DocumentTitle>
+                <TCLE2 ref={TCLE2Ref}></TCLE2>
               </>
             ) : (
               <></>
