@@ -15,6 +15,7 @@ import TCLE from "./tcle-document/TCLE";
 import TALEU18 from "./tcle-document/TALEU18";
 import TALEU13 from "./tcle-document/TALEU13";
 import TCLE2 from "./tcle-document/TCLE2";
+import TCLEPROF from "./tcle-document/TCLEPROF";
 import { ID } from "src/core/types";
 import { http } from "src/core/axios";
 import { useSnackbar } from "notistack";
@@ -45,6 +46,7 @@ export default function TcleModal(props: Props) {
   const TCLE2Ref = useRef(null);
   const TALERef = useRef(null);
   const TALEURef = useRef(null);
+  const TCLEPROFRef = useRef(null);
   const [open, setOpen] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [checkedTCLE, setCheckedTCLE] = useState(false);
@@ -57,8 +59,8 @@ export default function TcleModal(props: Props) {
   const snackBar = useSnackbar();
 
   const [termSelected, setTermSelected] = useState<
-    "TCLE" | "TCLE2" | "TALE18" | "TALEU13"
-  >("TCLE2");
+    "TCLE" | "TCLE2" | "TALE18" | "TALEU13" | "TCLEPROF"
+  >("TCLEPROF");
 
   const confirmTerm = async () => {
     if (termSelected == "TCLE") {
@@ -71,6 +73,14 @@ export default function TcleModal(props: Props) {
       }
     } else if (termSelected == "TCLE2") {
       const states = await TCLE2Ref.current.getStates();
+      if (states) {
+        setCheckedTCLE(true);
+        setOpenForm(false);
+        states.form = Number(props.idForm);
+        setDataTCLE(states);
+      }
+    } else if (termSelected == "TCLEPROF") {
+      const states = await TCLEPROFRef.current.getStates();
       if (states) {
         setCheckedTCLE(true);
         setOpenForm(false);
@@ -95,8 +105,6 @@ export default function TcleModal(props: Props) {
       }
     }
   };
-
-  function equals(arr: string[]) {}
 
   async function iCanGo() {
     if (dataTCLE) {
@@ -181,9 +189,25 @@ export default function TcleModal(props: Props) {
                 style={{
                   display:
                     props.idForm == "1" ||
-                    props.idForm == "2" ||
-                    props.idForm == "4" ||
-                    props.idForm == "3"
+                    props.idForm == "3" ||
+                    props.idForm == "4"
+                      ? ""
+                      : "none",
+                }}
+                onClick={() => {
+                  setOpenForm(true);
+                  setTermSelected("TCLEPROF");
+                }}
+              >
+                <Checkbox checked={checkedTCLE} />* TERMO DE CONSENTIMENTO LIVRE
+                E ESCLARECIDO – Módulos 1, 2 e 3 - PROFISSIONAIS
+              </TermsText>
+              <TermsText
+                style={{
+                  display:
+                    props.idForm == "3" ||
+                    props.idForm == "5" ||
+                    props.idForm == "6"
                       ? ""
                       : "none",
                 }}
@@ -289,6 +313,17 @@ export default function TcleModal(props: Props) {
                   ANOS)
                 </DocumentTitle>
                 <TCLE2 ref={TCLE2Ref}></TCLE2>
+              </>
+            ) : (
+              <></>
+            )}
+            {termSelected == "TCLEPROF" ? (
+              <>
+                <DocumentTitle>
+                  TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO – Módulos 1, 2 e 3
+                  - PROFISSIONAIS
+                </DocumentTitle>
+                <TCLEPROF ref={TCLEPROFRef}></TCLEPROF>
               </>
             ) : (
               <></>
