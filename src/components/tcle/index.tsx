@@ -204,7 +204,7 @@ export default function TcleModal(props: Props) {
               </TermsText>
               <TermsText
                 style={{
-                  display: props.idForm == "3" ? "" : "none",
+                  display: props.idForm == "2" ? "" : "none",
                 }}
                 onClick={() => {
                   setOpenForm(true);
