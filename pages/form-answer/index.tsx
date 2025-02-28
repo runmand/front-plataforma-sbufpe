@@ -43,8 +43,13 @@ export default function Index() {
           (a, b) =>
             +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId
         );
-        console.log(sortedData);
-        res.data.questions = sortedData;
+
+        sortedData.forEach(el => {
+          if(el.formQuestionFormRegisterId == 234 && formId == 5){
+            el.childrenQuestion.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId)
+          }
+        });
+
         setFormattedForm(res.data);
       })
       .catch((e) => console.error(e));
