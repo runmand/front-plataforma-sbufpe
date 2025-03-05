@@ -122,7 +122,6 @@ export default function Index(props: TPROPS) {
 							parent={props.question}
 							question={child}
 							onAnswerQuestion={data => {
-							
 								props.onAnswerQuestion(data);
 							}}
 							onHideQuestion={data => {
