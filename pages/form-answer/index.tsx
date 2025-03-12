@@ -1,8 +1,5 @@
 import { useRouter } from "next/router";
-import {
-  GET_FORMATTED_FORM_SHOW,
-  GET_USER_RESULT_FROM_FORM_RES,
-} from "../../src/pages/form-answer/type";
+import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from "../../src/pages/form-answer/type";
 import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
@@ -17,104 +14,101 @@ import FormResultFeedBack from "@components/modal/FormResultFeedBack";
 
 //TODO: Corrigir ID quando o usuario da F5 na page.
 export default function Index() {
-  const router = useRouter();
-  const [formId, setFormId] = React.useState<ID>(Number(router.query.formId));
+    const router = useRouter();
+    const [formId, setFormId] = React.useState<ID>(Number(router.query.formId));
 
-  const formAnwerService = new FormAnswerService();
-  const [formattedForm, setFormattedForm] = useState<GET_FORMATTED_FORM_SHOW>();
-  const [isOpenFormResult, setIsOpenFormResult] = useState<boolean>(false);
-  const [formThanks, setFormThanks] = useState(false);
-  const [formResult, setFormResult] =
-    useState<GET_USER_RESULT_FROM_FORM_RES | null>();
+    const formAnwerService = new FormAnswerService();
+    const [formattedForm, setFormattedForm] = useState<GET_FORMATTED_FORM_SHOW>();
+    const [isOpenFormResult, setIsOpenFormResult] = useState<boolean>(false);
+    const [formThanks, setFormThanks] = useState(false);
+    const [formResult, setFormResult] = useState<GET_USER_RESULT_FROM_FORM_RES | null>();
 
-  useEffect(() => {
-    if (!router.isReady) return;
+    useEffect(() => {
+        if (!router.isReady) return;
 
-    setFormId(Number(router.query.formId));
-  }, [router.isReady, router.query.formId]);
+        setFormId(Number(router.query.formId));
+    }, [router.isReady, router.query.formId]);
 
-  useEffect(() => {
-    if (formId === null || Number.isNaN(formId)) return;
+    useEffect(() => {
+        if (formId === null || Number.isNaN(formId)) return;
 
-    formAnwerService
-      .getFormattedFormShow(formId)
-      .then((res) => {
-        const sortedData = res.data.questions.sort(
-          (a, b) =>
-            +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId
-        );
+        formAnwerService
+            .getFormattedFormShow(formId)
+            .then((res) => {
+                const sortedData = res.data.questions.sort((a, b) => +b.formQuestionFormRegisterId - +a.formQuestionFormRegisterId);
 
-        sortedData.forEach(el => {
-          if(el.formQuestionFormRegisterId == 234 && formId == 5){
-            el.childrenQuestion.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId)
-          }
-        });
+                sortedData.forEach((el) => {
+                    if (el.formQuestionFormRegisterId == 234 && formId == 5) {
+                        el.childrenQuestion.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId);
+                    }
 
-        setFormattedForm(res.data);
-      })
-      .catch((e) => console.error(e));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formId]);
+                    if (el.formQuestionFormRegisterId == 499 && formId == 6) {
+                        el.childrenQuestion.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId);
+                    }
+                });
 
-  const getUserResultFromForm = () => {
-    if (formId === 5) {
-      setFormThanks(true);
-      return;
-    }
-    setIsOpenFormResult(true);
-    formAnwerService
-      .getUserResultFromForm(formId)
-      .then((res) => {
-        res.data.date = new Date();
-        setFormResult(res.data);
-      })
-      .catch((e) => console.error(e));
-  };
+                setFormattedForm(res.data);
+            })
+            .catch((e) => console.error(e));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formId]);
 
-  const handleCloseFormResultModal = () => {
-    setIsOpenFormResult(false);
-    router.push(routerEnum.FORM);
-  };
+    const getUserResultFromForm = () => {
+        if (formId === 5) {
+            setFormThanks(true);
+            return;
+        }
+        setIsOpenFormResult(true);
+        formAnwerService
+            .getUserResultFromForm(formId)
+            .then((res) => {
+                res.data.date = new Date();
+                setFormResult(res.data);
+            })
+            .catch((e) => console.error(e));
+    };
 
-  return (
-    <Base
-      appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
-      mainContainerChild={
-        <div style={{ paddingTop: "4.5rem" }}>
-          {formattedForm && (
-            <>
-              <SimpleForm
-                formattedForm={formattedForm}
-                onFinish={() => getUserResultFromForm()}
-              />
-            </>
-          )}
+    const handleCloseFormResultModal = () => {
+        setIsOpenFormResult(false);
+        router.push(routerEnum.FORM);
+    };
 
-          {formThanks && (
-            <FormResultFeedBack
-              formId={formId as number}
-              formTitle={formattedForm?.title}
-              isOpen={formThanks}
-              canSkip={true}
-              onClose={() => handleCloseFormResultModal()}
-            />
-          )}
+    return (
+        <Base
+            appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+            mainContainerChild={
+                <div style={{ paddingTop: "4.5rem" }}>
+                    {formattedForm && (
+                        <>
+                            <SimpleForm formattedForm={formattedForm} onFinish={() => getUserResultFromForm()} />
+                        </>
+                    )}
 
-          {formResult && (
-            <>
-              <FormResultModal
-                formId={formId as number}
-                formTitle={formattedForm.title}
-                formResult={formResult}
-                isOpen={isOpenFormResult}
-                canSkip={true}
-                onClose={() => handleCloseFormResultModal()}
-              />
-              <h1>Teste</h1>
-            </>
-          )}
-        </div>
-      }
-    />
-  );
+                    {formThanks && (
+                        <FormResultFeedBack
+                            formId={formId as number}
+                            formTitle={formattedForm?.title}
+                            isOpen={formThanks}
+                            canSkip={true}
+                            onClose={() => handleCloseFormResultModal()}
+                        />
+                    )}
+
+                    {formResult && (
+                        <>
+                            <FormResultModal
+                                formId={formId as number}
+                                formTitle={formattedForm.title}
+                                formResult={formResult}
+                                isOpen={isOpenFormResult}
+                                canSkip={true}
+                                onClose={() => handleCloseFormResultModal()}
+                            />
+                            <h1>Teste</h1>
+                        </>
+                    )}
+                </div>
+            }
+        />
+    );
 }
