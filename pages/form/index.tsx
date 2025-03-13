@@ -17,7 +17,7 @@ import FooterMain from "@components/footer/main/index";
 import TcleModal from "@components/tcle/index";
 
 export default function Index() {
-    let firstOpen = useRef(1);
+    let firstOpen = useRef(0);
     const formService = new FormService();
     const formAnwerService = new FormAnswerService();
     const [openTCLE, setOpenTCLE] = useState<boolean>(false);
