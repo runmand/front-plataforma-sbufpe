@@ -15,6 +15,11 @@ function createMonthlyAccess({ year, month, qty }: AccessData) {
 	return { year, month, qty };
 }
 
+const rows2025: AccessData[] = [
+	createMonthlyAccess({ year: 2025, month: 'Janeiro', qty: '389' }),
+	createMonthlyAccess({ year: 2025, month: 'Fevereiro', qty: '423' }),
+];
+
 const rows2024: AccessData[] = [
 	createMonthlyAccess({ year: 2024, month: 'Janeiro', qty: '267' }),
 	createMonthlyAccess({ year: 2024, month: 'Fevereiro', qty: '235' }),
@@ -26,6 +31,8 @@ const rows2024: AccessData[] = [
 	createMonthlyAccess({ year: 2024, month: 'Agosto', qty: '684' }),
 	createMonthlyAccess({ year: 2024, month: 'Setembro', qty: '523' }),
 	createMonthlyAccess({ year: 2024, month: 'Outubro', qty: '428' }),
+	createMonthlyAccess({ year: 2024, month: 'Novembro', qty: '512' }),
+	createMonthlyAccess({ year: 2024, month: 'Dezembro', qty: '345' }),
 ];
 
 const rows2023 = [
@@ -40,7 +47,7 @@ const rows2023 = [
 	createMonthlyAccess({ year: 2023, month: 'Dezembro', qty: '448' }),
 ];
 
-const rows = [...rows2024, ...rows2023];
+const rows = [...rows2025, ...rows2024, ...rows2023];
 
 export default function Index() {
 	const images = [
