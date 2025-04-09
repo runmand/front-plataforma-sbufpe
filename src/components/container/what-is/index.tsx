@@ -17,7 +17,8 @@ function createMonthlyAccess({ year, month, qty }: AccessData) {
 
 const rows2025: AccessData[] = [
 	createMonthlyAccess({ year: 2025, month: 'Janeiro', qty: '389' }),
-	createMonthlyAccess({ year: 2025, month: 'Fevereiro', qty: '423' }),
+	createMonthlyAccess({ year: 2025, month: 'Fevereiro', qty: '352' }),
+	createMonthlyAccess({ year: 2025, month: 'Março', qty: '423' }),
 ];
 
 const rows2024: AccessData[] = [
@@ -296,7 +297,7 @@ export default function Index() {
 							<TableRow>
 								<TableCell align="center">
 									<Typography variant="h6" color={theme.black} sx={{ fontWeight: 'bold' }}>
-										1567
+										2.478
 									</Typography>
 								</TableCell>
 								<TableCell align="center">
