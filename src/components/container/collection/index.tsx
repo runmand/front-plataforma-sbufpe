@@ -55,6 +55,8 @@ export default function Index(){
           <MenuItem value={"Avaliação CEO"}>Avaliação CEO</MenuItem>
           <MenuItem value={"Avaliação da APS"}>Avaliação APS</MenuItem>
           <MenuItem value={"Planeja SD"}>Planeja SD</MenuItem>
+          <MenuItem value={"Epidemiologia"}>Epidemiologia</MenuItem>
+          <MenuItem value={"Satisfação do Usuário"}>Satisfação do Usuário</MenuItem>
         </Select>
       </FormControl>
         <Grid 
