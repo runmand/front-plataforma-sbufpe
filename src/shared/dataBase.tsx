@@ -2044,7 +2044,127 @@ export const acervo = [
     article: "District decisionmaking for health in low income settings: a systematic literature review. Health Policy and Planning",
     author: "D. WICKREMASINGHE, I. HASHMI, J. SCHELLENBERG, B. AVAN",
     link: "https://pubmed.ncbi.nlm.nih.gov/27591202/"
-  }
+  },
+  {
+    type: "Epidemiologia",
+    article: "A relação entre o espaço e a saúde bucal coletiva: por uma epidemiologia georreferenciada",
+    author: "R. MOREIRA, L. NICO, N. TOMITA",
+    link: "https://drive.google.com/file/d/1ek0jT62hpNEBUAlDv9_tVw8q_69zVN2d/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Acesso à saúde bucal na primeira infância no município de Porto Alegre, Brasil",
+    author: "M. COMASSETTO, A. BAUMGARTEN, K. KINDLEIN, J. HILGERT, M. FIGUEIREDO, D. FAUSTINO-SILVA",
+    link: "https://drive.google.com/file/d/1rCDdwoH4suYA_yiVpwuDsiR27HITrFyb/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Associação entre procedimentos preventivos no serviço público de odontologia e a prevalência de cárie dentária",
+    author: "R. CELESTE, P. NADANOVSKY, A. LEON",
+    link: "https://drive.google.com/file/d/1arXRecy_CKqBecyee_fKAiXcA6zcok4b/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Fatores associados ao impacto das condições de saúde bucal nas atividades de vida diária de adolescentes, Estado de São Paulo, 2015",
+    author: "L. GUSHI, M. SOUSA, A. FRIAS, J. ANTUNES",
+    link: "https://drive.google.com/file/d/1drBju0KpMhQDt0y8oDni0SKttrumkrzI/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Manual de Calibração de Examinadores",
+    author: "MINISTÉRIO DA SAÚDE SECRETARIA DE POLÍTICAS DE SAÚDE DEPARTAMENTO DE ATENÇÃO BÁSICA ÁREA TÉCNICA DE SAÚDE BUCAL",
+    link: "https://drive.google.com/file/d/14uVc0tdwroU50cZQVqgMMKNsWsAjVZuW/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "O processo de trabalho da Pesquisa Nacional de Saúde Bucal (Projeto SBBRASIL 2010) na perspectiva dos coordenadores do inquérito",
+    author: "F. SOARES, M. FREIRE, S. REIS",
+    link: "https://drive.google.com/file/d/1klcxaZnDFJhoLCP6HOc13lxtVPwUfErS/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Oral health in the agenda of priorities in public health",
+    author: "J. ANTUNES, T. TOPORCOV, J. BASTOS, P. FRAZÃO, P. NARVAI, M. PERES",
+    link: "https://drive.google.com/file/d/1lD_KpXnReAnoepZZsVt7QEbOXvpAdjvI/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Prevalence, incidence, and years-lived with disability due to oral disorders in Brazil: an analysis of the Global Burden of Disease Study 2019",
+    author: "F. HUGO, J. BAILEY, C. STEIN, A. CUNHA, B. ISER, D. MALTA, J. GIORDANI, J. HILGERT, L. ABREU, N. KASSEBAUM",
+    link: "https://drive.google.com/file/d/1NsxBSN3I7whmcWJw4y6vLtmFls_Xn-AP/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Projeto VIGISUS II",
+    author: "Ministério da Saúde Secretaria de Vigilância em Saúde",
+    link: "https://drive.google.com/file/d/1FeVcc4oD7fVaP9terP-XmE-mxoDae3lT/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Self-reported oral health among Brazilian adults: results from the National Health Surveys 2013 and 2019",
+    author: "R. B. CORASSA, C. J. DE PAULA SILVA, J. S. DE PAULA, É. C. DE AQUINO, L. M. V. SARDINHA, P. A. B. ALVES",
+    link: "https://drive.google.com/file/d/16YUrz5rF_cOHYLGsdFEHMNZFhCVUOCLA/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Self-reported oral health among Brazilian adults: results from the National Health Surveys 2013 and 2019",
+    author: "R. B. CORASSA, C. J. DE PAULA SILVA, J. S. DE PAULA, É. C. DE AQUINO, L. M. V. SARDINHA, P. A. B. ALVES",
+    link: "https://drive.google.com/file/d/16YUrz5rF_cOHYLGsdFEHMNZFhCVUOCLA/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Um panorama da saúde bucal no Brasil",
+    author: "P. NADANOVSKY",
+    link: "https://drive.google.com/file/d/1a1Wl8iPe1Hf3wLRhCr74QEm7ygm4LAkL/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Vigilância à saúde bucal no Brasil",
+    author: "M. PERES, S. MOYSÉS",
+    link: "https://drive.google.com/file/d/1sxKV4KLE0KopBsWqbzpUmb2vb_ClOHWn/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Vigilância à saúde bucal: a construção de um modelo integrado",
+    author: "P. GOES, N. FIGUEIREDO, G. PUCCA, L. MOURA",
+    link: "https://drive.google.com/file/d/1ZL496bDXsZJnltlOBVZyZ-VKfX--FxqO/view?usp=sharing"
+  },
+  {
+    type: "Epidemiologia",
+    article: "Vigilância em saúde no SUS: Fortalecendo a capacidade de resposta aos velhos e novos desafios",
+    author: "Ministério da Saúde",
+    link: "https://drive.google.com/file/d/1t2_HvkGOjoE2X4a-3gmB93UFiAuLAMMX/view?usp=sharing"
+  },
+  {
+    type: "Satisfação do Usuário",
+    article: "Avaliação da satisfação do usuário no serviço de saúde bucal: revisão integrativa da literatura",
+    author: "M. SILVA, M. LIMA, M. SOARES, N. FIGUEIREDO",
+    link: "https://drive.google.com/file/d/19Wo81PxBHs0poWSBgyKOxUPdPEaurXma/view?usp=sharing"
+  },
+  {
+    type: "Satisfação do Usuário",
+    article: "Avaliação do Usuário",
+    author: "",
+    link: "https://drive.google.com/file/d/1xWd5Zu_dtcAbgEStJCLfQabctec9CsnO/view?usp=sharing"
+  },
+  {
+    type: "Satisfação do Usuário",
+    article: "Profile and satisfaction of patients with special health care needs assisted in dental specialty centers",
+    author: "S. ROSA, M. PEROTTA, J. ROCHA, S. IGNÁCIO",
+    link: "https://drive.google.com/file/d/1vOd3nS_AJUni09F0-jomogKXL-FmnAra/view?usp=sharing"
+  },
+  {
+    type: "Satisfação do Usuário",
+    article: "Escala curta de satisfação do usuário",
+    author: "",
+    link: "https://docs.google.com/presentation/d/1Govken3rnphhtpg4w39Xq6KuFhs8iMvA/edit?usp=sharing&ouid=111177953165338550747&rtpof=true&sd=true"
+  },
+  {
+    type: "Satisfação do Usuário",
+    article: "GestBucalSD: Avaliação da Satisfação do Usuário em Saúde Bucal por plataforma digital.",
+    author: "W. COSTA, N. FIGUEIREDO, V. COSTA, A. CHAVES, G. NASCIMENTO, R. GUIMARÃES",
+    link: "https://drive.google.com/file/d/1g-6N7hfkg1wc6Bj-8zgIjpvUdfkj3C3g/view?usp=sharing"
+  },
 ]
 
 const menu = [
