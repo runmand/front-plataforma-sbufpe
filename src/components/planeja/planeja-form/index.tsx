@@ -23,6 +23,8 @@ import LoadHistory from "@components/loadHistory";
 import SaveButton from "@components/saveButton";
 import NewMenu from "@components/newMenu/index";
 import FooterMain from "@components/footer/main/index";
+import LoadToSend from "@components/loadToSend";
+import sharp from "sharp";
 
 interface IPlanejaResponse {
     id: number;
@@ -44,7 +46,7 @@ interface IlocalStorageAnswer {
     justify: string;
 }
 
-interface ISavedData {
+export interface ISavedData {
     planQuestion: number;
     userId: number;
     question_answer: string;
@@ -76,6 +78,8 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     const [thisPrincipal, setThisPrincipal] = useState(false);
     const [dataSaved, setDataSaved] = useState(false);
     const [databaseHistory, setDatabaseHistory] = useState<ISavedData[]>([]);
+    const [submit, setSubmit] = useState(true);
+    const [upSteps, setUpSteps] = useState(0);
     const isLastIndex = activeIndex + 1 === data.length;
     useEffect(() => {
         const fetchData = async () => {
@@ -381,10 +385,71 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
         }
     }
 
-    function handleSubmit(e: React.FormEvent) {
+    async function sendCertificate(payload: ISavedData[]) {
+        try {
+            const payloadToSend: ISavedData[] = payload.map((item) => ({ ...item }));
+            let email: string = "";
+            let name: string = "";
+
+            payloadToSend.forEach((item) => {
+                if (item.planQuestion === 9) {
+                    email = item.question_answer;
+                    name = nome;
+                }
+            });
+
+            //Melhorar tratamento de errors
+
+            await http.post("/plan-question-answer/certificate", { email, name, form: "T" });
+        } catch {
+            console.log("error");
+        }
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (validateIfCanProcced() && savedDataToSend.length === data.length) {
-            sendData(savedDataToSend);
+            let response = true;
+
+            if (nome.length <= 0) {
+                setError("Preencha o campo nome!");
+                response = false;
+            }
+
+            savedDataToSend.forEach((item) => {
+                if (item.planQuestion === 9) {
+                    if (item.justify) {
+                        if (item.justify.length < 100) {
+                            setError("Digite sua opinião sobre o modulo!");
+                            response = false;
+                        }
+                    } else {
+                        setError("Digite sua opinião sobre o modulo!");
+                        response = false;
+                    }
+
+                    if (item.question_answer) {
+                        if (item.question_answer.length <= 0) {
+                            setError("Preencha o campo Email!");
+                            response = false;
+                        }
+                    } else {
+                        setError("Preencha o campo Email!");
+                        response = false;
+                    }
+                }
+            });
+
+            if (!response) return;
+
+            setIsLoading(true);
+            setSubmit(true);
+            setUpSteps(1);
+            await sendData(savedDataToSend);
+            setUpSteps(2);
+            setUpSteps(3);
+            await sendCertificate(savedDataToSend);
+            setUpSteps(3);
         } else {
             // caso seja a última questão(opinião e email), nós limpamos os erros
             if (activeIndex === 8) {
@@ -434,14 +499,21 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                     }}
                 >
                     {isLoading ? (
-                        <Grid container columns={{ xs: 1, md: 1 }} gap={10}>
-                            <Grid item xs={2}>
-                                <Skeleton variant="rectangular" width="100%" height={40} />
+                        !submit ? (
+                            <Grid container columns={{ xs: 1, md: 1 }} gap={10}>
+                                <Grid item xs={2}>
+                                    <Skeleton variant="rectangular" width="100%" height={40} />
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Skeleton variant="rectangular" width="100%" height={200} />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={2}>
-                                <Skeleton variant="rectangular" width="100%" height={200} />
-                            </Grid>
-                        </Grid>
+                        ) : (
+                            <LoadToSend
+                                steps={["Enviando formulario", "Salvando Respostas", "Criando certificado", "Enviando Certificado"]}
+                                upSteps={upSteps}
+                            />
+                        )
                     ) : (
                         <>
                             <LoadHistory thisPrincipal={thisPrincipal} updateForm={updateForm} useThis={useThis} />
