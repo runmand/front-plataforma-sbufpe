@@ -27,7 +27,7 @@ export default function Index() {
             textAlign:'center',
             fontWeight:'bold',
             paddingY:'1rem'}}>
-            USUÁRIOS
+            USUÁRIOS RESPONDENTES
         </Typography>
         <Box>
           <iframe
