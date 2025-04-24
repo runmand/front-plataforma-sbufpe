@@ -5,6 +5,9 @@ import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
 import { Box, Button, Typography } from "@mui/material";
 import { downloadPDFPlaneja } from "@components/pdf/PlanejaPDF";
+import DownloadIcon from "@mui/icons-material/Download";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Index() {
     return (
@@ -29,13 +32,23 @@ export default function Index() {
                         Formulário Enviado! Obrigado.
                     </Typography>
                     <Image width={400} height={400} src={"/plan-finished-form.svg"} alt="" />
+
                     <Typography textAlign={"center"} variant="h3" fontSize={16} sx={{ color: "#1b1b1b97" }}>
                         Obs: Enviamos o certificado de conclusão para o email informado no formulario.
                     </Typography>
 
                     <Box display={"flex"} gap={5} justifyContent={"center"} alignItems={"center"}>
-                        <Button href="/form" variant="contained">
-                            Voltar ao inicio
+                        <Button href="/form" variant="text">
+                            <ArrowBackIcon /> Voltar ao inicio
+                        </Button>
+                        <Button onClick={downloadPDFPlaneja} variant="outlined">
+                            <DownloadIcon /> Baixar PDF
+                        </Button>
+                        <Button onClick={downloadPDFPlaneja} variant="outlined">
+                            <DownloadIcon /> Baixar Certificado
+                        </Button>
+                        <Button href="/planeja-pratico" variant="contained">
+                            Ir para o formulário Planeja Prático <ArrowForwardIcon />
                         </Button>
                     </Box>
                 </Box>
