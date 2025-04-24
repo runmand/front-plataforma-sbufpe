@@ -37,8 +37,8 @@ export default function Index(props: TProps){
       }}
     >
       <Typography textAlign="center" fontSize="32pt" color="#6D141A" margin="auto">
-      {props.type === 'closed' ? 'Dados ' : 'Respondentes '} {props.form.toUpperCase()} 
-
+      {props.type === 'closed' ? 'Dados ' : 'Respondentes '} {props.form === 'usuario' ? '- Usuários' : props.form === 'aps' ? 'APS' : 'CEO'}
+      
       </Typography>
 
       {loading ? (
