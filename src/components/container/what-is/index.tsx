@@ -307,7 +307,7 @@ export default function Index() {
 								</TableCell>
 								<TableCell align="center">
 									<Typography variant="h6" color={theme.black} sx={{ fontWeight: 'bold' }}>
-										256
+										291
 									</Typography>
 								</TableCell>
 							</TableRow>
