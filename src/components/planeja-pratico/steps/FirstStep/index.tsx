@@ -13,6 +13,7 @@ import { http } from "src/core/axios";
 import Image from "next/image";
 import { Save } from '@mui/icons-material';
 import SaveButton from '@components/saveButton';
+import { it } from "node:test";
 
 interface IProps {
   onSubmit: (values: IValues[]) => void;
@@ -97,33 +98,49 @@ export const FirstStep = ({
     onClickNextStep();
   }
 
+  function isValidToProceed() {
+    if (values.length < 2) return false;
+
+    return values.every(
+      (item) => 
+        item.domain.trim() !== "" &&
+        item.first_indicator.trim() !== "" &&
+        item.second_indicator.trim() !== "" &&
+        item.first_degree > 0 &&
+        item.second_degree > 0
+      );
+  }
+
   useEffect(() => {
     getQuestion();
   }, []);
 
   return (
     <form onSubmit={handleSubmit}>
-      <Typography fontWeight={700} fontSize={20} textAlign={"center"}>
+      <Typography fontWeight={700} fontSize={20}>
         COMO SELECIONAR, PRIORIZAR E DEFINIR OS PROBLEMAS?
       </Typography>
+
+      <Typography fontWeight={400} fontSize={16} marginTop={2} paragraph>
+        Nesta etapa, que corresponde ao momento Explicativo do PES, você/equipe irá selecionar os problemas, priorizá-los e os hierarquizar de maneira estratégica, resultando na definição do problema principal, sendo fundamental a análise da governabilidade sobre o problema e o debate entre os participantes para que todos/todas possa compartilhar sua visão.
+      </Typography>
+
       <Typography fontWeight={700} fontSize={24}>
         Análise situacional
       </Typography>
-      <Typography fontWeight={400} fontSize={16}>
-        &nbsp;&nbsp;Primeiramente, você/equipe deve explorar as informações
-        disponíveis no módulo Nossos Dados SD, pelo filtro USUÁRIOS, CEO ou APS.
-        A busca se dá pela escolha de Estado-cidade-estabelecimento de saúde do
-        qual será feito o planejamento em saúde.
-        <br />
-        &nbsp;&nbsp;Salienta-se que as informações estão sistematizadas em
-        Classificações com notas: Geral e para os Domínios de qualidade; e, o
-        cumprimento (ou não) dos indicadores avaliativos de cada Domínio
-        <br />
-        &nbsp;&nbsp;Na figura a sumarização dos Domínios de Qualidade com o 
-        quantitativo dos indicadores avaliativos que vieram da matriz
-        avaliativa construída para os módulos avaliativos: AvaliaAPS, AvaliaCEO
-        e AvaliaUsuários (vide acervo - GestBucalSD, 2024).
+
+      <Typography fontWeight={400} fontSize={16} marginTop={2} paragraph>
+        &nbsp;&nbsp;Primeiramente, você/equipe deve explorar as informações disponíveis no módulo Nossos Dados SD, pelo filtro USUÁRIOS, CEO ou APS. A busca se dá pela escolha de Estado-cidade-estabelecimento de saúde do qual será feito o planejamento em saúde.
       </Typography>
+
+      <Typography fontWeight={400} fontSize={16} paragraph>
+        &nbsp;&nbsp;Salienta-se que as informações estão sistematizadas em Classificações com notas: Geral e para os Domínios de qualidade; e, o cumprimento (ou não) dos indicadores avaliativos de cada Domínio.
+      </Typography>
+
+      <Typography fontWeight={400} fontSize={16} paragraph>
+        &nbsp;&nbsp;Na figura a sumarização dos Domínios de Qualidade com o quantitativo dos indicadores avaliativos que vieram da matriz avaliativa construída para os módulos avaliativos: AvaliaAPS, AvaliaCEO e AvaliaUsuários (vide acervo - GestBucalSD, 2024).
+      </Typography>
+
 
       <Box
         width={"100%"}
@@ -281,7 +298,7 @@ export const FirstStep = ({
 
         <SaveButton dataSaved={dataSaved} saveData={saveData} />
 
-        <Button variant="contained" color="primary" type={"submit"}>
+        <Button variant="contained" color="primary" type={"submit"} disabled={!isValidToProceed()}>
           {"Próxima"}
         </Button>
       </Box>

@@ -78,7 +78,7 @@ export const SecondStep = ({
         {values.defined_problems.map((item, index) => (
           <Box key={item.id} width={"100%"}>
             <InputLabel id="second_domain">
-              Problemas definido à intervenção:
+              Escreva o problema definido para a intervenção :
             </InputLabel>
             <TextField
               fullWidth
@@ -100,7 +100,7 @@ export const SecondStep = ({
         <b>Obs:</b> Para facilitar o andamento do planejamento aqui, no módulo PlanejaSD-prático, 
         você/equipe vai construir um PA-SB para um problema por vez.<br></br> 
         Então, caso se queira intervir noutros problemas, será necessário repetir o processo para cada problema separadamente. 
-        Estes PA-SB podem ser juntados, formando um programa de intervenção local!
+        Estes PA-SB podem ser unidos posteriormente, formando um programa de intervenção local!
 
       </Typography>
       <Box
