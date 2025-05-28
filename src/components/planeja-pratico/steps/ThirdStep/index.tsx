@@ -95,6 +95,9 @@ export const ThirdStep = ({
         sobre ele, mas sim sobre a sua causa principal, denominado nó-crítico.
         Por isso, é necessário explicar o problema.
       </Typography>
+      <Typography fontWeight={600} fontSize={16} marginTop={2} marginBottom={2} textAlign={"center"}>
+        A explicação do problema está contida no Momento explicativo!
+      </Typography>
       <Typography fontWeight={500} fontSize={24}>
         Explicação do problema
       </Typography>
@@ -156,6 +159,10 @@ export const ThirdStep = ({
 
       <Typography fontWeight={700} fontSize={24} textAlign={"center"} mt={5}>
         É a partir do Nó Crítico que o plano de ação é construído!
+      </Typography>
+
+      <Typography fontWeight={600} fontSize={16} textAlign={"center"} mt={2}>
+        A identificação do nó-crítico pode ser considerada a primeira etapa do Momento Normativo .
       </Typography>
 
       <Box display={"flex"} flexDirection={"column"} gap={10} mt={10}>

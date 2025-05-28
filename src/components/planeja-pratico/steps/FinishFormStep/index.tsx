@@ -197,8 +197,8 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                         à execução das ações idealizadas.
                     </Typography>
                     <Typography fontWeight={500} fontSize={16} marginBottom={"15px"}>
-                        <b>Lembre-se!</b> O PA-SB pode ser revisto e adequado sempre que necessário ao longo de sua execução e monitoramento das ações
-                        previstas! Faz-se importante dar um tempo maior (quadrimestralmente, por exemplo) para realização de novas avaliações
+                        Aqui você/equipe se encontra o último momento do PES, o Tático-operacional. A partir de agora, as estratégias elaboradas durante a construção do Plano de Ação podem ser colocadas em prática. 
+                        <b>Lembre-se!</b> O PA-SB pode ser revisto e adequado sempre que necessário ao longo de sua execução e monitoramento das ações previstas! Faz-se importante dar um tempo maior (quadrimestralmente, por exemplo) para realização de novas avaliações
                         (avaliações formativas) para averiguação da melhoria da situação local. Os demais módulos do GestBucalSD servirão para essa
                         finalidade.
                     </Typography>
@@ -208,7 +208,15 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                     </Typography>
 
                     <Typography fontWeight={700} fontSize={24} mb={10} textAlign={"center"}>
-                        Confirmar o envio do formulário
+                        Por favor, preencha os dados abaixo para receber o certificado de conclusão do curso:
+                    </Typography>
+
+                    <Typography fontWeight={600} fontSize={16} mb={5}>
+                        Não esquecer!!! Escreva o nome e endereço de e-mail de todos os participantes do planejamento separado por vírgulas, para garantia que todos/as receberão os certificados.
+                    </Typography>
+
+                    <Typography fontWeight={600} fontSize={16} mb={5}>
+                        Indicar o nome do estabelecimento de saúde e município sobre o qual se fez o PA-SB (mesmo nas atividades acadêmicas ).
                     </Typography>
 
                     <Paper sx={{ mt: 5, p: 4 }}>

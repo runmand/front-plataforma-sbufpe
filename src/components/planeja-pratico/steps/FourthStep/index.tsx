@@ -242,7 +242,7 @@ export const FourthStep = ({
           <Typography fontWeight={400} fontSize={16}>
             O Plano de Ação expressa o que dever ser feito para resolução da
             situação problema. Descrever-se-á as ações que levarão à modificação
-            positiva do problema.
+            positiva do problema. Isso corresponde ao momento normativo do PES.
           </Typography>
           <Typography fontWeight={400} fontSize={16}>
             <b>LEMBRE-SE!</b> Você pode consultar a Carta de recomendações (em
@@ -259,7 +259,7 @@ export const FourthStep = ({
           </Typography>
           <Typography fontWeight={400} fontSize={16}>
             Como o ideal nem sempre é o real, pode-se antever estrategicamente
-            algumas situações para se garantir maior viabilidade ao plano.
+            algumas situações para se garantir maior viabilidade ao plano. A elaboração dessas etapas contempla o momento Estratégico.
           </Typography>
           <Typography fontWeight={400} fontSize={16}>
             Estrategicamente, para cada ação definida, será analisada a

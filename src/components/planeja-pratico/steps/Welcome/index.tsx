@@ -18,6 +18,7 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
         Vamos vivenciar o PLANEJAMENTO, entendendo-o como ação humana para
         REDUÇÃO DE INCERTEZAS E INTERVENÇÃO NA REALIDADE. Este módulo operativo
         é baseado numa adaptação do Planejamento Estratégico Situacional (PES).
+          Sendo assim, será indicado didaticamente em cada etapa o momento do PES vivenciado .
         No final do seu uso, você terá um Plano de Ação em Saúde Bucal (PA-SB) elaborado para enfrentamento de um problema prioritário,
         que deve ser exequível ou possível à intervenção e consequentemente
         melhoria de qualidade da sua realidade.
@@ -26,8 +27,8 @@ export const Welcome = ({ onClickNextQuestion }: IProps) => {
         VAMOS COMEÇAR?
       </Typography>
       <Typography fontWeight={500} fontSize={16}>
-        Um planejamento deve partir da análise do diagnóstico situacional local.
-        Você tem disponibilizado em <b>nossos dados SD/GestBucalSD</b> as
+        O planejamento é iniciado no momento explicativo com a análise do diagnóstico situacional local.
+        Você tem disponibilizado no módulo <b>nossos dados SD/GestBucalSD</b> as
         informações necessárias para um diagnóstico situacional do estabelecimento de saúde que você trabalha, vinda dos seguintes módulos:
       </Typography>
       <ul>
