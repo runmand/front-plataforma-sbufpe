@@ -14,6 +14,10 @@ export default class LoginUtils {
 			title: 'Username',
 			key: loginTypeEnum.USERNAME,
 		},
+		{
+			title: 'Email',
+			key: loginTypeEnum.EMAIL,
+		},
 	];
 }
 
