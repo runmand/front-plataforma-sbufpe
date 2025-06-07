@@ -203,6 +203,72 @@ export const studentTeamTI = [
       },
     ],
   },
+  {
+    name: 'Bruno Magno',
+    role: 'Estudante',
+    photo: './profile-image/BrunoMagno.jpg',
+    contacts: [
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'https://lattes.cnpq.br/4411196778188962',
+      },
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/brunomagnotm/',
+      },
+    ],
+  },
+  {
+    name: 'Vinicius Silva',
+    role: 'Estudante',
+    photo: './profile-image/ViniciusSilva.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/vinicius-silva-054005360/',
+      },
+    ],
+  },
+  {
+    name: 'Diego Felipe',
+    role: 'Estudante',
+    photo: './profile-image/DiegoFelipe.jpg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/diegofelipeti/',
+      },
+    ],
+  },
+  {
+    name: 'Paulo de Araújo',
+    role: 'Estudante',
+    photo: './profile-image/PauloAraujo.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https:///www.linkedin.com/in/paulo-araujo-dev/',
+      },
+    ],
+  },
+  {
+    name: 'Erivando Ferreira',
+    role: 'Estudante',
+    photo: './profile-image/ErivandoFerreira.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/erivando-n-2a6b1a307/',
+      },
+    ],
+  }
+
 ]
 
 export const studentsTeamGI = [
