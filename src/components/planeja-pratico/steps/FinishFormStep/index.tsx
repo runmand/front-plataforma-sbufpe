@@ -216,7 +216,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                     </Typography>
 
                     <Typography fontWeight={600} fontSize={16} mb={5}>
-                        Indicar o nome do estabelecimento de saúde e município sobre o qual se fez o PA-SB (mesmo nas atividades acadêmicas ).
+                        Indicar o nome do estabelecimento de saúde e município sobre o qual se fez o PA-SB (mesmo nas atividades acadêmicas).
                     </Typography>
 
                     <Paper sx={{ mt: 5, p: 4 }}>
@@ -404,7 +404,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                                     </Typography>
 
                                     <Box width={"100%"}>
-                                        <InputLabel id="names">Nome do(s) Participante(s)</InputLabel>
+                                        <InputLabel id="names">Nome dos participantes</InputLabel>
                                         <TextField
                                             fullWidth
                                             value={values.names}
@@ -434,7 +434,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                                     </Box>
 
                                     <Box width={"100%"}>
-                                        <InputLabel id="health_establishment">Municipio do(s) Participante(s)</InputLabel>
+                                        <InputLabel id="health_establishment">Município dos participantes</InputLabel>
                                         <TextField
                                             fullWidth
                                             value={values.city}
@@ -448,7 +448,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                                         />
                                     </Box>
                                     <Box width={"100%"}>
-                                        <InputLabel id="email">E-mail do Responsável (para recebimento do certificado)</InputLabel>
+                                        <InputLabel id="email">Email dos participantes</InputLabel>
                                         <TextField
                                             fullWidth
                                             value={values.email}
