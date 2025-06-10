@@ -256,6 +256,17 @@ export default function Index() {
           </Typography>
         </Box>
 
+        <Box
+          sx={{
+            width: 60,
+            height: 4,
+            background: `linear-gradient(90deg, ${theme.primaryColor}, ${theme.secundaryColor})`,
+            mx: "auto",
+            mb: 3,
+            mt: 15,
+            borderRadius: 2,
+          }}
+        />
         <Box sx={{ mb: 10 }}>
           <Box sx={{ textAlign: "center", mb: 6 }}>
             <Typography
@@ -291,7 +302,17 @@ export default function Index() {
             bgColor={theme.secundaryColor}
           />
         </Box>
-
+        <Box
+          sx={{
+            width: 60,
+            height: 4,
+            background: `linear-gradient(90deg, ${theme.primaryColor}, ${theme.secundaryColor})`,
+            mx: "auto",
+            mb: 3,
+            mt: 15,
+            borderRadius: 2,
+          }}
+        />
         <Box>
           <Box sx={{ textAlign: "center", mb: 6 }}>
             <Typography
