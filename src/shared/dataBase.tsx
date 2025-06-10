@@ -223,6 +223,11 @@ export const studentTeamTI = [
     role: 'Estudante',
     photo: './profile-image/DiegoFelipe.jpg',
     contacts: [
+        {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/3545055969923395',
+      },
       {
         id: 'linked-in',
         title: 'LinkedIn',
