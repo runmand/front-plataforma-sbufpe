@@ -89,19 +89,16 @@ export const ThirdStep = ({
       <Typography fontWeight={700} fontSize={20} textAlign={"center"}>
         COMO EXPLICAR O PROBLEMA?
       </Typography>
-      <Typography fontWeight={500} fontSize={16}>
+      <Typography fontWeight={500} fontSize={16} sx={{ textIndent: '2em' }}>
         Apesar de você já ter chegado na definição do problema para a
         intervenção, na verdade o plano de ação não é para intervir diretamente
         sobre ele, mas sim sobre a sua causa principal, denominado nó-crítico.
-        Por isso, é necessário explicar o problema.
+        Por isso, é necessário explicar o problema. A explicação do problema está contida no Momento explicativo!
       </Typography>
-      <Typography fontWeight={600} fontSize={16} marginTop={2} marginBottom={2} textAlign={"center"}>
-        A explicação do problema está contida no Momento explicativo!
-      </Typography>
-      <Typography fontWeight={500} fontSize={24}>
+      <Typography fontWeight={600} fontSize={24} marginTop={2}>
         Explicação do problema
       </Typography>
-      <Typography fontWeight={500} fontSize={16}>
+      <Typography fontWeight={500} fontSize={16} sx={{ textIndent: '2em' }}>
         Geralmente, no momento explicativo do PES, a explicação do problema
         advém da descrição das causas e consequências com uso de técnicas como
         Árvore explicativa do problema ou Fluxograma situacional do problema
@@ -127,10 +124,10 @@ export const ThirdStep = ({
       <Typography fontWeight={700} fontSize={24} textAlign={"center"} mb={5}>
         Figura 1- Exemplo de Fluxograma situacional do problema
       </Typography>
-      <Typography fontWeight={500} fontSize={24}>
+      <Typography fontWeight={600} fontSize={24}>
         Técnica simplificada
       </Typography>
-      <Typography fontWeight={500} fontSize={16}>
+      <Typography fontWeight={500} fontSize={16} sx={{ textIndent: '2em' }}  marginTop={1} marginBottom={1}>
         Aqui recorreremos a uma simplificação da técnica para explicação do problema. 
         Deve-se descrever, tanto quanto necessárias, as possíveis causas do problema definido, 
         explicando-as. A explicação pode ser uma maior descrição da causa com informações de 
@@ -139,16 +136,19 @@ export const ThirdStep = ({
       <Typography fontWeight={500} fontSize={16}>
         <b>Dica:</b> Para cada causa descrita e explicada, deve-se ter implicitamente a pergunta “o que a causou?”, e assim por diante, até esgotar sua explicação
       </Typography>
-      <Typography fontWeight={500} fontSize={16}>
+      <Typography fontWeight={500} fontSize={16} sx={{ textIndent: '2em' }}  marginTop={1} marginBottom={1}>
         Deve-se estabelecer uma relação causal entre as causas para se obter a causa principal, 
         ou causa das causas. Por isso, pode-se mudar as causas e explicações descritas de posição 
         nos quadros abaixo. E, caso necessário, incluir outras causas, basta clicar em ADICIONAR
       </Typography>
-      <Typography fontWeight={500} fontSize={24}>
+      <Typography fontWeight={500} fontSize={16} sx={{ textIndent: '2em' }}  marginTop={1} marginBottom={1}>
+        Após discussão da equipe, deve-se escolher a causa principal que poderá ser considerada como <b>nó-crítico</b>.
+      </Typography>
+      <Typography fontWeight={600} fontSize={24}>
         Identificação do Nó-crítico
       </Typography>
 
-      <Typography fontWeight={400} fontSize={16}>
+      <Typography fontWeight={400} fontSize={16} sx={{ textIndent: '2em' }}>
         O nó crítico é sobre qual causa se deve atuar, ou seja, aquela
         considerada mais importante na origem do problema. Traz a ideia de algo
         sobre o qual eu posso intervir, ou seja, está dentro do meu espaço de
@@ -161,11 +161,11 @@ export const ThirdStep = ({
         É a partir do Nó Crítico que o plano de ação é construído!
       </Typography>
 
-      <Typography fontWeight={600} fontSize={16} textAlign={"center"} mt={2}>
-        A identificação do nó-crítico pode ser considerada a primeira etapa do Momento Normativo .
+      <Typography fontWeight={600} fontSize={16} textAlign={"center"} mt={0}>
+        A identificação do nó-crítico pode ser considerada a primeira etapa do Momento Normativo.
       </Typography>
 
-      <Box display={"flex"} flexDirection={"column"} gap={10} mt={10}>
+      <Box display={"flex"} flexDirection={"column"} gap={10} mt={5}>
         {values.causas.map((causa, index) => (
           <Box key={causa.id} display={"flex"} flexDirection={"column"} gap={3}>
             <Box pl={2}>
