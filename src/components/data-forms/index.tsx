@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { http } from "src/core/axios"
 import { AnswersForm, AnswersFormData, FormsRegisters, requestResponse } from "./types"
 import { ButtonExportData, Container, Filter, Form, Loading, Table, TableWrapper, TBody, TD, THead, TheadLine, TR, TRow } from "./styled";
@@ -22,23 +22,29 @@ export default function Index() {
     const [response, setResponse] = useState<string[]>([]);
     const [filterSelected, setFilterSelected] = useState<string>("Sem filtro")
 
-    async function getFormData() {
-        const res: requestResponse = await http.get(`/data/form/${id}`);
-        if (id == 6){
-            formVigiaUp(res.data.answer, res.data.data);
-        }else if (id == 5){
-            formVigiaUp(res.data.answer, res.data.data);
+
+    const calcCPO = useCallback((answers: AnswersFormData[]): string =>{
+        let response = 0;
+
+        answers.map((v) => {
+            if (Number(v.answerText) > 0 && Number(v.answerText) <= 4){
+                response++
+            }else if (v.answerText == "B" || v.answerText == "C" || v.answerText == "D" || v.answerText == "E" ){
+                response++
+            }
+        })
+
+        response = (response / answers.length) * 100
+
+        if (isNaN(response)){
+            return "Sem dados registrados";
         }else{
-            setData(res.data.data);
-            setAnswer(res.data.answer);
-            setAnswerFiltered(res.data.answer);
-            setOrder(res.data.data.formsQuestionsFormsRegisters.map(v => v.id))
+            
+            return `${generateResponse(response)} (${response})`
         }
+    },[])
 
-        
-    }
-
-    async function formVigiaUp(answers :AnswersForm[], data: FormsRegisters) {
+    const formVigiaUp = useCallback(async (answers: AnswersForm[], data: FormsRegisters) => {
         const questionCPO = [619, 618, 617, 616, 615, 614, 613, 612, 611, 608, 607, 606, 605, 604, 627, 626, 625, 624, 623, 622, 621, 620, 603, 632, 631, 630, 629, 628, 609, 610, 633, 634, 532, 531, 501, 505, 504, 503, 502, 510, 509, 508, 507, 506, 530, 529, 528, 527, 526, 525, 524, 523, 522, 521, 520, 519, 528, 518, 517, 516, 515, 514, 513, 512, 511]
         //[199, 200, 230, 226, 227, 228, 229, 221, 222, 223, 224, 225, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220]
         
@@ -53,7 +59,7 @@ export default function Index() {
                 deletedAt: "",
                 recommendationMessage: "",
                 title: "Resultado CPO"
-                
+
             }
         })
 
@@ -81,29 +87,21 @@ export default function Index() {
         setAnswer(answers);
         setAnswerFiltered(answers);
         setOrder(data.formsQuestionsFormsRegisters.map(v => v.id))
-    }
+    }, [calcCPO])
 
-    function calcCPO(answers: AnswersFormData[]): string{
-        let response = 0;
-
-        answers.map((v) => {
-            if (Number(v.answerText) > 0 && Number(v.answerText) <= 4){
-                response++
-            }else if (v.answerText == "B" || v.answerText == "C" || v.answerText == "D" || v.answerText == "E" ){
-                response++
-            }
-        })
-
-        response = (response / answers.length) * 100
-
-        if (isNaN(response)){
-            return "Sem dados registrados";
-        }else{
-            
-            return `${generateResponse(response)} (${response})`
+    const getFormData = useCallback(async () => {
+        const res: requestResponse = await http.get(`/data/form/${id}`);
+        if (id == 6 || id == 5) {
+            await formVigiaUp(res.data.answer, res.data.data);
+        } else {
+            setData(res.data.data);
+            setAnswer(res.data.answer);
+            setAnswerFiltered(res.data.answer);
+            setOrder(res.data.data.formsQuestionsFormsRegisters.map(v => v.id));
         }
+    }, [id, formVigiaUp]); 
 
-    }
+
 
     function generateResponse(x: number): string {
         if (x >= 0 && x <= 1.1) {
@@ -158,7 +156,7 @@ export default function Index() {
     useEffect(() => {
         getTypes()
         getFormData();
-    }, []);
+    }, [getFormData]);
 
     useEffect(() => {
         if (filter != "Sem filtro"){
@@ -174,7 +172,7 @@ export default function Index() {
                     newResponse = newResponse.map(item => item.replace(/\s?\(.*?\)/, ''));
                 }
 
-                const set = [new Set(newResponse)].map((v) => v.keys().toArray())[0]
+                const set = Array.from(new Set(newResponse));
 
                 setResponse(set)
 
@@ -186,10 +184,9 @@ export default function Index() {
         }
         setFilterSelected("Sem filtro")
         setAnswerFiltered(answer);
-    }, [filter])
+    }, [filter, answer, data])
 
     useEffect(() => {
-
         if (filterSelected == "Sem filtro"){
             setAnswerFiltered(answer)
         }else{
@@ -217,7 +214,7 @@ export default function Index() {
             }
 
         }
-    }, [filterSelected])
+    }, [filterSelected, answer, data, filter])
 
     useEffect(() => {
         setFilterSelected("Sem filtro")
@@ -227,7 +224,7 @@ export default function Index() {
         setData(null)
         getFormData()
 
-    }, [id])
+    }, [id, getFormData])
 
     return (
         <Container>
@@ -240,8 +237,8 @@ export default function Index() {
                         value={id}
                         label="Age"
                         onChange={(value) => {setId(Number(value.target.value))}}>
-                        {forms.map((v) => (
-                            <MenuItem value={v.id}>{v.title}</MenuItem>
+                        {forms.map((v, index) => (
+                            <MenuItem key={index} value={v.id}>{v.title}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -257,7 +254,7 @@ export default function Index() {
                         onChange={(v) => {setFilter(v.target.value)}}>
                             <MenuItem value={"Sem filtro"}>Sem filtro</MenuItem>
                         {data && data.formsQuestionsFormsRegisters.map((v, idx) => (
-                            <MenuItem value={v.questionId.title}>{v.questionId.title}</MenuItem>
+                            <MenuItem key={idx} value={v.questionId.title}>{v.questionId.title}</MenuItem>
                     ))}
                     </Select>
                 </FormControl>
@@ -270,8 +267,8 @@ export default function Index() {
                         label=""
                         onChange={(v)=> {setFilterSelected(v.target.value)}}>
                             <MenuItem value={"Sem filtro"}>Sem filtro</MenuItem>
-                            {response.map((v) => (
-                                <MenuItem value={v}>{v}</MenuItem>
+                            {response.map((v, idx) => (
+                                <MenuItem key={idx} value={v}>{v}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -283,7 +280,9 @@ export default function Index() {
                         <TRow>
                             <TheadLine>index</TheadLine>
                         {data && data.formsQuestionsFormsRegisters.map((v) => (
-                            <TheadLine key={v.id}>{v.questionId.title}</TheadLine>
+                            <TheadLine key={v.id}>
+                                {v.questionId.title}
+                            </TheadLine>
                         ))}
                         </TRow>
                     </THead>

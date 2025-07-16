@@ -1,6 +1,6 @@
 import { Box, LinearProgress, Typography } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 type Props = {
     steps: string[];
@@ -21,16 +21,19 @@ export default function Index(prop: Props) {
         }
     }
 
-    function setUpValue() {
+
+    const setUpValue = useCallback(() => {
         const length = prop.steps.length;
         if (prop.upSteps < length) {
             setValue(() => prop.upSteps);
             setLengthLinear(() => ((prop.upSteps + 1) * 100) / length);
         }
-    }
+    }, [prop.steps.length, prop.upSteps])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setUpValue();
-    }, [prop.upSteps]);
+    }, [prop.upSteps, setUpValue]);
 
     return (
         <Box>
