@@ -43,7 +43,7 @@ export default function Index() {
       setMenu(prevMenu => [
         ...prevMenu,
         { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA },
-		{ id: 8, title: "Nossos Dados: Exportar Formularios", url: routerEnum.DATAFORM }
+		{ id: 8, title: "Nossos Dados: Exportar Planeja SD", url: routerEnum.DATAFORM }
       ]);
     }
   }, []);
