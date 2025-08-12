@@ -235,7 +235,7 @@ export default function Index() {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={id}
-                        label="Age"
+                        label="Formulário"
                         onChange={(value) => {setId(Number(value.target.value))}}>
                         {forms.map((v, index) => (
                             <MenuItem key={index} value={v.id}>{v.title}</MenuItem>
@@ -264,7 +264,7 @@ export default function Index() {
                         labelId="demo-simple-select-label2"
                         id="demo-simple-select2"
                         value={filterSelected}
-                        label=""
+                        label="Resposta"
                         onChange={(v)=> {setFilterSelected(v.target.value)}}>
                             <MenuItem value={"Sem filtro"}>Sem filtro</MenuItem>
                             {response.map((v, idx) => (
