@@ -23,7 +23,8 @@ export enum routerEnum {
   APS = '/apsdata',
   USER = '/userdata',
   TCLE = '/tcle',
-  DIRECTION = "/direction"
+  DIRECTION = "/direction",
+  DATAFORM = "/dataform"
 }
 
 export enum titleEnumPtBr {

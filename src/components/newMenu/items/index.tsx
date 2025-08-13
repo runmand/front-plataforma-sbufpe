@@ -42,7 +42,8 @@ export default function Index() {
       // Atualiza o estado do menu usando setMenu
       setMenu(prevMenu => [
         ...prevMenu,
-        { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }
+        { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA },
+		{ id: 8, title: "Nossos Dados: Exportar Formularios", url: routerEnum.DATAFORM }
       ]);
     }
   }, []);
