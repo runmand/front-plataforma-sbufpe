@@ -34,7 +34,7 @@ export default function Index() {
             }
         })
 
-        response = (response / answers.length) * 100
+        response = (response / answers.length) * 10
 
         if (isNaN(response)){
             return "Sem dados registrados";
