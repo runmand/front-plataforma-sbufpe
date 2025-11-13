@@ -130,7 +130,11 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                 setThisPrincipal(true);
             }
 
-            if (localData !== null) {
+            if (localData == undefined || localData[0].question_answer == undefined) {
+                localData = null;
+            }
+
+            if (localData !== null && localData !== undefined) {
                 data = localData.reverse();
             }
 
