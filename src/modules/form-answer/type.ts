@@ -18,7 +18,6 @@ export type GET_USER_RESULT_FROM_FORM_RES = {
 	}[];
 };
 
-//TODO: Renomear de forma correta.
 type QUESTION_2 = {
 	title: string;
 	recommendationMessage: string;

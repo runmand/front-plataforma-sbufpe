@@ -16,7 +16,7 @@ import Header from '../header/index';
 import CustomTextField from '@components/text-field/index';
 import ActionArea from '@components/modal/action-area';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from 'src/core/enums';
 import LoginUtils from 'src/utils/loginUtils';
 import SignupService from './service';

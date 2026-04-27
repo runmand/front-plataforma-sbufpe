@@ -6,7 +6,7 @@ import DrawerMenu from '@components/menu/drawer/index';
 import React from 'react';
 import { MENU_ITEM } from '@components/menu/items/type';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function Index() {
 	const router = useRouter();

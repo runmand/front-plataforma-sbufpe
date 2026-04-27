@@ -2,11 +2,10 @@ import { CSSProperties } from 'react';
 import { theme } from 'src/core/theme';
 
 export const mainContainerStyle: CSSProperties = {
-	paddingTop:'7.5rem',
+	paddingTop: '7.5rem',
 	display: 'flex',
 	flexWrap: 'wrap',
-	overflow:'unset'
-
+	overflow: 'unset',
 };
 
 export const formButtonStyle: CSSProperties = {
@@ -15,7 +14,7 @@ export const formButtonStyle: CSSProperties = {
 	color: theme.white,
 	width: '200px',
 	margin: '1rem',
-  height: 'auto',
+	height: 'auto',
 	borderWidth: '0.5rem',
 	borderColor: theme.secundaryColor,
 };
