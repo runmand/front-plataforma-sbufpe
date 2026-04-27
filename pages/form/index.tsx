@@ -75,8 +75,9 @@ export default function Index() {
 											<Image
 												src='/logo-odontology.png'
 												alt='logo-odontology'
-												width={'160%'}
-												height={'100rem'}
+												width={160}
+												height={100}
+												style={{ width: '100%', height: 'auto' }}
 											/>
 										</div>
 
