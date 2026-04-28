@@ -1,21 +1,27 @@
-import { Card, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { emitterEnum } from "../../core/enums";
 import { emitter } from "../../core/events";
 import ChoiceAnswer from "../answer/choice";
 import OpenAnswer from "../answer/open";
 import { TPROPS, QUESTION_ANSWER } from "./type";
-import { theme } from "src/core/theme";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { ID } from "src/core/types";
 import { droplist } from "src/shared/dataBase";
 import Image from "next/image";
+
+const ff = { body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif" };
+const C = {
+  primary: '#6D141A',
+  bg: '#FAF7F2',
+  white: '#fff',
+  text: '#1c1917',
+  border: '#e7e5e4',
+  borderLight: '#f5f5f4',
+};
 
 export default function Index(props: TPROPS) {
     const selectOptions: ID[] = droplist;
     const [canShow, setCanShow] = useState(false);
     const [isMedicalExam, setIsMedicalExam] = useState(false);
-    const smQuery = useMediaQuery("(min-width:500px)");
     const [viewportHeight, setViewportHeight] = useState<number>(0);
     const [viewportWidth, setViewportWidth] = useState<number>(0);
 
@@ -34,7 +40,7 @@ export default function Index(props: TPROPS) {
         emitter.addListener(listenerKey, (parentAnswer: QUESTION_ANSWER) => {
             const arrayAnswer = JSON.parse(parentAnswer.answer.replace(/[1-9]\d*/g, "1"));
             const index = arrayAnswer.indexOf(1);
-            const isSameAnswer = props.question.condition?.userAnswer[index] == arrayAnswer[index];
+            const isSameAnswer = props.question.condition?.userAnswer?.[index] == arrayAnswer[index];
             setCanShow(isSameAnswer);
 
             /** Caso a questão fique oculta novamente, deleta a resposta dela do vetor de respostas do formulário. */
@@ -48,24 +54,34 @@ export default function Index(props: TPROPS) {
     }, []);
 
     if (!props.parent || canShow) {
+        const hasError = props.isError && !props.parent;
         return (
-            <Card
+            <div
+                id={`question-${props.question.formQuestionFormRegisterId}`}
                 style={{
-                    margin: !props.parent ? "0px 0px 24px 0px" : "0px 24px 24px 24px",
-                    backgroundColor: !props.parent ? theme.white : theme.greyLight,
-                    borderRadius: "30px",
-                }}
-            >
-                <CardContent style={{ padding: "16px" }}>
-                    <Typography style={{ marginBottom: "16px", fontSize: !smQuery ? "4.5vw" : "2.3vw", color: theme.primaryColor }}>
+                    margin: !props.parent ? '0 0 20px 0' : '12px 0 0 0',
+                    backgroundColor: !props.parent ? C.white : C.borderLight,
+                    borderRadius: '16px',
+                    border: `1.5px solid ${hasError ? '#dc2626' : C.border}`,
+                    overflow: 'hidden',
+                    transition: 'border-color 0.2s ease',
+                    boxShadow: hasError ? '0 0 0 3px rgba(220,38,38,0.08)' : 'none',
+                }}>
+                <div style={{ padding: '24px 28px 20px' }}>
+                    <p style={{
+                        fontSize: '17px',
+                        fontWeight: 600,
+                        fontFamily: ff.body,
+                        color: C.primary,
+                        lineHeight: 1.55,
+                        margin: '0 0 20px',
+                    }}>
                         {props.parent?.formQuestionFormRegisterId === 234 ? (
                             <>{props.question.title}</>
                         ) : (
-                            <>
-                                {props.index + 1} - {props.question.title}
-                            </>
+                            <>{props.index + 1} - {props.question.title}</>
                         )}
-                    </Typography>
+                    </p>
                     {props.question.choices.length === 0 ? (
                         <OpenAnswer
                             formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
@@ -112,24 +128,32 @@ export default function Index(props: TPROPS) {
                             choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId) ? "autoComplete" : "radio"}
                         />
                     )}
-                </CardContent>
-                <div>
-                    {props.question.formQuestionFormRegisterId === 234 && isMedicalExam && (
-                        <Image
-                            src="/tabela.jpg"
-                            alt=""
-                            width={viewportWidth * 0.6 + "px"}
-                            height={viewportHeight * 0.8 + "px"}
-                            style={{ margin: "center" }}
-                        />
+                    {hasError && (
+                        <div style={{
+                            marginTop: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            color: '#dc2626',
+                            fontFamily: ff.body,
+                            fontSize: '13px',
+                            fontWeight: 500,
+                        }}>
+                            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                            Esta questão é obrigatória
+                        </div>
                     )}
-                    {props.question.formQuestionFormRegisterId === 499 && isMedicalExam && (
+                </div>
+                <div>
+                    {(props.question.formQuestionFormRegisterId === 234 || props.question.formQuestionFormRegisterId === 499) && isMedicalExam && (
                         <Image
                             src="/tabela.jpg"
                             alt=""
-                            width={viewportWidth * 0.6 + "px"}
-                            height={viewportHeight * 0.8 + "px"}
-                            style={{ margin: "center" }}
+                            width={Math.round(viewportWidth * 0.6) || 600}
+                            height={Math.round(viewportHeight * 0.8) || 480}
+                            style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }}
                         />
                     )}
                     {props.question.childrenQuestion.reverse().map((child, index) => (
@@ -147,7 +171,7 @@ export default function Index(props: TPROPS) {
                         />
                     ))}
                 </div>
-            </Card>
+            </div>
         );
     }
 }
