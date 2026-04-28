@@ -7,13 +7,20 @@ export default function Index(props: TPROPS) {
 		props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer });
 	};
 
+	const handleInputValue = (value: string) => {
+		handleAnswerQuestion(value);
+	};
+
 	return (
 		<TextField
 			id='outlined-select-curency'
 			variant='standard'
 			style={{ display: 'flex', borderRadius: '16px' }}
+			onChange={e => {
+				handleInputValue(e.target.value);
+			}}
 			onBlur={e => {
-				handleAnswerQuestion(e.target.value);
+				handleInputValue(e.target.value);
 			}}
 		/>
 	);

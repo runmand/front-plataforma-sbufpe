@@ -1,21 +1,21 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import { ID } from "../../../core/types";
-import { QUESTION, QUESTION_ANSWER } from "../../question/type";
-import QuestionCard from "../../question";
-import SendIcon from "@mui/icons-material/Send";
 import Alert from "@components/alert/index";
-import { useSnackbar } from "notistack";
-import { TPROPS } from "./type";
-import SimpleFormService from "./service";
-import { theme } from "src/core/theme";
+import SendIcon from "@mui/icons-material/Send";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Typography,
+} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
+import { theme } from "src/core/theme";
+import { ID } from "../../../core/types";
+import QuestionCard from "../../question";
+import { QUESTION, QUESTION_ANSWER } from "../../question/type";
+import SimpleFormService from "./service";
+import { TPROPS } from "./type";
 
 //TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
@@ -28,60 +28,170 @@ export default function Index(props: TPROPS) {
   const smQuery = useMediaQuery("(max-width:520px)");
 
   const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
-    const temp = answers;
-    const indexToUpdate = temp.findIndex(
-      (item) =>
-        item.formQuestionFormRegisterId === answer.formQuestionFormRegisterId
-    );
-    if (indexToUpdate >= 0) temp[indexToUpdate] = answer;
-    else temp.push(answer);
+    setAnswers((prevAnswers) => {
+      const indexToUpdate = prevAnswers.findIndex(
+        (item) =>
+          item.formQuestionFormRegisterId === answer.formQuestionFormRegisterId
+      );
 
-    setAnswers(temp);
+      if (indexToUpdate >= 0) {
+        return prevAnswers.map((item, index) =>
+          index === indexToUpdate ? answer : item
+        );
+      }
+
+      return [...prevAnswers, answer];
+    });
   };
 
   const handleHideQuestion = (formQuestionFormRegisterId: ID) => {
-    const temp = answers;
-    const indexToRemove = temp.findIndex(
-      (item) => item.formQuestionFormRegisterId === formQuestionFormRegisterId
+    setAnswers((prevAnswers) =>
+      prevAnswers.filter(
+        (item) => item.formQuestionFormRegisterId !== formQuestionFormRegisterId
+      )
     );
-
-    if (indexToRemove >= 0) {
-      temp.splice(indexToRemove, 1);
-      setAnswers(temp);
-    }
   };
-
-  const handleOpenSubmitFormDialog = () => {
-    if (answers.length >= props.formattedForm.questions.length) {
-      setIsOpenSubmitFormDialog(true);
-    } else {
-      // setFailedState(true);
-      scrollTo(0, 0);
-      alert(
-        "Formulário não foi preenchido por inteiro.\n\nPara enviar o formulário é necessário responder todas as perguntas apresentadas. Feche esse diálogo para voltar e responder o que falta."
-      );
-    }
-  };
-  const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
 
   const formatted = (array: QUESTION[]) => {
     if (props.formattedForm.id == 2) {
-      //Formatação baseado em uma questão especifica do form 2
-      return [
-        ...array.slice(0, 4),
-        ...array.splice(array.length - 1, array.length),
-        ...array.splice(4, array.length - 1),
-      ];
-    } else {
-      return array;
+      if (array.length <= 4) return array;
+
+      const firstQuestions = array.slice(0, 4);
+      const lastQuestion = array.slice(-1);
+      const middleQuestions = array.slice(4, -1);
+      return [...firstQuestions, ...lastQuestion, ...middleQuestions];
+    }
+
+    return array;
+  };
+
+  const sortedAndFormattedQuestions = formatted(
+    [...props.formattedForm.questions].sort(
+      (a, b) =>
+        +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId
+    )
+  );
+
+  const isAnswerFilled = (answer?: string) => {
+    if (!answer || !answer.trim()) return false;
+
+    try {
+      const parsedAnswer = JSON.parse(answer);
+      if (Array.isArray(parsedAnswer)) {
+        return parsedAnswer.some((item) => Number(item) > 0);
+      }
+    } catch {
+      return answer.trim().length > 0;
+    }
+
+    return answer.trim().length > 0;
+  };
+
+  const canShowChildQuestion = (
+    parentAnswer: string | undefined,
+    childQuestion: QUESTION
+  ) => {
+    if (!childQuestion?.condition?.userAnswer) return true;
+    if (!parentAnswer) return false;
+
+    try {
+      const normalizedParentAnswer = JSON.parse(
+        parentAnswer.replace(/[1-9]\d*/g, "1")
+      );
+
+      if (!Array.isArray(normalizedParentAnswer)) return false;
+
+      const selectedAnswerIndex = normalizedParentAnswer.indexOf(1);
+      if (selectedAnswerIndex < 0) return false;
+
+      return (
+        childQuestion.condition.userAnswer[selectedAnswerIndex] ==
+        normalizedParentAnswer[selectedAnswerIndex]
+      );
+    } catch {
+      return false;
     }
   };
 
+  const getVisibleQuestions = (questionList: QUESTION[]) => {
+    const answersMap = new Map(
+      answers.map((item) => [item.formQuestionFormRegisterId, item.answer])
+    );
+    const visibleQuestions: QUESTION[] = [];
+
+    const walkQuestions = (question: QUESTION) => {
+      visibleQuestions.push(question);
+      const parentAnswer = answersMap.get(question.formQuestionFormRegisterId);
+
+      (question.childrenQuestion ?? []).forEach((childQuestion) => {
+        if (canShowChildQuestion(parentAnswer, childQuestion)) {
+          walkQuestions(childQuestion);
+        }
+      });
+    };
+
+    questionList.forEach((question) => walkQuestions(question));
+    return visibleQuestions;
+  };
+
+  const getFormValidation = () => {
+    const visibleQuestions = getVisibleQuestions(sortedAndFormattedQuestions);
+    const answersMap = new Map(
+      answers.map((item) => [item.formQuestionFormRegisterId, item.answer])
+    );
+
+    const unansweredQuestions = visibleQuestions.filter(
+      (question) => !isAnswerFilled(answersMap.get(question.formQuestionFormRegisterId))
+    );
+
+    return {
+      isValid: unansweredQuestions.length === 0,
+      missingAnswers: unansweredQuestions.length,
+      visibleQuestions,
+    };
+  };
+
+  const handleOpenSubmitFormDialog = () => {
+    const validation = getFormValidation();
+
+    if (validation.isValid) {
+      setIsOpenSubmitFormDialog(true);
+      return;
+    }
+
+    scrollTo(0, 0);
+    alert(
+      `Formulário não foi preenchido por inteiro.\n\nPara enviar o formulário é necessário responder todas as perguntas apresentadas. Ainda faltam ${validation.missingAnswers} resposta(s).`
+    );
+  };
+  const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
+
   const handleSubmit = () => {
+    const validation = getFormValidation();
+    if (!validation.isValid) {
+      handleCloseSubmitFormDialog();
+      scrollTo(0, 0);
+      alert(
+        `Formulário não foi preenchido por inteiro.\n\nAinda faltam ${validation.missingAnswers} resposta(s).`
+      );
+      return;
+    }
+
+    const visibleQuestionIds = new Set(
+      validation.visibleQuestions.map(
+        (item) => item.formQuestionFormRegisterId
+      )
+    );
+    const answersToSubmit = answers.filter(
+      (item) =>
+        visibleQuestionIds.has(item.formQuestionFormRegisterId) &&
+        isAnswerFilled(item.answer)
+    );
+
     setLoading(true);
 
     simpleFormService
-      .handleSubmit(answers)
+      .handleSubmit(answersToSubmit)
       .then((res) => {
         if (!res.errors) {
           //TODO: Implementar travas do questionario.
@@ -128,12 +238,7 @@ export default function Index(props: TPROPS) {
             {props.formattedForm.title}
           </Typography>
           <>
-            {formatted(
-              props.formattedForm.questions.sort(
-                (a, b) =>
-                  +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId
-              )
-            ).map((question, index) => (
+            {sortedAndFormattedQuestions.map((question, index) => (
               <QuestionCard
                 key={index}
                 index={index}
