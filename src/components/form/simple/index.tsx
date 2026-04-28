@@ -1,31 +1,35 @@
 import Alert from "@components/alert/index";
-import SendIcon from "@mui/icons-material/Send";
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Typography,
-} from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
-import { theme } from "src/core/theme";
 import { ID } from "../../../core/types";
 import QuestionCard from "../../question";
 import { QUESTION, QUESTION_ANSWER } from "../../question/type";
 import SimpleFormService from "./service";
 import { TPROPS } from "./type";
 
+const ff = {
+  display: "'Lora', Georgia, serif",
+  body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
+};
+const C = {
+  primary: '#6D141A',
+  secondary: '#921c22',
+  bg: '#FAF7F2',
+  white: '#fff',
+  text: '#1c1917',
+  muted: '#a8a29e',
+  border: '#e7e5e4',
+};
+
 //TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
   const [answers, setAnswers] = useState<QUESTION_ANSWER[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] =
-    useState<boolean>(false);
+  const [isOpenSubmitFormDialog, setIsOpenSubmitFormDialog] = useState<boolean>(false);
+  const [submitAttempted, setSubmitAttempted] = useState<boolean>(false);
+  const [errorIds, setErrorIds] = useState<Set<ID>>(new Set());
   const { enqueueSnackbar } = useSnackbar();
   const simpleFormService = new SimpleFormService();
-  const smQuery = useMediaQuery("(max-width:520px)");
 
   const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
     setAnswers((prevAnswers) => {
@@ -91,7 +95,7 @@ export default function Index(props: TPROPS) {
     parentAnswer: string | undefined,
     childQuestion: QUESTION
   ) => {
-    if (!childQuestion?.condition?.userAnswer) return true;
+    if (!childQuestion?.condition?.userAnswer) return false;
     if (!parentAnswer) return false;
 
     try {
@@ -147,22 +151,29 @@ export default function Index(props: TPROPS) {
     return {
       isValid: unansweredQuestions.length === 0,
       missingAnswers: unansweredQuestions.length,
+      unansweredQuestions,
       visibleQuestions,
     };
   };
 
   const handleOpenSubmitFormDialog = () => {
     const validation = getFormValidation();
+    setSubmitAttempted(true);
 
     if (validation.isValid) {
+      setErrorIds(new Set());
       setIsOpenSubmitFormDialog(true);
       return;
     }
 
-    scrollTo(0, 0);
-    alert(
-      `Formulário não foi preenchido por inteiro.\n\nPara enviar o formulário é necessário responder todas as perguntas apresentadas. Ainda faltam ${validation.missingAnswers} resposta(s).`
-    );
+    const ids = new Set<ID>(validation.unansweredQuestions.map((q) => q.formQuestionFormRegisterId));
+    setErrorIds(ids);
+
+    const firstId = validation.unansweredQuestions[0]?.formQuestionFormRegisterId;
+    if (firstId) {
+      const el = document.getElementById(`question-${firstId}`);
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
   const handleCloseSubmitFormDialog = () => setIsOpenSubmitFormDialog(false);
 
@@ -170,10 +181,13 @@ export default function Index(props: TPROPS) {
     const validation = getFormValidation();
     if (!validation.isValid) {
       handleCloseSubmitFormDialog();
-      scrollTo(0, 0);
-      alert(
-        `Formulário não foi preenchido por inteiro.\n\nAinda faltam ${validation.missingAnswers} resposta(s).`
-      );
+      const ids = new Set<ID>(validation.unansweredQuestions.map((q) => q.formQuestionFormRegisterId));
+      setErrorIds(ids);
+      const firstId = validation.unansweredQuestions[0]?.formQuestionFormRegisterId;
+      if (firstId) {
+        const el = document.getElementById(`question-${firstId}`);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
 
@@ -217,66 +231,96 @@ export default function Index(props: TPROPS) {
 
   return (
     <>
-      <Card
-        sx={{
-          backgroundColor: theme.greyLight,
-          padding: "0% 5% 3% 5%",
-        }}
-      >
-        <CardContent>
-          <Typography
-            sx={{
-              borderRadius: "16px",
-              textAlign: "center",
-              color: theme.blur,
-              fontSize: !smQuery ? "4vw" : "4vw",
-              fontWeight: "bold",
-              marginBottom: "16px",
-              padding: "16px",
-            }}
-          >
-            {props.formattedForm.title}
-          </Typography>
-          <>
-            {sortedAndFormattedQuestions.map((question, index) => (
-              <QuestionCard
-                key={index}
-                index={index}
-                question={question}
-                onAnswerQuestion={(data) => {
-                  handleAnswerQuestion(data);
-                }}
-                onHideQuestion={(data) => {
-                  handleHideQuestion(data);
-                }}
-              />
-            ))}
-          </>
-        </CardContent>
+      <div style={{ minHeight: '60vh', backgroundColor: C.bg, padding: '0 0 80px' }}>
+        {/* ── Header ── */}
+        <div style={{
+          backgroundColor: C.white,
+          borderBottom: `1px solid ${C.border}`,
+          padding: '56px 24px 44px',
+          marginBottom: '40px',
+        }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+            <div style={{
+              display: 'inline-block',
+              width: '48px',
+              height: '3px',
+              background: `linear-gradient(90deg, ${C.primary}, ${C.secondary})`,
+              borderRadius: '2px',
+              marginBottom: '20px',
+            }} />
+            <h1 style={{
+              fontFamily: ff.display,
+              fontSize: 'clamp(26px, 3.5vw, 40px)',
+              fontWeight: 700,
+              color: C.text,
+              margin: '0 0 12px',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.2,
+            }}>
+              {props.formattedForm.title}
+            </h1>
+            <p style={{
+              fontFamily: ff.body,
+              fontSize: '15px',
+              color: C.muted,
+              margin: 0,
+              lineHeight: 1.6,
+            }}>
+              Preencha todas as questões para enviar o formulário.
+            </p>
+          </div>
+        </div>
 
-        <CardActions
-          sx={{
-            justifyContent: "end",
-            padding: "16px",
-          }}
-        >
-          <Button
-            variant="contained"
-            endIcon={<SendIcon />}
-            onClick={() => handleOpenSubmitFormDialog()}
-          >
-            ENVIAR
-          </Button>
-        </CardActions>
-      </Card>
+        {/* ── Questions ── */}
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 24px' }}>
+          {sortedAndFormattedQuestions.map((question, index) => (
+            <QuestionCard
+              key={index}
+              index={index}
+              question={question}
+              isError={errorIds.has(question.formQuestionFormRegisterId)}
+              onAnswerQuestion={(data) => {
+                handleAnswerQuestion(data);
+                setErrorIds((prev) => { const next = new Set(prev); next.delete(question.formQuestionFormRegisterId); return next; });
+              }}
+              onHideQuestion={(data) => handleHideQuestion(data)}
+            />
+          ))}
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '32px' }}>
+            <button
+              onClick={() => handleOpenSubmitFormDialog()}
+              style={{
+                padding: '14px 36px',
+                borderRadius: '12px',
+                background: `linear-gradient(135deg, ${C.primary}, ${C.secondary})`,
+                color: C.white,
+                fontFamily: ff.body,
+                fontSize: '15px',
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                letterSpacing: '0.06em',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(109,20,26,0.25)',
+              }}
+            >
+              ENVIAR →
+            </button>
+          </div>
+        </div>
+      </div>
 
       <Alert
         title="Confirmar envio do formulário?"
         msg="Atenção! Ao enviar o formulário suas respostas não poderão ser alteradas!"
         isOpen={isOpenSubmitFormDialog}
         isLoading={loading}
-        canSkip={false}
+        canSkip={true}
         onClose={() => handleCloseSubmitFormDialog()}
+        onCancel={() => handleCloseSubmitFormDialog()}
         onConfirm={() => handleSubmit()}
       />
       {
