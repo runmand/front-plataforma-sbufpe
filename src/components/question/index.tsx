@@ -115,22 +115,10 @@ export default function Index(props: TPROPS) {
                 </CardContent>
                 <div>
                     {props.question.formQuestionFormRegisterId === 234 && isMedicalExam && (
-                        <Image
-                            src="/tabela.jpg"
-                            alt=""
-                            width={viewportWidth * 0.6 + "px"}
-                            height={viewportHeight * 0.8 + "px"}
-                            style={{ margin: "center" }}
-                        />
+                        <Image src="/tabela.jpg" alt="" width={viewportWidth * 0.6} height={viewportHeight * 0.8} style={{ margin: "center" }} />
                     )}
                     {props.question.formQuestionFormRegisterId === 499 && isMedicalExam && (
-                        <Image
-                            src="/tabela.jpg"
-                            alt=""
-                            width={viewportWidth * 0.6 + "px"}
-                            height={viewportHeight * 0.8 + "px"}
-                            style={{ margin: "center" }}
-                        />
+                        <Image src="/tabela.jpg" alt="" width={viewportWidth * 0.6} height={viewportHeight * 0.8} style={{ margin: "center" }} />
                     )}
                     {props.question.childrenQuestion.reverse().map((child, index) => (
                         <Index
