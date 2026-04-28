@@ -1,7 +1,5 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import Base from "@components/base-layout/index";
-import Appbar from "@components/app-bar/index";
-import HomeToolbar from "@components/toolbar/home";
 import { useEffect, useState } from "react";
 import { FirstStep } from "@components/planeja-pratico/steps/FirstStep";
 import { SecondStep } from "@components/planeja-pratico/steps/SecondStep";

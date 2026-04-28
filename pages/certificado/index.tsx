@@ -1,8 +1,7 @@
+import NewMenu from "@components/newMenu/index";
 import Image from "next/image";
 import React from "react";
 import Base from "@components/base-layout/index";
-import Appbar from "@components/app-bar/index";
-import HomeToolbar from "@components/toolbar/home";
 import { Box, Button, Typography } from "@mui/material";
 import { downloadPDFPlaneja } from "@components/pdf/PlanejaPDF";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -12,7 +11,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 export default function Index() {
     return (
         <Base
-            appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+            appBarChild={<NewMenu />}
             mainContainerChild={
                 <Box
                     sx={{
