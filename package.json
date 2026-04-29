@@ -15,9 +15,7 @@
         "@mui/icons-material": "^5.10.14",
         "@mui/lab": "^5.0.0-alpha.108",
         "@mui/material": "^5.10.14",
-        "@next/swc-win32-x64-msvc": "^16.2.4",
-        "@react-pdf/renderer": "^3.1.12",
-        "@swc/helpers": "0.4.36",
+        "@swc/helpers": "^0.5.21",
         "axios": "^0.27.2",
         "fbemitter": "^3.0.0",
         "file-saver": "^2.0.5",
@@ -32,6 +30,7 @@
         "sharp": "^0.34.1"
     },
     "devDependencies": {
+        "@react-pdf/renderer": "^3.1.12",
         "@types/fbemitter": "^2.0.32",
         "@types/file-saver": "^2.0.7",
         "@types/node": "^18.7.16",
