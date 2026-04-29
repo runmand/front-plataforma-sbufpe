@@ -64,7 +64,13 @@ export default function Index() {
 							<Button key={i} style={formButtonStyle} onClick={() => handleSelectForm(v.id)}>
 								<div style={{ width: '100%' }}>
 									<div style={{ width: '100%' }}>
-										<Image src='/logo-odontology.png' alt='logo-odontology' width={160} height={100} />
+										<Image
+											src='/logo-odontology.png'
+											alt='logo-odontology'
+											width={160}
+											height={100}
+											style={{ width: '100%', height: 'auto' }}
+										/>
 									</div>
 									{v.title}
 								</div>
