@@ -27,7 +27,10 @@ http.interceptors.request.use(
 
             //TODO: Verificar expiração do token.
             /** Se não existir JWT token, redireciona para a pagina inicial. */
-            if (!token) return (window.location.href = "/");
+            if (!token) {
+                window.location.href = "/";
+                return Promise.reject(new Error("No token"));
+            }
 
             /** Se existir JWT token, injeta os dados no header da requisição. */
             //TODO: Usar token para permissão de rotas.
@@ -39,7 +42,7 @@ http.interceptors.request.use(
     },
     (e) => {
         console.error("axios-request-interceptor", e);
-        return { errors: typeof e === "string" ? e : e.response.data.errors?.map((err: any) => err.message) };
+        return { errors: typeof e === "string" ? e : e.response?.data?.errors?.map((err: any) => err.message) };
     }
 );
 
@@ -51,7 +54,9 @@ http.interceptors.response.use(
         errors: res.data.errors?.map((err: any) => err.message),
     }),
     (e) => {
-        console.error("LOGGER::axios-response-interceptor", e);
-        return { errors: typeof e === "string" ? e : e.response.data.errors?.map((err: any) => err.message) };
+        if (e?.message !== "No token") {
+            console.error("LOGGER::axios-response-interceptor", e);
+        }
+        return Promise.reject({ errors: typeof e === "string" ? e : e.response?.data?.errors?.map((err: any) => err.message) });
     }
 );

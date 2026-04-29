@@ -1,16 +1,19 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import { TPROPS } from './type';
-import { theme } from 'src/core/theme';
 
 export default function Index(props: TPROPS) {
-	return <AppBar 
-		sx={{
+	return (
+		<header style={{
 			position: 'fixed',
-			width: '100%',
-			height: '12%',
+			top: 0, left: 0, right: 0,
+			zIndex: 100,
+			backgroundColor: '#6D141A',
+			height: '68px',
 			display: 'flex',
-			padding:'0.75rem',
-			justifyContent: 'center',
-			backgroundColor: theme.primaryColor,}}>{props.toolbarChild}</AppBar>;
+			alignItems: 'center',
+			boxShadow: '0 2px 12px rgba(109,20,26,0.18)',
+		}}>
+			{props.toolbarChild}
+		</header>
+	);
 }

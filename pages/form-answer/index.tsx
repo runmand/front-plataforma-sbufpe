@@ -1,8 +1,7 @@
+import NewMenu from "@components/newMenu/index";
 import { useRouter } from "next/router";
 import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from "../../src/pages/form-answer/type";
 import Base from "@components/base-layout/index";
-import Appbar from "@components/app-bar/index";
-import HomeToolbar from "@components/toolbar/home";
 import { useEffect, useState } from "react";
 import FormAnswerService from "../../src/pages/form-answer/service";
 import SimpleForm from "@components/form/simple/index";
@@ -75,7 +74,7 @@ export default function Index() {
 
     return (
         <Base
-            appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}
+            appBarChild={<NewMenu />}
             mainContainerChild={
                 <div style={{ paddingTop: "4.5rem" }}>
                     {formattedForm && (

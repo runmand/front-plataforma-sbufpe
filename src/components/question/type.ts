@@ -5,6 +5,7 @@ export type TPROPS = {
 	index: number;
 	parent?: QUESTION;
 	question: QUESTION;
+	isError?: boolean;
 	onAnswerQuestion: (value: QUESTION_ANSWER) => void;
 	onHideQuestion: (formQuestionFormRegisterId: ID) => void;
 };
