@@ -27,11 +27,19 @@
       "@components/*": [
         "src/components/*"
       ]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
+    "app/**/*",
     "pages/**/*",
-    "src/**/*"
+    "src/**/*",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
