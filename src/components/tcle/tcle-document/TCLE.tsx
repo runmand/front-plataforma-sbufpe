@@ -1,4 +1,4 @@
-import {
+import React, {
   Dispatch,
   forwardRef,
   SetStateAction,
@@ -15,76 +15,66 @@ import {
   PDInput,
   TaleImage,
 } from "./styled";
-import { useSnackbar } from "notistack";
 import { DataTerm, PropsTerm } from "..";
 import { generatePDF } from "../exportpdf";
+import { maskCPF, validateCPF } from "src/core/utils/cpf";
+import { maskDate, validateDate } from "src/core/utils/date";
+import { onlyLetters } from "src/core/utils/text";
+
+const FieldError = ({ msg }: { msg: string }) =>
+  msg ? <span style={{ color: '#dc2626', fontSize: '0.75em', display: 'block', marginTop: '2px', whiteSpace: 'nowrap' }}>{msg}</span> : null;
+
+const FieldWrap = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle' }}>
+    {children}
+  </span>
+);
 
 const Index = forwardRef((props, ref) => {
   const [nameMinor, setNameMinor] = useState<string>("");
+  const [nameMinorError, setNameMinorError] = useState<string>("");
   const [nameResearch, setNameResearch] = useState<string>("");
+  const [nameResearchError, setNameResearchError] = useState<string>("");
   const [responsibleCPF, setResponsibleCPF] = useState<string>("");
-  const [locationAndData, setLocationAndData] = useState<string>("");
+  const [cpfError, setCpfError] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [locationError, setLocationError] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [dateError, setDateError] = useState<string>("");
   const [nameResponsible, setNameResponsible] = useState<string>("");
+  const [nameResponsibleError, setNameResponsibleError] = useState<string>("");
   const [responsibleEmail, setResponsibleEmail] = useState<string>("");
-  const { enqueueSnackbar } = useSnackbar();
+  const [emailError, setEmailError] = useState<string>("");
 
   const isFormValid = () => {
-    if (!nameMinor.trim()) {
-      enqueueSnackbar("O campo Nome do menor está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
+    let valid = true;
 
-    if (!nameResearch.trim()) {
-      enqueueSnackbar("O campo Nome do pesquisador está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!responsibleCPF.trim()) {
-      enqueueSnackbar("O campo CPF do responsável está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!locationAndData.trim()) {
-      enqueueSnackbar("O campo Local e Data está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!nameResponsible.trim()) {
-      enqueueSnackbar("O campo Nome do responsável está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
+    if (!nameMinor.trim()) { setNameMinorError("Campo obrigatório."); valid = false; } else setNameMinorError("");
+    if (!nameResearch.trim()) { setNameResearchError("Campo obrigatório."); valid = false; } else setNameResearchError("");
 
-    if (!responsibleEmail) {
-      enqueueSnackbar("Preencha o campo Email do Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
+    if (!responsibleCPF.trim()) { setCpfError("O CPF é obrigatório."); valid = false; }
+    else if (!validateCPF(responsibleCPF)) { setCpfError("CPF inválido. Verifique os dígitos."); valid = false; }
+    else setCpfError("");
 
-    if (
-      !responsibleEmail ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail)
-    ) {
-      enqueueSnackbar("Preencha um e-mail válido para o Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
+    if (!location.trim()) { setLocationError("Campo obrigatório."); valid = false; } else setLocationError("");
 
-    return true;
+    if (!date.trim()) { setDateError("A data é obrigatória."); valid = false; }
+    else if (!validateDate(date)) { setDateError("Data inválida. Use DD/MM/AAAA."); valid = false; }
+    else setDateError("");
+
+    if (!nameResponsible.trim()) { setNameResponsibleError("Campo obrigatório."); valid = false; } else setNameResponsibleError("");
+
+    if (!responsibleEmail.trim()) { setEmailError("O e-mail é obrigatório."); valid = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail)) { setEmailError("E-mail inválido."); valid = false; }
+    else setEmailError("");
+
+    return valid;
   };
 
-  async function validateForm(): Promise<DataTerm> {
+  async function validateForm(): Promise<DataTerm | undefined> {
     if (!isFormValid()) return;
 
-    const node = document.getElementById("TCLE").children;
+    const node = document.getElementById("TCLE")!.children;
 
     const pdf = await generatePDF(node);
 
@@ -113,7 +103,7 @@ const Index = forwardRef((props, ref) => {
         Convidamos você{" "}
         <PDInput
           placeholder="Nome do menor"
-          onChange={(e) => setNameMinor(e.target.value)}
+          onChange={(e) => setNameMinor(onlyLetters(e.target.value))}
           value={nameMinor}
         />
         , após autorização dos seus pais ou dos responsáveis legais, para
@@ -141,7 +131,7 @@ const Index = forwardRef((props, ref) => {
         Solicitamos a sua autorização para convidar o (a) seu/sua filho (a){" "}
         <PDInput
           placeholder="Nome do menor"
-          onChange={(e) => setNameMinor(e.target.value)}
+          onChange={(e) => setNameMinor(onlyLetters(e.target.value))}
           value={nameMinor}
         />
         , ou menor que está sob sua responsabilidade para participar, como
@@ -256,13 +246,16 @@ const Index = forwardRef((props, ref) => {
       </PD>
 
       <DocumentParagraphyTitle>
-        <PDInput
-          placeholder="Assinatura do pesquisador"
-          style={{ textAlign: "center" }}
-          onChange={(e) => setNameResearch(e.target.value)}
-          value={nameResearch}
-        />
-        <br></br>
+        <FieldWrap>
+          <PDInput
+            placeholder="Assinatura do pesquisador"
+            style={{ textAlign: "center", borderBottomColor: nameResearchError ? '#dc2626' : undefined }}
+            onChange={(e) => { setNameResearch(onlyLetters(e.target.value)); if (nameResearchError) setNameResearchError(""); }}
+            value={nameResearch}
+          />
+          <FieldError msg={nameResearchError} />
+        </FieldWrap>
+        <br />
         Assinatura do pesquisador
       </DocumentParagraphyTitle>
 
@@ -272,24 +265,45 @@ const Index = forwardRef((props, ref) => {
 
       <PD>
         Eu,{" "}
-        <PDInput
-          placeholder="Nome do responsavel"
-          value={nameResponsible}
-          onChange={(e) => setNameResponsible(e.target.value)}
-        />
-        , CPF{" "}
-        <PDInput
-          placeholder="CPF do responsavel"
-          value={responsibleCPF}
-          onChange={(e) => setResponsibleCPF(e.target.value)}
-        />
-        , abaixo assinado, responsável por{" "}
-        <PDInput
-          placeholder="Nome do menor"
-          onChange={(e) => setNameMinor(e.target.value)}
-          value={nameMinor}
-        />
-        , autorizo a sua participação no estudo Vigilância Epidermiológica em
+        <FieldWrap>
+          <PDInput
+            placeholder="Nome do responsável"
+            value={nameResponsible}
+            style={{ borderBottomColor: nameResponsibleError ? '#dc2626' : undefined }}
+            onChange={(e) => { setNameResponsible(onlyLetters(e.target.value)); if (nameResponsibleError) setNameResponsibleError(""); }}
+          />
+          <FieldError msg={nameResponsibleError} />
+        </FieldWrap>
+        {" "}, CPF{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="000.000.000-00"
+            value={responsibleCPF}
+            maxLength={14}
+            style={{ borderBottomColor: cpfError ? '#dc2626' : undefined }}
+            onChange={(e) => {
+              const masked = maskCPF(e.target.value);
+              setResponsibleCPF(masked);
+              if (cpfError && validateCPF(masked)) setCpfError("");
+            }}
+            onBlur={() => {
+              if (responsibleCPF && !validateCPF(responsibleCPF))
+                setCpfError("CPF inválido. Verifique os dígitos.");
+            }}
+          />
+          <FieldError msg={cpfError} />
+        </FieldWrap>
+        {" "}, abaixo assinado, responsável por{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="Nome do menor"
+            style={{ borderBottomColor: nameMinorError ? '#dc2626' : undefined }}
+            onChange={(e) => { setNameMinor(onlyLetters(e.target.value)); if (nameMinorError) setNameMinorError(""); }}
+            value={nameMinor}
+          />
+          <FieldError msg={nameMinorError} />
+        </FieldWrap>
+        {" "}, autorizo a sua participação no estudo Vigilância Epidermiológica em
         Saúde Bucal a partir da plataforma web-based GestBucalSD, como
         voluntário(a). Fui devidamente informado (a) e esclarecido (a) pelo (a)
         pesquisador (a) sobre a pesquisa, os procedimentos nela envolvidos,
@@ -297,24 +311,61 @@ const Index = forwardRef((props, ref) => {
         dele (a). Foi-me garantido que posso retirar o meu consentimento a
         qualquer momento, sem que isto leve a qualquer penalidade ou interrupção
         de seu acompanhamento/ assistência/tratamento para mim ou para o (a)
-        menor em questão. Local e data
+        menor em questão.
+      </PD>
+      <PD>
+        Local:{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="Ex: Recife/PE"
+            value={location}
+            style={{ borderBottomColor: locationError ? '#dc2626' : undefined }}
+            onChange={(e) => { setLocation(onlyLetters(e.target.value)); if (locationError) setLocationError(""); }}
+          />
+          <FieldError msg={locationError} />
+        </FieldWrap>
+        {" "}Data:{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="DD/MM/AAAA"
+            value={date}
+            maxLength={10}
+            style={{ borderBottomColor: dateError ? '#dc2626' : undefined }}
+            onChange={(e) => {
+              const masked = maskDate(e.target.value);
+              setDate(masked);
+              if (dateError && validateDate(masked)) setDateError("");
+            }}
+            onBlur={() => {
+              if (date && !validateDate(date)) setDateError("Data inválida. Use DD/MM/AAAA.");
+            }}
+          />
+          <FieldError msg={dateError} />
+        </FieldWrap>
+      </PD>
+      <PD>
+        Assinatura do (da) responsável:{" "}
         <PDInput
-          placeholder="Local e data"
-          value={locationAndData}
-          onChange={(e) => setLocationAndData(e.target.value)}
-        />
-        , Assinatura do (da) responsável:
-        <PDInput
-          placeholder="Assinatura do responsavel"
+          placeholder="Assinatura do responsável"
           value={nameResponsible}
-          onChange={(e) => setNameResponsible(e.target.value)}
+          onChange={(e) => setNameResponsible(onlyLetters(e.target.value))}
         />
-        , Email:{" "}
-        <PDInput
-          placeholder="Email"
-          value={responsibleEmail}
-          onChange={(e) => setResponsibleEmail(e.target.value)}
-        />
+      </PD>
+      <PD>
+        E-mail:{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="email@exemplo.com"
+            value={responsibleEmail}
+            style={{ borderBottomColor: emailError ? '#dc2626' : undefined }}
+            onChange={(e) => { setResponsibleEmail(e.target.value); if (emailError) setEmailError(""); }}
+            onBlur={() => {
+              if (responsibleEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail))
+                setEmailError("E-mail inválido.");
+            }}
+          />
+          <FieldError msg={emailError} />
+        </FieldWrap>
       </PD>
     </DocumentData>
   );

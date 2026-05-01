@@ -1,13 +1,10 @@
-import {
+import React, {
   forwardRef,
-  useEffect,
   useImperativeHandle,
-  useRef,
   useState,
 } from "react";
 import { DocumentData } from "../styled";
 import {
-  DocumentLi,
   DocumentParagraphyTitle,
   PD,
   PDInput,
@@ -15,77 +12,63 @@ import {
   TaleImage,
 } from "./styled";
 import { generatePDF } from "../exportpdf";
-import { useSnackbar } from "notistack";
-import { DataTerm, PropsTerm } from "..";
+import { DataTerm } from "..";
+import { maskDate, validateDate } from "src/core/utils/date";
+import { maskPhone, validatePhone } from "src/core/utils/phone";
+import { onlyLetters } from "src/core/utils/text";
+
+const FieldError = ({ msg }: { msg: string }) =>
+  msg ? <span style={{ color: '#dc2626', fontSize: '0.75em', display: 'block', marginTop: '2px', whiteSpace: 'nowrap' }}>{msg}</span> : null;
+
+const FieldWrap = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle' }}>
+    {children}
+  </span>
+);
 
 const Index = forwardRef((props, ref) => {
   const [nameMinor, setNameMinor] = useState<string>("");
+  const [nameMinorError, setNameMinorError] = useState<string>("");
   const [responsibleAddres, setResponsibleAddres] = useState<string>("");
+  const [responsibleAddresError, setResponsibleAddresError] = useState<string>("");
   const [responsibleNumber, setResponsibleNumber] = useState<string>("");
+  const [responsibleNumberError, setResponsibleNumberError] = useState<string>("");
   const [responsibleEmail, setResponsibleEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
   const [nameResponsible, setNameResponsible] = useState<string>("");
+  const [nameResponsibleError, setNameResponsibleError] = useState<string>("");
   const [local, setLocal] = useState<string>("");
+  const [localError, setLocalError] = useState<string>("");
   const [date, setDate] = useState<string>("");
-  const { enqueueSnackbar } = useSnackbar();
+  const [dateError, setDateError] = useState<string>("");
 
   const isFormValid = () => {
-    if (!nameMinor) {
-      enqueueSnackbar("Preencha o campo Nome do Menor", { variant: "warning" });
-      return false;
-    }
-    if (!responsibleAddres) {
-      enqueueSnackbar("Preencha o campo Endereço do Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!responsibleNumber) {
-      enqueueSnackbar("Preencha o campo Número do Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!responsibleEmail) {
-      enqueueSnackbar("Preencha o campo Email do Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (
-      !responsibleEmail ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail)
-    ) {
-      enqueueSnackbar("Preencha um e-mail válido para o Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
+    let valid = true;
 
-    if (!nameResponsible) {
-      enqueueSnackbar("Preencha o campo Nome do Responsável", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!local) {
-      enqueueSnackbar("Preencha o campo Local", { variant: "warning" });
-      return false;
-    }
-    if (!date) {
-      enqueueSnackbar("Preencha o campo Data", { variant: "warning" });
-      return false;
-    }
+    if (!nameMinor.trim()) { setNameMinorError("Campo obrigatório."); valid = false; } else setNameMinorError("");
+    if (!nameResponsible.trim()) { setNameResponsibleError("Campo obrigatório."); valid = false; } else setNameResponsibleError("");
+    if (!responsibleAddres.trim()) { setResponsibleAddresError("Campo obrigatório."); valid = false; } else setResponsibleAddresError("");
+    if (!responsibleNumber.trim()) { setResponsibleNumberError("O telefone é obrigatório."); valid = false; }
+    else if (!validatePhone(responsibleNumber)) { setResponsibleNumberError("Telefone inválido. Use (XX) XXXXX-XXXX."); valid = false; }
+    else setResponsibleNumberError("");
 
-    return true;
+    if (!responsibleEmail.trim()) { setEmailError("O e-mail é obrigatório."); valid = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail)) { setEmailError("E-mail inválido."); valid = false; }
+    else setEmailError("");
+
+    if (!local.trim()) { setLocalError("Campo obrigatório."); valid = false; } else setLocalError("");
+
+    if (!date.trim()) { setDateError("A data é obrigatória."); valid = false; }
+    else if (!validateDate(date)) { setDateError("Data inválida. Use DD/MM/AAAA."); valid = false; }
+    else setDateError("");
+
+    return valid;
   };
 
-  async function validateForm(): Promise<DataTerm> {
+  async function validateForm(): Promise<DataTerm | undefined> {
     if (!isFormValid()) return;
 
-    const node = document.getElementById("TALEU").children;
-
-    console.log(node);
-
+    const node = document.getElementById("TALEU")!.children;
     const pdf = await generatePDF(node);
 
     const response: DataTerm = {
@@ -121,8 +104,8 @@ const Index = forwardRef((props, ref) => {
         <TaleImage src="/tale1.png" />
         <PD>
           Olá, quero te convidar para participar de um estudo chamado:
-          “Vigilância Epidemiológica em Saúde Bucal a partir da plataforma
-          web-based GestBucalSD”. Esse estudo é coordenado pelas pesquisadoras:
+          &ldquo;Vigilância Epidemiológica em Saúde Bucal a partir da plataforma
+          web-based GestBucalSD&rdquo;. Esse estudo é coordenado pelas pesquisadoras:
           Gabriela da Silveira Gaspar e Nilcema Figueiredo.
         </PD>
       </TaleContainer>
@@ -214,61 +197,104 @@ const Index = forwardRef((props, ref) => {
           receber uma cópia deste documento por email.
         </PD>
       </TaleContainer>
+
       <PD>
         Local:{" "}
-        <PDInput
-          placeholder="Local"
-          onChange={(e) => setLocal(e.target.value)}
-          value={local}
-        />
-        , Data:{" "}
-        <PDInput
-          placeholder="Local"
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
-        />
+        <FieldWrap>
+          <PDInput
+            placeholder="Ex: Recife/PE"
+            value={local}
+            style={{ borderBottomColor: localError ? '#dc2626' : undefined }}
+            onChange={(e) => { setLocal(onlyLetters(e.target.value)); if (localError) setLocalError(""); }}
+          />
+          <FieldError msg={localError} />
+        </FieldWrap>
+        {" "}Data:{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="DD/MM/AAAA"
+            value={date}
+            maxLength={10}
+            style={{ borderBottomColor: dateError ? '#dc2626' : undefined }}
+            onChange={(e) => {
+              const masked = maskDate(e.target.value);
+              setDate(masked);
+              if (dateError && validateDate(masked)) setDateError("");
+            }}
+            onBlur={() => {
+              if (date && !validateDate(date)) setDateError("Data inválida. Use DD/MM/AAAA.");
+            }}
+          />
+          <FieldError msg={dateError} />
+        </FieldWrap>
       </PD>
+
       <DocumentParagraphyTitle>
-        <PDInput
-          placeholder="Assinatura da criança"
-          style={{ textAlign: "center" }}
-          onChange={(e) => setNameMinor(e.target.value)}
-          value={nameMinor}
-        />
-        <br></br>
+        <FieldWrap>
+          <PDInput
+            placeholder="Assinatura da criança"
+            style={{ textAlign: "center", borderBottomColor: nameMinorError ? '#dc2626' : undefined }}
+            onChange={(e) => { setNameMinor(onlyLetters(e.target.value)); if (nameMinorError) setNameMinorError(""); }}
+            value={nameMinor}
+          />
+          <FieldError msg={nameMinorError} />
+        </FieldWrap>
+        <br />
         Assinatura da criança
       </DocumentParagraphyTitle>
+
       <DocumentParagraphyTitle>
         <b>Dados do responsável legal:</b>
       </DocumentParagraphyTitle>
+
       <DocumentParagraphyTitle>
         <PD>
-          Nome{" "}
-          <PDInput
-            value={nameResponsible}
-            onChange={(e) => setNameResponsible(e.target.value)}
-          />
+          Nome:{" "}
+          <FieldWrap>
+            <PDInput
+              value={nameResponsible}
+              style={{ borderBottomColor: nameResponsibleError ? '#dc2626' : undefined }}
+              onChange={(e) => { setNameResponsible(onlyLetters(e.target.value)); if (nameResponsibleError) setNameResponsibleError(""); }}
+            />
+            <FieldError msg={nameResponsibleError} />
+          </FieldWrap>
         </PD>
         <PD>
-          Endereço:
-          <PDInput
-            value={responsibleAddres}
-            onChange={(e) => setResponsibleAddres(e.target.value)}
-          />
+          Endereço:{" "}
+          <FieldWrap>
+            <PDInput
+              value={responsibleAddres}
+              style={{ borderBottomColor: responsibleAddresError ? '#dc2626' : undefined }}
+              onChange={(e) => { setResponsibleAddres(e.target.value); if (responsibleAddresError) setResponsibleAddresError(""); }}
+            />
+            <FieldError msg={responsibleAddresError} />
+          </FieldWrap>
         </PD>
         <PD>
-          Email:{" "}
-          <PDInput
-            value={responsibleEmail}
-            onChange={(e) => setResponsibleEmail(e.target.value)}
-          />
+          E-mail:{" "}
+          <FieldWrap>
+            <PDInput
+              value={responsibleEmail}
+              style={{ borderBottomColor: emailError ? '#dc2626' : undefined }}
+              onChange={(e) => { setResponsibleEmail(e.target.value); if (emailError) setEmailError(""); }}
+              onBlur={() => {
+                if (responsibleEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail))
+                  setEmailError("E-mail inválido.");
+              }}
+            />
+            <FieldError msg={emailError} />
+          </FieldWrap>
         </PD>
         <PD>
           Telefone:{" "}
-          <PDInput
-            value={responsibleNumber}
-            onChange={(e) => setResponsibleNumber(e.target.value)}
-          />
+          <FieldWrap>
+            <PDInput
+              value={responsibleNumber}
+              style={{ borderBottomColor: responsibleNumberError ? '#dc2626' : undefined }}
+              onChange={(e) => { setResponsibleNumber(maskPhone(e.target.value)); if (responsibleNumberError) setResponsibleNumberError(""); }}
+            />
+            <FieldError msg={responsibleNumberError} />
+          </FieldWrap>
         </PD>
       </DocumentParagraphyTitle>
     </DocumentData>

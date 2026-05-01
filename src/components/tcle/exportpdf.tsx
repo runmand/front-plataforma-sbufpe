@@ -21,7 +21,7 @@ function replaceInputForValue(node: Element, myArray: typeStyles[]) {
     } else {
       const textNode = document.createElement("span");
       textNode.textContent = element.value || "[Campo vazio]";
-      node.replaceChild(textNode, element);
+      element.parentNode.replaceChild(textNode, element);
     }
   });
 }
