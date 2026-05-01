@@ -169,6 +169,11 @@ export default function Index(props: TPROPS) {
     const ids = new Set<ID>(validation.unansweredQuestions.map((q) => q.formQuestionFormRegisterId));
     setErrorIds(ids);
 
+    enqueueSnackbar(
+      `${validation.missingAnswers} ${validation.missingAnswers === 1 ? 'questão precisa' : 'questões precisam'} ser respondida${validation.missingAnswers === 1 ? '' : 's'}.`,
+      { variant: 'warning' }
+    );
+
     const firstId = validation.unansweredQuestions[0]?.formQuestionFormRegisterId;
     if (firstId) {
       const el = document.getElementById(`question-${firstId}`);
@@ -279,6 +284,7 @@ export default function Index(props: TPROPS) {
               index={index}
               question={question}
               isError={errorIds.has(question.formQuestionFormRegisterId)}
+              errorIds={errorIds}
               onAnswerQuestion={(data) => {
                 handleAnswerQuestion(data);
                 setErrorIds((prev) => { const next = new Set(prev); next.delete(question.formQuestionFormRegisterId); return next; });
