@@ -1,5 +1,6 @@
 import Base from "@components/base-layout/index";
-import { Avatar, Box, Button, Typography, useMediaQuery } from "@mui/material";
+import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
 import FormService from "../../src/pages/form/service";
 import React, { useEffect, useRef, useState } from "react";
 import { INDEX_RES } from "../../src/pages/form/type";
@@ -8,7 +9,6 @@ import { ID } from "src/core/types";
 import router from "next/router";
 import { localStorageKeyEnum, routerEnum } from "src/core/enums";
 import NotFound from "@components/not-found/index";
-import { theme } from "src/core/theme";
 import FormAnswerService from "src/pages/form-answer/service";
 import NewMenu from "@components/newMenu/index";
 import FooterMain from "@components/footer/main/index";
@@ -79,86 +79,173 @@ export default function Index() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const ff = {
+        display: "'Lora', Georgia, serif",
+        body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
+    };
+    const C = {
+        primary: '#6D141A',
+        secondary: '#921c22',
+        bg: '#FAF7F2',
+        white: '#fff',
+        text: '#1c1917',
+        muted: '#a8a29e',
+        border: '#e7e5e4',
+    };
+
     return (
         <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 forms ? (
                     forms.length === 0 ? (
-                        <Typography>Sem formularios</Typography>
+                        <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: ff.body, color: C.muted, fontSize: '15px' }}>
+                            Nenhum formulário disponível no momento.
+                        </div>
                     ) : (
-                        <Box
-                            sx={{
-                                background: theme.greyLight,
-                                minHeight: "88vh",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    marginY: { xs: "10rem", sm: "7rem" },
-                                    marginX: { xs: "1rem", sm: "2rem" },
-                                    minHeight: { xs: "500px", sm: "500px" },
-                                    minWidth: { xs: "80%" },
-                                    background: theme.greyLight,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                    overflow: "unset",
-                                }}
-                            >
-                                <Typography
-                                    sx={{
-                                        fontSize: { xs: "h5.fontSize", md: "h4.fontSize" },
-                                        fontWeight: "bold",
-                                    }}
-                                >
+                        <div style={{ backgroundColor: C.bg, minHeight: '88vh', padding: '0 0 80px' }}>
+
+                            {/* Hero header */}
+                            <div style={{
+                                backgroundColor: C.white,
+                                borderBottom: `1px solid ${C.border}`,
+                                padding: '72px 24px 52px',
+                                marginBottom: '48px',
+                                textAlign: 'center',
+                            }}>
+                                <div style={{
+                                    display: 'inline-block', width: '40px', height: '3px',
+                                    background: `linear-gradient(90deg, ${C.primary}, ${C.secondary})`,
+                                    borderRadius: '2px', marginBottom: '20px',
+                                }} />
+                                <h1 style={{
+                                    fontFamily: ff.display,
+                                    fontSize: 'clamp(24px, 3.5vw, 38px)',
+                                    fontWeight: 700,
+                                    color: C.text,
+                                    margin: '0 0 12px',
+                                    letterSpacing: '-0.02em',
+                                    lineHeight: 1.2,
+                                }}>
                                     Questionário Avaliativo
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        paddingTop: "4rem",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "20px",
-                                        justifyContent: "center",
-                                        flexWrap: "wrap",
-                                    }}
-                                >
-                                    {forms.map((v, i) => (
-                                        <Button
-                                            key={i}
-                                            sx={{
-                                                backgroundColor: theme.primaryColor,
-                                                color: theme.white,
-                                                width: { xs: "100%", sm: "350px" },
-                                                height: "200px",
-                                                borderWidth: "0.5rem",
-                                                borderColor: theme.secundaryColor,
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                gap: "10px",
-                                                fontWeight: "bold",
-                                                "&:hover": {
-                                                    backgroundColor: theme.secundaryColor,
-                                                },
-                                            }}
-                                            onClick={() => handleSelectForm(v.id)}
-                                        >
-                                            <Avatar alt="Logo de Odontologia" src="/logo-transparent.png" sx={{ width: "56", height: "56" }} />
-                                            {v.title}
-                                            <></>
-                                        </Button>
-                                    ))}
-                                </Box>
-                            </Box>
-                            {openTCLE ? <TcleModal idForm={formId} setOpenTCLE={setOpenTCLE} open={openTCLE} goForm={goForm} /> : <></>}
-                        </Box>
+                                </h1>
+                                <p style={{
+                                    fontFamily: ff.body,
+                                    fontSize: '15px',
+                                    color: C.muted,
+                                    margin: 0,
+                                    lineHeight: 1.6,
+                                }}>
+                                    Selecione o formulário que deseja responder
+                                </p>
+                            </div>
+
+                            {/* Cards grid */}
+                            <div style={{
+                                maxWidth: '900px',
+                                margin: '0 auto',
+                                padding: '0 24px',
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                                gap: '20px',
+                            }}>
+                                {forms.map((v, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => handleSelectForm(v.id)}
+                                        style={{
+                                            backgroundColor: C.white,
+                                            border: `1.5px solid ${C.border}`,
+                                            borderRadius: '16px',
+                                            padding: '28px 24px',
+                                            cursor: 'pointer',
+                                            textAlign: 'left',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: '16px',
+                                            transition: 'all 0.2s ease',
+                                            boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                                            fontFamily: ff.body,
+                                        }}
+                                        onMouseEnter={e => {
+                                            const el = e.currentTarget;
+                                            el.style.borderColor = C.primary;
+                                            el.style.boxShadow = '0 8px 24px rgba(109,20,26,0.12)';
+                                            el.style.transform = 'translateY(-2px)';
+                                        }}
+                                        onMouseLeave={e => {
+                                            const el = e.currentTarget;
+                                            el.style.borderColor = C.border;
+                                            el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
+                                            el.style.transform = 'translateY(0)';
+                                        }}
+                                    >
+                                        {/* Icon */}
+                                        <div style={{
+                                            width: '56px', height: '56px', borderRadius: '12px',
+                                            backgroundColor: '#6D141A',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            flexShrink: 0, overflow: 'hidden',
+                                        }}>
+                                            <Image src="/logo-transparent.png" alt="Logo" width={44} height={44} style={{ objectFit: 'contain' }} />
+                                        </div>
+
+                                        {/* Content */}
+                                        <div style={{ flex: 1 }}>
+                                            <p style={{
+                                                fontSize: '0.9rem',
+                                                fontWeight: 700,
+                                                color: C.text,
+                                                margin: '0 0 6px',
+                                                lineHeight: 1.4,
+                                            }}>
+                                                {v.title}
+                                            </p>
+                                            <p style={{
+                                                fontSize: '0.78rem',
+                                                color: C.muted,
+                                                margin: '0 0 6px',
+                                                lineHeight: 1.5,
+                                            }}>
+                                                Clique para iniciar o preenchimento
+                                            </p>
+                                            <p style={{
+                                                fontSize: '0.72rem',
+                                                color: '#b45309',
+                                                margin: 0,
+                                                lineHeight: 1.4,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '4px',
+                                            }}>
+                                                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#b45309" strokeWidth={2}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                Requer assinatura de termos
+                                            </p>
+                                        </div>
+
+                                        {/* Arrow */}
+                                        <div style={{
+                                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                            borderTop: `1px solid ${C.border}`, paddingTop: '12px', marginTop: '4px',
+                                        }}>
+                                            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: C.primary, letterSpacing: '0.05em' }}>
+                                                INICIAR
+                                            </span>
+                                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={C.primary} strokeWidth={2.5}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                            </svg>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <TcleModal idForm={formId} setOpenTCLE={setOpenTCLE} open={openTCLE} goForm={goForm} />
+                        </div>
                     )
                 ) : (
-                    <div></div>
+                    <div style={{ minHeight: '70vh' }} />
                 )
             }
             footerChild={<FooterMain />}
