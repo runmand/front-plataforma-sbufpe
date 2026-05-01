@@ -10,7 +10,6 @@ export default function Index() {
   const router = useRouter();
   const [isDrawerMenuOpen, setIsDrawerMenuOpen] = useState(false);
   const [menu, setMenu] = useState([
-    { id: 0, title: 'Questionário Inicial',    url: routerEnum.QUESTION },
     { id: 1, title: 'Questionários',           url: routerEnum.FORM },
     { id: 3, title: 'Planeja SD - Teórico',    url: routerEnum.PLANEJA },
     { id: 4, title: 'Planeja SD - Prático',    url: routerEnum.PLANEJA_PRATICO },

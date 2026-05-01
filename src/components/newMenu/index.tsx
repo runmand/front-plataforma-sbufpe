@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import LoginModal from '@components/modal/log-in/index';
@@ -181,7 +182,7 @@ export default function Index() {
 
 					{/* Logo */}
 					<button onClick={() => router.push(routerEnum.INITIAL)} style={{ ...btnBase, display: 'flex', alignItems: 'center', gap: '10px', background: 'transparent', padding: 0 }}>
-						<img src="/logo-transparent.png" alt="GestBucal" style={{ width: '38px', height: '38px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)' }} />
+						<Image src="/logo-transparent.png" alt="GestBucal" width={38} height={38} style={{ borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)' }} />
 						<span style={{ fontFamily: ff.display, color: '#fff', fontWeight: 700, fontSize: '19px' }}>
 							GestBucal<span style={{ color: 'rgba(255,255,255,0.35)', fontWeight: 300, marginLeft: '4px' }}>SD</span>
 						</span>

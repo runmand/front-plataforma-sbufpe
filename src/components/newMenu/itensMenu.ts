@@ -12,7 +12,6 @@ export const itemsMenu: itemsListType[] = [
 ]
 
 export const itemsDrawer: MENU_ITEM[] = [
-  { id: 0, title: "Questionário Inicial", url: routerEnum.QUESTION },
   { id: 1, title: "Questionários", url: routerEnum.FORM },
   { id: 3, title: "Planeja SD - Teórico", url: routerEnum.PLANEJA },
   { id: 4, title: "Planeja SD - Pratico", url: routerEnum.PLANEJA_PRATICO,},    
