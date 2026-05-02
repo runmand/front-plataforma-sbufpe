@@ -1,79 +1,54 @@
-import {
-  Dispatch,
-  forwardRef,
-  SetStateAction,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { DocumentData } from "../styled";
-import {
-  DocumentLi,
-  DocumentParagraphyTitle,
-  PD,
-  PDInput,
-  TaleImage,
-} from "./styled";
-import { useSnackbar } from "notistack";
-import { DataTerm, PropsTerm } from "..";
+import { DocumentLi, DocumentParagraphyTitle, PD, PDInput } from "./styled";
+import { DataTerm } from "..";
 import { generatePDF } from "../exportpdf";
+import { maskCPF, validateCPF } from "src/core/utils/cpf";
+import { onlyLetters } from "src/core/utils/text";
+
+const FieldError = ({ msg }: { msg: string }) =>
+  msg ? <span style={{ color: '#dc2626', fontSize: '0.75em', display: 'block', marginTop: '2px', whiteSpace: 'nowrap' }}>{msg}</span> : null;
+
+const FieldWrap = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle' }}>
+    {children}
+  </span>
+);
 
 const Index = forwardRef((props, ref) => {
   const [nameResearch, setNameResearch] = useState<string>("");
+  const [nameResearchError, setNameResearchError] = useState<string>("");
   const [responsibleCPF, setResponsibleCPF] = useState<string>("");
+  const [cpfError, setCpfError] = useState<string>("");
   const [nameResponsible, setNameResponsible] = useState<string>("");
+  const [nameResponsibleError, setNameResponsibleError] = useState<string>("");
   const [responsibleEmail, setResponsibleEmail] = useState<string>("");
-  const { enqueueSnackbar } = useSnackbar();
+  const [emailError, setEmailError] = useState<string>("");
 
   const isFormValid = () => {
-    if (!nameResearch.trim()) {
-      enqueueSnackbar("O campo Nome do pesquisador está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!responsibleCPF.trim()) {
-      enqueueSnackbar("O campo CPF do participante está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
-    if (!nameResponsible.trim()) {
-      enqueueSnackbar("O campo Nome do participante está vazio.", {
-        variant: "warning",
-      });
-      return false;
-    }
+    let valid = true;
 
-    if (!responsibleEmail) {
-      enqueueSnackbar("Preencha o campo Email do participante", {
-        variant: "warning",
-      });
-      return false;
-    }
+    if (!nameResearch.trim()) { setNameResearchError("Campo obrigatório."); valid = false; } else setNameResearchError("");
+    if (!nameResponsible.trim()) { setNameResponsibleError("Campo obrigatório."); valid = false; } else setNameResponsibleError("");
 
-    if (
-      !responsibleEmail ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail)
-    ) {
-      enqueueSnackbar("Preencha um e-mail válido para o participante", {
-        variant: "warning",
-      });
-      return false;
-    }
+    if (!responsibleCPF.trim()) { setCpfError("O CPF é obrigatório."); valid = false; }
+    else if (!validateCPF(responsibleCPF)) { setCpfError("CPF inválido. Verifique os dígitos."); valid = false; }
+    else setCpfError("");
 
-    return true;
+    if (!responsibleEmail.trim()) { setEmailError("O e-mail é obrigatório."); valid = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail)) { setEmailError("E-mail inválido."); valid = false; }
+    else setEmailError("");
+
+    return valid;
   };
 
-  async function validateForm(): Promise<DataTerm> {
+  async function validateForm(): Promise<DataTerm | undefined> {
     if (!isFormValid()) return;
 
-    const node = document.getElementById("TCLE").children;
-
+    const node = document.getElementById("TCLEPROF")!.children;
     const pdf = await generatePDF(node);
 
-    const response: DataTerm = {
+    return {
       valid: true,
       type: "TCLE",
       email: responsibleEmail,
@@ -81,19 +56,14 @@ const Index = forwardRef((props, ref) => {
       pdf: await pdf,
       created_at: new Date(),
     };
-
-    return response;
   }
 
   useImperativeHandle(ref, () => ({
-    getStates: async () => {
-      const response = validateForm();
-      return response;
-    },
+    getStates: async () => validateForm(),
   }));
 
   return (
-    <DocumentData id="TCLE">
+    <DocumentData id="TCLEPROF">
       <DocumentParagraphyTitle>
         <b>UNIVERSIDADE FEDERAL DE PERNAMBUCO</b>
       </DocumentParagraphyTitle>
@@ -172,7 +142,7 @@ const Index = forwardRef((props, ref) => {
           tomada de decisão para mudanças locais com vistas à melhoria da
           qualidade, resultando em serviços mais efetivos, promotores de saúde.
           E, o uso de ferramenta eletrônica oportuniza decisão ágil para
-          governança inteligente
+          governança inteligente.
         </DocumentLi>
       </ul>
       <PD>
@@ -204,13 +174,16 @@ const Index = forwardRef((props, ref) => {
       </PD>
 
       <DocumentParagraphyTitle>
-        <PDInput
-          placeholder="Assinatura do pesquisador"
-          style={{ textAlign: "center" }}
-          onChange={(e) => setNameResearch(e.target.value)}
-          value={nameResearch}
-        />
-        <br></br>
+        <FieldWrap>
+          <PDInput
+            placeholder="Assinatura do pesquisador"
+            style={{ textAlign: "center", borderBottomColor: nameResearchError ? '#dc2626' : undefined }}
+            onChange={(e) => { setNameResearch(onlyLetters(e.target.value)); if (nameResearchError) setNameResearchError(""); }}
+            value={nameResearch}
+          />
+          <FieldError msg={nameResearchError} />
+        </FieldWrap>
+        <br />
         Assinatura do pesquisador
       </DocumentParagraphyTitle>
 
@@ -220,18 +193,35 @@ const Index = forwardRef((props, ref) => {
 
       <PD>
         Eu,{" "}
-        <PDInput
-          placeholder="Nome do participante"
-          value={nameResponsible}
-          onChange={(e) => setNameResponsible(e.target.value)}
-        />
-        , CPF{" "}
-        <PDInput
-          placeholder="CPF do participante"
-          value={responsibleCPF}
-          onChange={(e) => setResponsibleCPF(e.target.value)}
-        />
-        , abaixo assinado, após a leitura (ou a escuta da leitura) deste
+        <FieldWrap>
+          <PDInput
+            placeholder="Nome do participante"
+            value={nameResponsible}
+            style={{ borderBottomColor: nameResponsibleError ? '#dc2626' : undefined }}
+            onChange={(e) => { setNameResponsible(onlyLetters(e.target.value)); if (nameResponsibleError) setNameResponsibleError(""); }}
+          />
+          <FieldError msg={nameResponsibleError} />
+        </FieldWrap>
+        {" "}, CPF{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="000.000.000-00"
+            value={responsibleCPF}
+            maxLength={14}
+            style={{ borderBottomColor: cpfError ? '#dc2626' : undefined }}
+            onChange={(e) => {
+              const masked = maskCPF(e.target.value);
+              setResponsibleCPF(masked);
+              if (cpfError && validateCPF(masked)) setCpfError("");
+            }}
+            onBlur={() => {
+              if (responsibleCPF && !validateCPF(responsibleCPF))
+                setCpfError("CPF inválido. Verifique os dígitos.");
+            }}
+          />
+          <FieldError msg={cpfError} />
+        </FieldWrap>
+        {" "}, abaixo assinado, após a leitura (ou a escuta da leitura) deste
         documento e de ter tido a oportunidade de conversar e ter esclarecido as
         minhas dúvidas com o pesquisador responsável, concordo em participar do
         estudo pesquisa GestBucalSD: AVALIAÇÃO DO USO DE PLATAFORMA WEB-BASED
@@ -242,18 +232,28 @@ const Index = forwardRef((props, ref) => {
         minha participação. Foi-me garantido que posso retirar o meu
         consentimento a qualquer momento, sem que isto leve a qualquer
         penalidade (ou interrupção de meu acompanhamento/
-        assistência/tratamento). Informe seu e-mail para enviarmos o termos.
-        Email:{" "}
-        <PDInput
-          placeholder="Email"
-          value={responsibleEmail}
-          onChange={(e) => setResponsibleEmail(e.target.value)}
-        />
+        assistência/tratamento). Informe seu e-mail para enviarmos o termo.
+      </PD>
+      <PD>
+        E-mail:{" "}
+        <FieldWrap>
+          <PDInput
+            placeholder="email@exemplo.com"
+            value={responsibleEmail}
+            style={{ borderBottomColor: emailError ? '#dc2626' : undefined }}
+            onChange={(e) => { setResponsibleEmail(e.target.value); if (emailError) setEmailError(""); }}
+            onBlur={() => {
+              if (responsibleEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(responsibleEmail))
+                setEmailError("E-mail inválido.");
+            }}
+          />
+          <FieldError msg={emailError} />
+        </FieldWrap>
       </PD>
     </DocumentData>
   );
 });
 
-Index.displayName = "TCLE";
+Index.displayName = "TCLEPROF";
 
 export default Index;

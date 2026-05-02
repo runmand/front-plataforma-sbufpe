@@ -41,7 +41,7 @@ export enum titleEnumPtBr {
     "/tcle" = "TCLE",
     "/direction" = "Endereço",
     "/form" = "Formularios",
-    "/question" = "Questionario inicial",
+    // "/question" = "Questionario inicial",
     "/planeja" = "PlanejaSD Teorico",
     "/planeja-pratico" = "PlanejaSD Pratico",
     "/ceo" = "Dados CEO",

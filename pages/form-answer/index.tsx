@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from "../../src/pages/form-answer/type";
 import Base from "@components/base-layout/index";
 import { useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 import FormAnswerService from "../../src/pages/form-answer/service";
 import SimpleForm from "@components/form/simple/index";
 import { ID } from "src/core/types";
@@ -16,17 +17,29 @@ export default function Index() {
     const router = useRouter();
     const [formId, setFormId] = React.useState<ID>(Number(router.query.formId));
 
+    const { enqueueSnackbar } = useSnackbar();
     const formAnwerService = new FormAnswerService();
     const [formattedForm, setFormattedForm] = useState<GET_FORMATTED_FORM_SHOW>();
     const [isOpenFormResult, setIsOpenFormResult] = useState<boolean>(false);
     const [formThanks, setFormThanks] = useState(false);
     const [formResult, setFormResult] = useState<GET_USER_RESULT_FROM_FORM_RES | null>();
 
+    function hasSignedRequiredTerm(id: number): boolean {
+        const requiredKey = [1, 3, 4].includes(id) ? 'tcle_TCLEPROF' : 'tcle_TCLE';
+        return sessionStorage.getItem(requiredKey) === '1';
+    }
+
     useEffect(() => {
         if (!router.isReady) return;
 
-        setFormId(Number(router.query.formId));
-    }, [router.isReady, router.query.formId]);
+        const id = Number(router.query.formId);
+        setFormId(id);
+
+        if (!hasSignedRequiredTerm(id)) {
+            enqueueSnackbar("Você precisa assinar os termos obrigatórios antes de responder o formulário.", { variant: "warning" });
+            router.replace(routerEnum.FORM);
+        }
+    }, [router.isReady, router.query.formId, router, enqueueSnackbar]);
 
     useEffect(() => {
         if (formId === null || Number.isNaN(formId)) return;

@@ -54,7 +54,7 @@ export default function Index(props: TPROPS) {
     }, []);
 
     if (!props.parent || canShow) {
-        const hasError = props.isError && !props.parent;
+        const hasError = !!(props.isError || props.errorIds?.has(props.question.formQuestionFormRegisterId));
         return (
             <div
                 id={`question-${props.question.formQuestionFormRegisterId}`}
@@ -74,7 +74,7 @@ export default function Index(props: TPROPS) {
                         fontFamily: ff.body,
                         color: C.primary,
                         lineHeight: 1.55,
-                        margin: '0 0 20px',
+                        margin: props.question.completionMessage?.trim() ? '0 0 4px' : '0 0 16px',
                     }}>
                         {props.parent?.formQuestionFormRegisterId === 234 ? (
                             <>{props.question.title}</>
@@ -82,9 +82,22 @@ export default function Index(props: TPROPS) {
                             <>{props.index + 1} - {props.question.title}</>
                         )}
                     </p>
+                    {props.question.completionMessage?.trim() && (
+                        <p style={{
+                            fontSize: '14px',
+                            fontWeight: 400,
+                            fontFamily: ff.body,
+                            color: '#6b7280',
+                            lineHeight: 1.5,
+                            margin: '0 0 16px',
+                        }}>
+                            {props.question.completionMessage}
+                        </p>
+                    )}
                     {props.question.choices.length === 0 ? (
                         <OpenAnswer
                             formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
+                            placeholder={props.question.completionMessage || undefined}
                             onAnswerQuestion={(data) => {
                                 handleAnswerQuestion(data);
                             }}
@@ -156,12 +169,13 @@ export default function Index(props: TPROPS) {
                             style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto' }}
                         />
                     )}
-                    {props.question.childrenQuestion.reverse().map((child, index) => (
+                    {(props.question.childrenQuestion ?? []).slice().reverse().map((child, index) => (
                         <Index
                             key={index}
                             index={index}
                             parent={props.question}
                             question={child}
+                            errorIds={props.errorIds}
                             onAnswerQuestion={(data) => {
                                 props.onAnswerQuestion(data);
                             }}
@@ -174,4 +188,5 @@ export default function Index(props: TPROPS) {
             </div>
         );
     }
+    return null;
 }

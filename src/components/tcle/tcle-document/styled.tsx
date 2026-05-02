@@ -21,45 +21,60 @@ export const TaleImage = styled.img`
 
 // Paragraphy Document
 export const PD = styled.p`
-  font-size: 1vw;
-  text-indent: 2vw;
+  font-size: 0.88rem;
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  text-indent: 1.5em;
+  line-height: 1.7;
+  margin: 0.6em 0;
+  text-align: justify;
 
   @media (max-width: 768px) {
-    font-size: 4vw;
+    font-size: 3.5vw;
   }
 `;
 
 export const PDInput = styled.input`
   background-color: transparent;
   border: 0;
-  border-bottom: 1px solid black;
+  border-bottom: 1.5px solid #555;
   border-radius: 0;
-  width: 21vw;
-  margin-left: 0vw;
-  margin-right: 0;
-  height: 1vw;
+  width: 18vw;
+  height: 1.4em;
+  font-size: inherit;
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  vertical-align: middle;
+  padding: 0 2px;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-bottom-color: ${theme.primaryColor};
+  }
 
   &::placeholder {
     color: ${theme.grey};
+    font-style: italic;
+    font-size: 0.85em;
   }
 
   @media (max-width: 768px) {
-    font-size: 4vw;
-    height: 4vw;
+    width: 40vw;
+    font-size: 3.5vw;
   }
 `;
 
 export const DocumentParagraphyTitle = styled.h5`
   text-align: center;
   width: 100%;
-  margin: 1vw 0;
-  & > b {
-    font-weight: bolder;
+  font-size: 0.85rem;
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  margin: 1em 0 0.4em;
+  line-height: 1.5;
 
-    &::after {
-      content: "\\A";
-      white-space: pre;
-    }
+  & > b {
+    font-weight: 700;
+    display: block;
   }
 `;
 

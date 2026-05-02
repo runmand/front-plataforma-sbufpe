@@ -19,23 +19,30 @@ export default function Index(props: TPROPS) {
 			<input
 				className="gestbucal-input"
 				type="text"
+				placeholder={props.placeholder || 'Digite sua resposta...'}
 				onChange={(e) => handleAnswerQuestion(e.target.value)}
 				onBlur={(e) => handleAnswerQuestion(e.target.value)}
 				style={{
 					width: '100%',
-					padding: '10px 0',
+					padding: '10px 12px',
 					fontSize: '15px',
 					fontFamily: "'Source Sans 3', -apple-system, sans-serif",
 					color: '#1c1917',
-					background: 'transparent',
-					border: 'none',
-					borderBottom: '1.5px solid #e7e5e4',
+					background: '#ffffff',
+					border: '1.5px solid #d1d5db',
+					borderRadius: '8px',
 					outline: 'none',
 					boxSizing: 'border-box',
-					transition: 'border-color 0.2s',
+					transition: 'border-color 0.2s, box-shadow 0.2s',
 				}}
-				onFocus={(e) => { e.currentTarget.style.borderBottomColor = '#6D141A'; }}
-				onBlurCapture={(e) => { e.currentTarget.style.borderBottomColor = '#e7e5e4'; }}
+				onFocus={(e) => {
+					e.currentTarget.style.borderColor = '#6D141A';
+					e.currentTarget.style.boxShadow = '0 0 0 3px rgba(109,20,26,0.1)';
+				}}
+				onBlurCapture={(e) => {
+					e.currentTarget.style.borderColor = '#d1d5db';
+					e.currentTarget.style.boxShadow = 'none';
+				}}
 			/>
 		</>
 	);
