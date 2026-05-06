@@ -54,13 +54,11 @@ export default function Index(props: TPROPS) {
     };
 
     const validateForm = () => {
-        //Valida o campo email
         if (!validateEmail(email)) {
             enqueueSnackbar("Email invalido");
             return false;
         }
 
-        //Valida o campo password, tamanho e se está igual
         if (pwd.length < 8) {
             enqueueSnackbar("A senha deve conter 8 caracteres");
             return false;
@@ -71,7 +69,6 @@ export default function Index(props: TPROPS) {
             return false;
         }
 
-        //Valida baseado no type de "register escolhido"
         switch (loginType) {
             case loginTypeEnum.CPF:
                 if (!validateCPF(login)) {
@@ -113,8 +110,11 @@ export default function Index(props: TPROPS) {
                 }
             })
             .catch((e) => {
-                console.error(e);
-                enqueueSnackbar("Ops! Algo deu errado...", { variant: "error" }); //TODO: Tratar essa exception
+                if (e.errors[0]) {
+                    enqueueSnackbar(e.errors[0], { variant: "error" });
+                } else {
+                    enqueueSnackbar("Ops! Algo deu errado...", { variant: "error" }); //TODO: Tratar essa exception
+                }
                 setIsLoading(false);
             });
     };
