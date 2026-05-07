@@ -33,16 +33,6 @@ const SvgChev = () => (
 		<path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
 	</svg>
 );
-const SvgMenu = () => (
-	<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-	</svg>
-);
-const SvgClose = () => (
-	<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-	</svg>
-);
 
 /* ─── NavDropdown ────────────────────────────────────────────────────────────── */
 function NavDropdown({ title, items }: { title: string; items: { label: string; route: string }[] }) {
@@ -89,37 +79,11 @@ function NavDropdown({ title, items }: { title: string; items: { label: string; 
 	);
 }
 
-/* ─── MobileSection ──────────────────────────────────────────────────────────── */
-function MobileSection({ title, items, close }: { title: string; items: { label: string; route: string }[]; close: () => void }) {
-	const [open, setOpen] = React.useState(false);
-	const router = useRouter();
-
-	return (
-		<div style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-			<button onClick={() => setOpen(!open)} style={{ ...btnBase, display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px', color: 'rgba(255,255,255,0.88)', fontWeight: 600, fontSize: '15px', background: 'transparent' }}>
-				{title}
-				<span style={{ display: 'inline-flex', transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}><SvgChev /></span>
-			</button>
-			{open && items.map((item, i) => (
-				<button key={i}
-					onClick={() => { router.push(item.route); close(); }}
-					style={{ ...btnBase, display: 'block', width: '100%', textAlign: 'left', padding: '10px 20px 10px 40px', fontSize: '14px', color: 'rgba(255,255,255,0.6)', background: 'transparent' }}
-					onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
-					onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
-				>
-					{item.label}
-				</button>
-			))}
-		</div>
-	);
-}
-
 /* ─── Main Navbar ────────────────────────────────────────────────────────────── */
 export default function Index() {
 	const router = useRouter();
 	const [scrolled,      setScrolled]      = React.useState(false);
 	const [isMobile,      setIsMobile]      = React.useState(false);
-	const [mobileOpen,    setMobileOpen]    = React.useState(false);
 	const [haveLogin,     setHaveLogin]     = React.useState(false);
 	const [isOpenLogin,   setIsOpenLogin]   = React.useState(false);
 	const [isOpenSignup,  setIsOpenSignup]  = React.useState(false);
@@ -128,7 +92,7 @@ export default function Index() {
 
 	React.useEffect(() => {
 		const onScroll  = () => setScrolled(window.scrollY > 30);
-		const onResize  = () => { setIsMobile(window.innerWidth < 1024); if (window.innerWidth >= 1024) setMobileOpen(false); };
+		const onResize  = () => { setIsMobile(window.innerWidth < 1024); };
 		onResize();
 		window.addEventListener('scroll',  onScroll);
 		window.addEventListener('resize',  onResize);
@@ -201,68 +165,41 @@ export default function Index() {
 						</div>
 					)}
 
-					{/* Desktop auth buttons */}
-					{!isMobile && !haveLogin && (
-						<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+					{/* Auth buttons / Menu+Logout — sempre visíveis */}
+					{!haveLogin && (
+						<div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '10px' }}>
 							<button
 								onClick={() => setIsOpenLogin(true)}
-								style={{ ...btnBase, padding: '9px 24px', fontSize: '14px', fontWeight: 600, color: '#fff', background: 'transparent', border: '1.5px solid rgba(255,255,255,0.3)', borderRadius: '100px' }}
+								style={{ ...btnBase, padding: isMobile ? '7px 14px' : '9px 24px', fontSize: '14px', fontWeight: 600, color: '#fff', background: 'transparent', border: '1.5px solid rgba(255,255,255,0.3)', borderRadius: '100px' }}
 								onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
 								onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; e.currentTarget.style.background = 'transparent'; }}
 							>Entrar</button>
-							<button
-								onClick={() => setIsOpenSignup(true)}
-								style={{ ...btnBase, padding: '9px 24px', fontSize: '14px', fontWeight: 700, color: C.primary, background: '#fff', borderRadius: '100px', boxShadow: '0 4px 14px rgba(0,0,0,0.12)' }}
-								onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.18)'; }}
-								onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.12)'; }}
-							>Cadastrar</button>
+							{!isMobile && (
+								<button
+									onClick={() => setIsOpenSignup(true)}
+									style={{ ...btnBase, padding: '9px 24px', fontSize: '14px', fontWeight: 700, color: C.primary, background: '#fff', borderRadius: '100px', boxShadow: '0 4px 14px rgba(0,0,0,0.12)' }}
+									onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.18)'; }}
+									onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.12)'; }}
+								>Cadastrar</button>
+							)}
 						</div>
 					)}
 
-					{/* Desktop logout */}
-					{!isMobile && haveLogin && (
-						<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+					{haveLogin && (
+						<div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '10px' }}>
 							<button
 								onClick={() => setDrawerOpen(true)}
 								style={{ ...btnBase, padding: '8px 14px', fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.88)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px' }}
 							>☰ Menu</button>
 							<button
 								onClick={handleLogout}
-								style={{ ...btnBase, padding: '9px 20px', fontSize: '14px', fontWeight: 600, color: '#fff', background: 'transparent', border: '1.5px solid rgba(255,255,255,0.3)', borderRadius: '100px' }}
+								style={{ ...btnBase, padding: isMobile ? '7px 12px' : '9px 20px', fontSize: '14px', fontWeight: 600, color: '#fff', background: 'transparent', border: '1.5px solid rgba(255,255,255,0.3)', borderRadius: '100px' }}
 								onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
 								onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
 							>→ Sair</button>
 						</div>
 					)}
-
-					{/* Mobile hamburger */}
-					{isMobile && (
-						<button onClick={() => setMobileOpen(!mobileOpen)} style={{ ...btnBase, padding: '8px', color: 'rgba(255,255,255,0.9)', background: 'transparent' }}>
-							{mobileOpen ? <SvgClose /> : <SvgMenu />}
-						</button>
-					)}
 				</div>
-
-				{/* Mobile menu panel */}
-				{isMobile && mobileOpen && (
-					<div style={{ background: C.primaryDark, borderTop: '1px solid rgba(255,255,255,0.08)', animation: 'fadeDown 0.2s ease-out' }}>
-						<button
-							onClick={() => { router.push(routerEnum.INITIAL); setMobileOpen(false); }}
-							style={{ ...btnBase, display: 'block', width: '100%', textAlign: 'left', padding: '14px 20px', color: 'rgba(255,255,255,0.88)', fontWeight: 600, fontSize: '15px', background: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.07)' }}
-						>Início</button>
-						{menuList.map((m, i) => <MobileSection key={i} title={m.title} items={m.items} close={() => setMobileOpen(false)} />)}
-						{!haveLogin ? (
-							<div style={{ display: 'flex', gap: '12px', padding: '16px 20px' }}>
-								<button onClick={() => { setIsOpenLogin(true); setMobileOpen(false); }} style={{ ...btnBase, flex: 1, padding: '12px', fontSize: '14px', fontWeight: 600, color: '#fff', background: 'transparent', border: '1.5px solid rgba(255,255,255,0.25)', borderRadius: '100px' }}>Entrar</button>
-								<button onClick={() => { setIsOpenSignup(true); setMobileOpen(false); }} style={{ ...btnBase, flex: 1, padding: '12px', fontSize: '14px', fontWeight: 700, color: C.primary, background: '#fff', borderRadius: '100px' }}>Cadastrar</button>
-							</div>
-						) : (
-							<div style={{ padding: '16px 20px' }}>
-								<button onClick={handleLogout} style={{ ...btnBase, width: '100%', padding: '12px', fontSize: '14px', fontWeight: 600, color: '#fff', background: 'rgba(255,255,255,0.08)', border: '1.5px solid rgba(255,255,255,0.2)', borderRadius: '100px' }}>→ Sair</button>
-							</div>
-						)}
-					</div>
-				)}
 			</nav>
 
 			{/* Modals */}

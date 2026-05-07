@@ -98,10 +98,11 @@ export default function Index() {
 				position: 'justify',
 				bgcolor: theme.primaryColor,
 				marginX: 'auto',
-				maxWidth: '50rem',
+				maxWidth: { xs: '100%', md: '50rem' },
 				height: 'auto',
 				marginTop: '4rem',
 				marginBottom: '2rem',
+				px: { xs: 2, md: 0 },
 			}}
 			>
 				<Typography
@@ -118,9 +119,10 @@ export default function Index() {
 				position: 'justify',
 				bgcolor: theme.greyLight,
 				marginX: 'auto',
-				maxWidth: '80rem',
+				maxWidth: { xs: '100%', md: '80rem' },
 				height: 'auto',
 				marginBottom: '2rem',
+				px: { xs: 2, md: 0 },
 			}}
 			>
 				<Typography
@@ -174,8 +176,9 @@ export default function Index() {
 				bgcolor: theme.primaryColor,
 				marginX: 'auto',
 				marginTop: '2rem',
-				maxWidth: '50rem',
+				maxWidth: { xs: '100%', md: '50rem' },
 				height: 'auto',
+				px: { xs: 2, md: 0 },
 			}}
 			>
 				<Typography sx={{
@@ -194,15 +197,16 @@ export default function Index() {
 				position: 'justify',
 				bgcolor: theme.greyLight,
 				marginX: 'auto',
-				width: '50%',
+				width: { xs: '100%', md: '50%' },
 				height: 'auto',
 				marginBottom: '4rem',
+				px: { xs: 2, md: 0 },
 			}}
 			>
 				<Box
 					sx={{
 						height: '14rem',
-						margin: 9
+						margin: { xs: 2, md: 9 },
 					}}
 				>
 					<Carousel indicators={true} autoPlay>
@@ -219,8 +223,8 @@ export default function Index() {
 										src={image.src}
 										alt={`Image ${index + 1}`}
 										sx={{
-											width: "600px",
-											height: "300px",
+											width: { xs: '100%', md: '600px' },
+											height: { xs: '160px', md: '300px' },
 											objectFit: "contain",
 											margin: "0 auto"
 										}}
@@ -251,8 +255,9 @@ export default function Index() {
 				bgcolor: theme.primaryColor,
 				marginX: 'auto',
 				marginTop: '2rem',
-				maxWidth: '50rem',
+				maxWidth: { xs: '100%', md: '50rem' },
 				height: 'auto',
+				px: { xs: 2, md: 0 },
 			}}
 			>
 				<Typography
@@ -268,8 +273,9 @@ export default function Index() {
 				sx={{
 					bgcolor: theme.greyLight,
 					marginX: 'auto',
-					width: '65%',
-					marginY: '4rem',
+					width: { xs: '100%', md: '65%' },
+					marginY: { xs: '2rem', md: '4rem' },
+					px: { xs: 1, md: 0 },
 				}}
 			>
 				<TableContainer component={Paper}>
@@ -319,8 +325,9 @@ export default function Index() {
 				sx={{
 					bgcolor: theme.primaryColor,
 					marginX: 'auto',
-					maxWidth: '50rem',
+					maxWidth: { xs: '100%', md: '50rem' },
 					marginBottom: '1rem',
+					px: { xs: 2, md: 0 },
 				}}
 			>
 				<Typography
@@ -337,8 +344,9 @@ export default function Index() {
 				sx={{
 					bgcolor: theme.greyLight,
 					marginX: 'auto',
-					width: '65%',
-					marginY: '4rem',
+					width: { xs: '100%', md: '65%' },
+					marginY: { xs: '2rem', md: '4rem' },
+					px: { xs: 1, md: 0 },
 				}}
 			>
 				<TableContainer component={Paper}>

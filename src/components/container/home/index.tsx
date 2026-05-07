@@ -51,8 +51,8 @@ export default function Index() {
                 }}
             >
                 <Grid container spacing={4} columns={{ xs: 4, md: 12 }}>
-                    <Grid item xs={6}>
-                        <Box textAlign={"justify"} sx={{ paddingX: "20px" }}>
+                    <Grid item xs={4} md={6}>
+                        <Box textAlign={"justify"} sx={{ paddingX: { xs: "12px", md: "20px" } }}>
                             <Typography sx={{ textIndent: "2rem" }} paragraph={true} variant="body1" color={theme.primaryColor}>
                                 É desafio atual para a governança dos estabelecimentos públicos de saúde a tomada de decisão ágil e oportuna, pautada
                                 na evidência científica,possibilitando melhoria de qualidade e promoção de saúde no Sistema Único de Saúde (SUS). A
@@ -73,7 +73,7 @@ export default function Index() {
                             </Typography>
                         </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4} md={6}>
                         <Paper sx={{ height: "100%" }} elevation={12}>
                             <Carousel
                                 animation="fade"
@@ -113,7 +113,7 @@ export default function Index() {
                                                 padding: "5px",
                                                 textAlign: "justify",
                                                 alignContent: "center",
-                                                fontSize: "2rem",
+                                                fontSize: { xs: "1.3rem", md: "2rem" },
                                             }}
                                         >
                                             {item.subTitle}
@@ -138,7 +138,7 @@ export default function Index() {
                                         >
                                             <Button
                                                 sx={{
-                                                    width: "120px",
+                                                    width: { xs: "100%", sm: "120px" },
                                                     color: theme.primaryColor,
                                                     border: `2px solid ${theme.secundaryColor}`,
                                                 }}
