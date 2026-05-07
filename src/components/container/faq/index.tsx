@@ -36,9 +36,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
-        marginTop: '6rem',
+        marginTop: { xs: '2rem', md: '6rem' },
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -53,9 +54,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 1.5 }}
@@ -89,8 +91,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -105,9 +108,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}
       >
         <Typography
@@ -213,8 +217,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -229,9 +234,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}
       >
         <Typography
@@ -297,8 +303,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -313,9 +320,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}
       >
         <Typography
@@ -332,8 +340,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -348,9 +357,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 1.5 }}
@@ -401,8 +411,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -417,9 +428,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 1.5 }}
@@ -461,8 +473,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -477,9 +490,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 1.5 }}
@@ -504,8 +518,9 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.primaryColor,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 2 }}
@@ -520,9 +535,10 @@ export default function Index() {
         position: 'justify',
         bgcolor: theme.greyLight,
         marginX: 'auto',
-        maxWidth: '50rem',
+        maxWidth: { xs: '100%', md: '50rem' },
         height: 'auto',
         marginBottom: '1rem',
+        px: { xs: 2, md: 0 },
       }}>
         <Typography
           sx={{ padding: 1.5 }}

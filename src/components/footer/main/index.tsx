@@ -1,3 +1,4 @@
+import * as React from "react";
 import { routerEnum } from "src/core/enums";
 import { useRouter } from "next/router";
 
@@ -14,15 +15,25 @@ const links = [
 export default function Index() {
     const router = useRouter();
 
+    const [isMobile, setIsMobile] = React.useState(false);
+    React.useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 640);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
+
     return (
         <footer style={{
             backgroundColor: '#6D141A',
             width: '100%',
-            padding: '0 32px',
-            height: '44px',
+            padding: isMobile ? '12px 16px' : '0 32px',
+            minHeight: '44px',
             display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: isMobile ? '8px' : '0',
         }}>
             {/* Left — brand */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
@@ -41,29 +52,31 @@ export default function Index() {
                 </span>
             </div>
 
-            {/* Center — nav links */}
-            <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-                {links.map((link) => (
-                    <button
-                        key={link.label}
-                        onClick={() => router.push(link.url)}
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            fontFamily: ff.body,
-                            fontSize: '13px',
-                            color: 'rgba(255,255,255,0.82)',
-                            padding: 0,
-                            transition: 'color 0.15s ease',
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.color = '#fff'; }}
-                        onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.82)'; }}
-                    >
-                        {link.label}
-                    </button>
-                ))}
-            </nav>
+            {/* Center — nav links (hidden on mobile) */}
+            {!isMobile && (
+                <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+                    {links.map((link) => (
+                        <button
+                            key={link.label}
+                            onClick={() => router.push(link.url)}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontFamily: ff.body,
+                                fontSize: '13px',
+                                color: 'rgba(255,255,255,0.82)',
+                                padding: 0,
+                                transition: 'color 0.15s ease',
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.color = '#fff'; }}
+                            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.82)'; }}
+                        >
+                            {link.label}
+                        </button>
+                    ))}
+                </nav>
+            )}
 
             {/* Right — SAC */}
             <span style={{

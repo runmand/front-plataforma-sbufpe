@@ -8,9 +8,10 @@ import { TPROPS } from "./type"
 export default function Index({article, author,}: TPROPS ){
 
   return (
-    <Card sx={{ 
-      width: 300,
-      height: 250,
+    <Card sx={{
+      width: { xs: '100%', sm: 300 },
+      minWidth: { xs: 280, sm: 300 },
+      height: { xs: 'auto', sm: 250 },
       textAlign:'center',}}>
       <CardContent
         sx={{
