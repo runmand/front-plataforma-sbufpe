@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const TableWrapper = styled.div`
-  width: 90%;
+  width: 95%;
   overflow-x: auto;
   overflow-y: auto;
   margin: auto;
@@ -9,7 +9,9 @@ export const TableWrapper = styled.div`
   border-radius: 10px;
   height: 55vh;
   @media (max-width: 768px) {
-    height: 60vh
+    width: 100%;
+    height: 60vh;
+    border-radius: 0;
   }
 `;
 

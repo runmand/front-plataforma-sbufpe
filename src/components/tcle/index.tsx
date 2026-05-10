@@ -16,7 +16,7 @@ type Props = {
     open: boolean;
     setOpenTCLE: Dispatch<React.SetStateAction<boolean>>;
     idForm: ID;
-    goForm: () => Promise<void>;
+    goForm: (id?: ID) => Promise<void>;
 };
 
 export type PropsTerm = {

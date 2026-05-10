@@ -6,7 +6,13 @@ export const Container = styled.div`
     grid-template-rows: 10vh 66.6vh;
     padding: 0 2.5%;
     align-items: center;
-    padding-top: 8vh;
+    padding-top: 12vh;
+
+      @media (max-width: 768px) {
+    grid-template-rows: 18vh 66.6vh;
+
+  }
+
 `;
 export const HeaderData = styled.div`
     display: flex;
@@ -17,6 +23,13 @@ export const HeaderData = styled.div`
     width: 100%;
     position: relative;
     padding: 0 15px;
+
+    @media (max-width: 768px) {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 50% 50%;
+        gap: 15px;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -40,6 +53,23 @@ export const TitleContainer = styled.div`
         color: #6b1a1a;
         font-weight: bold;
     }
+
+@media (max-width: 1366px) {
+position: relative;
+margin: auto
+    
+}
+
+      @media (max-width: 768px) {
+        position: relative;
+        grid-row-start: 0;
+        grid-row-end: 1;
+
+        grid-column-start: 1;
+        grid-column-end: 3;
+        font-size: 12px;
+        padding: 2%
+  }
 `;
 
 export const SelectWrapper = styled.fieldset`

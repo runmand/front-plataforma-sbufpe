@@ -1,15 +1,14 @@
 import { Container, HeaderData, SelectWrapper, StyledLegend, StyledOption, StyledSelect, TitleContainer } from "./styled";
 import { forms_allowed, version_constants } from "./constants";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { INDEX_RES } from "src/pages/form/type";
 import Table from "@components/table";
 
 export default function Index() {
-    const [form, setForm] = useState<INDEX_RES>(forms_allowed[7]);
-    const [version, setVersion] = useState<number>(0);
+    const [form, setForm] = useState<INDEX_RES>(forms_allowed[0]);
+    const [version, setVersion] = useState<INDEX_RES>(version_constants[0]);
     const [updatedAt, setUpdatedAt] = useState<Date>(new Date());
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [versions, setVersions] = useState<INDEX_RES>(version_constants[0]);
 
     const formatDate = (date: Date): string => {
         return new Date(date).toLocaleString("pt-BR", {
@@ -20,6 +19,7 @@ export default function Index() {
             minute: "2-digit",
         });
     };
+
 
     return (
         <Container>
@@ -44,7 +44,7 @@ export default function Index() {
                 </TitleContainer>
                 <SelectWrapper>
                     <StyledLegend $order="R">Versão</StyledLegend>
-                    <StyledSelect name="versao" value={version} onChange={(e) => setVersion(Number(e.currentTarget.value))}>
+                    <StyledSelect name="versao" value={version.id} onChange={(e) => setVersion(version_constants.find((v) => v.id == e.currentTarget.value))}>
                         {version_constants.map((v, index) => (
                             <StyledOption key={index} value={v.id}>
                                 {v.title}
@@ -53,7 +53,7 @@ export default function Index() {
                     </StyledSelect>
                 </SelectWrapper>
             </HeaderData>
-            <Table form={form} setUpdatedAt={setUpdatedAt} isLoading={isLoading} setIsLoading={setIsLoading}></Table>
+            <Table version={version} form={form} setUpdatedAt={setUpdatedAt} isLoading={isLoading} setIsLoading={setIsLoading}></Table>
         </Container>
     );
 }

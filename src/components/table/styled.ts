@@ -234,3 +234,9 @@ export const OptionLeftBar = styled.div`
         }
     }
 `;
+
+export const NoData = styled.h1`
+    width: 100%;
+    color: black;
+    text-align: center;
+`;

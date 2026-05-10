@@ -33,8 +33,8 @@ export default function Index() {
           <iframe
             title="Usuários respondentes"
             style={{
-              minHeight:'600px',
-              width:'100%'}}   
+              minHeight: largeQuery ? '600px' : '350px',
+              width:'100%'}}
             src="https://app.powerbi.com/view?r=eyJrIjoiNmMxYTU1YzItYmM4YS00ZjY4LTlhOWItNjM4NWE2N2IxOGIxIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9"
             allow="fullscreen"></iframe>
         </Box>

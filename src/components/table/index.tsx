@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { TableWrapper, StyledTable, THead, TBody, Container, TableWrapperOuter, TitleTHead, ThDiv, LeftBar, OptionLeftBar } from "./styled";
+import { TableWrapper, StyledTable, THead, TBody, Container, TableWrapperOuter, TitleTHead, ThDiv, LeftBar, OptionLeftBar, NoData } from "./styled";
 import { StyledSelect, StyledOption } from "./styled";
 import { AnswersForm, AnswersFormData, formsQuestionsFormsRegisters, requestResponse } from "@components/data-forms/types";
 import { http } from "src/core/axios";
@@ -16,9 +16,10 @@ interface Props {
     setUpdatedAt: React.Dispatch<React.SetStateAction<Date>>;
     isLoading: boolean;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    version: INDEX_RES;
 }
 
-export default function Table({ form, setUpdatedAt, isLoading, setIsLoading }: Props) {
+export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, version}: Props) {
     const [columns, setColumns] = useState<formsQuestionsFormsRegisters[]>([]);
     const [answers, setAnswers] = useState<AnswersForm[]>([]);
     const [orderQuestions, setOrderQuestions] = useState<number[]>([]);
@@ -110,8 +111,22 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading }: P
             }
         });
 
+        if (version.id == 1) {
+        answersF = answersF.filter((a) => {
+            const date = new Date(a.date);
+            return date.getFullYear() > 2026;
+        });
+        }else{
+                    answersF = answersF.filter((a) => {
+            const date = new Date(a.date);
+            return date.getFullYear() < 2026;
+        });
+        }
+
         setFilteredAnswers(answersF);
-    }, [filters]);
+        setIsLoading(false)
+
+    }, [filters, version]);
 
     useEffect(() => {
         setIsLoading(false);
@@ -125,7 +140,8 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading }: P
     return isLoading ? (
         <Loading sx={{ height: "50vh" }} sxSpinner={{ width: "10vh", height: "10vh" }} fontSize="24px" />
     ) : (
-        <Container>
+        filteredAnswers.length > 0 ? (
+                    <Container>
             <TableWrapperOuter>
                 <TableWrapper>
                     <StyledTable>
@@ -202,5 +218,8 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading }: P
                 </OptionLeftBar>
             </LeftBar>
         </Container>
+        ): (
+            <NoData>Sem Dados</NoData>
+        )
     );
 }
