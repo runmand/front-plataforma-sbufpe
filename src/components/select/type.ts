@@ -1,16 +1,16 @@
-import { filterApply } from '@components/data/type';
+import { filterApply } from "@components/old-data/type";
 
 export type itemType = {
-  title: string,
-  value: string,
-}
+    title: string;
+    value: string;
+};
 
 export type Tprop = {
-  className: string
-  title: string
-  type: string
-  list: string[],
-  selected?: itemType;
-  setFilter: (type: string, data: string) => void
-  filter: filterApply
-}
+    className: string;
+    title: string;
+    type: string;
+    list: string[];
+    selected?: itemType;
+    setFilter: (type: string, data: string) => void;
+    filter: filterApply;
+};

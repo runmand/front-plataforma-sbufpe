@@ -9,7 +9,7 @@ import SimpleForm from "@components/form/simple/index";
 import { ID } from "src/core/types";
 import React from "react";
 import FormResultModal from "@components/modal/form/result";
-import { routerEnum } from "src/core/enums";
+import { localStorageKeyEnum, routerEnum } from "src/core/enums";
 import FormResultFeedBack from "@components/modal/FormResultFeedBack";
 
 //TODO: Corrigir ID quando o usuario da F5 na page.
@@ -34,6 +34,10 @@ export default function Index() {
 
         const id = Number(router.query.formId);
         setFormId(id);
+
+        const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID);
+
+        if (typeId == 5) return;
 
         if (!hasSignedRequiredTerm(id)) {
             enqueueSnackbar("Você precisa assinar os termos obrigatórios antes de responder o formulário.", { variant: "warning" });

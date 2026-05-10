@@ -1,4 +1,4 @@
-import { planAnswer, PROPS } from "@components/data/type";
+import { planAnswer, PROPS } from "@components/old-data/type";
 import React, { useEffect, useState } from "react";
 import { TableWrapper, Td, Th, Tr } from "../styled";
 import { Table } from "@mui/material";
@@ -24,12 +24,16 @@ export default function Index(props: PROPS) {
                     }
                 }
 
-                if (
-                    filterBy(element[0].answer, establishment, "estabelecimento") &&
-                    filterBy(element[0].answer, city, "cidade") &&
-                    filterBy(element[0].answer, participant, "profissional")
-                ) {
-                    newData.push(element);
+                if (element[0] != undefined) {
+                    if (
+                        filterBy(element[0].answer, establishment, "estabelecimento") &&
+                        filterBy(element[0].answer, city, "cidade") &&
+                        filterBy(element[0].answer, participant, "profissional")
+                    ) {
+                        newData.push(element);
+                    }
+                } else {
+                    console.log(element[0]);
                 }
             });
 

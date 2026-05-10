@@ -103,11 +103,10 @@ export default function Index() {
 		setHaveLogin(!!localStorage.getItem(localStorageKeyEnum.TOKEN));
 
 		const id = Number(localStorage.getItem('typeId'));
-		if (id <= 2) {
+		if (id <= 2 || id == 5) {
 			setMenu(prev => [
 				...prev,
 				{ id: 7, title: 'Nossos Dados: Exportar', url: routerEnum.DATA },
-				{ id: 8, title: 'Nossos Dados: Exportar Formulários', url: routerEnum.DATAFORM },
 			]);
 		}
 
@@ -120,6 +119,7 @@ export default function Index() {
 		localStorage.removeItem(localStorageKeyEnum.TOKEN);
 		localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
 		router.push(routerEnum.INITIAL);
+		setHaveLogin(false);
 	};
 
 	const menuList = [

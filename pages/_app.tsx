@@ -13,28 +13,29 @@ import { Button } from "@mui/material";
 
 //TODO: Deixar configuravel
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const buttonStyle = {
-    color: theme.greyLight,
-    fontWeight: theme.button.fontWeight,
-  };
-  const DimissAction = () => {
-    const { closeSnackbar } = useSnackbar();
+    const buttonStyle = {
+        color: theme.greyLight,
+        fontWeight: theme.button.fontWeight,
+    };
+
+    const DimissAction = () => {
+        const { closeSnackbar } = useSnackbar();
+        return (
+            <Button style={buttonStyle} onClick={() => closeSnackbar()}>
+                Fechar
+            </Button>
+        );
+    };
     return (
-      <Button style={buttonStyle} onClick={() => closeSnackbar()}>
-        Fechar
-      </Button>
+        <ThemeProvider theme={theme}>
+            <SnackbarProvider
+                action={<DimissAction />}
+                preventDuplicate
+                autoHideDuration={1000}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+                <Component {...pageProps} />
+            </SnackbarProvider>
+        </ThemeProvider>
     );
-  };
-  return (
-    <ThemeProvider theme={theme}>
-      <SnackbarProvider
-        action={<DimissAction />}
-        preventDuplicate
-        autoHideDuration={1000}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Component {...pageProps} />
-      </SnackbarProvider>
-    </ThemeProvider>
-  );
 }
