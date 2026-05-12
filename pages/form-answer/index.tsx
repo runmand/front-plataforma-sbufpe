@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import NewMenu from "@components/newMenu/index";
 import { useRouter } from "next/router";
 import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from "../../src/pages/form-answer/type";
@@ -90,7 +91,11 @@ export default function Index() {
     };
 
     return (
-        <Base
+        <>
+            <Head>
+                <title>Responder Formulário | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <div style={{ paddingTop: "4.5rem" }}>
@@ -126,5 +131,6 @@ export default function Index() {
                 </div>
             }
         />
+        </>
     );
 }

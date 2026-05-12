@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import NewMenu from "@components/newMenu/index";
 import Image from "next/image";
 import React from "react";
@@ -10,7 +11,11 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Index() {
     return (
-        <Base
+        <>
+            <Head>
+                <title>Certificado | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <Box
@@ -53,5 +58,6 @@ export default function Index() {
                 </Box>
             }
         />
+        </>
     );
 }

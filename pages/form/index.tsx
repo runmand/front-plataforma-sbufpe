@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Base from "@components/base-layout/index";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
@@ -108,7 +109,11 @@ export default function Index() {
     };
 
     return (
-        <Base
+        <>
+            <Head>
+                <title>Formulários | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 forms ? (
@@ -264,5 +269,6 @@ export default function Index() {
             }
             footerChild={<FooterMain />}
         />
+        </>
     );
 }
