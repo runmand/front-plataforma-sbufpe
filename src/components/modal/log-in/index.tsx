@@ -1,35 +1,23 @@
-import { Button, FormControlLabel, Modal, Radio, RadioGroup, Typography } from "@mui/material";
+import { Modal } from "@mui/material";
+import Image from "next/image";
 import React from "react";
-import { modalStyle, cardStyle, cardBodyStyle, optionsStyle, optionsLinkStyle } from "./style";
 import { TPROPS } from "./type";
-import Header from "../header/index";
 import CustomTextField from "@components/text-field/index";
-import ActionArea from "@components/modal/action-area";
 import LoginService from "./service";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
-import { LoginUtilsEmail } from "src/utils/loginUtils";
-
-//TODO: Criar validação de formalario antes de enviar dados para a API.
-//TODO: Redirecionar para modal de cadastro.
-//TODO: Redirecionar para modal de recuperação de senha.
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Index(props: TPROPS) {
-    let clearLoginField = () => console.log("Trying clear login field...");
-    const loginUtils = new LoginUtilsEmail();
     const loginService = new LoginService();
     const [login, setLogin] = React.useState<string>(null);
     const [pwd, setPwd] = React.useState<string>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.ALL);
+    const loginType = loginTypeEnum.ALL;
     const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();
-
-    const handleSelectLoginType = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLoginType(loginUtils.loginTypeList.filter((item) => item.key === e.target.value)[0].key);
-        clearLoginField();
-    };
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -49,90 +37,140 @@ export default function Index(props: TPROPS) {
             .handleLogin({ login, pwd, loginType })
             .then((res) => {
                 if (res.data?.token) {
-                    enqueueSnackbar("Login efetuado com sucesso!", {
-                        variant: "success",
-                    });
-                    localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
-                    localStorage.setItem(localStorageKeyEnum.USER_ID, res.data.user_id + ""); //TODO: Melhorar para utilziar cookies.
-                    localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + ""); //TODO: Melhorar para utilziar cookies.
-
+                    enqueueSnackbar("Login efetuado com sucesso!", { variant: "success" });
+                    localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token);
+                    localStorage.setItem(localStorageKeyEnum.USER_ID, res.data.user_id + "");
+                    localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + "");
                     router.push(routerEnum.FORM);
                 } else {
-                    enqueueSnackbar("Os dados estão incorretos!", { variant: "error" });
                     setIsLoading(false);
                 }
             })
-            .catch((e) => {
-                enqueueSnackbar("Ops! Algo deu errado...", { variant: "error" }); //TODO: Tratar essa exception
-                setIsLoading(false);
-            });
+            .catch(() => setIsLoading(false));
     };
 
     const handleSignUp = () => {
         props.onClose();
         props.openSignupModal();
     };
-    const handleContact = () => {
-        props.onClose();
-        props.openContact();
-    };
 
     const handleResetPassword = () => {
         router.push("/recuperar");
     };
 
+    const isReady = login && pwd && !isLoading;
+
     return (
         <Modal
             open={props.isOpen}
-            style={modalStyle}
+            className="flex items-center justify-center p-4 bg-black/40"
             onClose={() => {
                 if (props.canSkip) props.onClose();
             }}
         >
-            <div style={cardStyle}>
-                <Header title="ENTRAR" onClose={() => props.onClose()} />
+            <div className="relative w-full max-w-[440px] max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 sm:p-9 shadow-2xl font-body outline-none">
+                {/* Close */}
+                <button
+                    type="button"
+                    onClick={() => props.onClose()}
+                    style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+                    className="absolute top-5 right-5 text-gb-muted hover:text-gb-text transition-colors flex items-center justify-center"
+                    aria-label="Fechar"
+                >
+                    <CloseIcon fontSize="small" />
+                </button>
 
-                <div style={cardBodyStyle}>
-                    {/* <RadioGroup row defaultValue={loginTypeEnum.CPF}>
-            {loginUtils.loginTypeList.map((item, i) => (
-              <FormControlLabel
-                key={i}
-                value={item.key}
-                control={<Radio />}
-                label={item.title}
-                onChange={handleSelectLoginType}
-              />
-            ))}
-          </RadioGroup> */}
-
-                    <CustomTextField
-                        title="Digite seu login"
-                        textType="text"
-                        onBlur={(v) => setLogin(v)}
-                        onClear={(toInvoke) => (clearLoginField = toInvoke)}
-                        loginMethod={() => handleSubmit()}
-                    />
-
-                    <div style={{ marginTop: "1rem" }}>
-                        <CustomTextField title="Password" textType="password" onBlur={(v) => setPwd(v)} loginMethod={() => handleSubmit()} />
+                {/* Logo */}
+                <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gb-primary flex items-center justify-center overflow-hidden">
+                        <Image src="/logo-transparent.png" alt="Logo" width={44} height={44} style={{ objectFit: "contain" }} />
                     </div>
                 </div>
 
-                <Typography style={{ ...optionsStyle, marginTop: "1rem" }}>
-                    Primeiro acesso?&nbsp;
-                    <Typography onClick={() => handleSignUp()} style={optionsLinkStyle}>
-                        CADASTRE-SE AGORA
-                    </Typography>
-                </Typography>
+                {/* Header */}
+                <div className="mb-6 text-center">
+                    <h2 className="font-display text-[24px] font-bold text-gb-text leading-tight tracking-tight mb-1.5">
+                        Bem-vindo de volta
+                    </h2>
+                    <p className="text-sm text-gb-muted leading-relaxed">
+                        Entre com suas credenciais para acessar a plataforma
+                    </p>
+                </div>
 
-                <Typography style={optionsStyle}>
-                    Esqueceu sua senha?&nbsp;
-                    <Typography onClick={() => handleResetPassword()} style={optionsLinkStyle}>
-                        Recuperar senha!
-                    </Typography>
-                </Typography>
+                {/* CPF */}
+                <div className="mb-5">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        CPF
+                    </label>
+                    <CustomTextField
+                        title=""
+                        placeholder="000.000.000-00"
+                        maskType={loginTypeEnum.CPF}
+                        onBlur={(v) => setLogin(v)}
+                        loginMethod={() => handleSubmit()}
+                    />
+                </div>
 
-                <ActionArea isLoading={isLoading} onConfirm={() => handleSubmit()} />
+                {/* Senha */}
+                <div className="mb-6">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        Senha
+                    </label>
+                    <CustomTextField
+                        title=""
+                        placeholder="Sua senha"
+                        textType="password"
+                        onBlur={(v) => setPwd(v)}
+                        loginMethod={() => handleSubmit()}
+                    />
+                </div>
+
+                {/* Submit */}
+                <button
+                    type="button"
+                    disabled={!isReady}
+                    onClick={() => handleSubmit()}
+                    style={{ border: "none" }}
+                    className={`w-full py-3.5 rounded-[10px] text-[15px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                        isReady
+                            ? "bg-gb-primary text-white cursor-pointer hover:bg-gb-secondary"
+                            : "bg-gb-border text-gb-muted cursor-not-allowed"
+                    }`}
+                >
+                    {isLoading ? "Entrando..." : "Entrar"}
+                    {!isLoading && <ArrowForwardIcon fontSize="small" />}
+                </button>
+
+                {/* Divider OU */}
+                <div className="flex items-center my-6">
+                    <div className="flex-1 h-px bg-gb-border" />
+                    <span className="px-4 text-[11px] font-bold tracking-widest uppercase text-gb-label">ou</span>
+                    <div className="flex-1 h-px bg-gb-border" />
+                </div>
+
+                {/* Links */}
+                <div className="text-center text-sm text-gb-text mb-2">
+                    Primeiro acesso?{" "}
+                    <button
+                        type="button"
+                        onClick={() => handleSignUp()}
+                        style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+                        className="text-gb-primary font-semibold"
+                    >
+                        Cadastre-se agora
+                    </button>
+                </div>
+                <div className="text-center text-sm text-gb-text">
+                    Esqueceu sua senha?{" "}
+                    <button
+                        type="button"
+                        onClick={() => handleResetPassword()}
+                        style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+                        className="text-gb-primary font-semibold"
+                    >
+                        Recuperar senha
+                    </button>
+                </div>
             </div>
         </Modal>
     );
