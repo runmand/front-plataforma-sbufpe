@@ -1,18 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Autocomplete, Box, FormControlLabel, FormGroup, Modal, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Autocomplete, Checkbox, Modal, TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import { TPROPS, USER_TYPE } from "./type";
-import Header from "../header/index";
 import CustomTextField from "@components/text-field/index";
-import ActionArea from "@components/modal/action-area";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
-import LoginUtils from "src/utils/loginUtils";
 import SignupService from "./service";
-import { CheckBox, Label } from "@mui/icons-material";
-import { theme } from "src/core/theme";
-import { validateCPF, validateEmail, validatePhone } from "src/utils/validators";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { validateCPF, validateEmail } from "src/utils/validators";
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar limpeza de campos apartir do callback fornecido por cada campo.
@@ -20,7 +17,6 @@ export default function Index(props: TPROPS) {
     let clearLoginField = () => console.log("Trying clear login field...");
     const { enqueueSnackbar } = useSnackbar();
     const signupService = new SignupService();
-    const loginUtils = new LoginUtils();
     const router = useRouter();
     const [login, setLogin] = React.useState<string | null>(null);
     const [email, setEmail] = React.useState<string | null>(null);
@@ -30,24 +26,21 @@ export default function Index(props: TPROPS) {
     const [confirmPwd, setConfirmPwd] = React.useState<string | null>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [isChecked, setIsChecked] = React.useState<boolean>(false);
-    const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
     const canSubmit = login && userType && pwd && pwd === confirmPwd;
 
     useEffect(() => {
         signupService
             .getUserTypes()
-            .then((res) => setUserTypeList(res.data?.map((item) => ({ id: item.id, label: item.description }))))
-            .catch((e) => {
-                console.error(e);
-                enqueueSnackbar("Ops! Algo deu errado...", { variant: "error" }); //TODO: Tratar essa exception
-                setIsLoading(false);
-            });
+            .then((res) =>
+                setUserTypeList(
+                    res.data
+                        ?.filter((item) => item.description?.toLowerCase() !== "desenvolvedor")
+                        .map((item) => ({ id: item.id, label: item.description }))
+                )
+            )
+            .catch(() => setIsLoading(false));
     }, []);
 
-    const handleSelectLoginType = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLoginType(loginUtils.loginTypeList.filter((item) => item.key === e.target.value)[0].key);
-        clearLoginField();
-    };
     const handleTcle = () => {
         props.onClose();
         props.openTclePage();
@@ -69,20 +62,9 @@ export default function Index(props: TPROPS) {
             return false;
         }
 
-        switch (loginType) {
-            case loginTypeEnum.CPF:
-                if (!validateCPF(login)) {
-                    enqueueSnackbar("Cpf inserido é invalido, verifique tente novamente.");
-                    return false;
-                }
-                break;
-
-            case loginTypeEnum.DDI_DDD_CELLPHONE:
-                if (!validatePhone(login)) {
-                    enqueueSnackbar("Numero celular inserido é invalido, verifique tente novamente.");
-                    return false;
-                }
-                break;
+        if (!validateCPF(login)) {
+            enqueueSnackbar("Cpf inserido é invalido, verifique tente novamente.");
+            return false;
         }
 
         return true;
@@ -101,88 +83,164 @@ export default function Index(props: TPROPS) {
             .then((res) => {
                 if (res.data?.token) {
                     enqueueSnackbar("Registro efetuado com sucesso!", { variant: "success" });
-                    localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token); //TODO: Melhorar para utilziar cookies.
-                    localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + ""); //TODO: Melhorar para utilziar cookies.
+                    localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token);
+                    localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + "");
                     router.push(routerEnum.FORM);
                 } else {
-                    res.errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
                     setIsLoading(false);
                 }
             })
-            .catch((e) => {
-                if (e.errors[0]) {
-                    enqueueSnackbar(e.errors[0], { variant: "error" });
-                } else {
-                    enqueueSnackbar("Ops! Algo deu errado...", { variant: "error" }); //TODO: Tratar essa exception
-                }
-                setIsLoading(false);
-            });
+            .catch(() => setIsLoading(false));
     };
+
+    const isReady = canSubmit && isChecked && !isLoading;
 
     return (
         <Modal
             open={props.isOpen}
-            sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                transition: "0.6s",
-                backgroundColor: theme.blur,
-                color: theme.primaryColor,
-            }}
+            className="flex items-center justify-center p-4 bg-black/40"
             onClose={() => {
                 if (props.canSkip) props.onClose();
             }}
         >
-            <Box
-                sx={{
-                    backgroundColor: theme.white,
-                    borderRadius: theme.borderRadiusEdge,
-                    padding: theme.modal.card.padding,
-                    minWidth: theme.modal.card.minWidth,
-                }}
-            >
-                <Header title="CADASTRE-SE" onClose={() => props.onClose()} />
+            <div className="relative w-full max-w-[480px] max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 sm:p-9 shadow-2xl font-body outline-none">
+                {/* Close */}
+                <button
+                    type="button"
+                    onClick={() => props.onClose()}
+                    style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+                    className="absolute top-5 right-5 text-gb-muted hover:text-gb-text transition-colors flex items-center justify-center"
+                    aria-label="Fechar"
+                >
+                    <CloseIcon fontSize="small" />
+                </button>
 
-                <Box sx={{ marginTop: "1rem" }}>
-                    {/* <RadioGroup row defaultValue={loginTypeEnum.CPF}>
-                        {loginUtils.loginTypeList.map((item, i) => (
-                            <FormControlLabel key={i} value={item.key} control={<Radio />} label={item.title} onChange={handleSelectLoginType} />
-                        ))}
-                    </RadioGroup> */}
+                {/* Header */}
+                <div className="mb-6 pr-8">
+                    <h2 className="font-display text-[26px] font-bold text-gb-text leading-tight tracking-tight mb-1.5">
+                        Crie sua conta
+                    </h2>
+                    <p className="text-sm text-gb-muted leading-relaxed">
+                        Preencha os campos para começar a contribuir com a pesquisa
+                    </p>
+                </div>
 
+                {/* CPF */}
+                <div className="mb-5">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        CPF
+                    </label>
                     <CustomTextField
-                        title="Seu CPF"
-                        maskType={loginType}
+                        title=""
+                        placeholder="000.000.000-00"
+                        maskType={loginTypeEnum.CPF}
                         onBlur={(v) => setLogin(v)}
                         onClear={(toInvoke) => (clearLoginField = toInvoke)}
                     />
+                </div>
 
+                {/* Tipo de participante */}
+                <div className="mb-5">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        Tipo de participante
+                    </label>
                     <Autocomplete
-                        style={{ marginTop: "1rem" }}
                         options={userTypeList}
                         multiple={false}
-                        renderInput={(params) => <TextField {...params} label="Tipo de Participante" />}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="Selecione o tipo"
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+                                        backgroundColor: "#f5f5f4",
+                                        borderRadius: "10px",
+                                        fontSize: "14px",
+                                        padding: "4px 8px",
+                                        "& fieldset": { borderColor: "transparent" },
+                                        "&:hover fieldset": { borderColor: "#e7e5e4" },
+                                        "&.Mui-focused": {
+                                            backgroundColor: "#ffffff",
+                                            "& fieldset": { borderColor: "#6D141A", borderWidth: "1.5px" },
+                                        },
+                                    },
+                                    "& .MuiOutlinedInput-input": {
+                                        padding: "8px 6px !important",
+                                        color: "#1c1917",
+                                        "&::placeholder": { color: "#a8a29e", opacity: 1 },
+                                    },
+                                }}
+                            />
+                        )}
                         onChange={(event: any, newValue: USER_TYPE | null) => setUserType(newValue)}
                     />
+                </div>
 
-                    <Box sx={{ marginTop: "1rem" }}>
-                        <CustomTextField title="Email" onBlur={(email) => setEmail(email)} />
-                    </Box>
+                {/* Email */}
+                <div className="mb-5">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        E-mail
+                    </label>
+                    <CustomTextField title="" placeholder="seu@email.com" onBlur={(em) => setEmail(em)} />
+                </div>
 
-                    <Box sx={{ marginTop: "1rem" }}>
-                        <CustomTextField title="Senha" textType="password" onBlur={(v) => setPwd(v)} />
-                    </Box>
+                {/* Senha / Confirmar senha */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                            Senha
+                        </label>
+                        <CustomTextField title="" placeholder="Sua senha" textType="password" onBlur={(v) => setPwd(v)} />
+                    </div>
+                    <div>
+                        <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                            Confirmar senha
+                        </label>
+                        <CustomTextField title="" placeholder="Confirme sua senha" textType="password" onBlur={(v) => setConfirmPwd(v)} />
+                    </div>
+                </div>
 
-                    <Box sx={{ marginTop: "1rem" }}>
-                        <CustomTextField title="Confirmar senha" textType="password" onBlur={(v) => setConfirmPwd(v)} />
-                    </Box>
-                    <Box sx={{ marginTop: "1rem" }}>
-                        <FormControlLabel aria-required control={<CheckBox />} label="TCLE do GestBucalSD" onClick={() => handleTcle()} />
-                    </Box>
-                </Box>
-                <ActionArea isLoading={isLoading} isDisabled={!canSubmit} onConfirm={() => handleSubmit()} />
-            </Box>
+                {/* TCLE */}
+                <div className="mb-6 flex items-center">
+                    <label className="flex items-center cursor-pointer select-none">
+                        <Checkbox
+                            checked={isChecked}
+                            onChange={(e) => setIsChecked(e.target.checked)}
+                            size="small"
+                            sx={{
+                                padding: "4px",
+                                color: "#e7e5e4",
+                                "&.Mui-checked": { color: "#6D141A" },
+                            }}
+                        />
+                        <span className="ml-1 text-sm text-gb-text">Li e concordo com o</span>
+                    </label>
+                    <button
+                        type="button"
+                        onClick={() => handleTcle()}
+                        style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+                        className="ml-1 text-sm text-gb-primary font-semibold underline"
+                    >
+                        TCLE do GestBucalSD
+                    </button>
+                </div>
+
+                {/* Submit */}
+                <button
+                    type="button"
+                    disabled={!isReady}
+                    onClick={() => handleSubmit()}
+                    style={{ border: "none" }}
+                    className={`w-full py-3.5 rounded-[10px] text-[15px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                        isReady
+                            ? "bg-gb-primary text-white cursor-pointer hover:bg-gb-secondary"
+                            : "bg-gb-border text-gb-muted cursor-not-allowed"
+                    }`}
+                >
+                    {isLoading ? "Enviando..." : "Criar minha conta"}
+                    {!isLoading && <ArrowForwardIcon fontSize="small" />}
+                </button>
+            </div>
         </Modal>
     );
 }
