@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import NewMenu from "@components/newMenu/index";
 import Image from "next/image";
 import React from "react";
@@ -7,7 +8,11 @@ import { downloadPDFPlaneja } from "@components/pdf/PlanejaPDF";
 
 export default function Index() {
     return (
-        <Base
+        <>
+            <Head>
+                <title>Formulário Enviado | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <Box
@@ -40,5 +45,6 @@ export default function Index() {
                 </Box>
             }
         />
+        </>
     );
 }

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { Box, Button, Paper, Typography } from "@mui/material";
 import Base from "@components/base-layout/index";
 import { useEffect, useState } from "react";
@@ -356,7 +357,11 @@ export default function Index() {
     }, [stepsValues]);
 
     return (
-        <Base
+        <>
+            <Head>
+                <title>Planeja Prático | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <Box
@@ -424,5 +429,6 @@ export default function Index() {
             }
             footerChild={<FooterMain />}
         />
+        </>
     );
 }
