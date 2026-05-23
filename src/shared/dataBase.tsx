@@ -167,6 +167,23 @@ export const studentTeamTI = [
       },
     ],
   },
+  {
+    name: 'William Rodrigues',
+    role: 'Estudante',
+    photo: './profile-image/WilliamRodrigues.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/william-santos-dev/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/3130479317305640',
+      },
+    ],
+  },
 ]
 
 export const studentsTeamGI = [
