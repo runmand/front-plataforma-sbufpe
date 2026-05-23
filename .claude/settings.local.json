@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(git restore *)",
+      "Bash(ipconfig)",
+      "Bash(findstr \"IPv4\")",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(xargs grep -l \"title\\\\|Head\")",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/notistack/package.json'\\).version\\)\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('notistack:', p.dependencies.notistack, '\\\\n@mui/material:', p.dependencies['@mui/material']\\)\")",
+      "Bash(node -e \"const n=require\\('./node_modules/notistack'\\); console.log\\(Object.keys\\(n\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(node -e \"const types=require\\('fs'\\).readFileSync\\('./node_modules/notistack/build/index.d.ts','utf8'\\); console.log\\(types.includes\\('CustomContentProps'\\) ? 'CustomContentProps: YES' : 'CustomContentProps: NO'\\); console.log\\(types.includes\\('Components'\\) ? 'Components prop: YES' : 'Components prop: NO'\\)\")",
+      "Bash(node -e \"const t=require\\('fs'\\).readFileSync\\('./node_modules/notistack/index.d.ts','utf8'\\); console.log\\(t.includes\\('CustomContentProps'\\)?'CustomContentProps: YES':'NO'\\); console.log\\(t.includes\\('Components'\\)?'Components: YES':'NO'\\)\")"
+    ]
+  }
+}
