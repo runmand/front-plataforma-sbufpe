@@ -3,7 +3,7 @@ import { http } from "src/core/axios";
 import { AnswersForm, AnswersFormData, FormsRegisters, requestResponse } from "./types";
 import { ButtonExportData, Container, Filter, Form, Loading, Table, TableWrapper, TBody, TD, THead, TheadLine, TR, TRow } from "./styled";
 import { RESPONSE } from "src/core/types";
-import { INDEX_RES } from "src/services/form/type";
+import { INDEX_RES } from "src/modules/form/type";
 import { CircularProgress, FormControl, InputLabel, Menu, MenuItem, Select } from "@mui/material";
 import { saveAs } from "file-saver";
 import { useSnackbar } from "notistack";
