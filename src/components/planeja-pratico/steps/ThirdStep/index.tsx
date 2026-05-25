@@ -113,11 +113,11 @@ export const ThirdStep = ({
         alignItems={"center"}
       >
         <Image
-          width={"800"}
-          height={"600"}
-          objectFit="contain"
+          width={800}
+          height={600}
           src="/fluxograma.png"
           alt="Exemplo de Fluxograma explicativo"
+          style={{ width: "100%", height: "auto", objectFit: "contain" }}
         />
       </Box>
 

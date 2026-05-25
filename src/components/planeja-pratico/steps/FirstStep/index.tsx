@@ -153,11 +153,11 @@ export const FirstStep = ({
           Figura 1 – Sumarização das matrizes avaliativas. GestBucalSD, 2024.
         </Typography>
         <Image
-          width={"800"}
-          height={"600"}
-          objectFit="contain"
+          width={800}
+          height={600}
           src="/sumarizacao-2.png"
           alt="Sumarização das matrizes avaliativas"
+          style={{ width: "100%", height: "auto", objectFit: "contain" }}
         />
       </Box>
       <Typography fontWeight={700} fontSize={24} mt={10}>
