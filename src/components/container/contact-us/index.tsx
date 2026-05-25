@@ -29,9 +29,10 @@ export default function Index() {
                 bgcolor: theme.greyLight,
                 marginX: 'auto',
                 marginY: '1rem',
-                maxWidth: '50rem',
+                maxWidth: { xs: '100%', md: '50rem' },
                 height: 'auto',
-                padding:'1rem'
+                padding: { xs: '0.5rem', md: '1rem' },
+                px: { xs: 2, md: '1rem' },
             }}>
                 <Typography
                     sx={{ padding: 2 }}
@@ -43,8 +44,8 @@ export default function Index() {
                 </Typography>
                 <form onSubmit={sendEmail}>
                     <Stack
-                        spacing={6}
-                        margin='2rem'
+                        spacing={{ xs: 3, md: 6 }}
+                        margin={{ xs: '1rem', md: '2rem' }}
                     >
                         <TextField
                             required

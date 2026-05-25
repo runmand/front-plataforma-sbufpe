@@ -1,95 +1,101 @@
-import Base from "@components/base-layout/index";
-import { Box, Button, InputLabel, TextField, Typography, useMediaQuery } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useSnackbar } from "notistack";
-import AppBar from "@components/app-bar";
-import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from "src/core/enums";
-import IndexToolbar from "@components/toolbar/index";
-import IndexToolbarMobile from "@components/toolbar/index-mobile";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
+import Image from "next/image";
+import CustomTextField from "@components/text-field/index";
+import { http } from "src/core/axios";
+import { showSuccess } from "src/core/snackbar";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { loginTypeEnum } from "src/core/enums";
 
 export default function Index() {
-    const [login, setLogin] = useState("");
-    const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
-    const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
-    const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
-    const largeQuery = useMediaQuery("(min-width:720px)");
-    const [viewportHeight, setViewportHeight] = React.useState<number>(0);
+    const [login, setLogin] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
-    const { enqueueSnackbar } = useSnackbar();
 
-    async function handleReset(login: string) {
-        const http = axios.create({ baseURL: process.env.API_URL });
-        return await http.post("/reset/", { login: login });
-    }
+    const isReady = !!login && !isLoading;
 
     async function sendReset() {
-        if (login.split("").length > 0) {
-            await handleReset(login)
-                .then((r) => {
-                    enqueueSnackbar(r.data.data.response, { variant: "success" });
-                })
-                .catch((r) => {
-                    enqueueSnackbar(r.response.data.errors[0].message, { variant: "error" });
-                });
-        } else {
-            enqueueSnackbar("Preencha o campo de Login", { variant: "error" });
-        }
+        if (!login) return;
+        setIsLoading(true);
+        http.post("/reset/", { login })
+            .then((r: any) => {
+                if (r?.data?.response) {
+                    showSuccess(r.data.response);
+                }
+                setIsLoading(false);
+            })
+            .catch(() => setIsLoading(false));
     }
 
-    useEffect(() => {
-        if (router.query.containerBody) {
-            setContainerBodyType(router.query.containerBody as string);
-        }
-    }, [router]);
-
-    useEffect(() => {
-        setViewportHeight(window.innerHeight);
-    }, []);
-
     return (
-        <Box
-            style={{
-                width: largeQuery ? "30vw" : "80vw",
-                height: largeQuery ? "70vh" : `${viewportHeight * 0.8}px`,
-                backgroundColor: "#6D141A",
-                margin: "auto",
-                marginTop: largeQuery ? "15vh" : `${viewportHeight * 0.15}px`,
-                marginBottom: largeQuery ? "5vh" : `${viewportHeight * 0.5}px`,
-                borderRadius: "20px",
-                padding: "30px",
-                display: "grid",
-                boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
-            }}
-        >
-            <Typography textAlign={"center"} width={"100%"} fontSize={"32pt"} color={"#ffffff"} margin={"auto"}>
-                Recuperar Senha
-            </Typography>
+        <div className="flex items-center justify-center px-4 py-12 min-h-[70vh]">
+            <div className="w-full max-w-[440px] rounded-2xl bg-white p-6 sm:p-9 shadow-2xl font-body" style={{ border: "1px solid #e7e5e4" }}>
+                {/* Logo */}
+                <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gb-primary flex items-center justify-center overflow-hidden">
+                        <Image src="/logo-transparent.png" alt="Logo" width={44} height={44} style={{ objectFit: "contain" }} />
+                    </div>
+                </div>
 
-            <Box
-                style={{
-                    width: "100%",
-                    margin: "auto",
-                    marginTop: "5vh",
-                    display: "grid",
-                }}
-            >
-                <InputLabel style={{ color: "#ffffff" }}>Digite seu login: </InputLabel>
-                <TextField
-                    style={{ color: "#ffffff", marginTop: "10px", backgroundColor: "#ffffff", borderRadius: "5px" }}
-                    fullWidth
-                    value={login}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogin(e.target.value)}
-                />
-                <Button sx={{ width: "120px", background: "#921c22", color: "#ffffff", margin: "auto", marginTop: "50px" }} onClick={sendReset}>
-                    {" "}
-                    Solicitar
-                </Button>
-            </Box>
-            <Typography textAlign={"center"} width={"100%"} fontSize={"10pt"} color={"#ffffff"} marginTop={"auto"}>
-                OBS: Precisa ter um email cadastrado previamente, caso não tenha entre em contato conosco!!
-            </Typography>
-        </Box>
+                {/* Header */}
+                <div className="mb-6 text-center">
+                    <h2 className="font-display text-[24px] font-bold text-gb-text leading-tight tracking-tight mb-1.5">
+                        Recuperar senha
+                    </h2>
+                    <p className="text-sm text-gb-muted leading-relaxed">
+                        Informe seu CPF para receber as instruções de redefinição por e-mail
+                    </p>
+                </div>
+
+                {/* CPF */}
+                <div className="mb-6">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        CPF
+                    </label>
+                    <CustomTextField
+                        title=""
+                        placeholder="000.000.000-00"
+                        maskType={loginTypeEnum.CPF}
+                        onBlur={(v) => setLogin(v)}
+                        loginMethod={() => sendReset()}
+                    />
+                </div>
+
+                {/* Submit */}
+                <button
+                    type="button"
+                    disabled={!isReady}
+                    onClick={() => sendReset()}
+                    style={{ border: "none" }}
+                    className={`w-full py-3.5 rounded-[10px] text-[15px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                        isReady
+                            ? "bg-gb-primary text-white cursor-pointer hover:bg-gb-secondary"
+                            : "bg-gb-border text-gb-muted cursor-not-allowed"
+                    }`}
+                >
+                    {isLoading ? "Enviando..." : "Solicitar recuperação"}
+                    {!isLoading && <ArrowForwardIcon fontSize="small" />}
+                </button>
+
+                {/* Note */}
+                <p className="mt-5 text-xs text-gb-muted leading-relaxed text-center">
+                    É necessário ter um e-mail cadastrado previamente. Caso não tenha, entre em contato conosco.
+                </p>
+
+                {/* Back */}
+                <div className="mt-6 text-center">
+                    <button
+                        type="button"
+                        onClick={() => router.push("/")}
+                        style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+                        className="inline-flex items-center gap-1 text-sm text-gb-primary font-semibold"
+                    >
+                        <ArrowBackIcon style={{ fontSize: 16 }} />
+                        Voltar para o início
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -1,5 +1,4 @@
 import { InputBaseComponentProps, TextField } from "@mui/material";
-import { iconButtonStyle, textField, wrapperStyle } from "./style";
 import { TPROPS } from "./type";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -50,26 +49,70 @@ export default function Index(props: TPROPS) {
     if (props.onClear) props.onClear(() => setValue(""));
 
     return (
-        <div style={wrapperStyle}>
+        <div className="relative w-full">
             <TextField
                 variant="outlined"
-                label={props.title}
-                style={textField}
+                label={props.title || undefined}
+                placeholder={props.placeholder}
+                fullWidth
                 onBlur={(e) => props.onBlur(e.target.value)}
                 type={props.textType ? (props.textType === pwdType ? (isShowPwd ? textType : props.textType) : props.textType) : textType}
                 value={value}
                 onInputCapture={(e) => onInputCapture(e)}
                 inputProps={inputProps}
                 onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === "Enter" && props.loginMethod) {
                         props.loginMethod();
                     }
+                }}
+                sx={{
+                    "& .MuiOutlinedInput-root": {
+                        backgroundColor: "#f5f5f4",
+                        borderRadius: "10px",
+                        fontSize: "14px",
+                        transition: "all 0.2s ease",
+                        "& fieldset": {
+                            borderColor: "transparent",
+                        },
+                        "&:hover fieldset": {
+                            borderColor: "#e7e5e4",
+                        },
+                        "&.Mui-focused": {
+                            backgroundColor: "#ffffff",
+                            "& fieldset": {
+                                borderColor: "#6D141A",
+                                borderWidth: "1.5px",
+                            },
+                        },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                        padding: "13px 14px",
+                        color: "#1c1917",
+                        "&::placeholder": {
+                            color: "#a8a29e",
+                            opacity: 1,
+                        },
+                    },
+                    "& .MuiInputLabel-root": {
+                        fontSize: "14px",
+                        color: "#a8a29e",
+                        "&.Mui-focused": { color: "#6D141A" },
+                    },
                 }}
             />
 
             {props.textType === pwdType && (
-                <IconButton style={iconButtonStyle} onClick={() => setIsShowPwd(!isShowPwd)}>
-                    {isShowPwd ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+                <IconButton
+                    onClick={() => setIsShowPwd(!isShowPwd)}
+                    sx={{
+                        position: "absolute",
+                        right: "6px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: "#a8a29e",
+                    }}
+                >
+                    {isShowPwd ? <VisibilityOutlinedIcon fontSize="small" /> : <VisibilityOffOutlinedIcon fontSize="small" />}
                 </IconButton>
             )}
         </div>

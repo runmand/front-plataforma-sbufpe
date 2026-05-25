@@ -1,82 +1,100 @@
-import {Box, Button, InputLabel, TextField, Typography, useMediaQuery } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
-import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from 'src/core/enums';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import CustomTextField from "@components/text-field/index";
+import { http } from "src/core/axios";
+import { showError, showSuccess } from "src/core/snackbar";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Index() {
-  const [pwd, setPwd] = useState('');
-  const [pwdConfirm, setPwdConfirm] = useState('');
-  const router = useRouter();
-	const [containerBodyType, setContainerBodyType] = React.useState<string>(containerBodyTypeEnum.MAIN);
-	const largeQuery = useMediaQuery('(min-width:720px)')
-	const [viewportHeight, setViewportHeight] = React.useState<number>(0);
-  const { enqueueSnackbar } = useSnackbar();
-  
-	async function handleResetConfirm(password: string, token: string){
-		const http = axios.create({ baseURL: process.env.API_URL });
-		return await http.post("/reset/execute", {password: password, token: token});
-	}
+    const [pwd, setPwd] = useState<string | null>(null);
+    const [pwdConfirm, setPwdConfirm] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const router = useRouter();
 
-  async function sendReset() {
-    if(pwd.split('').length > 0 || pwdConfirm.split('').length > 0){
-      if (pwd === pwdConfirm){
-        await handleResetConfirm(pwd, router.query.token.toString()).then(r => {   
-          enqueueSnackbar("Senha Trocada com sucesso", { variant: "success"});
-          router.push("/")
-        }).catch(r =>{
-          enqueueSnackbar(r.response.data.errors[0].message, { variant: "error" });
-        })
-      }else{
-        enqueueSnackbar("A Senha deve ser igual", { variant: "error" });
-      }
+    const isReady = !!pwd && !!pwdConfirm && !isLoading;
 
-    }else{
-      enqueueSnackbar("Preencha os campos de senha", { variant: "error" });
+    async function sendReset() {
+        if (!pwd || !pwdConfirm) {
+            showError("Preencha os campos de senha");
+            return;
+        }
+        if (pwd !== pwdConfirm) {
+            showError("As senhas devem ser iguais");
+            return;
+        }
+        setIsLoading(true);
+        http.post("/reset/execute", { password: pwd, token: router.query.token?.toString() })
+            .then(() => {
+                showSuccess("Senha alterada com sucesso!");
+                router.push("/");
+            })
+            .catch(() => setIsLoading(false));
     }
-  }
 
+    return (
+        <div className="flex items-center justify-center px-4 py-12 min-h-[70vh]">
+            <div className="w-full max-w-[440px] rounded-2xl bg-white p-6 sm:p-9 shadow-2xl font-body" style={{ border: "1px solid #e7e5e4" }}>
+                {/* Logo */}
+                <div className="flex justify-center mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gb-primary flex items-center justify-center overflow-hidden">
+                        <Image src="/logo-transparent.png" alt="Logo" width={44} height={44} style={{ objectFit: "contain" }} />
+                    </div>
+                </div>
 
-	useEffect(()=>{
-		setViewportHeight(window.innerHeight);
-	}, [])
+                {/* Header */}
+                <div className="mb-6 text-center">
+                    <h2 className="font-display text-[24px] font-bold text-gb-text leading-tight tracking-tight mb-1.5">
+                        Redefinir senha
+                    </h2>
+                    <p className="text-sm text-gb-muted leading-relaxed">
+                        Crie uma nova senha para acessar a plataforma
+                    </p>
+                </div>
 
-  useEffect(()=>{
-		if(router.query.containerBody){
-			setContainerBodyType(router.query.containerBody as string)
-		}
-	},[router])
-  
-  return (
-      <Box
-      style={{
-        width: largeQuery ? '30vw' : '80vw',
-        height: largeQuery ? "70vh": `${(viewportHeight * 0.8)}px`,
-        backgroundColor: "#6D141A",
-        margin: "auto",
-        marginTop: largeQuery ? "20vh" : `${(viewportHeight *0.15)}px`,
-        borderRadius: "20px",
-        padding: "30px",
-        display: "grid",
-        boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)"
-      }}>
-        <Typography textAlign={"center"} width={"100%"} fontSize={"32pt"} color={"#ffffff"} margin={"auto"}>Redefinir senha</Typography>
+                {/* Nova senha */}
+                <div className="mb-5">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        Nova senha
+                    </label>
+                    <CustomTextField
+                        title=""
+                        placeholder="Digite sua nova senha"
+                        textType="password"
+                        onBlur={(v) => setPwd(v)}
+                    />
+                </div>
 
-        <Box
-          style={{
-            width:'100%',
-            margin: "auto",
-            marginTop: "5vh",
-            display: "grid",
-          }}
-        >
-          <InputLabel style={{color:"#ffffff" , marginTop: "10px",}} >Digite sua nova senha: </InputLabel>
-          <TextField style={{color:"#ffffff", marginTop: "10px", backgroundColor: "#ffffff" , borderRadius: "5px",}} fullWidth value={pwd} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPwd(e.target.value)}/>
-          <InputLabel style={{color:"#ffffff" , marginTop: "10px",}} >Confirme sua senha: </InputLabel>
-          <TextField style={{color:"#ffffff", marginTop: "10px", backgroundColor: "#ffffff" , borderRadius: "5px",}} fullWidth value={pwdConfirm} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPwdConfirm(e.target.value)}/>
-          <Button sx={{width: '120px', background: "#921c22", color:"#ffffff", margin: "auto", marginTop: "50px"}} onClick={sendReset}> Alterar</Button>
-        </Box>
-      </Box>);
+                {/* Confirmar */}
+                <div className="mb-6">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        Confirmar senha
+                    </label>
+                    <CustomTextField
+                        title=""
+                        placeholder="Confirme sua nova senha"
+                        textType="password"
+                        onBlur={(v) => setPwdConfirm(v)}
+                        loginMethod={() => sendReset()}
+                    />
+                </div>
+
+                {/* Submit */}
+                <button
+                    type="button"
+                    disabled={!isReady}
+                    onClick={() => sendReset()}
+                    style={{ border: "none" }}
+                    className={`w-full py-3.5 rounded-[10px] text-[15px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                        isReady
+                            ? "bg-gb-primary text-white cursor-pointer hover:bg-gb-secondary"
+                            : "bg-gb-border text-gb-muted cursor-not-allowed"
+                    }`}
+                >
+                    {isLoading ? "Alterando..." : "Alterar senha"}
+                    {!isLoading && <ArrowForwardIcon fontSize="small" />}
+                </button>
+            </div>
+        </div>
+    );
 }
-

@@ -37,19 +37,6 @@ export const teacherTeamGI = [
     ],
   },
   {
-    name: 'Danilo Almeida',
-    role: 'Sanitarista - Pesquisador',
-    photo:
-      './profile-image/DaniloAlmeida.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/danilo-almeida-25b952109/',
-      },
-    ],
-  },
-  {
     name: 'Gabriela Gaspar',
     role: 'Docente - UFPE',
     photo: './profile-image/GabrielaGaspar.jpg',
@@ -74,23 +61,6 @@ export const teacherTeamGI = [
     ],
   },
   {
-    name: 'Danielle Ramalho',
-    role: 'Docente - UFPE',
-    photo: './profile-image/DanielleRamalho.jpeg',
-    contacts: [
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/7154610332730996',
-      },
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/danielle-ramalho-902957324/',
-      }
-    ]
-  },
-  {
     name: 'João Gonçalves',
     role: 'Pesquisador - UFPE',
     photo: './profile-image/JoaoGoncalves.png',
@@ -111,81 +81,19 @@ export const teacherTeamGI = [
 
 export const studentTeamTI = [
   {
-    name: 'Stephany Carvalho',
-    role: 'Estudante',
-    photo:
-      './profile-image/StephanyCarvalho.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/stephany-carvalho/',
-      },
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/6759587473072785',
-      },
-    ],
-  },
-  {
-    name: 'Daniel Figueiroa',
-    role: 'Estudante',
-    photo: './profile-image/DanielFigueiroa.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/daniel-figueiroa-407835248/',
-      },
-    ],
-  },
-  {
-    name: 'Antonio Netto',
-    role: 'Estudante',
-    photo:
-      './profile-image/AntonioNeto.jpg',
-    contacts: [
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/antonio-netto-843694244/',
-      },
-    ],
-  },
-  {
     name: 'Igor Pereira',
     role: 'Estudante',
-    photo:
-      './profile-image/IgorPereira.jpg',
+    photo: './profile-image/IgorPereira.jpg',
     contacts: [
-      {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'http://lattes.cnpq.br/3448063622652979',
-      },
       {
         id: 'linked-in',
         title: 'LinkedIn',
         url: 'https://www.linkedin.com/in/igor-pereira-lins-01a1691a1/',
       },
-    ],
-  },
-  {
-    name: 'Bruno Moura',
-    role: 'Estudante',
-    photo:
-      './profile-image/BrunoMoura.jpeg',
-    contacts: [
       {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'http://lattes.cnpq.br/7765354524705477',
-      },
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/bruno-moura-java',
+        url: 'http://lattes.cnpq.br/3448063622652979',
       },
     ],
   },
@@ -195,71 +103,87 @@ export const studentTeamTI = [
     photo: './profile-image/BrunoMagno.jpg',
     contacts: [
       {
-        id: 'cnpq',
-        title: 'CNPq',
-        url: 'https://lattes.cnpq.br/4411196778188962',
-      },
-      {
         id: 'linked-in',
         title: 'LinkedIn',
         url: 'https://www.linkedin.com/in/brunomagnotm/',
       },
-    ],
-  },
-  {
-    name: 'Vinicius Silva',
-    role: 'Estudante',
-    photo: './profile-image/ViniciusSilva.jpeg',
-    contacts: [
       {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/vinicius-silva-054005360/',
-      },
-    ],
-  },
-  {
-    name: 'Diego Felipe',
-    role: 'Estudante',
-    photo: './profile-image/DiegoFelipe.jpg',
-    contacts: [
-        {
         id: 'cnpq',
         title: 'CNPq',
-        url: 'http://lattes.cnpq.br/3545055969923395',
-      },
-      {
-        id: 'linked-in',
-        title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/diegofelipeti/',
+        url: 'https://lattes.cnpq.br/4411196778188962',
       },
     ],
   },
   {
-    name: 'Paulo de Araújo',
+    name: 'Wellington Aquino',
     role: 'Estudante',
-    photo: './profile-image/PauloAraujo.jpeg',
+    photo: './profile-image/WellingtonAquino.jpg',
     contacts: [
       {
         id: 'linked-in',
         title: 'LinkedIn',
-        url: 'https:///www.linkedin.com/in/paulo-araujo-dev/',
+        url: 'https://www.linkedin.com/in/wellington-aquino-046328172/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/1123747830672331',
       },
     ],
   },
   {
-    name: 'Erivando Ferreira',
+    name: 'Klismans Nazário',
     role: 'Estudante',
-    photo: './profile-image/ErivandoFerreira.jpeg',
+    photo: './profile-image/KlismansNazario.png',
     contacts: [
       {
         id: 'linked-in',
         title: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/erivando-n-2a6b1a307/',
+        url: 'https://www.linkedin.com/in/klismans-nazario/',
       },
     ],
-  }
-
+  },
+  {
+    name: 'Arthur Victor',
+    role: 'Estudante',
+    photo: './profile-image/ArthurVictor.png',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/arthur-victor-dev/',
+      },
+    ],
+  },
+  {
+    name: 'Wemerson Matheus',
+    role: 'Estudante',
+    photo: './profile-image/WemersonMatheus.png',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/wemerson-matheus/',
+      },
+    ],
+  },
+  {
+    name: 'William Rodrigues',
+    role: 'Estudante',
+    photo: './profile-image/WilliamRodrigues.jpeg',
+    contacts: [
+      {
+        id: 'linked-in',
+        title: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/william-santos-dev/',
+      },
+      {
+        id: 'cnpq',
+        title: 'CNPq',
+        url: 'http://lattes.cnpq.br/3130479317305640',
+      },
+    ],
+  },
 ]
 
 export const studentsTeamGI = [

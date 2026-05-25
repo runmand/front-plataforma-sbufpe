@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import NewMenu from "@components/newMenu/index";
 import { useRouter } from "next/router";
 import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from "../../src/pages/form-answer/type";
@@ -9,7 +10,7 @@ import SimpleForm from "@components/form/simple/index";
 import { ID } from "src/core/types";
 import React from "react";
 import FormResultModal from "@components/modal/form/result";
-import { routerEnum } from "src/core/enums";
+import { localStorageKeyEnum, routerEnum } from "src/core/enums";
 import FormResultFeedBack from "@components/modal/FormResultFeedBack";
 
 //TODO: Corrigir ID quando o usuario da F5 na page.
@@ -35,6 +36,10 @@ export default function Index() {
 
         const id = Number(router.query.formId);
         setFormId(id);
+
+        const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID);
+
+        if (typeId == 5) return;
 
         if (!hasSignedRequiredTerm(id)) {
             enqueueSnackbar("Você precisa assinar os termos obrigatórios antes de responder o formulário.", { variant: "warning" });
@@ -87,7 +92,11 @@ export default function Index() {
     };
 
     return (
-        <Base
+        <>
+            <Head>
+                <title>Responder Formulário | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <div style={{ paddingTop: "4.5rem" }}>
@@ -123,5 +132,6 @@ export default function Index() {
                 </div>
             }
         />
+        </>
     );
 }

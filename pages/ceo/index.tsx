@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Base from '@components/base-layout/index';
 import Appbar from '@components/app-bar/index';
 import HomeToolbar from '@components/toolbar/home';
@@ -18,12 +19,16 @@ import BiComponent from "@components/bi/index"
 
 export default function Index() {
   return (
-    <Base
-      appBarChild={<NewMenu/>}
-      mainContainerChild= {<BiComponent form='ceo' type='closed'/>}
-			footerChild={<FooterMain />}
+    <>
+      <Head>
+        <title>CEO | GestBucal</title>
+      </Head>
+      <Base
+        appBarChild={<NewMenu/>}
+        mainContainerChild= {<BiComponent form='ceo' type='closed'/>}
+        footerChild={<FooterMain />}
       />
-
+    </>
   );
 }
 

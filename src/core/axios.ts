@@ -1,6 +1,13 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { localStorageKeyEnum } from "./enums";
+import { showError } from "./snackbar";
 // import jwt from 'jsonwebtoken';
+
+declare module "axios" {
+    interface AxiosRequestConfig {
+        silent?: boolean;
+    }
+}
 
 export const http = axios.create({ baseURL: process.env.API_URL });
 
@@ -47,16 +54,36 @@ http.interceptors.request.use(
 );
 
 http.interceptors.response.use(
-    (res) => ({
-        status: res.data.status,
-        data: res.data.data,
-        msg: res.data.msg,
-        errors: res.data.errors?.map((err: any) => err.message),
-    }),
+    (res) => {
+        const errors: string[] | undefined = res.data.errors?.map((err: any) => err.message);
+        const silent = (res.config as AxiosRequestConfig)?.silent;
+
+        if (errors?.length && !silent) {
+            errors.forEach((msg) => showError(msg));
+        }
+
+        return {
+            status: res.data.status,
+            data: res.data.data,
+            msg: res.data.msg,
+            errors,
+        };
+    },
     (e) => {
         if (e?.message !== "No token") {
             console.error("LOGGER::axios-response-interceptor", e);
         }
-        return Promise.reject({ errors: typeof e === "string" ? e : e.response?.data?.errors?.map((err: any) => err.message) });
+
+        const errors: string[] | undefined =
+            typeof e === "string" ? [e] : e?.response?.data?.errors?.map((err: any) => err.message);
+        const silent = (e?.config as AxiosRequestConfig)?.silent;
+
+        if (errors?.length && !silent) {
+            errors.forEach((msg) => showError(msg));
+        } else if (!silent && e?.message !== "No token") {
+            showError("Ops! Algo deu errado...");
+        }
+
+        return Promise.reject({ errors });
     }
 );

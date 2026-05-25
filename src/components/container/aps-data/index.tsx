@@ -47,8 +47,8 @@ export default function Index() {
         <iframe
           title="APS respondentes"
           style={{
-            minHeight:'600px',
-            width:'100%'}}   
+            minHeight: largeQuery ? '600px' : '350px',
+            width:'100%'}}
           src={link} allow="fullscreen"></iframe>
         </Box>
         ) : (

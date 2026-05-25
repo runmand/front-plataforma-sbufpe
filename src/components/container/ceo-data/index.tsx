@@ -36,8 +36,8 @@ export default function Index() {
         <iframe
           title="Ceo respondentes"
           style={{
-            minHeight:'600px',
-            width:'100%'}}   
+            minHeight: largeQuery ? '600px' : '350px',
+            width:'100%'}}
           src=""
           allow="fullscreen"></iframe>
         </Box>

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 
+import Head from 'next/head';
 import { useEffect, useState } from "react";
 
 import PlanForm from "@components/planeja/planeja-form";
@@ -11,6 +12,9 @@ export default function Index() {
 
   return (
     <>
+      <Head>
+        <title>Planeja | GestBucal</title>
+      </Head>
       {isCompleted ? (
         <FinishedForm />
       ) : (

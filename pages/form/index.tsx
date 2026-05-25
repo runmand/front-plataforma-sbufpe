@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Base from "@components/base-layout/index";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
@@ -24,13 +25,25 @@ export default function Index() {
     const [forms, setForms] = React.useState<INDEX_RES[]>();
     const [formId, setFormId] = React.useState<ID>(0);
     const handleSelectForm = (id: ID) => {
+        const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID);
         setFormId(id);
+
+        if (typeId != 5){
+
         setOpenTCLE(true);
+        }else{
+            goForm(id)
+        }
+
+
     };
 
-    async function goForm() {
-        router.push({ pathname: routerEnum.FORM_ANSWER, query: { formId } });
-    }
+    async function goForm(id?: ID) {
+   router.push({
+      pathname: routerEnum.FORM_ANSWER,
+      query: { formId: id ?? formId }
+   });
+}
 
     async function getFormResult() {
         try {
@@ -58,6 +71,8 @@ export default function Index() {
                             );
                         case 4:
                             return setForms(res.data.filter((form) => form.id === 2));
+                                                  case 5:
+                            return setForms(res.data);
                     }
                 } else {
                     res.errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
@@ -94,7 +109,11 @@ export default function Index() {
     };
 
     return (
-        <Base
+        <>
+            <Head>
+                <title>Formulários | GestBucal</title>
+            </Head>
+            <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
                 forms ? (
@@ -250,5 +269,6 @@ export default function Index() {
             }
             footerChild={<FooterMain />}
         />
+        </>
     );
 }

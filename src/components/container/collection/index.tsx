@@ -38,7 +38,7 @@ export default function Index(){
         >
         Referências
         </Typography>
-        <FormControl sx={{ m: 1, minWidth: 200, marginX: 15, marginY: 5 }}
+        <FormControl sx={{ m: 1, minWidth: { xs: 140, md: 200 }, marginX: { xs: 2, md: 15 }, marginY: { xs: 2, md: 5 } }}
         >
           <InputLabel id="demo-simple-select-autowidth-label">Referencias</InputLabel>
           <Select
@@ -59,12 +59,13 @@ export default function Index(){
           <MenuItem value={"Satisfação do Usuário"}>Satisfação do Usuário</MenuItem>
         </Select>
       </FormControl>
-        <Grid 
-          container 
-          gap = '30px' 
+        <Grid
+          container
+          gap = {{ xs: '16px', md: '30px' }}
           sx = {{
-            margin:'auto', 
+            margin:'auto',
             justifyContent:'center',
+            paddingX: { xs: 2, md: 0 },
             paddingY:3}}>
           {newAcervo.map((item,index)=>(
             <Link

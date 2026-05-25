@@ -5,6 +5,7 @@ export type TPROPS = {
     title: string;
     textType?: HTMLInputTypeAttribute;
     maskType?: loginTypeEnum /** Aqui deveria aceitar mais tipos de mascaras além das mascaras do login. Sempre que necessario, colocar um <OR> para novos <enums> */;
+    placeholder?: string;
     loginMethod?: () => void;
     onBlur: (value: string) => void;
     onClear?: (callback: () => void) => void;
