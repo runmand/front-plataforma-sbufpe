@@ -1,9 +1,11 @@
+'use client';
+
 import React, { CSSProperties, useEffect, useState } from "react";
 import { white } from "src/core/colors";
 import LoginModal from "@components/modal/log-in/index";
 import SignupModal from "@components/modal/sign-up/index";
 import { Box, Button, useMediaQuery } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { theme } from "src/core/theme";
 import { routerEnum } from "src/core/enums";
 

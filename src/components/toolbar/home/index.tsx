@@ -1,7 +1,9 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import DrawerMenu from '@components/menu/drawer/index';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const ff = { display: "'Lora', Georgia, serif", body: "'Source Sans 3', -apple-system, sans-serif" };
 const btn: React.CSSProperties = { border: 'none', cursor: 'pointer', background: 'transparent', fontFamily: ff.body, transition: 'all 0.2s ease', outline: 'none' };

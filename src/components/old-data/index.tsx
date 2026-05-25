@@ -1,3 +1,5 @@
+'use client';
+
 import {
     ButtonContainer,
     GridContainer,
@@ -20,12 +22,13 @@ import DownloadCSV from "../csv/index";
 import CustomSelect from "../select";
 import CustomSwitch from "../switch";
 import { Refresh } from "@mui/icons-material";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { routerEnum } from "src/core/enums";
 import TableComponentTeoric from "@components/newTable/teoric";
 import TableComponentPratical from "@components/newTable/pratical";
 
 export default function Index() {
+    const router = useRouter();
     const [typeData, setTypeData] = useState<typeData>("teorico");
     const [tempDataTeoric, setTempDataTeoric] = useState<planAnswer[][]>();
     const [tempDataPratical, setTempDataPratical] = useState<praticalAnswer[]>();
@@ -181,7 +184,7 @@ export default function Index() {
     }
 
     function goInitial() {
-        router.push({ pathname: routerEnum.INITIAL });
+        router.push(routerEnum.INITIAL);
         localStorage.removeItem("data");
     }
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React from 'react';
 import { TPROPS } from './type';
@@ -5,13 +7,14 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { theme } from 'src/core/theme';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import { routerEnum } from 'src/core/enums';
 
 
 
 //TODO: Corrigir os icons de acordo com item do menu correspondente
 export default function Index(props: TPROPS) {
+	const router = useRouter();
 	const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
 	const handleOnSelectMenuItem = () => {

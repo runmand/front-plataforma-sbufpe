@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import CustomTextField from "@components/text-field/index";
 import { http } from "src/core/axios";

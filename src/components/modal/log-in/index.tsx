@@ -1,3 +1,5 @@
+'use client';
+
 import { Modal } from "@mui/material";
 import Image from "next/image";
 import React from "react";
@@ -5,7 +7,7 @@ import { TPROPS } from "./type";
 import CustomTextField from "@components/text-field/index";
 import LoginService from "./service";
 import { useSnackbar } from "notistack";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";

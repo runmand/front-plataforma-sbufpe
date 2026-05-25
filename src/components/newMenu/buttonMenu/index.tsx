@@ -1,6 +1,8 @@
+'use client';
+
 import { TProps } from './type';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { routerEnum } from 'src/core/enums';
 import { theme } from 'src/core/theme';

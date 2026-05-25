@@ -1,7 +1,7 @@
 import { Container, HeaderData, SelectWrapper, StyledLegend, StyledOption, StyledSelect, TitleContainer } from "./styled";
 import { forms_allowed, version_constants } from "./constants";
 import React, {  useState } from "react";
-import { INDEX_RES } from "src/pages/form/type";
+import { INDEX_RES } from "src/services/form/type";
 import Table from "@components/table";
 
 export default function Index() {

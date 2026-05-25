@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useCallback, useMemo, useState } from 'react';
 import { TPROPS } from './type';
-import FormAnswerService from 'src/pages/form-answer/service';
+import FormAnswerService from 'src/services/form-answer/service';
 import { ResultFormPdf, stylesPDF } from '@components/FormResultPdf';
 import { pdf, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types';
@@ -9,7 +11,7 @@ import { IStepsValues } from '@components/planeja-pratico/steps/FinishFormStep';
 import { http } from 'src/core/axios';
 import ModifiedPdfPlanejaTeorico from '@components/pdf/PlanejaPDF';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const C = {
     primary:     '#6D141A',

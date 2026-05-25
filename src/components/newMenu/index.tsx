@@ -1,6 +1,8 @@
+'use client';
+
 import * as React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import LoginModal from '@components/modal/log-in/index';
 import SignupModal from '@components/modal/sign-up/index';

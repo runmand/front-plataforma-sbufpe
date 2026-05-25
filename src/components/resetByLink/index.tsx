@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import CustomTextField from "@components/text-field/index";
 import { http } from "src/core/axios";
@@ -11,6 +13,7 @@ export default function Index() {
     const [pwdConfirm, setPwdConfirm] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const params = useParams<{ token?: string | string[] }>();
 
     const isReady = !!pwd && !!pwdConfirm && !isLoading;
 
@@ -24,7 +27,8 @@ export default function Index() {
             return;
         }
         setIsLoading(true);
-        http.post("/reset/execute", { password: pwd, token: router.query.token?.toString() })
+        const tokenParam = Array.isArray(params?.token) ? params.token[0] : params?.token;
+        http.post("/reset/execute", { password: pwd, token: tokenParam })
             .then(() => {
                 showSuccess("Senha alterada com sucesso!");
                 router.push("/");
