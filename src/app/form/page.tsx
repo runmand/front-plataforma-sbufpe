@@ -3,15 +3,15 @@
 import Base from '@components/base-layout/index';
 import Image from 'next/image';
 import { useMediaQuery } from '@mui/material';
-import FormService from 'src/pages/form/service';
+import FormService from 'src/modules/form/service';
 import React, { useEffect, useRef, useState } from 'react';
-import { INDEX_RES } from 'src/pages/form/type';
+import { INDEX_RES } from 'src/modules/form/type';
 import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
 import { useRouter } from 'next/navigation';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
-import FormAnswerService from 'src/pages/form-answer/service';
+import FormAnswerService from 'src/modules/form-answer/service';
 import NewMenu from '@components/newMenu/index';
 import FooterMain from '@components/footer/main/index';
 import TcleModal from '@components/tcle/index';
