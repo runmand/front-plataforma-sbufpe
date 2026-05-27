@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DataUser, praticalAnswerObj, praticalJSON, praticalResponse, PROPS } from "@components/old-data/type";
 import React, { useEffect, useState } from "react";
-import { IFirstStep, IFourthStep, ISecondStep, IStepsValues, IThirdStep } from "pages/planeja-pratico";
+import { IFirstStep, IFourthStep, ISecondStep, IStepsValues, IThirdStep } from "src/app/planeja-pratico/page";
 import { TableWrapper, Table, Td, Th, Tr } from "../styled";
 import { filterBy, removeDuplicates } from "../functions";
 
