@@ -1,6 +1,6 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: false,
-    swcMinify: false,
     env: {
         API_URL: process.env.API_URL,
     },
