@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { TPROPS, USER_TYPE } from "./type";
 import CustomTextField from "@components/text-field/index";
 import { useSnackbar } from "notistack";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
 import SignupService from "./service";
 import CloseIcon from "@mui/icons-material/Close";
