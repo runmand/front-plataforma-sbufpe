@@ -1,4 +1,4 @@
-import { IFirstStep, IFourthStep, ISecondStep, IStepsValues, IThirdStep } from "pages/planeja-pratico";
+import { IFirstStep, IFourthStep, ISecondStep, IStepsValues, IThirdStep } from "src/app/planeja-pratico/page";
 
 export type planAnswer = {
     id: number;
