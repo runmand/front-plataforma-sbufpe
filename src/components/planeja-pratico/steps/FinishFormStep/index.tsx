@@ -2,7 +2,7 @@ import { Box, Button, Divider, Typography, Paper, Alert, InputLabel, TextField }
 import { http } from "src/core/axios";
 import React, { useState } from "react";
 import { localStorageKeyEnum } from "src/core/enums";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ErrorOutlineOutlined } from "@mui/icons-material";
 import { nameForm } from "src/constants/constantsPlaneja";
 import { downloadPdfPlanejaPratico } from "@components/pdf/PlanejaPraticoPDF";

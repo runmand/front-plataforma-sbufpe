@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { TPROPS } from "./type";
 import { ResultFormPdf } from "@components/FormResultPdf";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { pdf } from "@react-pdf/renderer";
 import { routerEnum, containerBodyTypeEnum } from "src/core/enums";
 
@@ -33,7 +33,7 @@ export default function Index(props: TPROPS) {
   }
 
   const handleQuestion = () => {
-    router.push({ pathname: routerEnum.INITIAL, query: { containerBody: containerBodyTypeEnum.COLLECTION } });
+    router.push(`${routerEnum.INITIAL}?containerBody=${containerBodyTypeEnum.COLLECTION}`);
   };
 
   useEffect(() => {

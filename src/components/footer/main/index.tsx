@@ -1,6 +1,6 @@
 import * as React from "react";
 import { routerEnum } from "src/core/enums";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const ff = { body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif" };
 

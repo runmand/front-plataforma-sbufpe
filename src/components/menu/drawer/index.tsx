@@ -9,7 +9,7 @@ import { IStepsValues } from '@components/planeja-pratico/steps/FinishFormStep';
 import { http } from 'src/core/axios';
 import ModifiedPdfPlanejaTeorico from '@components/pdf/PlanejaPDF';
 import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const C = {
     primary:     '#6D141A',

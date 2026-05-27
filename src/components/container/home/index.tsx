@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Paper, Typography, useMediaQuery } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useImperativeHandle, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { theme } from "src/core/theme";
