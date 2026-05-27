@@ -1,4 +1,4 @@
-import { INDEX_RES } from "src/pages/form/type";
+import { INDEX_RES } from "src/modules/form/type";
 
 export const forms_allowed: INDEX_RES[] = [
     {

@@ -3,7 +3,7 @@ import { TableWrapper, StyledTable, THead, TBody, Container, TableWrapperOuter, 
 import { StyledSelect, StyledOption } from "./styled";
 import { AnswersForm, AnswersFormData, formsQuestionsFormsRegisters, requestResponse } from "@components/data-forms/types";
 import { http } from "src/core/axios";
-import { INDEX_RES } from "src/pages/form/type";
+import { INDEX_RES } from "src/modules/form/type";
 import { ID } from "src/core/types";
 import DownloadIcon from "@mui/icons-material/Download";
 import ReplayIcon from "@mui/icons-material/Replay";

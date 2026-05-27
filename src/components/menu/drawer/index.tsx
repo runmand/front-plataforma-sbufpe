@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { TPROPS } from './type';
-import FormAnswerService from 'src/pages/form-answer/service';
+import FormAnswerService from 'src/modules/form-answer/service';
 import { ResultFormPdf, stylesPDF } from '@components/FormResultPdf';
 import { pdf, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { FormResultProps } from '@components/FormResultPdf/FormResultProps.types';

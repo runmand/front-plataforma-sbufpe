@@ -2,11 +2,11 @@
 
 import NewMenu from '@components/newMenu/index';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from 'src/pages/form-answer/type';
+import { GET_FORMATTED_FORM_SHOW, GET_USER_RESULT_FROM_FORM_RES } from 'src/modules/form-answer/type';
 import Base from '@components/base-layout/index';
 import { Suspense, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import FormAnswerService from 'src/pages/form-answer/service';
+import FormAnswerService from 'src/modules/form-answer/service';
 import SimpleForm from '@components/form/simple/index';
 import { ID } from 'src/core/types';
 import React from 'react';
