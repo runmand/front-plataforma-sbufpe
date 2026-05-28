@@ -106,7 +106,6 @@ export default function Index(props: TPROPS) {
                     </p>
                 </div>
 
-                {/* Tipo de identificação */}
                 <div className="mb-4">
                     <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
                         Tipo de Identificação
@@ -121,7 +120,6 @@ export default function Index(props: TPROPS) {
                                     onClick={() => { setLoginType(opt.value); setLogin(null); }}
                                     style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, userSelect: "none" }}
                                 >
-                                    {/* Círculo */}
                                     <span style={{
                                         width: 16, height: 16, borderRadius: "50%",
                                         border: `2px solid ${isSelected ? "#6D141A" : "#c4c0bb"}`,
@@ -129,7 +127,6 @@ export default function Index(props: TPROPS) {
                                     }}>
                                         {isSelected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#6D141A" }} />}
                                     </span>
-                                    {/* Label */}
                                     <span style={{ fontSize: 14, color: isSelected ? "#6D141A" : "#78716c", fontWeight: isSelected ? 600 : 400 }}>
                                         {opt.label}
                                     </span>
@@ -139,7 +136,6 @@ export default function Index(props: TPROPS) {
                     </div>
                 </div>
 
-                {/* Campo de identificação */}
                 <div className="mb-5">
                     <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
                         Identificação

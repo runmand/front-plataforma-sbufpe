@@ -26,7 +26,6 @@ export default function Index(props: TProps) {
     }, [props.type, props.form]);
 
     const titleSize    = isLarge ? "32pt" : "20pt";
-    // 800px garante que o conteúdo + barra de paginação do PowerBI apareçam sem corte
     const iframeHeight = isLarge ? "800px" : "500px";
 
     return (
