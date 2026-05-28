@@ -59,7 +59,7 @@ export default function Index() {
                     isLoggedIn === null ? null :
                     isLoggedIn
                         ? <ApsEmbed url={LOGGED_URL} title="Dados APS" />
-                        : <ApsEmbed url={PUBLIC_URL} title="APS" />
+                        : <ApsEmbed url={PUBLIC_URL} title="Respondentes - APS" />
                 }
                 footerChild={<FooterMain />}
             />
