@@ -122,11 +122,20 @@ export default function Index() {
 		setHaveLogin(false);
 	};
 
+	const nossosItens = haveLogin
+		? [{ label: 'APS', route: routerEnum.DATAAPS }]
+		: [
+			{ label: 'APS', route: routerEnum.DATAAPS },
+			{ label: 'Usuários', route: routerEnum.USER },
+			{ label: 'CEO', route: routerEnum.CEO },
+		];
+
 	const menuList = [
-		{ title: 'Acervo',     items: [{ label: 'Artigos', route: routerEnum.ARTICLES }, { label: 'InformeSBPE', route: '/informes' }] },
-		{ title: 'Quem Somos', items: [{ label: 'Quem Somos?', route: routerEnum.TEAM }, { label: 'O que é GestBucal SD?', route: routerEnum.PROJECT }] },
-		{ title: 'Contato',    items: [{ label: 'Contato', route: routerEnum.CONTACTUS }] },
-		{ title: 'F.A.Q',      items: [{ label: 'Perguntas Frequentes', route: routerEnum.FAQ }] },
+		{ title: 'Acervo',       items: [{ label: 'Artigos', route: routerEnum.ARTICLES }, { label: 'InformeSBPE', route: '/informes' }] },
+		{ title: 'Quem Somos',   items: [{ label: 'Quem Somos?', route: routerEnum.TEAM }, { label: 'O que é GestBucal SD?', route: routerEnum.PROJECT }] },
+		{ title: 'Nossos Dados', items: nossosItens },
+		{ title: 'Contato',      items: [{ label: 'Contato', route: routerEnum.CONTACTUS }] },
+		{ title: 'F.A.Q',        items: [{ label: 'Perguntas Frequentes', route: routerEnum.FAQ }] },
 	];
 
 	return (
