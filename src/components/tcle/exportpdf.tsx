@@ -1,7 +1,6 @@
-import { Page, pdf, View, Document, Text, Image } from "@react-pdf/renderer";
+"use client";
+
 import { pdfStyles } from "./tcle-document/styled";
-import { Styles } from "@react-pdf/renderer";
-import { MutableRefObject } from "react";
 
 type typeStyles = {
   text: string;
@@ -64,6 +63,10 @@ export function renderNodes(nodes: HTMLCollection) {
 }
 
 export async function generatePDF(nodes: HTMLCollection) {
+  const { Page, pdf, View, Document, Text, Image } = await import(
+    "@react-pdf/renderer"
+  );
+
   let r: typeStyles[] = [];
   r = renderNodes(nodes);
 
