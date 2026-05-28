@@ -123,8 +123,12 @@ export default function Index() {
 	};
 
 	const nossosItens = haveLogin
-		? [{ label: 'Usuários', route: routerEnum.USER }, { label: 'CEO', route: routerEnum.CEO }, { label: 'APS', route: routerEnum.DATAAPS }]
-		: [{ label: 'APS', route: routerEnum.DATAAPS }];
+		? [{ label: 'APS', route: routerEnum.DATAAPS }]
+		: [
+			{ label: 'APS', route: routerEnum.DATAAPS },
+			{ label: 'Usuários', route: routerEnum.USER },
+			{ label: 'CEO', route: routerEnum.CEO },
+		];
 
 	const menuList = [
 		{ title: 'Acervo',       items: [{ label: 'Artigos', route: routerEnum.ARTICLES }, { label: 'InformeSBPE', route: '/informes' }] },
