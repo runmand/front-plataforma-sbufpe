@@ -10,7 +10,7 @@ const PUBLIC_URL =
     'https://app.powerbi.com/view?r=eyJrIjoiNmMxYTU1YzItYmM4YS00ZjY4LTlhOWItNjM4NWE2N2IxOGIxIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9';
 
 const LOGGED_URL =
-    'https://app.powerbi.com/view?r=eyJrIjoiN2Y1OWNkYWQtMTA3Zi00ZWQ3LWIzYjQtNWViZWRiMDU0NmQwIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9';
+    'https://app.powerbi.com/view?r=eyJrIjoiN2Y1OWNkYWQtMTA3Zi00ZWQ3LWIzYjQtNWViZWRiMDU0NmQwIiwidCI6ImE2NTk5NGY3LTU1MjgtNGE4NC1iODU3LWJmMDRlMDBjNGRhNCJ9&pageName=ReportSection';
 
 function ApsEmbed({ url, title }: { url: string; title: string }) {
     const isLarge = useMediaQuery('(min-width:720px)');
