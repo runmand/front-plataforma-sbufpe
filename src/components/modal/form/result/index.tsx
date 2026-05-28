@@ -3,7 +3,7 @@ import { TPROPS } from "./type";
 import { ResultFormPdf } from "@components/FormResultPdf";
 import { useRouter } from 'next/navigation';
 import { pdf } from "@react-pdf/renderer";
-import { routerEnum, containerBodyTypeEnum } from "src/core/enums";
+import { routerEnum } from "src/core/enums";
 
 const ff = { display: "'Lora', Georgia, serif", body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif" };
 const C = { primary: '#6D141A', secondary: '#921c22', text: '#1c1917', muted: '#78716c', border: '#e7e5e4', borderLight: '#f5f5f4', white: '#fff', bg: '#FAF7F2' };
@@ -33,7 +33,7 @@ export default function Index(props: TPROPS) {
   }
 
   const handleQuestion = () => {
-    router.push(`${routerEnum.INITIAL}?containerBody=${containerBodyTypeEnum.COLLECTION}`);
+    router.push(routerEnum.ARTICLES);
   };
 
   useEffect(() => {

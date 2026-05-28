@@ -9,7 +9,7 @@ const links = [
     { label: "faq",        url: routerEnum.FAQ },
     { label: "contato",    url: routerEnum.CONTACTUS },
     { label: "tcle",       url: routerEnum.TCLE },
-    { label: "acervo",     url: "/collection" },
+    { label: "acervo",     url: routerEnum.ARTICLES },
 ];
 
 export default function Index() {
