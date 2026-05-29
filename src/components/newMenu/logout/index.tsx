@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { theme } from 'src/core/theme';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function Index(){
   const router = useRouter();

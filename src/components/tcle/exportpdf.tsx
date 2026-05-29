@@ -1,7 +1,6 @@
-import { Page, pdf, View, Document, Text, Image } from "@react-pdf/renderer";
+"use client";
+
 import { pdfStyles } from "./tcle-document/styled";
-import { Styles } from "@react-pdf/renderer";
-import { MutableRefObject } from "react";
 
 type typeStyles = {
   text: string;
@@ -32,7 +31,7 @@ export function renderNodes(nodes: HTMLCollection) {
   Array.from(nodes).map(async (node, index) => {
     replaceInputForValue(node, myArray);
     if (node.tagName == "H5") {
-      myArray.push({ text: node.textContent, style: "h4" });
+      myArray.push({ text: node.textContent ?? "", style: "h4" });
     } else if (node.tagName == "BUTTON") {
     } else if (node.tagName == "DIV") {
       const item: typeStyles = {
@@ -41,22 +40,22 @@ export function renderNodes(nodes: HTMLCollection) {
         img: "",
       };
 
-      if (node.children[1].tagName == "P") {
-        const p = node.children[1] as HTMLParagraphElement;
-        item.text = p.textContent;
+      const secondChild = node.children[1];
+      if (secondChild?.tagName === "P") {
+        item.text = (secondChild as HTMLParagraphElement).textContent ?? "";
       }
-      if (node.children[0].tagName == "IMG") {
-        const img = node.children[0] as HTMLImageElement;
-        item.img = img.src;
+      const firstChild = node.children[0];
+      if (firstChild?.tagName === "IMG") {
+        item.img = (firstChild as HTMLImageElement).src;
       }
 
       myArray.push(item);
     } else if (node.tagName == "UL") {
       Array.from(node.children).map((item, index) => {
-        myArray.push({ text: item.textContent, style: "p" });
+        myArray.push({ text: item.textContent ?? "", style: "p" });
       });
     } else if (node.tagName == "P") {
-      myArray.push({ text: node.textContent, style: "p" });
+      myArray.push({ text: node.textContent ?? "", style: "p" });
     }
   });
 
@@ -64,6 +63,10 @@ export function renderNodes(nodes: HTMLCollection) {
 }
 
 export async function generatePDF(nodes: HTMLCollection) {
+  const { Page, pdf, View, Document, Text, Image } = await import(
+    "@react-pdf/renderer"
+  );
+
   let r: typeStyles[] = [];
   r = renderNodes(nodes);
 
@@ -79,10 +82,8 @@ export async function generatePDF(nodes: HTMLCollection) {
                     {item.img ? (
                       // eslint-disable-next-line jsx-a11y/alt-text
                       <Image src={item.img} style={pdfStyles.Image} />
-                    ) : (
-                      <Text style={pdfStyles.Invisible}></Text>
-                    )}
-                    <Text style={pdfStyles.Paragraph2}>{item.text}</Text>
+                    ) : null}
+                    <Text style={pdfStyles.Paragraph2}>{item.text ?? ""}</Text>
                   </View>
                 );
               } else {
@@ -97,7 +98,7 @@ export async function generatePDF(nodes: HTMLCollection) {
                 }
                 return (
                   <Text key={index} style={style}>
-                    {item.text}
+                    {item.text ?? ""}
                   </Text>
                 );
               }

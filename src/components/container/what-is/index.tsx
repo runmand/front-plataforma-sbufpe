@@ -164,8 +164,8 @@ export default function Index() {
 					color={theme.black}
 				>
 					Acesse a{' '}
-					<Link href={routerEnum.HOME}>
-						<a style={{ color: theme.primaryColor, textDecoration: 'none' }}>tela inicial</a>
+					<Link href={routerEnum.HOME} style={{ color: theme.primaryColor, textDecoration: 'none' }}>
+						tela inicial
 					</Link>{' '}
 					para explorar suas funcionalidades.
 				</Typography>
