@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { http } from "src/core/axios";
 import { TProps } from "./type";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography, useMediaQuery } from "@mui/material";
 
 export default function Index(props: TProps) {
     const [link, setLink] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const isLarge = useMediaQuery("(min-width:720px)");
 
     useEffect(() => {
         async function handleReset() {
@@ -24,37 +25,30 @@ export default function Index(props: TProps) {
         handleReset();
     }, [props.type, props.form]);
 
+    const titleSize    = isLarge ? "32pt" : "20pt";
+    const iframeHeight = isLarge ? "800px" : "500px";
+
     return (
-        <Box
-            sx={{
-                marginTop: "12vh",
-                width: "100%",
-                height: "85vh",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-        >
+        <Box sx={{ marginTop: "84px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
             {loading ? (
-                <CircularProgress color="secondary" />
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: iframeHeight }}>
+                    <CircularProgress color="secondary" />
+                </Box>
             ) : link ? (
                 <>
-                    <Typography textAlign="center" fontSize="32pt" color="#6D141A" margin="auto">
+                    <Typography textAlign="center" fontSize={titleSize} color="#6D141A" sx={{ py: isLarge ? 2 : 1 }}>
                         {props.type === "closed" ? "Dados " : "Respondentes "}{" "}
                         {props.form === "usuario" ? "- Usuários" : props.form === "aps" ? "APS" : "CEO"}
                     </Typography>
-                    <Box sx={{ width: "100%", minHeight: "600px" }}>
-                        <iframe
-                            title={`${props.form} data Analysis`}
-                            style={{ width: "100%", height: "100%" }}
-                            src={link}
-                            allow="fullscreen"
-                        ></iframe>
-                    </Box>
+                    <iframe
+                        title={`${props.form} data Analysis`}
+                        style={{ width: "100%", height: iframeHeight, display: "block", border: "none" }}
+                        src={link}
+                        allow="fullscreen"
+                    />
                 </>
             ) : (
-                <Typography textAlign="center" fontSize="32pt" color="#6D141A" margin="auto">
+                <Typography textAlign="center" fontSize={titleSize} color="#6D141A" sx={{ mt: 4 }}>
                     Link temporariamente não disponível
                 </Typography>
             )}

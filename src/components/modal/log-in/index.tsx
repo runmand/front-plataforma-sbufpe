@@ -10,14 +10,23 @@ import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
+const LOGIN_TYPE_OPTIONS = [
+    { label: "CPF",      value: loginTypeEnum.CPF,              placeholder: "000.000.000-00" },
+    { label: "Celular",  value: loginTypeEnum.DDI_DDD_CELLPHONE, placeholder: "+55 (00) 00000-0000" },
+    { label: "E-mail",   value: loginTypeEnum.EMAIL,             placeholder: "seu@email.com" },
+    { label: "Username", value: loginTypeEnum.USERNAME,           placeholder: "nome.usuario" },
+];
+
 export default function Index(props: TPROPS) {
     const loginService = new LoginService();
     const [login, setLogin] = React.useState<string>(null);
     const [pwd, setPwd] = React.useState<string>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    const loginType = loginTypeEnum.ALL;
+    const [loginType, setLoginType] = React.useState<loginTypeEnum>(loginTypeEnum.CPF);
     const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();
+
+    const selectedOption = LOGIN_TYPE_OPTIONS.find((o) => o.value === loginType);
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -34,7 +43,7 @@ export default function Index(props: TPROPS) {
             return;
         }
         loginService
-            .handleLogin({ login, pwd, loginType })
+            .handleLogin({ login, pwd, loginType: loginTypeEnum.ALL })
             .then((res) => {
                 if (res.data?.token) {
                     enqueueSnackbar("Login efetuado com sucesso!", { variant: "success" });
@@ -97,15 +106,45 @@ export default function Index(props: TPROPS) {
                     </p>
                 </div>
 
-                {/* CPF */}
+                <div className="mb-4">
+                    <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
+                        Tipo de Identificação
+                    </label>
+                    <div style={{ display: "flex", gap: 20 }}>
+                        {LOGIN_TYPE_OPTIONS.map((opt) => {
+                            const isSelected = loginType === opt.value;
+                            return (
+                                <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => { setLoginType(opt.value); setLogin(null); }}
+                                    style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, userSelect: "none" }}
+                                >
+                                    <span style={{
+                                        width: 16, height: 16, borderRadius: "50%",
+                                        border: `2px solid ${isSelected ? "#6D141A" : "#c4c0bb"}`,
+                                        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                                    }}>
+                                        {isSelected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#6D141A" }} />}
+                                    </span>
+                                    <span style={{ fontSize: 14, color: isSelected ? "#6D141A" : "#78716c", fontWeight: isSelected ? 600 : 400 }}>
+                                        {opt.label}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
                 <div className="mb-5">
                     <label className="block text-[11px] font-bold tracking-widest uppercase text-gb-label mb-2">
-                        CPF
+                        Identificação
                     </label>
                     <CustomTextField
+                        key={loginType}
                         title=""
-                        placeholder="000.000.000-00"
-                        maskType={loginTypeEnum.CPF}
+                        placeholder={selectedOption.placeholder}
+                        maskType={loginType === loginTypeEnum.EMAIL || loginType === loginTypeEnum.USERNAME ? undefined : loginType}
                         onBlur={(v) => setLogin(v)}
                         loginMethod={() => handleSubmit()}
                     />
