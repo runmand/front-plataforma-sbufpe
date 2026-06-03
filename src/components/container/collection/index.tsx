@@ -173,11 +173,11 @@ export default function Index() {
           </Typography>
         </Box>
 
-        {/* Busca */}
+        {/* Busca — alinhada à esquerda, abaixo do subtítulo */}
         <Box
           sx={{
             display: "flex",
-            justifyContent: { xs: "stretch", md: "flex-end" },
+            justifyContent: "flex-start",
           }}
         >
           <Box
@@ -186,7 +186,8 @@ export default function Index() {
               display: "flex",
               alignItems: "center",
               gap: "13px",
-              width: { xs: "100%", md: "320px" },
+              width: { xs: "100%", sm: "320px" },
+              maxWidth: "100%",
               height: "38px",
               boxSizing: "border-box",
               padding: "0 16px",
