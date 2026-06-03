@@ -19,28 +19,30 @@ export default function Index({ badge, article, author }: TPROPS) {
         flexDirection: "column",
       }}
     >
-      <Box
-        component="span"
-        sx={{
-          alignSelf: "flex-start",
-          padding: "2px 8px",
-          background: "#FEF2F2",
-          borderRadius: "4px",
-          fontFamily,
-          fontWeight: 700,
-          fontSize: "10px",
-          lineHeight: "15px",
-          letterSpacing: "-0.5px",
-          textTransform: "uppercase",
-          color: "#8B1E24",
-        }}
-      >
-        {badge}
-      </Box>
+      {badge && (
+        <Box
+          component="span"
+          sx={{
+            alignSelf: "flex-start",
+            padding: "2px 8px",
+            background: "#FEF2F2",
+            borderRadius: "4px",
+            fontFamily,
+            fontWeight: 700,
+            fontSize: "10px",
+            lineHeight: "15px",
+            letterSpacing: "-0.5px",
+            textTransform: "uppercase",
+            color: "#8B1E24",
+          }}
+        >
+          {badge}
+        </Box>
+      )}
 
       <Box
         sx={{
-          marginTop: "15px",
+          marginTop: badge ? "15px" : 0,
           fontFamily,
           fontWeight: 700,
           fontSize: "14px",

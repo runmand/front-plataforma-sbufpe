@@ -6,146 +6,76 @@ import { acervo } from "src/shared/dataBase";
 const fontFamily =
   "'Nimbus Sans', 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif";
 
-type Category = "ESTUDO" | "ARTIGO" | "DIRETRIZ";
+const PAGE_SIZE = 12;
 
-const diretrizKeywords = [
-  "portaria",
-  "política nacional",
-  "politica nacional",
-  "programa nacional",
-  "manual",
-  "caderno de atenção",
-  "caderno de atencao",
-  "diretrizes",
-  "diretriz",
-  "recomendação",
-  "recomendacao",
-  "resolução",
-  "resolucao",
-  "brasil sorridente",
-  "matriz avaliativa",
-  "protocolo",
-  "linha de cuidado",
-  "pccs",
-  "plano nacional",
-  "guia política",
-  "guia politica",
-  "nota técnica",
-  "nota tecnica",
-];
+function getPageNumbers(current: number, total: number): (number | "...")[] {
+  if (total <= 1) return [1];
 
-const scientificDomains = [
-  "scielo",
-  "scielosp",
-  "nature.com",
-  "ncbi.nlm.nih.gov",
-  "sciencedirect",
-  "liebertpub",
-  "sagepub",
-  "oup.com",
-  "academic.oup",
-  "europepmc",
-  "magonline",
-  "redalyc",
-  "doi.org",
-  "wiley",
-  "researchgate",
-  "pubmed",
-  "dialnet",
-  "ajph",
-  "periodicojs",
-  "revistaseletronicas",
-  "revabeno",
-  "rbmfc",
-  "frontiersin",
-  "tandfonline",
-  "lww.com",
-  "journals.",
-  "core.ac.uk",
-  "onlinelibrary",
-];
+  const delta = 1;
+  const range: number[] = [];
+  for (
+    let i = Math.max(2, current - delta);
+    i <= Math.min(total - 1, current + delta);
+    i++
+  ) {
+    range.push(i);
+  }
 
-const directiveStarts =
-  /^\s*(define|institui|dispõe|dispoe|regulamenta|aprova|estabelece|cria)\b/i;
+  const pages: (number | "...")[] = [1];
+  if (range.length && range[0] > 2) pages.push("...");
+  pages.push(...range);
+  if (range.length && range[range.length - 1] < total - 1) pages.push("...");
+  pages.push(total);
 
-const studyStarts =
-  /^\s*(curso|cursos|material de apoio|treinamento|residência|residencia|mestrado|doutorado)\b/i;
-
-function getCategory(item: {
-  article: string | null;
-  author: string | null;
-  link: string | null;
-}): Category {
-  const articleRaw = item.article || "";
-  const article = articleRaw.toLowerCase();
-  const author = (item.author || "").toLowerCase();
-  const link = (item.link || "").toLowerCase();
-
-  if (studyStarts.test(articleRaw)) return "ESTUDO";
-
-  const matchesDiretriz =
-    diretrizKeywords.some((kw) => article.includes(kw)) ||
-    directiveStarts.test(articleRaw);
-
-  if (matchesDiretriz) return "DIRETRIZ";
-
-  const isInstitutionalAuthor =
-    author.includes("ministério da saúde") ||
-    author.includes("ministerio da saude") ||
-    author.includes("world health organization") ||
-    author.includes("organização mundial") ||
-    /^\s*brasil\b/.test(author);
-
-  const isScientificLink = scientificDomains.some((d) => link.includes(d));
-
-  if (isInstitutionalAuthor && !isScientificLink) return "DIRETRIZ";
-
-  if (isScientificLink) return "ARTIGO";
-
-  return "ESTUDO";
+  return pages;
 }
 
-const acervoCategorized = acervo.map((item) => ({
-  ...item,
-  category: getCategory(item),
-}));
-
-const categories: { value: "" | Category; label: string }[] = [
-  { value: "", label: "TUDO" },
-  { value: "ESTUDO", label: "ESTUDOS" },
-  { value: "ARTIGO", label: "ARTIGOS" },
-  { value: "DIRETRIZ", label: "DIRETRIZES" },
-];
-
 export default function Index() {
-  const [categoryFilter, setCategoryFilter] = useState<"" | Category>("");
   const [searchText, setSearchText] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
 
-  const categoriesWithCount = useMemo(
-    () =>
-      categories.map((c) => ({
-        ...c,
-        count:
-          c.value === ""
-            ? acervoCategorized.length
-            : acervoCategorized.filter((a) => a.category === c.value).length,
-      })),
-    []
-  );
-
-  const newAcervo = useMemo(() => {
+  const filteredAcervo = useMemo(() => {
     const text = searchText.trim().toLowerCase();
-    return acervoCategorized
-      .filter((a) =>
-        categoryFilter === "" ? true : a.category === categoryFilter
-      )
-      .filter((a) =>
-        text === ""
-          ? true
-          : (a.article || "").toLowerCase().includes(text) ||
-            (a.author || "").toLowerCase().includes(text)
-      );
-  }, [categoryFilter, searchText]);
+    if (text === "") return acervo;
+    return acervo.filter(
+      (a) =>
+        (a.article || "").toLowerCase().includes(text) ||
+        (a.author || "").toLowerCase().includes(text)
+    );
+  }, [searchText]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredAcervo.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+
+  const pageItems = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filteredAcervo.slice(start, start + PAGE_SIZE);
+  }, [filteredAcervo, currentPage]);
+
+  const handleSearch = (value: string) => {
+    setSearchText(value);
+    setPage(1);
+  };
+
+  const goToPage = (next: number) => {
+    setPage(Math.min(Math.max(1, next), totalPages));
+  };
+
+  const paginationButton = (active: boolean): React.CSSProperties => ({
+    fontFamily,
+    fontWeight: 700,
+    fontSize: "14px",
+    lineHeight: "20px",
+    minWidth: "38px",
+    height: "38px",
+    padding: "0 12px",
+    borderRadius: "9999px",
+    cursor: "pointer",
+    transition: "background-color 0.2s, color 0.2s, border-color 0.2s",
+    background: active ? "#8B1E24" : "#FFFFFF",
+    color: active ? "#FFFFFF" : "#666666",
+    border: active ? "none" : "1px solid #E5E7EB",
+  });
 
   return (
     <Box
@@ -238,59 +168,18 @@ export default function Index() {
               maxWidth: "640px",
             }}
           >
-            Abaixo, apresentamos todos os estudos, artigos e diretrizes que
-            fundamentam as informações e recomendações presentes em nossa
-            plataforma.
+            Abaixo, apresentamos os estudos, artigos e diretrizes que fundamentam
+            as informações e recomendações presentes em nossa plataforma.
           </Typography>
         </Box>
 
-        {/* Filtros + busca */}
+        {/* Busca */}
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: "space-between",
-            alignItems: { xs: "stretch", md: "center" },
-            gap: "16px",
-            flexWrap: "wrap",
+            justifyContent: { xs: "stretch", md: "flex-end" },
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              gap: "8px",
-              flexWrap: "wrap",
-            }}
-          >
-            {categoriesWithCount.map((c) => {
-              const isActive = categoryFilter === c.value;
-              return (
-                <button
-                  key={c.value || "all"}
-                  onClick={() => setCategoryFilter(c.value)}
-                  style={{
-                    fontFamily,
-                    fontWeight: 700,
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    textAlign: "center",
-                    padding: isActive ? "9px 24px" : "8px 24px",
-                    borderRadius: "9999px",
-                    cursor: "pointer",
-                    transition:
-                      "background-color 0.2s, color 0.2s, border-color 0.2s",
-                    background: isActive ? "#8B1E24" : "#FFFFFF",
-                    color: isActive ? "#FFFFFF" : "#666666",
-                    border: isActive ? "none" : "1px solid #E5E7EB",
-                  }}
-                >
-                  {c.label}
-                  {c.value !== "" && ` (${c.count})`}
-                </button>
-              );
-            })}
-          </Box>
-
           <Box
             component="label"
             sx={{
@@ -341,7 +230,7 @@ export default function Index() {
               placeholder="Pesquisar referências..."
               value={searchText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchText(e.target.value)
+                handleSearch(e.target.value)
               }
               sx={{
                 flex: 1,
@@ -391,22 +280,87 @@ export default function Index() {
             gap: "24px",
           }}
         >
-          {newAcervo.map((item, index) => (
+          {pageItems.map((item, index) => (
             <Link
-              key={index}
+              key={`${currentPage}-${index}`}
               href={item.link}
               target="_blank"
               underline="none"
               sx={{ display: "block", height: "100%" }}
             >
               <Card
-                badge={item.category}
+                badge={item.type}
                 article={item.article}
                 author={item.author}
               />
             </Link>
           ))}
         </Box>
+
+        {totalPages > 1 && (
+          <Box
+            sx={{
+              marginTop: "32px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              style={{
+                ...paginationButton(false),
+                opacity: currentPage === 1 ? 0.5 : 1,
+                cursor: currentPage === 1 ? "default" : "pointer",
+              }}
+            >
+              Anterior
+            </button>
+
+            {getPageNumbers(currentPage, totalPages).map((p, i) =>
+              p === "..." ? (
+                <Box
+                  key={`ellipsis-${i}`}
+                  component="span"
+                  sx={{
+                    fontFamily,
+                    fontSize: "14px",
+                    color: "#9CA3AF",
+                    padding: "0 4px",
+                  }}
+                >
+                  …
+                </Box>
+              ) : (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => goToPage(p)}
+                  style={paginationButton(p === currentPage)}
+                >
+                  {p}
+                </button>
+              )
+            )}
+
+            <button
+              type="button"
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              style={{
+                ...paginationButton(false),
+                opacity: currentPage === totalPages ? 0.5 : 1,
+                cursor: currentPage === totalPages ? "default" : "pointer",
+              }}
+            >
+              Próxima
+            </button>
+          </Box>
+        )}
       </Box>
     </Box>
   );
