@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Link, Pagination, Typography } from "@mui/material";
 import Card from "../card/index";
 import { acervo } from "src/shared/dataBase";
 
@@ -7,28 +7,6 @@ const fontFamily =
   "'Nimbus Sans', 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif";
 
 const PAGE_SIZE = 12;
-
-function getPageNumbers(current: number, total: number): (number | "...")[] {
-  if (total <= 1) return [1];
-
-  const delta = 1;
-  const range: number[] = [];
-  for (
-    let i = Math.max(2, current - delta);
-    i <= Math.min(total - 1, current + delta);
-    i++
-  ) {
-    range.push(i);
-  }
-
-  const pages: (number | "...")[] = [1];
-  if (range.length && range[0] > 2) pages.push("...");
-  pages.push(...range);
-  if (range.length && range[range.length - 1] < total - 1) pages.push("...");
-  pages.push(total);
-
-  return pages;
-}
 
 export default function Index() {
   const [searchText, setSearchText] = useState<string>("");
@@ -71,43 +49,6 @@ export default function Index() {
   const goToPage = (next: number) => {
     setPage(Math.min(Math.max(1, next), totalPages));
   };
-
-  const pageNumberButton = (active: boolean): React.CSSProperties => ({
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontFamily,
-    fontWeight: active ? 700 : 400,
-    fontSize: "16px",
-    lineHeight: "24px",
-    letterSpacing: "0px",
-    textAlign: "center",
-    width: "40px",
-    height: "40px",
-    padding: 0,
-    borderRadius: "4px",
-    cursor: "pointer",
-    transition: "background-color 0.2s, color 0.2s, border-color 0.2s",
-    background: active ? "#8B1E24" : "transparent",
-    color: active ? "#FFFFFF" : "#666666",
-    border: active ? "none" : "1px solid #E5E7EB",
-  });
-
-  const arrowButton = (disabled: boolean): React.CSSProperties => ({
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "40px",
-    height: "40px",
-    padding: 0,
-    borderRadius: "4px",
-    background: "transparent",
-    border: "1px solid #E5E7EB",
-    color: "#666666",
-    transition: "background-color 0.2s, border-color 0.2s, opacity 0.2s",
-    opacity: disabled ? 0.5 : 1,
-    cursor: disabled ? "default" : "pointer",
-  });
 
   return (
     <Box
@@ -337,86 +278,49 @@ export default function Index() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "8px",
-              flexWrap: "wrap",
             }}
           >
-            <button
-              type="button"
-              aria-label="Página anterior"
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              style={arrowButton(currentPage === 1)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-
-            {getPageNumbers(currentPage, totalPages).map((p, i) =>
-              p === "..." ? (
-                <Box
-                  key={`ellipsis-${i}`}
-                  component="span"
-                  sx={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "40px",
-                    height: "40px",
-                    fontFamily,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    color: "#666666",
-                  }}
-                >
-                  …
-                </Box>
-              ) : (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => goToPage(p)}
-                  style={pageNumberButton(p === currentPage)}
-                >
-                  {p}
-                </button>
-              )
-            )}
-
-            <button
-              type="button"
-              aria-label="Próxima página"
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              style={arrowButton(currentPage === totalPages)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
+            <Pagination
+              page={currentPage}
+              count={totalPages}
+              onChange={(_, next) => goToPage(next)}
+              siblingCount={1}
+              boundaryCount={1}
+              sx={{
+                "& .MuiPagination-ul": {
+                  gap: "8px",
+                },
+                "& .MuiPaginationItem-root": {
+                  width: "40px",
+                  height: "40px",
+                  margin: 0,
+                  borderRadius: "4px",
+                  border: "1px solid #E5E7EB",
+                  fontFamily,
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "24px",
+                  letterSpacing: "0px",
+                  color: "#666666",
+                  "&:hover": {
+                    backgroundColor: "#F9FAFB",
+                  },
+                },
+                "& .MuiPaginationItem-ellipsis": {
+                  border: "none",
+                  color: "#666666",
+                },
+                "& .MuiPaginationItem-root.Mui-selected": {
+                  backgroundColor: "#8B1E24",
+                  border: "none",
+                  color: "#FFFFFF",
+                  fontWeight: 700,
+                  "&:hover": {
+                    backgroundColor: "#8B1E24",
+                  },
+                },
+              }}
+            />
           </Box>
         )}
       </Box>
