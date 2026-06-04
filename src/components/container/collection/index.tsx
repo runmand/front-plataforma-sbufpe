@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Link, Typography } from "@mui/material";
 import Card from "../card/index";
 import { acervo } from "src/shared/dataBase";
@@ -33,6 +33,17 @@ function getPageNumbers(current: number, total: number): (number | "...")[] {
 export default function Index() {
   const [searchText, setSearchText] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [footerHeight, setFooterHeight] = useState<number>(44);
+
+  useEffect(() => {
+    const measure = () => {
+      const footer = document.querySelector("footer");
+      if (footer) setFooterHeight(footer.getBoundingClientRect().height);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const filteredAcervo = useMemo(() => {
     const text = searchText.trim().toLowerCase();
@@ -61,20 +72,41 @@ export default function Index() {
     setPage(Math.min(Math.max(1, next), totalPages));
   };
 
-  const paginationButton = (active: boolean): React.CSSProperties => ({
+  const pageNumberButton = (active: boolean): React.CSSProperties => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     fontFamily,
-    fontWeight: 700,
-    fontSize: "14px",
-    lineHeight: "20px",
-    minWidth: "38px",
-    height: "38px",
-    padding: "0 12px",
-    borderRadius: "9999px",
+    fontWeight: active ? 700 : 400,
+    fontSize: "16px",
+    lineHeight: "24px",
+    letterSpacing: "0px",
+    textAlign: "center",
+    width: "40px",
+    height: "40px",
+    padding: 0,
+    borderRadius: "4px",
     cursor: "pointer",
     transition: "background-color 0.2s, color 0.2s, border-color 0.2s",
-    background: active ? "#8B1E24" : "#FFFFFF",
+    background: active ? "#8B1E24" : "transparent",
     color: active ? "#FFFFFF" : "#666666",
     border: active ? "none" : "1px solid #E5E7EB",
+  });
+
+  const arrowButton = (disabled: boolean): React.CSSProperties => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "40px",
+    height: "40px",
+    padding: 0,
+    borderRadius: "4px",
+    background: "transparent",
+    border: "1px solid #E5E7EB",
+    color: "#666666",
+    transition: "background-color 0.2s, border-color 0.2s, opacity 0.2s",
+    opacity: disabled ? 0.5 : 1,
+    cursor: disabled ? "default" : "pointer",
   });
 
   return (
@@ -83,7 +115,6 @@ export default function Index() {
         background: "#FFFFFF",
         marginTop: "68px",
         paddingTop: "25px",
-        minHeight: "88vh",
         display: "flex",
         flexDirection: "column",
       }}
@@ -178,6 +209,7 @@ export default function Index() {
           sx={{
             display: "flex",
             justifyContent: "flex-start",
+            marginTop: "16px",
           }}
         >
           <Box
@@ -267,7 +299,7 @@ export default function Index() {
           width: "100%",
           boxSizing: "border-box",
           marginTop: "48px",
-          padding: "0 32px 48px",
+          padding: `0 32px calc(48px + ${footerHeight}px)`,
         }}
       >
         <Box
@@ -301,7 +333,7 @@ export default function Index() {
         {totalPages > 1 && (
           <Box
             sx={{
-              marginTop: "32px",
+              marginTop: "48px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -311,15 +343,25 @@ export default function Index() {
           >
             <button
               type="button"
+              aria-label="Página anterior"
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-              style={{
-                ...paginationButton(false),
-                opacity: currentPage === 1 ? 0.5 : 1,
-                cursor: currentPage === 1 ? "default" : "pointer",
-              }}
+              style={arrowButton(currentPage === 1)}
             >
-              Anterior
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
             </button>
 
             {getPageNumbers(currentPage, totalPages).map((p, i) =>
@@ -328,10 +370,15 @@ export default function Index() {
                   key={`ellipsis-${i}`}
                   component="span"
                   sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "40px",
+                    height: "40px",
                     fontFamily,
-                    fontSize: "14px",
-                    color: "#9CA3AF",
-                    padding: "0 4px",
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    color: "#666666",
                   }}
                 >
                   …
@@ -341,7 +388,7 @@ export default function Index() {
                   key={p}
                   type="button"
                   onClick={() => goToPage(p)}
-                  style={paginationButton(p === currentPage)}
+                  style={pageNumberButton(p === currentPage)}
                 >
                   {p}
                 </button>
@@ -350,15 +397,25 @@ export default function Index() {
 
             <button
               type="button"
+              aria-label="Próxima página"
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              style={{
-                ...paginationButton(false),
-                opacity: currentPage === totalPages ? 0.5 : 1,
-                cursor: currentPage === totalPages ? "default" : "pointer",
-              }}
+              style={arrowButton(currentPage === totalPages)}
             >
-              Próxima
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
             </button>
           </Box>
         )}
