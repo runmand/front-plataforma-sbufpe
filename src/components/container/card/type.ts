@@ -1,5 +1,5 @@
 export type TPROPS = {
-  article:string,
-  author:string
-
-}
+  badge: string;
+  article: string;
+  author: string;
+};
