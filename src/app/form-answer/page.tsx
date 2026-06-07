@@ -28,7 +28,7 @@ function FormAnswerContent() {
     const [formResult, setFormResult] = useState<GET_USER_RESULT_FROM_FORM_RES | null>();
 
     function hasSignedRequiredTerm(id: number): boolean {
-        if ([1, 3, 4].includes(id)) return sessionStorage.getItem('tcle_TCLEPROF') === '1';
+        if ([1, 3, 4, 15].includes(id)) return sessionStorage.getItem('tcle_TCLEPROF') === '1';
         if (id === 6 || id === 2) return sessionStorage.getItem('tcle_TCLE') === '1' || sessionStorage.getItem('tcle_TCLE2') === '1';
         return sessionStorage.getItem('tcle_TCLE') === '1';
     }

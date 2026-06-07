@@ -138,7 +138,7 @@ export default function Index(props: TPROPS) {
 
                                 handleAnswerQuestion(data);
                             }}
-                            choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId) ? "autoComplete" : "radio"}
+                            choiceType={selectOptions.includes(props.question.formQuestionFormRegisterId) ? "autoComplete" : props.question.type.cod === 'MC' ? "checkbox" : "radio"}
                         />
                     )}
                     {hasError && (

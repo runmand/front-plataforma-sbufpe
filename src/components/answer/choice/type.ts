@@ -5,7 +5,7 @@ export type TPROPS = {
 	formQuestionFormRegisterId: ID;
 	choices: CHOICE[];
 	onSelectChoice: (value: QUESTION_ANSWER) => void;
-	choiceType?:'radio' | 'autoComplete'
+	choiceType?:'radio' | 'autoComplete' | 'checkbox'
 };
 
 export type CHOICE = {

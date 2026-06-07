@@ -330,7 +330,7 @@ export default function TcleModal(props: Props) {
                             <TermsText
                                 $checked={checkedTCLEPROF}
                                 style={{
-                                    display: props.idForm == "1" || props.idForm == "3" || props.idForm == "4" ? "" : "none",
+                                    display: props.idForm == "1" || props.idForm == "3" || props.idForm == "4" || props.idForm == "15" ? "" : "none",
                                     cursor: checkedTCLEPROF ? 'default' : 'pointer',
                                     pointerEvents: checkedTCLEPROF ? 'none' : 'auto',
                                 }}
