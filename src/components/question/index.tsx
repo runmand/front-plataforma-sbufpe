@@ -98,6 +98,7 @@ export default function Index(props: TPROPS) {
                         <OpenAnswer
                             formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
                             placeholder={props.question.completionMessage || undefined}
+                            inputType={/idade|quanto tempo|ano[s]?|número|numeração/i.test(props.question.title) ? 'number' : 'text'}
                             onAnswerQuestion={(data) => {
                                 handleAnswerQuestion(data);
                             }}

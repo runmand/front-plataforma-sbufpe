@@ -129,6 +129,7 @@ export default function Index(props: TPROPS) {
 										padding: '10px 14px',
 										borderRadius: '10px',
 										border: `1.5px solid ${C.border}`,
+										backgroundColor: '#ffffff',
 										fontFamily: ff.body,
 										fontSize: '15px',
 										color: C.text,
