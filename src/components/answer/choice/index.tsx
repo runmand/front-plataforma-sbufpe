@@ -11,7 +11,7 @@ export default function Index(props: TPROPS) {
 
 	// Checkbox mode state
 	const [checkedIndices, setCheckedIndices] = React.useState<Set<number>>(new Set());
-	const [outraText, setOutraText] = React.useState('');
+	const [otherText, setOtherText] = React.useState('');
 
 	const handleSelectChoice = (index: number, choice: CHOICE) => {
 		const temp = answer.slice();
@@ -24,12 +24,9 @@ export default function Index(props: TPROPS) {
 
 	const handleCheckboxToggle = (index: number, choice: CHOICE) => {
 		const next = new Set(checkedIndices);
-		if (next.has(index)) {
-			next.delete(index);
-			if (choice.title.toLowerCase().includes('outra')) setOutraText('');
-		} else {
-			next.add(index);
-		}
+		const removing = next.has(index);
+		removing ? next.delete(index) : next.add(index);
+		if (removing && choice.title.toLowerCase().includes('outra')) setOtherText('');
 		setCheckedIndices(next);
 		const temp = Array(props.choices.length).fill(0);
 		next.forEach((i) => { temp[i] = Number(props.choices[i].formsQuestionFormsQuestionChoicesId); });
@@ -67,7 +64,7 @@ export default function Index(props: TPROPS) {
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
 				{props.choices.map((choice, index) => {
 					const isChecked = checkedIndices.has(index);
-					const isOutra = choice.title.toLowerCase().includes('outra');
+					const isOther = choice.title.toLowerCase().includes('outra');
 					return (
 						<React.Fragment key={index}>
 							<label
@@ -110,13 +107,13 @@ export default function Index(props: TPROPS) {
 									{choice.title}
 								</span>
 							</label>
-							{isOutra && isChecked && (
+							{isOther && isChecked && (
 								<input
 									type="text"
 									placeholder="Especifique a especialidade"
-									value={outraText}
+									value={otherText}
 									onChange={(e) => {
-										setOutraText(e.target.value);
+										setOtherText(e.target.value);
 										const temp = Array(props.choices.length).fill(0);
 										checkedIndices.forEach((i) => { temp[i] = Number(props.choices[i].formsQuestionFormsQuestionChoicesId); });
 										props.onSelectChoice({
