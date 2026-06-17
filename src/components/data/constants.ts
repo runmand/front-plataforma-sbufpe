@@ -33,6 +33,10 @@ export const forms_allowed: INDEX_RES[] = [
         id: 8,
         title: "Planeja SD - Pratico",
     },
+    {
+        id: 15,
+        title: "Satisfação Profissional dos CD",
+    },
 ];
 
 export const version_constants: INDEX_RES[] = [
