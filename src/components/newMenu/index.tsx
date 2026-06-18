@@ -426,6 +426,7 @@ export default function Index() {
             />
             <DrawerMenu isOpen={drawerOpen} menuItems={menu} onClose={() => setDrawerOpen(false)} />
             <DrawerMenu
+                showPDF={false}
                 showExit={haveLogin}
                 exitFunction={handleLogout}
                 isOpen={drawerTwoOpen}
