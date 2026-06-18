@@ -354,50 +354,53 @@ export default function Index(props: TPROPS) {
                         </button>
                     </div>
                 ) : (
-                    <div
-                        style={{
-                            padding: "16px",
-                            borderTop: `1px solid ${C.border}`,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "8px",
-                            flexShrink: 0,
-                        }}
-                    >
-                        {[
-                            { label: "Baixar PDF — Avaliações", action: () => downloadPdf() },
-                            { label: "Baixar PDF — PlanejaSD Teórico", action: () => downloadPlanejaPDF("teoric") },
-                            { label: "Baixar PDF — PlanejaSD Prático", action: () => downloadPlanejaPDF("pratical") },
-                        ].map(({ label, action }, i) => (
-                            <button
-                                key={i}
-                                onClick={action}
-                                style={{
-                                    width: "100%",
-                                    padding: "11px 16px",
-                                    background: `linear-gradient(135deg, ${C.primary}, ${C.secondary})`,
-                                    color: "#fff",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    cursor: "pointer",
-                                    fontFamily: ff.body,
-                                    fontSize: "13px",
-                                    fontWeight: 700,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.05em",
-                                    transition: "opacity 0.2s",
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.opacity = "0.85";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.opacity = "1";
-                                }}
-                            >
-                                {label}
-                            </button>
-                        ))}
-                    </div>
+                    props.showPDF ||
+                    (props.showPDF == undefined && (
+                        <div
+                            style={{
+                                padding: "16px",
+                                borderTop: `1px solid ${C.border}`,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "8px",
+                                flexShrink: 0,
+                            }}
+                        >
+                            {[
+                                { label: "Baixar PDF — Avaliações", action: () => downloadPdf() },
+                                { label: "Baixar PDF — PlanejaSD Teórico", action: () => downloadPlanejaPDF("teoric") },
+                                { label: "Baixar PDF — PlanejaSD Prático", action: () => downloadPlanejaPDF("pratical") },
+                            ].map(({ label, action }, i) => (
+                                <button
+                                    key={i}
+                                    onClick={action}
+                                    style={{
+                                        width: "100%",
+                                        padding: "11px 16px",
+                                        background: `linear-gradient(135deg, ${C.primary}, ${C.secondary})`,
+                                        color: "#fff",
+                                        border: "none",
+                                        borderRadius: "10px",
+                                        cursor: "pointer",
+                                        fontFamily: ff.body,
+                                        fontSize: "13px",
+                                        fontWeight: 700,
+                                        textTransform: "uppercase",
+                                        letterSpacing: "0.05em",
+                                        transition: "opacity 0.2s",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.opacity = "0.85";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.opacity = "1";
+                                    }}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                    ))
                 )}
             </div>
         </>
