@@ -382,23 +382,27 @@ export default function Index() {
                                     → Sair
                                 </button>
                             ) : (
-                                <button
-                                    onClick={() => setDrawerTwoOpen(true)}
-                                    style={{
-                                        ...btnBase,
-                                        padding: "8px 14px",
-                                        fontSize: "14px",
-                                        fontWeight: 600,
-                                        color: "rgba(255,255,255,0.88)",
-                                        background: "rgba(255,255,255,0.08)",
-                                        border: "1px solid rgba(255,255,255,0.15)",
-                                        borderRadius: "8px",
-                                    }}
-                                >
-                                    ⊕ Páginas
-                                </button>
+                                <></>
                             )}
                         </div>
+                    )}
+
+                    {isMobile && (
+                        <button
+                            onClick={() => setDrawerTwoOpen(true)}
+                            style={{
+                                ...btnBase,
+                                padding: "8px 14px",
+                                fontSize: "14px",
+                                fontWeight: 600,
+                                color: "rgba(255,255,255,0.88)",
+                                background: "rgba(255,255,255,0.08)",
+                                border: "1px solid rgba(255,255,255,0.15)",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            ⊕ Páginas
+                        </button>
                     )}
                 </div>
             </nav>
@@ -421,7 +425,13 @@ export default function Index() {
                 openTclePage={() => router.push(routerEnum.TCLE)}
             />
             <DrawerMenu isOpen={drawerOpen} menuItems={menu} onClose={() => setDrawerOpen(false)} />
-            <DrawerMenu showExit={true} exitFunction={handleLogout} isOpen={drawerTwoOpen} menuItems={menu} onClose={() => setDrawerTwoOpen(false)} />
+            <DrawerMenu
+                showExit={haveLogin}
+                exitFunction={handleLogout}
+                isOpen={drawerTwoOpen}
+                menuItems={menuTwo}
+                onClose={() => setDrawerTwoOpen(false)}
+            />
         </>
     );
 }
