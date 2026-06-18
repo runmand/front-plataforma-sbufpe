@@ -1,7 +1,9 @@
-import { MENU_ITEM } from '../items/type';
+import { MENU_ITEM } from "../items/type";
 
 export type TPROPS = {
-  isOpen: boolean;
-  menuItems: MENU_ITEM[];
-  onClose: () => void;
+    showExit?: boolean;
+    exitFunction?: () => void;
+    isOpen: boolean;
+    menuItems: MENU_ITEM[];
+    onClose: () => void;
 };
