@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 
 interface IProps {
   onSubmit: (values: IValues) => void;
@@ -68,7 +68,6 @@ export const FourthStep = ({
   saveData,
   dataSaved
 }: IProps) => {
-  const [isCriticalResource, setIsCriticalResource] = useState("");
 
   const [values, setValues] = React.useState<IValues>({
     mentalMapUrl: stepValues.mentalMapUrl,
@@ -184,8 +183,8 @@ export const FourthStep = ({
   ) {
     setValues((prevInputValues) => ({
       ...prevInputValues,
-      actions: prevInputValues.actions.map((item) => {
-        if (actionIndex === actionIndex) {
+      actions: prevInputValues.actions.map((item, actionValIndex) => {
+        if (actionIndex === actionValIndex) {
           return {
             ...item,
             resources: item.resources.map((resource, i) => {
@@ -457,8 +456,6 @@ export const FourthStep = ({
                           "itsCricticalResource",
                           e.target.value
                         );
-
-                        setIsCriticalResource(e.target.value);
                       }}
                       required={resourceIndex === 0}
                     >
@@ -467,7 +464,7 @@ export const FourthStep = ({
                     </Select>
                   </Box>
 
-                  {isCriticalResource === "Sim" && (
+                  {resource.itsCricticalResource === "Sim" && (
                     <Box width={"100%"}>
                       <InputLabel id={`described_strategies-${resourceIndex}`}>
                         Descreva as estratégias para obtenção do recurso, se ele

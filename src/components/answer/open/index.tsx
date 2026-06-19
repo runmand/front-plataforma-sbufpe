@@ -1,8 +1,16 @@
 import { TPROPS } from './type';
 
 export default function Index(props: TPROPS) {
+	const isNumeric = props.inputType === 'number';
+
 	const handleAnswerQuestion = (answer: string) => {
 		props.onAnswerQuestion({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer });
+	};
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const val = isNumeric ? e.target.value.replace(/\D/g, '') : e.target.value;
+		handleAnswerQuestion(val);
+		if (isNumeric) e.target.value = val;
 	};
 
 	return (
@@ -19,9 +27,11 @@ export default function Index(props: TPROPS) {
 			<input
 				className="gestbucal-input"
 				type="text"
+				inputMode={isNumeric ? 'numeric' : 'text'}
+				pattern={isNumeric ? '[0-9]*' : undefined}
 				placeholder={props.placeholder || 'Digite sua resposta...'}
-				onChange={(e) => handleAnswerQuestion(e.target.value)}
-				onBlur={(e) => handleAnswerQuestion(e.target.value)}
+				onChange={handleChange}
+				onBlur={(e) => handleAnswerQuestion(isNumeric ? e.target.value.replace(/\D/g, '') : e.target.value)}
 				style={{
 					width: '100%',
 					padding: '10px 12px',
