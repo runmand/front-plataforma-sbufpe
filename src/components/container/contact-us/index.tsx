@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 
 const fontDisplay = "'Newsreader', Georgia, 'Times New Roman', serif";
 
@@ -27,26 +28,6 @@ const inputSx = {
     borderColor: "#841A1A",
   },
 };
-
-function EnvelopeIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#841A1A"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="M22 6L12 13L2 6" />
-    </svg>
-  );
-}
 
 type FieldProps = {
   id: string;
@@ -189,7 +170,10 @@ export default function Index() {
                 background: "#F9FAFB",
               }}
             >
-              <EnvelopeIcon />
+              <MailOutlineIcon
+                sx={{ width: 24, height: 24, color: "#841A1A" }}
+                aria-hidden
+              />
             </Box>
 
             <Box sx={{ minWidth: 0 }}>
