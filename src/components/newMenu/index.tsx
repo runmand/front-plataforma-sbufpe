@@ -181,13 +181,11 @@ export default function Index() {
         setHaveLogin(false);
     };
 
-    const nossosItens = haveLogin
-        ? [{ label: "APS", route: routerEnum.DATAAPS }]
-        : [
-              { label: "APS", route: routerEnum.DATAAPS },
-              { label: "Usuários", route: routerEnum.USER },
-              { label: "CEO", route: routerEnum.CEO },
-          ];
+    const nossosItens = [
+        { label: "Usuários", route: routerEnum.USER },
+        { label: "CEO", route: routerEnum.CEO },
+        { label: "APS", route: routerEnum.APS },
+    ];
 
     const menuList = [
         {
