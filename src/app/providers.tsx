@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { theme } from 'src/core/theme';
 import { setSnackbarRef } from 'src/core/snackbar';
 import CustomSnackbar from 'src/components/snackbar';
+import CensoConsentModal from '@components/modal/censo-consent';
 
 function SnackbarConfigurator(): null {
     const ctx = useSnackbar();
@@ -31,6 +32,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
                 <SnackbarConfigurator />
+                <CensoConsentModal />
                 {children}
             </SnackbarProvider>
         </ThemeProvider>

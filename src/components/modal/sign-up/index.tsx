@@ -5,7 +5,7 @@ import { TPROPS, USER_TYPE } from "./type";
 import CustomTextField from "@components/text-field/index";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
-import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
+import { emitterWindowEventEnum, localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
 import SignupService from "./service";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -85,6 +85,7 @@ export default function Index(props: TPROPS) {
                     enqueueSnackbar("Registro efetuado com sucesso!", { variant: "success" });
                     localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token);
                     localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + "");
+                    window.dispatchEvent(new Event(emitterWindowEventEnum.LOGIN_SUCCESS));
                     router.push(routerEnum.FORM);
                 } else {
                     setIsLoading(false);

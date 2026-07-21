@@ -6,7 +6,7 @@ import CustomTextField from "@components/text-field/index";
 import LoginService from "./service";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
-import { localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
+import { emitterWindowEventEnum, localStorageKeyEnum, loginTypeEnum, routerEnum } from "src/core/enums";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -50,6 +50,7 @@ export default function Index(props: TPROPS) {
                     localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token);
                     localStorage.setItem(localStorageKeyEnum.USER_ID, res.data.user_id + "");
                     localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + "");
+                    window.dispatchEvent(new Event(emitterWindowEventEnum.LOGIN_SUCCESS));
                     router.push(routerEnum.FORM);
                 } else {
                     setIsLoading(false);

@@ -23,6 +23,7 @@ export enum routerEnum {
     APS = "/apsdata",
     USER = "/userdata",
     TCLE = "/tcle",
+    TCLE_CENSO = "/tcle-censo",
     DIRECTION = "/direction",
     DATAFORM = "/dataform",
 }
@@ -39,6 +40,7 @@ export enum titleEnumPtBr {
     "/" = "Início",
     "/home" = "Início",
     "/tcle" = "TCLE",
+    "/tcle-censo" = "TCLE do Censo",
     "/direction" = "Endereço",
     "/form" = "Formularios",
     // "/question" = "Questionario inicial",
@@ -53,6 +55,11 @@ export enum localStorageKeyEnum {
     TOKEN = "token",
     TYPE_ID = "typeId",
     USER_ID = "userId",
+    CENSO_TCLE_STATUS = "censoTcleStatus",
+}
+
+export enum emitterWindowEventEnum {
+    LOGIN_SUCCESS = "gb:login-success",
 }
 
 export enum loginTypeEnum {
