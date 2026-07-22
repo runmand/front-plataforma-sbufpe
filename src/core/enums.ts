@@ -25,6 +25,7 @@ export enum routerEnum {
     TCLE = "/tcle",
     DIRECTION = "/direction",
     DATAFORM = "/dataform",
+    INFORMES = "/informes",
 }
 
 export enum titleEnumPtBr {

@@ -192,7 +192,7 @@ export default function Index() {
             title: "Acervo",
             items: [
                 { label: "Artigos", route: routerEnum.ARTICLES },
-                { label: "InformeSBPE", route: "/informes" },
+                { label: "InformeSBPE", route: routerEnum.INFORMES },
             ],
         },
         {
