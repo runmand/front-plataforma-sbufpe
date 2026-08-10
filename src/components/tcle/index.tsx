@@ -7,6 +7,7 @@ import TALEU18 from "./tcle-document/TALEU18";
 import TALEU13 from "./tcle-document/TALEU13";
 import TCLE2 from "./tcle-document/TCLE2";
 import TCLEPROF from "./tcle-document/TCLEPROF";
+import TCLEUSABILIDADE from "./tcle-document/TCLEUSABILIDADE";
 import { ID } from "src/core/types";
 import { http } from "src/core/axios";
 import { useSnackbar } from "notistack";
@@ -90,6 +91,7 @@ export default function TcleModal(props: Props) {
     const TALERef = useRef<TermRef>(null);
     const TALEURef = useRef<TermRefNew>(null);
     const TCLEPROFRef = useRef<TermRef>(null);
+    const TCLEUSABRef = useRef<TermRef>(null);
     const [openForm, setOpenForm] = useState(false);
     const [checkedTCLE, setCheckedTCLE] = useState(false);
     const [dataTCLE, setDataTCLE] = useState<DataTerm | null>(null);
@@ -97,6 +99,8 @@ export default function TcleModal(props: Props) {
     const [dataTCLE2, setDataTCLE2] = useState<DataTerm | null>(null);
     const [checkedTCLEPROF, setCheckedTCLEPROF] = useState(false);
     const [dataTCLEPROF, setDataTCLEPROF] = useState<DataTerm | null>(null);
+    const [checkedTCLEUSAB, setCheckedTCLEUSAB] = useState(false);
+    const [dataTCLEUSAB, setDataTCLEUSAB] = useState<DataTerm | null>(null);
     const [checkedTALE18, setCheckedTALE18] = useState(false);
     const [dataTALE, setDataTALE] = useState<DataTerm | null>(null);
     const [checkedTALEUNDER13, setCheckedTALEUNDER13] = useState(false);
@@ -104,7 +108,7 @@ export default function TcleModal(props: Props) {
     const largeQuery = useMediaQuery("(min-width:720px)");
     const snackBar = useSnackbar();
 
-    const [termSelected, setTermSelected] = useState<"TCLE" | "TCLE2" | "TALE18" | "TALEU13" | "TCLEPROF">("TCLEPROF");
+    const [termSelected, setTermSelected] = useState<"TCLE" | "TCLE2" | "TALE18" | "TALEU13" | "TCLEPROF" | "TCLEUSAB">("TCLEPROF");
     const [hasReadTerm, setHasReadTerm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -113,6 +117,7 @@ export default function TcleModal(props: Props) {
         setCheckedTCLE(sessionStorage.getItem('tcle_TCLE') === '1');
         setCheckedTCLE2(sessionStorage.getItem('tcle_TCLE2') === '1');
         setCheckedTCLEPROF(sessionStorage.getItem('tcle_TCLEPROF') === '1');
+        setCheckedTCLEUSAB(sessionStorage.getItem('tcle_TCLEUSAB') === '1');
         setCheckedTALE18(sessionStorage.getItem('tcle_TALE18') === '1');
         setCheckedTALEUNDER13(sessionStorage.getItem('tcle_TALEU13') === '1');
     }, []);
@@ -146,6 +151,9 @@ export default function TcleModal(props: Props) {
             } else if (termSelected == "TALEU13") {
                 states = await TALEURef.current?.getStatesNew();
                 if (states) { states.form = Number(props.idForm); setDataTALEU(states); setCheckedTALEUNDER13(true); sessionStorage.setItem('tcle_TALEU13', '1'); }
+            } else if (termSelected == "TCLEUSAB") {
+                states = await TCLEUSABRef.current?.getStates();
+                if (states) { states.form = Number(props.idForm); setDataTCLEUSAB(states); setCheckedTCLEUSAB(true); sessionStorage.setItem('tcle_TCLEUSAB', '1'); }
             }
             if (states) setOpenForm(false);
         } finally {
@@ -200,7 +208,16 @@ export default function TcleModal(props: Props) {
         }
 
         // Demais forms
-        const tcleData = dataTCLE ?? dataTCLEPROF;
+        const tcleData = dataTCLE ?? dataTCLEPROF ?? dataTCLEUSAB;
+
+        // Termo já assinado em uma visita anterior (sessionStorage), mas o
+        // payload (PDF/base64) não sobrevive a um reload — não é preciso
+        // reenviar pro backend, só liberar o formulário.
+        if (!tcleData && (checkedTCLE || checkedTCLEPROF || checkedTCLEUSAB)) {
+            props.goForm();
+            props.setOpenTCLE(false);
+            return;
+        }
 
         if (tcleData) {
             setLoading(true);
@@ -345,6 +362,24 @@ export default function TcleModal(props: Props) {
                                 </span>
                                 <Badge checked={checkedTCLEPROF} />
                             </TermsText>
+                            <TermsText
+                                $checked={checkedTCLEUSAB}
+                                style={{
+                                    display: props.idForm == "16" ? "" : "none",
+                                    cursor: checkedTCLEUSAB ? 'default' : 'pointer',
+                                    pointerEvents: checkedTCLEUSAB ? 'none' : 'auto',
+                                }}
+                                onClick={() => { setOpenForm(true); setTermSelected("TCLEUSAB"); }}
+                            >
+                                <DocIcon checked={checkedTCLEUSAB} />
+                                <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTCLEUSAB ? '#6D141A' : '#1c1917', lineHeight: 1.3 }}>
+                                        Termo de Consentimento — Teste de Usabilidade
+                                    </span>
+                                    <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>GestBucalSD · Teste de usabilidade da plataforma</span>
+                                </span>
+                                <Badge checked={checkedTCLEUSAB} />
+                            </TermsText>
                             {(() => {
                                 const tcle2Skippable = (props.idForm == "6" || props.idForm == "2") && checkedTCLE && !checkedTCLE2;
                                 return (
@@ -454,6 +489,7 @@ export default function TcleModal(props: Props) {
                         {termSelected == "TALE18" && <DocumentTitle>Termo de Assentimento Livre e Esclarecido (Para Menores de 13 a 18 Anos)</DocumentTitle>}
                         {termSelected == "TCLE2" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido (Para Maiores de 18 Anos)</DocumentTitle>}
                         {termSelected == "TCLEPROF" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido – Módulos 1, 2 e 3 - Profissionais</DocumentTitle>}
+                        {termSelected == "TCLEUSAB" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido (TCLE) – Versão Digital</DocumentTitle>}
 
                         <TermScrollArea onScroll={handleTermScroll}>
                             <div style={{ display: termSelected == "TCLE" ? "" : "none" }}><TCLE ref={TCLERef} /></div>
@@ -461,6 +497,7 @@ export default function TcleModal(props: Props) {
                             <div style={{ display: termSelected == "TALE18" ? "" : "none" }}><TALEU18 ref={TALERef} /></div>
                             <div style={{ display: termSelected == "TCLE2" ? "" : "none" }}><TCLE2 ref={TCLE2Ref} /></div>
                             <div style={{ display: termSelected == "TCLEPROF" ? "" : "none" }}><TCLEPROF ref={TCLEPROFRef} /></div>
+                            <div style={{ display: termSelected == "TCLEUSAB" ? "" : "none" }}><TCLEUSABILIDADE ref={TCLEUSABRef} /></div>
                         </TermScrollArea>
 
                         {!hasReadTerm && (
