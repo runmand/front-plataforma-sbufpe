@@ -30,6 +30,7 @@ function FormAnswerContent() {
     function hasSignedRequiredTerm(id: number): boolean {
         if ([1, 3, 4, 15].includes(id)) return sessionStorage.getItem('tcle_TCLEPROF') === '1';
         if (id === 6 || id === 2) return sessionStorage.getItem('tcle_TCLE') === '1' || sessionStorage.getItem('tcle_TCLE2') === '1';
+        if (id === 16) return sessionStorage.getItem('tcle_TCLEUSAB') === '1';
         return sessionStorage.getItem('tcle_TCLE') === '1';
     }
 
