@@ -1,117 +1,92 @@
-import { Box, List, ListItem, ListItemButton, Typography } from '@mui/material';
-import { theme } from 'src/core/theme';
-import { TPROPS } from './type';
-import { containerBodyTypeEnum, } from 'src/core/enums';
+import * as React from "react";
+import { routerEnum } from "src/core/enums";
+import { useRouter } from "next/navigation";
 
-const infoList = [
+const ff = { body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif" };
 
-	{
-		title: 'Sobre',
-		items: [
-			{
-				title: 'Quem somos?',
-				url: containerBodyTypeEnum.ABOUT_US,
-			},
-			{
-				title: 'O que é GestBucal',
-				url: containerBodyTypeEnum.WHAT_IS,
-			},
-			{
-				title: 'TCLE',
-				url: containerBodyTypeEnum.TCLE,
-			},
-		],
-	},
-	{
-		title: 'Endereço',
-		items: [
-			{
-				title: 'Avenida Prof. Moraes Rego, 1235\nCidade Universitária\nRecife PE, 50670-901',
-				url: containerBodyTypeEnum.DIRECTION,
-			},
-		]
-	},
-	{
-		title: 'Suporte',
-		items: [
-			{
-				title: 'Central SAC | +55(81)3194-4900\nDuvidas | +55(81)3038-6405',
-				url: containerBodyTypeEnum.CONTACT_US,
-			},
-			
-		],
-	},
+const links = [
+    { label: "quem somos", url: routerEnum.TEAM },
+    { label: "faq",        url: routerEnum.FAQ },
+    { label: "contato",    url: routerEnum.CONTACTUS },
+    { label: "tcle",       url: routerEnum.TCLE },
+    { label: "acervo",     url: routerEnum.ARTICLES },
 ];
 
-export default function Index(props: TPROPS) {
-	
+export default function Index() {
+    const router = useRouter();
 
-	return (
-		<Box
-			sx={{
-				display:'flex',
-				flexDirection:'column',
-				justifyContent:'center',
-				alignItems:'center',
-				backgroundColor: theme.primaryColor,
-				width:'100%'
-			}}>
-					<Box
-						sx={{
-							display: 'flex',
-							flexWrap:'wrap',
-							justifyContent: 'center',
-							}}>
-					{infoList.map((info, index) =>(
-						<Typography
-						key={index}
-						variant={'subtitle1'}
-						sx={{
-							color:theme.white,
-							textTransform:'uppercase',
-							textAlign:'center'
-						}}>
-						{info.title}
-						<List
-							disablePadding
-							sx={{marginX:'1rem'}}>
-							{info.items.map((item, i) => (
-								<ListItem
-									key={i}
-									disablePadding
-									sx={{
-										marginY:'0.5rem',
-										marginX:'1rem',
-									}}>
-									<ListItemButton
-										style={{
-											padding: 0,
-											fontSize: '0.8rem',
-											fontWeight: 'bold',
-											color: theme.white,
-											whiteSpace: 'pre-line',
-											marginLeft:'1rem'
-										}}
-										onClick={()=>props.handleClick(item.url)}
-											>
-										{item.title}
-									</ListItemButton>
-								</ListItem>
-							))}
-						</List>
-					</Typography>
-					))}
-					</Box>
-					<span 
-					style={{
-						color:theme.white,
-						backgroundColor:theme.secundaryColor,
-						width:'100%',
-						font:'bold',
-						textAlign:'center'
-				}}>GESTBUCAL&copy; - 2023</span>
-				
-		</Box>
+    const [isMobile, setIsMobile] = React.useState(false);
+    React.useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 640);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
 
-	);
+    return (
+        <footer style={{
+            backgroundColor: '#6D141A',
+            width: '100%',
+            padding: isMobile ? '12px 16px' : '0 32px',
+            minHeight: '44px',
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: isMobile ? '8px' : '0',
+        }}>
+            {/* Left — brand */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75V21a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 21V12h6v9" />
+                </svg>
+                <span style={{
+                    fontFamily: ff.body,
+                    fontSize: '13px',
+                    fontStyle: 'italic',
+                    color: 'rgba(255,255,255,0.85)',
+                    letterSpacing: '0.01em',
+                }}>
+                    GESTBUCAL SD &copy; 2023–{new Date().getFullYear()}
+                </span>
+            </div>
+
+            {/* Center — nav links (hidden on mobile) */}
+            {!isMobile && (
+                <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+                    {links.map((link) => (
+                        <button
+                            key={link.label}
+                            onClick={() => router.push(link.url)}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontFamily: ff.body,
+                                fontSize: '13px',
+                                color: 'rgba(255,255,255,0.82)',
+                                padding: 0,
+                                transition: 'color 0.15s ease',
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.color = '#fff'; }}
+                            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.82)'; }}
+                        >
+                            {link.label}
+                        </button>
+                    ))}
+                </nav>
+            )}
+
+            {/* Right — SAC */}
+            <span style={{
+                fontFamily: ff.body,
+                fontSize: '13px',
+                color: 'rgba(255,255,255,0.82)',
+                flexShrink: 0,
+            }}>
+                SAC: (81) 3194-4900
+            </span>
+        </footer>
+    );
 }

@@ -10,6 +10,7 @@ export type TPROPS = {
 
 export type HANDLE_SIGNUP = {
 	login: string;
+	email: string;
 	pwd: string;
 	typeId: ID;
 };
