@@ -21,6 +21,53 @@ const C = {
   border: '#e7e5e4',
 };
 
+/**
+ * Blocos/módulos do "Formulário Geral de Usabilidade - GestBucalSD" (form id 16),
+ * conforme o documento original. Mapeado por formQuestionFormRegisterId (não por
+ * título da pergunta) para evitar qualquer divergência de acentuação/pontuação
+ * entre o texto do documento e o que está salvo no banco.
+ *
+ * Isso é puramente de exibição, restrito a este formulário — não afeta nenhum
+ * outro formulário do sistema.
+ */
+const FORM_16_BLOCKS: { title: string; description: string; questionIds: number[] }[] = [
+  {
+    title: '💻 Bloco 1: Perfil do Testador e Dispositivo',
+    description: 'Objetivo: Mapear o perfil de acesso dos participantes para avaliar a adaptabilidade da interface.',
+    questionIds: [683, 684, 685, 686],
+  },
+  {
+    title: '👁️ Bloco 2: Entendimento e Primeiras Impressões (Página Inicial)',
+    description: 'Tarefa 1: Acesse a página inicial da plataforma GestBucalSD. Leia as informações textuais apresentadas no lado esquerdo e observe o visual geral da tela.',
+    questionIds: [687, 688, 689, 690],
+  },
+  {
+    title: '🔐 Bloco 3: Mecanismos de Acesso e Cadastro',
+    description: 'Tarefa 2: Localize e acione a opção "Cadastrar" na interface. Abra a lista de opções do campo "Tipo de Participante" e analise o formulário exibido na tela.',
+    questionIds: [691, 692],
+  },
+  {
+    title: '📚 Bloco 4: Navegação de Menus e Recursos (Validação de Links)',
+    description: 'Tarefa 3: Feche o formulário de cadastro. No menu principal de navegação, tente explorar sequencialmente as opções dentro de "Acervo" (Artigos e InformeSBPE) e depois as opções dentro de "Quem Somos".',
+    questionIds: [693, 694, 695, 696],
+  },
+  {
+    title: '📊 Bloco 5: Interpretação de Painéis e Indicadores',
+    description: 'Tarefa 4: Acesse a seção "Nossos Dados" no menu e navegue alternadamente pelas visualizações de dados disponíveis (como APS, Usuários e CEO). Observe a estrutura dos gráficos e os filtros no topo.',
+    questionIds: [697, 698, 699, 700, 701],
+  },
+  {
+    title: '📞 Bloco 6: Canais de Comunicação, Rodapé e Avaliação Geral',
+    description: 'Tarefa 5: Acesse a tela de "Contato" no topo. Em seguida, role qualquer página até o final para verificar os links disponíveis no rodapé inferior escuro da plataforma.',
+    questionIds: [702, 703, 704, 705],
+  },
+];
+
+const FORM_16_BLOCK_BY_QUESTION_ID = new Map<number, typeof FORM_16_BLOCKS[number]>();
+FORM_16_BLOCKS.forEach((block) => {
+  block.questionIds.forEach((id) => FORM_16_BLOCK_BY_QUESTION_ID.set(id, block));
+});
+
 //TODO: Corrigir problema de F5
 export default function Index(props: TPROPS) {
   const [answers, setAnswers] = useState<QUESTION_ANSWER[]>([]);
@@ -75,6 +122,69 @@ export default function Index(props: TPROPS) {
         +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId
     )
   );
+
+  const renderQuestionCard = (question: QUESTION, index: number) => (
+    <QuestionCard
+      key={index}
+      index={index}
+      question={question}
+      isError={errorIds.has(question.formQuestionFormRegisterId)}
+      errorIds={errorIds}
+      onAnswerQuestion={(data) => {
+        handleAnswerQuestion(data);
+        setErrorIds((prev) => { const next = new Set(prev); next.delete(question.formQuestionFormRegisterId); return next; });
+      }}
+      onHideQuestion={(data) => handleHideQuestion(data)}
+    />
+  );
+
+  // Cabeçalhos de bloco só para o form 16 (Formulário Geral de Usabilidade).
+  const renderQuestionsWithBlocks = () => {
+    let lastBlockTitle: string | null = null;
+
+    return sortedAndFormattedQuestions.flatMap((question, index) => {
+      const block = FORM_16_BLOCK_BY_QUESTION_ID.get(Number(question.formQuestionFormRegisterId));
+      const items: JSX.Element[] = [];
+
+      if (block && block.title !== lastBlockTitle) {
+        lastBlockTitle = block.title;
+        items.push(
+          <div key={`block-${block.title}`} style={{
+            margin: index === 0 ? '0 0 20px' : '44px 0 20px',
+            paddingBottom: '14px',
+            borderBottom: `2px solid ${C.primary}`,
+          }}>
+            <h2 style={{
+              fontFamily: ff.body,
+              fontSize: '20px',
+              fontWeight: 700,
+              color: C.primary,
+              margin: '0 0 6px',
+              letterSpacing: '-0.01em',
+            }}>
+              {block.title}
+            </h2>
+            <p style={{
+              fontFamily: ff.body,
+              fontSize: '14px',
+              color: C.muted,
+              margin: 0,
+              lineHeight: 1.5,
+            }}>
+              {block.description}
+            </p>
+          </div>
+        );
+      }
+
+      items.push(renderQuestionCard(question, index));
+      return items;
+    });
+  };
+
+  const questionElements = props.formattedForm.id === 16
+    ? renderQuestionsWithBlocks()
+    : sortedAndFormattedQuestions.map((question, index) => renderQuestionCard(question, index));
 
   const isAnswerFilled = (answer?: string) => {
     if (!answer || !answer.trim()) return false;
@@ -278,20 +388,7 @@ export default function Index(props: TPROPS) {
 
         {/* ── Questions ── */}
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 24px' }}>
-          {sortedAndFormattedQuestions.map((question, index) => (
-            <QuestionCard
-              key={index}
-              index={index}
-              question={question}
-              isError={errorIds.has(question.formQuestionFormRegisterId)}
-              errorIds={errorIds}
-              onAnswerQuestion={(data) => {
-                handleAnswerQuestion(data);
-                setErrorIds((prev) => { const next = new Set(prev); next.delete(question.formQuestionFormRegisterId); return next; });
-              }}
-              onHideQuestion={(data) => handleHideQuestion(data)}
-            />
-          ))}
+          {questionElements}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '32px' }}>
             <button
