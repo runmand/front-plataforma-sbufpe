@@ -26,6 +26,7 @@
         "react-dom": "^18.3.1",
         "react-material-ui-carousel": "^3.4.2",
         "react-youtube": "^10.1.0",
+        "recharts": "^2.15.0",
         "sharp": "^0.34.1"
     },
     "devDependencies": {
