@@ -50,12 +50,20 @@ const displayValue = (value: unknown): string => {
 	return text === "" ? "—" : text;
 };
 
-const StatTile = ({ value, label }: { value: number | string; label: string }) => (
+// Números crus (Σ Cariado, Σ dentes, nº de pessoas...) — sempre inteiros, sem casas decimais.
+const fmtInt = (v: number) => v.toLocaleString("pt-BR");
+// Resultado da fórmula (fração pequena) — no máximo 2 casas decimais.
+const fmtRate = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// % de livres de cárie — no máximo 2 casas decimais, com o símbolo de porcentagem.
+const fmtPercent = (v: number) => `${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
+
+const StatTile = ({ value, label, sublabel }: { value: number | string; label: string; sublabel?: string }) => (
 	<Card style={{ textAlign: "center" }}>
 		<span style={{ fontFamily: ff.body, fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, color: VIGIA.primary, lineHeight: 1 }}>
 			{value}
 		</span>
 		<p style={{ fontFamily: ff.body, fontSize: 14, color: VIGIA.muted, margin: "8px 0 0" }}>{label}</p>
+		{sublabel ? <p style={{ fontFamily: ff.body, fontSize: 12, color: VIGIA.muted, margin: "2px 0 0" }}>{sublabel}</p> : null}
 	</Card>
 );
 
@@ -102,6 +110,10 @@ export default function VigiaDashboard() {
 	// pela referência do objeto, não por índice, pra continuar valendo mesmo
 	// quando os filtros acima mudam.
 	const [hiddenRows, setHiddenRows] = useState<Set<VigiaRow>>(new Set());
+	// Quando true, some da PLANILHA as linhas destacadas em vermelho (excluídas pelos
+	// filtros de outliers) — só um toggle de visualização, não afeta os gráficos/médias
+	// (que já ignoram essas linhas de qualquer forma, via visibleRows).
+	const [hideOutlierRowsInTable, setHideOutlierRowsInTable] = useState<boolean>(false);
 	const { enqueueSnackbar } = useSnackbar();
 
 	useEffect(() => {
@@ -151,7 +163,13 @@ export default function VigiaDashboard() {
 	// continuar mostrando as linhas excluídas pelos filtros de outliers, destacadas em vermelho,
 	// em vez de simplesmente sumirem (que é o que acontece nos gráficos/cálculos, via visibleRows).
 	const mainFilteredRows = useMemo(() => applyMainFilters(rows, filters), [rows, filters]);
-	const tableRows = useMemo(() => mainFilteredRows.filter((row) => !hiddenRows.has(row)), [mainFilteredRows, hiddenRows]);
+	const tableRows = useMemo(
+		() =>
+			mainFilteredRows
+				.filter((row) => !hiddenRows.has(row))
+				.filter((row) => !hideOutlierRowsInTable || !isOutlierExcluded(row, filters)),
+		[mainFilteredRows, hiddenRows, hideOutlierRowsInTable, filters]
+	);
 
 	const hideRow = (row: VigiaRow) => {
 		setHiddenRows((prev) => {
@@ -478,11 +496,38 @@ export default function VigiaDashboard() {
 					</div>
 
 					{showTable && canManageOutliers && (filters.quantidadeDentes.length > 0 || filters.idadeExata.length > 0) && (
-						<p style={{ fontFamily: ff.body, fontSize: 12, color: "#a83232", margin: "8px 0 0", display: "flex", alignItems: "center", gap: 6 }}>
-							<span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, backgroundColor: "#fbdada", border: "1px solid #e8a3a3" }} />
-							Linhas em vermelho: excluídas pelos filtros de outliers acima — continuam aqui pra conferência, mas não
-							entram nos gráficos/médias.
-						</p>
+						<button
+							type="button"
+							onClick={() => setHideOutlierRowsInTable((v) => !v)}
+							title={hideOutlierRowsInTable ? "Clique para voltar a mostrar essas linhas na planilha" : "Clique para ocultar essas linhas da planilha"}
+							style={{
+								fontFamily: ff.body,
+								fontSize: 12,
+								color: "#a83232",
+								margin: "8px 0 0",
+								display: "flex",
+								alignItems: "center",
+								gap: 6,
+								background: "none",
+								border: "none",
+								padding: 0,
+								cursor: "pointer",
+								textAlign: "left",
+							}}
+						>
+							<span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, backgroundColor: "#fbdada", border: "1px solid #e8a3a3", flexShrink: 0 }} />
+							{hideOutlierRowsInTable ? (
+								<span>
+									Linhas em vermelho ocultas da planilha (continuam fora dos gráficos/médias) —{" "}
+									<span style={{ textDecoration: "underline" }}>clique para mostrar de novo</span>.
+								</span>
+							) : (
+								<span>
+									Linhas em vermelho: excluídas pelos filtros de outliers acima — continuam aqui pra conferência, mas
+									não entram nos gráficos/médias. <span style={{ textDecoration: "underline" }}>Clique para ocultar</span>.
+								</span>
+							)}
+						</button>
 					)}
 
 					{showTable && (
@@ -591,13 +636,81 @@ export default function VigiaDashboard() {
 								}}
 							>
 								<strong>Como o CPO é calculado:</strong> no exame clínico do Vigia SD, cada dente examinado recebe um
-								código (cariado, perdido/extraído, restaurado ou hígido). O valor de CPO mostrado aqui é a{" "}
-								<strong>média, por respondente, da soma de dentes Cariados + Perdidos + Restaurados</strong> dentro de
-								cada faixa etária — quanto maior, mais dentes afetados em média por pessoa. "Livre de cárie" = respondente
-								com 0 dentes afetados. Esse cálculo replica exatamente o que o backend já faz (função{" "}
-								<code>generateCPO</code> em <code>DataVigia.ts</code>), a partir dos dados retornados por{" "}
-								<code>GET /data/vigia</code>.
+								código (cariado, perdido/extraído, restaurado ou hígido). Cada paciente entra com o total de dentes
+								afetados dele: <strong>Cariado + Perdido + Restaurado</strong> (sem dividir por nada). O valor
+								mostrado em cada faixa etária (e no geral, no medidor ao lado) é a{" "}
+								<strong>média desse total entre os pacientes do grupo</strong> — ou seja,{" "}
+								<strong>
+									(Σ Cariado + Σ Perdido + Σ Restaurado) ÷ Quantidade de pessoas
+								</strong>
+								. Exemplo: paciente A com 5 dentes afetados e paciente B sem nenhum → média do grupo = (5 + 0) ÷ 2 =
+								2,5 dentes afetados por pessoa, em média. A quantidade de dentes examinados não entra nessa conta.
+								"Livre de cárie" continua sendo respondente com 0 dentes afetados (Cariado + Perdido + Restaurado =
+								0), independente dessa fórmula.
 							</Alert>
+
+							<details style={{ marginTop: 12, fontFamily: ff.body, fontSize: 13, color: VIGIA.text }}>
+								<summary style={{ cursor: "pointer", fontWeight: 600 }}>
+									Ver cálculo detalhado (conferir os números — grupo "{summary.calculoDetalhado.geral.label}")
+								</summary>
+
+								<div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 14 }}>
+									{[summary.calculoDetalhado.geral, ...summary.calculoDetalhado.porFaixa].map((d, i) => (
+										<div key={i} style={{ padding: "8px 0", borderBottom: i === 0 ? `1px solid ${VIGIA.border}` : "none" }}>
+											<p style={{ margin: "0 0 4px", fontWeight: 700, color: i === 0 ? VIGIA.primary : VIGIA.text }}>
+												{d.label} — {fmtInt(d.n)} pessoa{d.n !== 1 ? "s" : ""} com dado clínico válido
+											</p>
+											<p style={{ margin: 0, color: VIGIA.muted, fontSize: 12 }}>
+												Σ Cariado = {fmtInt(d.sumCariado)} · Σ Perdido = {fmtInt(d.sumPerdido)} · Σ Restaurado ={" "}
+												{fmtInt(d.sumRestaurado)} · Σ Dentes examinados = {fmtInt(d.sumDentes)}
+											</p>
+											<p style={{ margin: "4px 0 0", fontSize: 12 }}>
+												Cada paciente: Cariado + Perdido + Restaurado (sem dividir por dentes). Depois,{" "}
+												<strong>média desses {fmtInt(d.n)} valor{d.n !== 1 ? "es" : ""}</strong> (ver tabela abaixo)
+												= <strong>{fmtRate(d.total)}</strong>
+											</p>
+
+											{d.pacientes.length > 0 && (
+												<details style={{ marginTop: 6 }}>
+													<summary style={{ cursor: "pointer", fontSize: 11, color: VIGIA.muted }}>
+														Ver por paciente ({d.pacientes.length}) — "dentes do paciente" é só informativo, não entra
+														na conta
+													</summary>
+													<div style={{ marginTop: 6, overflowX: "auto" }}>
+														<table style={{ borderCollapse: "collapse", fontSize: 11 }}>
+															<thead>
+																<tr>
+																	<th style={{ ...thStyle, padding: "4px 8px" }}>#</th>
+																	<th style={{ ...thStyle, padding: "4px 8px" }}>Cariado</th>
+																	<th style={{ ...thStyle, padding: "4px 8px" }}>Perdido</th>
+																	<th style={{ ...thStyle, padding: "4px 8px" }}>Restaurado</th>
+																	<th style={{ ...thStyle, padding: "4px 8px" }}>Dentes do paciente (informativo)</th>
+																	<th style={{ ...thStyle, padding: "4px 8px" }}>Total do paciente</th>
+																</tr>
+															</thead>
+															<tbody>
+																{d.pacientes.map((p, pi) => (
+																	<tr key={pi} style={{ backgroundColor: pi % 2 === 0 ? VIGIA.white : VIGIA.bg }}>
+																		<td style={{ ...tdStyle, padding: "4px 8px" }}>{pi + 1}</td>
+																		<td style={{ ...tdStyle, padding: "4px 8px" }}>{fmtInt(p.cariado)}</td>
+																		<td style={{ ...tdStyle, padding: "4px 8px" }}>{fmtInt(p.perdido)}</td>
+																		<td style={{ ...tdStyle, padding: "4px 8px" }}>{fmtInt(p.restaurado)}</td>
+																		<td style={{ ...tdStyle, padding: "4px 8px" }}>{fmtInt(p.dentes)}</td>
+																		<td style={{ ...tdStyle, padding: "4px 8px" }}>
+																			{fmtInt(p.cariado)}+{fmtInt(p.perdido)}+{fmtInt(p.restaurado)} ={" "}
+																			<strong>{fmtInt(p.taxa)}</strong>
+																		</td>
+																	</tr>
+																))}
+															</tbody>
+														</table>
+													</div>
+												</details>
+											)}
+										</div>
+									))}
+								</div>
+							</details>
 						</Card>
 					</div>
 
@@ -607,7 +720,11 @@ export default function VigiaDashboard() {
 								<StatTile value={summary.totalRespondidos} label="Formulários respondidos" />
 							</div>
 							<div style={{ flex: 1 }}>
-								<StatTile value={summary.livresDeCarie} label="Livres de Cárie" />
+								<StatTile
+								value={fmtPercent(summary.livresDeCariePercentual)}
+								label="Livres de Cárie"
+								sublabel={`${fmtInt(summary.livresDeCarieCount)} de ${fmtInt(summary.livresDeCariePessoas)} pessoas`}
+							/>
 							</div>
 						</div>
 

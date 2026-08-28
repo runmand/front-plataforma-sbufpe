@@ -6,6 +6,7 @@ type TPROPS = {
 	label: string;
 };
 
+// Valor final do CPO — no máximo 2 casas decimais.
 const fmt = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /**
@@ -54,7 +55,7 @@ export default function CpoGauge(props: TPROPS) {
 					{fmt(props.value)}
 				</text>
 				<text x={cx - r} y={cy + 20} textAnchor="start" fontFamily={ff.body} fontSize={12} fill={VIGIA.muted}>
-					0,00
+					{fmt(0)}
 				</text>
 				<text x={cx + r} y={cy + 20} textAnchor="end" fontFamily={ff.body} fontSize={12} fill={VIGIA.muted}>
 					{fmt(max)}

@@ -4,6 +4,7 @@ import { VIGIA, ff } from "./colors";
 
 type TPROPS = { data: CpoBracketPoint[] };
 
+// Valores do CPO — no máximo 2 casas decimais.
 const fmt = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const SegmentLabel = (props: any) => {
