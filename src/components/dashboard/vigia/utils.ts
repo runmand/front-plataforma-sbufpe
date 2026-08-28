@@ -31,6 +31,106 @@ export const getAgeBracket = (row: VigiaRow): AgeBracket | undefined => {
 /** Total de dentes afetados (cariado + perdido + restaurado) de um respondente. */
 const getCpoCount = (row: VigiaRow): number | null => parseNum(row["Nota CPO valor sem calculo"]);
 
+/** Soma um campo numérico de VigiaRow entre as linhas, ignorando valores que não parseiam como número. */
+const sumField = (rows: VigiaRow[], field: keyof VigiaRow): number =>
+	rows.reduce((sum, row) => {
+		const v = parseNum(row[field]);
+		return v !== null ? sum + v : sum;
+	}, 0);
+
+/**
+ * Fórmula de CPO do grupo (índice CPO-D padrão de epidemiologia — corrigida
+ * de novo a pedido do usuário: NÃO divide pela quantidade de dentes
+ * examinados, só pela quantidade de pessoas). Cada paciente entra com o
+ * total de dentes afetados dele (Cariado + Perdido + Restaurado, sem
+ * dividir por nada); o CPO do grupo é a MÉDIA desse total entre os
+ * pacientes do grupo:
+ *   valor_paciente = Cariado + Perdido + Restaurado
+ *   CPO do grupo    = média(valor_paciente) entre os pacientes do grupo
+ *                   = (Σ Cariado + Σ Perdido + Σ Restaurado) ÷ Quantidade de pessoas
+ * Aplicada tanto no agregado geral (gauge) quanto por faixa etária (gráfico
+ * de barras) — como Cariado/Perdido/Restaurado dividem pelo MESMO n antes de
+ * entrar na média, a decomposição é linear: cada parcela continua somando
+ * pro total do grupo, então as barras empilhadas continuam batendo com o
+ * total. "Quantidade de pessoas" = quem tem dado clínico válido (mesmo
+ * critério de "withCpo" em summarize) — a quantidade de dentes examinados
+ * não entra mais na conta, só é mantida no registro do paciente pra
+ * referência/conferência na tela.
+ */
+/** Os números de um paciente que entram na conta — "dentes" é só informativo (quantidade EXAMINADA NAQUELE PACIENTE), não entra mais na fórmula. */
+export type PatientCpoInput = { cariado: number; perdido: number; restaurado: number; dentes: number; taxa: number };
+
+export type CpoRateResult = {
+	cariados: number;
+	perdidos: number;
+	restaurados: number;
+	total: number;
+	respondentes: number;
+	// Números crus por trás da conta acima — pra poder mostrar o cálculo passo a passo (ver CpoCalculationDetail).
+	n: number;
+	sumCariado: number;
+	sumPerdido: number;
+	sumRestaurado: number;
+	sumDentes: number;
+	// Um item por paciente que entrou na média — pra conferir valor por valor.
+	pacientes: PatientCpoInput[];
+};
+
+const cpoRateForGroup = (rows: VigiaRow[]): CpoRateResult => {
+	// Todo paciente aqui já tem dado clínico válido (filtrado antes, em "withCpo" dentro de summarize) —
+	// não exige mais quantidade de dentes válida, já que ela não entra mais na fórmula.
+	const n = rows.length;
+
+	const pacientes: PatientCpoInput[] = rows.map((row) => {
+		const cariado = parseNum(row["Cariado"]) ?? 0;
+		const perdido = parseNum(row["Perdido"]) ?? 0;
+		const restaurado = parseNum(row["Restaurado"]) ?? 0;
+		const dentes = parseNum(row["Quantidade dentes CPO"]) ?? 0;
+		// "taxa" aqui é o total de dentes afetados do paciente (sem dividir por nada) — nome mantido pelo tipo compartilhado.
+		return { cariado, perdido, restaurado, dentes, taxa: cariado + perdido + restaurado };
+	});
+
+	const sumCariado = sumField(rows, "Cariado");
+	const sumPerdido = sumField(rows, "Perdido");
+	const sumRestaurado = sumField(rows, "Restaurado");
+	const sumDentes = sumField(rows, "Quantidade dentes CPO");
+
+	if (n === 0) {
+		return {
+			cariados: 0,
+			perdidos: 0,
+			restaurados: 0,
+			total: 0,
+			respondentes: rows.length,
+			n,
+			sumCariado,
+			sumPerdido,
+			sumRestaurado,
+			sumDentes,
+			pacientes,
+		};
+	}
+
+	// Média entre pacientes de cada componente — cada um já é o total do próprio paciente, sem dividir por dentes.
+	const cariados = sumCariado / n;
+	const perdidos = sumPerdido / n;
+	const restaurados = sumRestaurado / n;
+
+	return {
+		cariados,
+		perdidos,
+		restaurados,
+		total: cariados + perdidos + restaurados,
+		respondentes: rows.length,
+		n,
+		sumCariado,
+		sumPerdido,
+		sumRestaurado,
+		sumDentes,
+		pacientes,
+	};
+};
+
 /** Filtros "normais" (município, estabelecimento, local, turno, faixa etária) — sem os de outliers. */
 export const applyMainFilters = (rows: VigiaRow[], filters: FilterState): VigiaRow[] => {
 	return rows.filter((row) => {
@@ -124,57 +224,96 @@ export const distinctNumericValues = (rows: VigiaRow[], field: keyof VigiaRow): 
 	return hasUndefined ? [...values, UNDEFINED_OPTION] : values;
 };
 
+/** Números crus por trás do cálculo de CPO de um grupo, pra exibir o passo a passo (ver "grupo" de verificação no dashboard). */
+export type CpoCalculationDetail = {
+	label: string;
+	n: number;
+	sumCariado: number;
+	sumPerdido: number;
+	sumRestaurado: number;
+	sumDentes: number;
+	total: number;
+	// Um item por paciente que entrou nessas somas — "dentes" é a quantidade de dentes examinados NAQUELE paciente (não um valor fixo).
+	pacientes: PatientCpoInput[];
+};
+
+const toCalculationDetail = (label: string, rate: CpoRateResult): CpoCalculationDetail => ({
+	label,
+	n: rate.n,
+	sumCariado: rate.sumCariado,
+	sumPerdido: rate.sumPerdido,
+	sumRestaurado: rate.sumRestaurado,
+	pacientes: rate.pacientes,
+	sumDentes: rate.sumDentes,
+	total: rate.total,
+});
+
 export type VigiaSummary = {
 	totalRespondidos: number;
-	livresDeCarie: number;
+	/** Quantos respondentes têm CPO = 0 (0 dentes afetados) — só entre quem tem dado de CPO válido. */
+	livresDeCarieCount: number;
+	/** Quantos respondentes entraram na conta acima (têm "Nota CPO valor sem calculo" válido) — denominador do percentual. */
+	livresDeCariePessoas: number;
+	/** (livresDeCarieCount ÷ livresDeCariePessoas) × 100. */
+	livresDeCariePercentual: number;
 	mediaCpo: number;
 	maxCpo: number;
 	cpoPorBloco: CpoBracketPoint[];
 	livreDeCarieePorBloco: CareFreePoint[];
+	/** Detalhe do cálculo de CPO (geral + por faixa etária), pra conferência manual. */
+	calculoDetalhado: { geral: CpoCalculationDetail; porFaixa: CpoCalculationDetail[] };
 };
 
 export const summarize = (rows: VigiaRow[]): VigiaSummary => {
 	const withCpo = rows.filter((row) => getCpoCount(row) !== null);
 
-	const cpoValues = withCpo.map((row) => getCpoCount(row) as number);
-	const mediaCpo = cpoValues.length ? cpoValues.reduce((sum, v) => sum + v, 0) / cpoValues.length : 0;
-	const maxCpo = cpoValues.length ? Math.max(...cpoValues) : 0;
-
 	const livresDeCarieRows = withCpo.filter((row) => getCpoCount(row) === 0);
 
-	const cpoPorBloco: CpoBracketPoint[] = AGE_BRACKETS.map((bracket) => {
+	const bracketRates = AGE_BRACKETS.map((bracket) => {
 		const bracketRows = withCpo.filter((row) => getAgeBracket(row)?.label === bracket.label);
+		return { label: bracket.label, rate: cpoRateForGroup(bracketRows) };
+	}).filter((b) => b.rate.respondentes > 0);
 
-		const avg = (field: keyof VigiaRow) => {
-			const values = bracketRows.map((row) => parseNum(row[field])).filter((v): v is number => v !== null);
-			return values.length ? values.reduce((sum, v) => sum + v, 0) / values.length : 0;
-		};
+	const cpoPorBloco: CpoBracketPoint[] = bracketRates.map(({ label, rate }) => ({
+		label,
+		cariados: rate.cariados,
+		perdidos: rate.perdidos,
+		restaurados: rate.restaurados,
+		total: rate.total,
+		respondentes: rate.respondentes,
+	}));
 
-		const cariados = avg("Cariado");
-		const perdidos = avg("Perdido");
-		const restaurados = avg("Restaurado");
+	// mediaCpo = mesma fórmula, mas pro grupo inteiro (todas as faixas etárias juntas).
+	const rateGeral = cpoRateForGroup(withCpo);
+	const mediaCpo = rateGeral.total;
+	// Sem mais "maior valor individual" pra usar de escala (a fórmula deixou de ser por pessoa) —
+	// a referência mais próxima disso agora é a faixa etária com a taxa mais alta.
+	const maxCpo = cpoPorBloco.length ? Math.max(mediaCpo, ...cpoPorBloco.map((b) => b.total)) : mediaCpo;
 
-		return {
-			label: bracket.label,
-			cariados,
-			perdidos,
-			restaurados,
-			total: cariados + perdidos + restaurados,
-			respondentes: bracketRows.length,
-		};
-	}).filter((point) => point.respondentes > 0);
+	const calculoDetalhado = {
+		geral: toCalculationDetail("Geral (todas as faixas)", rateGeral),
+		porFaixa: bracketRates.map(({ label, rate }) => toCalculationDetail(label, rate)),
+	};
 
 	const livreDeCarieePorBloco: CareFreePoint[] = AGE_BRACKETS.map((bracket) => ({
 		label: bracket.label,
 		count: livresDeCarieRows.filter((row) => getAgeBracket(row)?.label === bracket.label).length,
 	})).filter((point) => point.count > 0);
 
+	// % de livres de cárie = (pessoas com CPO = 0 ÷ pessoas com dado de CPO válido) × 100.
+	const livresDeCariePessoas = withCpo.length;
+	const livresDeCarieCount = livresDeCarieRows.length;
+	const livresDeCariePercentual = livresDeCariePessoas > 0 ? (livresDeCarieCount / livresDeCariePessoas) * 100 : 0;
+
 	return {
 		totalRespondidos: rows.length,
-		livresDeCarie: livresDeCarieRows.length,
+		livresDeCarieCount,
+		livresDeCariePessoas,
+		livresDeCariePercentual,
 		mediaCpo,
 		maxCpo,
 		cpoPorBloco,
 		livreDeCarieePorBloco,
+		calculoDetalhado,
 	};
 };
