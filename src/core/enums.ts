@@ -26,6 +26,7 @@ export enum routerEnum {
     DIRECTION = "/direction",
     DATAFORM = "/dataform",
     DASHBOARD_VIGIA = "/dashboard/vigia",
+    DASHBOARD_CEO = "/dashboard/ceo",
 }
 
 export enum titleEnumPtBr {
@@ -49,6 +50,7 @@ export enum titleEnumPtBr {
     "/aps" = "Dados APS",
     "/data" = "Exportar dados",
     "/dashboard/vigia" = "Dashboard Vigia SD",
+    "/dashboard/ceo" = "Dashboard CEO",
 }
 
 export enum localStorageKeyEnum {

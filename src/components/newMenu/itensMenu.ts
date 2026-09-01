@@ -8,7 +8,7 @@ export const itemsMenu: itemsListType[] = [
     { position: 3, title: "Quem Somos", subList: [{ position: 1, title: "Quem Somos?", route: routerEnum.TEAM }, { position: 2, title: "O que é GESTBUCAL SD?", route: routerEnum.PROJECT }] },
     { position: 4, title: "Contato", route: routerEnum.CONTACTUS },
     { position: 5, title: "F.A.Q", route: routerEnum.FAQ },
-    { position: 6, title: "Nossos dados", subList: [{ position: 1, title: "Usuários", route: routerEnum.USER }, { position: 2, title: "CEO", route: routerEnum.CEO }, { position: 3, title: "APS", route: routerEnum.APS }, { position: 4, title: "Vigia SD (novo)", route: routerEnum.DASHBOARD_VIGIA }] },
+    { position: 6, title: "Nossos dados", subList: [{ position: 1, title: "Usuários", route: routerEnum.USER }, { position: 2, title: "CEO", route: routerEnum.CEO }, { position: 3, title: "APS", route: routerEnum.APS }, { position: 4, title: "Vigia SD (novo)", route: routerEnum.DASHBOARD_VIGIA }, { position: 5, title: "CEO (novo)", route: routerEnum.DASHBOARD_CEO }] },
 ];
 
 export const itemsDrawer: MENU_ITEM[] = [
