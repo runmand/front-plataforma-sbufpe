@@ -1,8 +1,9 @@
-import { Container, HeaderData, SelectWrapper, StyledLegend, StyledOption, StyledSelect, TitleContainer } from "./styled";
+import { Container, Content, HeaderData, SelectWrapper, StyledLegend, TitleContainer } from "./styled";
 import { forms_allowed, version_constants } from "./constants";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { INDEX_RES } from "src/modules/form/type";
 import Table from "@components/table";
+import Dropdown from "@components/dropdown";
 
 export default function Index() {
     const [form, setForm] = useState<INDEX_RES>(forms_allowed[0]);
@@ -20,40 +21,42 @@ export default function Index() {
         });
     };
 
-
     return (
         <Container>
-            <HeaderData>
-                <SelectWrapper style={{ marginRight: "auto" }}>
-                    <StyledLegend $order="L">Formulário</StyledLegend>
-                    <StyledSelect
-                        name="formulario"
-                        value={form.id}
-                        onChange={(e) => setForm(forms_allowed.find((v) => v.id == Number(e.currentTarget.value)))}
-                    >
-                        {forms_allowed.map((v, index) => (
-                            <StyledOption key={index} value={v.id}>
-                                {v.title}
-                            </StyledOption>
-                        ))}
-                    </StyledSelect>
-                </SelectWrapper>
-                <TitleContainer suppressHydrationWarning>
-                    <h1>{form.title}</h1>
-                    <h2 style={{ opacity: isLoading ? "0" : "1" }}>Atualizado em: {formatDate(updatedAt)}</h2>
-                </TitleContainer>
-                <SelectWrapper>
-                    <StyledLegend $order="R">Versão</StyledLegend>
-                    <StyledSelect name="versao" value={version.id} onChange={(e) => setVersion(version_constants.find((v) => v.id == e.currentTarget.value))}>
-                        {version_constants.map((v, index) => (
-                            <StyledOption key={index} value={v.id}>
-                                {v.title}
-                            </StyledOption>
-                        ))}
-                    </StyledSelect>
-                </SelectWrapper>
-            </HeaderData>
-            <Table version={version} form={form} setUpdatedAt={setUpdatedAt} isLoading={isLoading} setIsLoading={setIsLoading}></Table>
+            <Content>
+                <HeaderData>
+                    <SelectWrapper $order="L">
+                        <StyledLegend as="span" id="label-formulario">
+                            Formulário
+                        </StyledLegend>
+                        <Dropdown
+                            id="formulario"
+                            label="Formulário"
+                            value={String(form.id)}
+                            options={forms_allowed.map((v) => ({ value: String(v.id), label: v.title }))}
+                            onChange={(value) => setForm(forms_allowed.find((v) => String(v.id) === value))}
+                        />
+                    </SelectWrapper>
+                    <TitleContainer suppressHydrationWarning>
+                        <h1>{form.title}</h1>
+                        <h2 style={{ opacity: isLoading ? "0" : "1" }}>Atualizado em: {formatDate(updatedAt)}</h2>
+                    </TitleContainer>
+                    <SelectWrapper $order="R">
+                        <StyledLegend as="span" id="label-versao">
+                            Versão
+                        </StyledLegend>
+                        <Dropdown
+                            id="versao"
+                            label="Versão"
+                            align="right"
+                            value={String(version.id)}
+                            options={version_constants.map((v) => ({ value: String(v.id), label: v.title }))}
+                            onChange={(value) => setVersion(version_constants.find((v) => String(v.id) === value))}
+                        />
+                    </SelectWrapper>
+                </HeaderData>
+                <Table version={version} form={form} setUpdatedAt={setUpdatedAt} isLoading={isLoading} setIsLoading={setIsLoading}></Table>
+            </Content>
         </Container>
     );
 }

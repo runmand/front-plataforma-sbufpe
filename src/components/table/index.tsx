@@ -1,6 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { TableWrapper, StyledTable, THead, TBody, Container, TableWrapperOuter, TitleTHead, ThDiv, LeftBar, OptionLeftBar, NoData } from "./styled";
-import { StyledSelect, StyledOption } from "./styled";
+import {
+    TableWrapper,
+    StyledTable,
+    THead,
+    TBody,
+    Container,
+    TableWrapperOuter,
+    TitleTHead,
+    ThDiv,
+    NoData,
+    Toolbar,
+    ToolbarInfo,
+    ToolbarActions,
+    ActionButton,
+    CellText,
+} from "./styled";
+import Dropdown from "@components/dropdown";
 import { AnswersForm, AnswersFormData, formsQuestionsFormsRegisters, requestResponse } from "@components/data-forms/types";
 import { http } from "src/core/axios";
 import { INDEX_RES } from "src/modules/form/type";
@@ -19,7 +34,7 @@ interface Props {
     version: INDEX_RES;
 }
 
-export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, version}: Props) {
+export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, version }: Props) {
     const [columns, setColumns] = useState<formsQuestionsFormsRegisters[]>([]);
     const [answers, setAnswers] = useState<AnswersForm[]>([]);
     const [orderQuestions, setOrderQuestions] = useState<number[]>([]);
@@ -112,20 +127,19 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
         });
 
         if (version.id == 1) {
-        answersF = answersF.filter((a) => {
-            const date = new Date(a.date);
-            return date.getFullYear() > 2026;
-        });
-        }else{
-                    answersF = answersF.filter((a) => {
-            const date = new Date(a.date);
-            return date.getFullYear() < 2026;
-        });
+            answersF = answersF.filter((a) => {
+                const date = new Date(a.date);
+                return date.getFullYear() > 2026;
+            });
+        } else {
+            answersF = answersF.filter((a) => {
+                const date = new Date(a.date);
+                return date.getFullYear() < 2026;
+            });
         }
 
         setFilteredAnswers(answersF);
-        setIsLoading(false)
-
+        setIsLoading(false);
     }, [filters, version]);
 
     useEffect(() => {
@@ -137,89 +151,120 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
         getForm();
     }, [form]);
 
-    return isLoading ? (
-        <Loading sx={{ height: "50vh" }} sxSpinner={{ width: "10vh", height: "10vh" }} fontSize="24px" />
-    ) : (
-        filteredAnswers.length > 0 ? (
-                    <Container>
-            <TableWrapperOuter>
-                <TableWrapper>
-                    <StyledTable>
-                        <THead>
-                            <tr>
-                                {columns.map((col, i) => (
-                                    <th key={i}>
-                                        <ThDiv>
-                                            <TitleTHead>{col.questionId.title}</TitleTHead>
-                                            <StyledSelect
-                                                name="versao"
-                                                value={valuesSelect.find((vs) => vs.id == col.id).value}
-                                                onChange={(e) => {
-                                                    const value = e.currentTarget.value;
-                                                    setFilters((prev) => {
-                                                        const exists = prev.findIndex((o) => o.id === col.id);
-                                                        if (value === "0") {
-                                                            return prev.filter((o) => o.id !== col.id);
-                                                        }
-                                                        if (exists !== -1) {
-                                                            const updated = [...prev];
-                                                            updated[exists] = { id: col.id, response: value };
-                                                            return updated;
-                                                        }
-                                                        return [...prev, { id: col.id, response: value }];
-                                                    });
+    const hasRows = filteredAnswers.length > 0;
 
-                                                    setValuesSelect((prev) => {
-                                                        const exists = prev.findIndex((o) => o.id === col.id);
-                                                        if (exists !== -1) {
-                                                            const updated = [...prev];
-                                                            updated[exists] = { id: col.id, value: value };
-                                                            return updated;
-                                                        }
-                                                        return [...prev, { id: col.id, value: value }];
-                                                    });
-                                                }}
-                                            >
-                                                <StyledOption key={0} value={"0"}>
-                                                    Selecionar Tudo
-                                                </StyledOption>
-                                                {getAnswersByQuestionId(col.questionId.id).map((v, index) => (
-                                                    <StyledOption key={index + 1} value={formatAnswerText(v.answerText)}>
-                                                        {formatAnswerText(v.answerText)}
-                                                    </StyledOption>
-                                                ))}
-                                            </StyledSelect>
-                                        </ThDiv>
-                                    </th>
-                                ))}
-                            </tr>
-                        </THead>
-                        <TBody>
-                            {filteredAnswers.map((a, i) => (
-                                <tr key={i}>
-                                    {orderQuestions.map((questionId, j) => {
-                                        const text = a.answers.find((o) => o.questionId === questionId);
-                                        return <td key={j}>{text ? formatAnswerText(text.answerText) : "Não Informado"}</td>;
+    return (
+        <Container>
+            <TableWrapperOuter>
+                <Toolbar>
+                    <ToolbarInfo>
+                        {isLoading ? (
+                            "Carregando registros..."
+                        ) : (
+                            <>
+                                <strong>{filteredAnswers.length}</strong> {filteredAnswers.length === 1 ? "registro" : "registros"}
+                            </>
+                        )}
+                    </ToolbarInfo>
+                    <ToolbarActions>
+                        <ActionButton type="button" onClick={() => getForm(true)} disabled={isLoading}>
+                            <ReplayIcon sx={{ fontSize: 20 }} />
+                            <span>Atualizar</span>
+                        </ActionButton>
+                        <ActionButton
+                            type="button"
+                            $variant="solid"
+                            onClick={() => exportToCSV(filteredAnswers, columns, orderQuestions, form.title)}
+                            disabled={isLoading || !hasRows}
+                        >
+                            <DownloadIcon sx={{ fontSize: 20 }} />
+                            <span>Baixar CSV</span>
+                        </ActionButton>
+                    </ToolbarActions>
+                </Toolbar>
+
+                {isLoading ? (
+                    <Loading sx={{ flex: 1, minHeight: "180px" }} sxSpinner={{ width: "56px", height: "56px" }} fontSize="16px" />
+                ) : hasRows ? (
+                    <TableWrapper>
+                        <StyledTable>
+                            <THead>
+                                <tr>
+                                    {columns.map((col, i) => {
+                                        const selected = valuesSelect.find((vs) => vs.id == col.id)?.value ?? "0";
+
+                                        return (
+                                            <th key={i} title={col.questionId.title}>
+                                                <ThDiv>
+                                                    <TitleTHead>{col.questionId.title}</TitleTHead>
+                                                    <Dropdown
+                                                        variant="icon"
+                                                        align="right"
+                                                        active={selected !== "0"}
+                                                        label={selected === "0" ? "Filtrar coluna" : `Filtro: ${selected}`}
+                                                        value={selected}
+                                                        options={[
+                                                            { value: "0", label: "Selecionar Tudo" },
+                                                            ...getAnswersByQuestionId(col.questionId.id).map((v) => ({
+                                                                value: formatAnswerText(v.answerText),
+                                                                label: formatAnswerText(v.answerText),
+                                                            })),
+                                                        ]}
+                                                        onChange={(value) => {
+                                                            setFilters((prev) => {
+                                                                const exists = prev.findIndex((o) => o.id === col.id);
+                                                                if (value === "0") {
+                                                                    return prev.filter((o) => o.id !== col.id);
+                                                                }
+                                                                if (exists !== -1) {
+                                                                    const updated = [...prev];
+                                                                    updated[exists] = { id: col.id, response: value };
+                                                                    return updated;
+                                                                }
+                                                                return [...prev, { id: col.id, response: value }];
+                                                            });
+
+                                                            setValuesSelect((prev) => {
+                                                                const exists = prev.findIndex((o) => o.id === col.id);
+                                                                if (exists !== -1) {
+                                                                    const updated = [...prev];
+                                                                    updated[exists] = { id: col.id, value: value };
+                                                                    return updated;
+                                                                }
+                                                                return [...prev, { id: col.id, value: value }];
+                                                            });
+                                                        }}
+                                                    />
+                                                </ThDiv>
+                                            </th>
+                                        );
                                     })}
                                 </tr>
-                            ))}
-                        </TBody>
-                    </StyledTable>
-                </TableWrapper>
+                            </THead>
+                            <TBody>
+                                {filteredAnswers.map((a, i) => (
+                                    <tr key={i}>
+                                        {orderQuestions.map((questionId, j) => {
+                                            const text = a.answers.find((o) => o.questionId === questionId);
+                                            const value = text ? formatAnswerText(text.answerText) : "Não Informado";
+                                            return (
+                                                <td key={j} title={value}>
+                                                    <CellText>{value}</CellText>
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                ))}
+                            </TBody>
+                        </StyledTable>
+                    </TableWrapper>
+                ) : (
+                    <NoData>
+                        <h1>Sem dados</h1>
+                        <p>Nenhum registro encontrado para o formulário e a versão selecionados.</p>
+                    </NoData>
+                )}
             </TableWrapperOuter>
-            <LeftBar>
-                <OptionLeftBar onClick={() => getForm(true)}>
-                    <ReplayIcon sx={{ fontSize: 32 }} />
-                    <h2>Atualizar</h2>
-                </OptionLeftBar>
-                <OptionLeftBar onClick={() => exportToCSV(filteredAnswers, columns, orderQuestions, form.title)}>
-                    <DownloadIcon sx={{ fontSize: 32 }} />
-                    <h2>Baixar</h2>
-                </OptionLeftBar>
-            </LeftBar>
         </Container>
-        ): (
-            <NoData>Sem Dados</NoData>
-        )
     );
 }
