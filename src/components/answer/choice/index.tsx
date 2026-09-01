@@ -5,13 +5,26 @@ import React from 'react';
 const ff = { body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif" };
 const C = { primary: '#6D141A', text: '#1c1917', muted: '#78716c', border: '#e7e5e4', bg: '#FAF7F2' };
 
+const normalize = (value: string) =>
+	value
+		.normalize('NFD')
+		.split('')
+		.filter((char) => {
+			const code = char.charCodeAt(0);
+			return code < 0x0300 || code > 0x036f;
+		})
+		.join('')
+		.toLowerCase()
+		.trim();
+
 export default function Index(props: TPROPS) {
 	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
 	const [selected, setSelected] = React.useState<number | null>(null);
 
-	// Checkbox mode state
 	const [checkedIndices, setCheckedIndices] = React.useState<Set<number>>(new Set());
 	const [otherText, setOtherText] = React.useState('');
+
+	const [search, setSearch] = React.useState('');
 
 	const handleSelectChoice = (index: number, choice: CHOICE) => {
 		const temp = answer.slice();
@@ -38,18 +51,54 @@ export default function Index(props: TPROPS) {
 		props.choices.unshift(element);
 	}
 
+	const isNumericList = props.choices.every((choice) => /^\d+$/.test(choice.title.trim()));
+	const maxSearchLength = props.choices.reduce((max, choice) => Math.max(max, choice.title.trim().length), 1);
+
+	const matchesSomeChoice = (value: string) => {
+		const normalizedValue = normalize(value);
+		return props.choices.some((choice) => normalize(choice.title).includes(normalizedValue));
+	};
+
+	const sanitizeSearch = (rawValue: string): string | null => {
+		const value = (isNumericList ? rawValue.replace(/\D/g, '') : rawValue).slice(0, maxSearchLength);
+		if (isNumericList && value && !matchesSomeChoice(value)) return null;
+		return value;
+	};
+
 	if (props.choiceType === 'autoComplete') {
-		const options = props.choices.map((choice) => ({
-			label: choice.title,
-			id: choice.formsQuestionFormsQuestionChoicesId,
-		}));
+		const options = props.choices
+			.map((choice) => ({
+				label: choice.title,
+				id: choice.formsQuestionFormsQuestionChoicesId,
+			}))
+			.sort((a, b) => (isNumericList ? Number(a.label) - Number(b.label) : 0));
 
 		return (
 			<Autocomplete
 				id="combo-box"
 				options={options}
 				sx={{ width: '100%' }}
-				renderInput={(params) => <TextField {...params} label="Selecione" />}
+				inputValue={search}
+				onInputChange={(_, value, reason) => {
+					if (reason !== 'input') {
+						setSearch(value);
+						return;
+					}
+
+					const sanitized = sanitizeSearch(value);
+					if (sanitized !== null) setSearch(sanitized);
+				}}
+				renderInput={(params) => (
+					<TextField
+						{...params}
+						label="Selecione"
+						inputProps={{
+							...params.inputProps,
+							maxLength: maxSearchLength,
+							inputMode: isNumericList ? 'numeric' : 'text',
+						}}
+					/>
+				)}
 				onChange={(_, choiceEvent: any) => {
 					if (!choiceEvent) return;
 					const index = props.choices.findIndex((c) => c.formsQuestionFormsQuestionChoicesId == choiceEvent.id);
