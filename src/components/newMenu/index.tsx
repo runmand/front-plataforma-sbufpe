@@ -7,6 +7,7 @@ import SignupModal from "@components/modal/sign-up/index";
 import DrawerMenu from "@components/menu/drawer/index";
 import { MENU_ITEM } from "@components/menu/items/type";
 import { itemsDrawer, itemsMenu } from "./itensMenu";
+import UserTypeService from "src/modules/userTypes/service";
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 const C = {
@@ -139,6 +140,7 @@ export default function Index() {
     const [scrolled, setScrolled] = React.useState(false);
     const [isMobile, setIsMobile] = React.useState(false);
     const [haveLogin, setHaveLogin] = React.useState(false);
+    const [isAdminOrDev, setIsAdminOrDev] = React.useState(false);
     const [isOpenLogin, setIsOpenLogin] = React.useState(false);
     const [isOpenSignup, setIsOpenSignup] = React.useState(false);
     const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -167,6 +169,21 @@ export default function Index() {
         const id = Number(localStorage.getItem("typeId"));
         if (id <= 2 || id == 5) {
             setMenu((prev) => [...prev, { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }]);
+        }
+        // Painel admin: só Admin ou Desenvolvedor vê o item no menu (a segurança de
+        // verdade é o backend, que já só deixa esses dois papéis entrar nas rotas
+        // /admin/*). Resolvido por DESCRIÇÃO via `/user-types` — não por id numérico
+        // fixo, porque o id de "Desenvolvedor" não é garantido ser o mesmo em todo
+        // ambiente/banco.
+        if (id) {
+            new UserTypeService().index().then((res) => {
+                const myType = res.data?.find((t) => String(t.id) === String(id));
+                const description = myType?.description?.toLowerCase();
+                if (description === "admin" || description === "desenvolvedor") {
+                    setIsAdminOrDev(true);
+                    setMenu((prev) => (prev.some((m) => m.id === 8) ? prev : [...prev, { id: 8, title: "Painel Admin", url: routerEnum.ADMIN }]));
+                }
+            });
         }
 
         const onLogin = () => setIsOpenLogin(true);
@@ -282,6 +299,30 @@ export default function Index() {
                             {menuList.map((m, i) => (
                                 <NavDropdown key={i} title={m.title} items={m.items} />
                             ))}
+                            {isAdminOrDev && (
+                                <button
+                                    onClick={() => router.push(routerEnum.ADMIN)}
+                                    style={{
+                                        ...btnBase,
+                                        padding: "8px 14px",
+                                        fontSize: "14px",
+                                        fontWeight: 600,
+                                        color: "rgba(255,255,255,0.88)",
+                                        background: "transparent",
+                                        borderRadius: "8px",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                                        e.currentTarget.style.color = "#fff";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "rgba(255,255,255,0.88)";
+                                    }}
+                                >
+                                    Painel Admin
+                                </button>
+                            )}
                         </div>
                     )}
 
