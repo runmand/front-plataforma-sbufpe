@@ -295,10 +295,14 @@ export const summarize = (rows: VigiaRow[]): VigiaSummary => {
 		porFaixa: bracketRates.map(({ label, rate }) => toCalculationDetail(label, rate)),
 	};
 
-	const livreDeCarieePorBloco: CareFreePoint[] = AGE_BRACKETS.map((bracket) => ({
-		label: bracket.label,
-		count: livresDeCarieRows.filter((row) => getAgeBracket(row)?.label === bracket.label).length,
-	})).filter((point) => point.count > 0);
+	// Mesmas faixas do gráfico de CPO (as que têm dado clínico), INCLUSIVE as que ficam em zero.
+	// Antes as faixas zeradas eram descartadas, e isso escondia justamente o que interessa: uma
+	// faixa com CPO alto e nenhum livre de cárie. Também desalinhava os dois gráficos, que agora
+	// são lidos lado a lado, faixa por faixa.
+	const livreDeCarieePorBloco: CareFreePoint[] = bracketRates.map(({ label }) => ({
+		label,
+		count: livresDeCarieRows.filter((row) => getAgeBracket(row)?.label === label).length,
+	}));
 
 	// % de livres de cárie = (pessoas com CPO = 0 ÷ pessoas com dado de CPO válido) × 100.
 	const livresDeCariePessoas = withCpo.length;
