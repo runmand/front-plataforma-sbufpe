@@ -45,7 +45,11 @@ export default function QuestionBarChart(props: TPROPS) {
 		<ResponsiveContainer width="100%" height={height}>
 			<BarChart data={props.data} layout="vertical" margin={{ top: 4, right: 44, left: 8, bottom: 4 }}>
 				<CartesianGrid horizontal={false} stroke={CEO.border} />
-				<XAxis type="number" allowDecimals={false} hide />
+				{/* Escala fixa em 0–100%. Sem `domain`, o recharts normaliza cada gráfico no próprio
+				    máximo: a maior opção de uma pergunta de 30% desenhava barra cheia, igualzinha à de
+				    uma pergunta de 90% logo abaixo. Como o eixo está escondido, nada avisava que a
+				    escala tinha mudado, e perguntas empilhadas convidavam a uma comparação inválida. */}
+				<XAxis type="number" allowDecimals={false} domain={[0, 100]} hide />
 				<YAxis type="category" dataKey="title" width={170} tick={<CategoryTick />} axisLine={false} tickLine={false} />
 				<Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
 				<Bar dataKey="percent" fill={CEO.single} radius={[0, 4, 4, 0]} barSize={16} isAnimationActive={false}>
