@@ -21,7 +21,7 @@ const C = {
     borderLight: "#f5f5f4",
 };
 const ff = {
-    display: "'Lora', Georgia, serif",
+    display: "'Newsreader', Georgia, serif",
     body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 const btnBase: React.CSSProperties = {

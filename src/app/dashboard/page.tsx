@@ -9,7 +9,7 @@ import NewMenu from '@components/newMenu/index';
 import FooterMain from '@components/footer/main/index';
 
 const ff = {
-    display: "'Lora', Georgia, serif",
+    display: "'Newsreader', Georgia, serif",
     body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 const C = {
