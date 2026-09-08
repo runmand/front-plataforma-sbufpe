@@ -2,6 +2,7 @@
 
 import Base from '@components/base-layout/index';
 import React, { useEffect, useState } from 'react';
+import { Autocomplete, TextField } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
@@ -17,9 +18,15 @@ import { MATRIX_ROW } from 'src/modules/admin/formPermissions/type';
 import TermRequirementService from 'src/modules/admin/termRequirements/service';
 import { ADMIN_ROW, TERM_VARIANT } from 'src/modules/admin/termRequirements/type';
 import UserTypeService from 'src/modules/userTypes/service';
+import { SELECT_FIELD_SX, SELECT_PAPER_SX } from 'src/core/selectSx';
 
+/* ─── Tokens do design do sistema ─────────────────────────────────────────────
+ * Mesmos valores usados nas outras telas (/form, /dashboard, alert, question):
+ * fundo creme, cartão branco de raio 16px com borda 1.5px, título em serifa,
+ * botão primário em gradiente vinho. Mantidos locais aqui pela mesma convenção
+ * das páginas irmãs, que declaram `ff`/`C` no próprio arquivo. */
 const ff = {
-    display: "'Lora', Georgia, serif",
+    display: "'Newsreader', Georgia, serif",
     body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 const C = {
@@ -28,59 +35,451 @@ const C = {
     bg: '#FAF7F2',
     white: '#fff',
     text: '#1c1917',
-    muted: '#a8a29e',
+    /** Texto secundário legível — mesmo tom do resto do app (alert, question). */
+    muted: '#78716c',
+    /** Só pra legendas bem discretas (subtítulo do hero, estado vazio). */
+    mutedLight: '#a8a29e',
     border: '#e7e5e4',
+    borderLight: '#f5f5f4',
+    danger: '#b91c1c',
+    amber: '#b45309',
 };
+const CARD_SHADOW = '0 1px 4px rgba(0,0,0,0.04)';
+
+/* Estilos com estados (hover/focus/disabled) ficam em classes `.adm-*` em vez de
+ * inline — inline não expressa `:hover`/`:focus`, e sem foco visível os campos do
+ * painel ficavam indistinguíveis do resto da página. */
+const ADMIN_CSS = `
+.adm-input {
+    width: 100%;
+    /* \`src/css/register.css\` tem uma regra global \`input, select { height: 30px; margin: 5px }\`
+     * que vaza pra todo o site (o arquivo é importado no layout raiz). Com \`box-sizing:
+     * border-box\`, aquela altura fixa de 30px não caberia o padding daqui e cortava o
+     * texto do campo no meio; o \`margin\` também desalinhava os campos da grade. Como
+     * classe ganha de seletor de elemento, basta declarar os dois explicitamente.
+     * (Os dropdowns não passam por aqui — são MUI, que já zera isso internamente.) */
+    height: auto;
+    margin: 0;
+    padding: 10px 12px;
+    line-height: 1.4;
+    border-radius: 10px;
+    border: 1.5px solid ${C.border};
+    background-color: ${C.white};
+    color: ${C.text};
+    font-size: 13px;
+    font-family: ${ff.body};
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.adm-input:hover:not(:disabled) { border-color: #d6d3d1; }
+.adm-input:focus {
+    border-color: ${C.primary};
+    box-shadow: 0 0 0 3px rgba(109,20,26,0.10);
+}
+.adm-input::placeholder { color: ${C.mutedLight}; }
+.adm-input--search { padding-left: 36px; }
+
+/* \`src/css/index.css\` tem uma regra global \`input[type="checkbox"] { display: none; }\`
+ * (feita pra um outro componente que usa radio/checkbox escondido + label estilizado)
+ * que também apaga QUALQUER checkbox nativo do site, inclusive os daqui — por isso as
+ * marcações da matriz não apareciam. O seletor abaixo é mais específico, então religa
+ * a exibição só nestes checkboxes, sem tocar no CSS global. */
+.adm-check[type="checkbox"] {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: ${C.primary};
+    cursor: pointer;
+}
+.adm-check[type="checkbox"]:disabled { cursor: default; }
+.adm-check--sm[type="checkbox"] { width: 13px; height: 13px; }
+
+.adm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    /* Altura fixa (com \`box-sizing: border-box\`, herdado do reset global) em vez de
+     * padding vertical: assim as variantes com borda e a primária sem borda ficam do
+     * mesmo tamanho, e o botão alinha exatamente com a altura dos campos ao lado. */
+    min-height: 40px;
+    padding: 0 20px;
+    line-height: 1.4;
+    border-radius: 10px;
+    font-family: ${ff.body};
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all .15s ease;
+}
+.adm-btn:disabled { cursor: not-allowed; opacity: .55; box-shadow: none; }
+.adm-btn--sm { min-height: 32px; padding: 0 14px; font-size: 12px; }
+.adm-btn--primary {
+    border: none;
+    background: linear-gradient(135deg, ${C.primary}, ${C.secondary});
+    color: ${C.white};
+    box-shadow: 0 4px 12px rgba(109,20,26,0.22);
+}
+.adm-btn--primary:hover:not(:disabled) { opacity: .88; }
+.adm-btn--ghost { border: 1.5px solid ${C.border}; background-color: ${C.white}; color: ${C.text}; }
+.adm-btn--ghost:hover:not(:disabled) { border-color: ${C.primary}; color: ${C.primary}; }
+.adm-btn--outline { border: 1.5px solid ${C.primary}; background-color: ${C.white}; color: ${C.primary}; }
+.adm-btn--outline:hover:not(:disabled) { background-color: rgba(109,20,26,0.06); }
+.adm-btn--danger { border: 1.5px solid rgba(185,28,28,0.3); background-color: ${C.white}; color: ${C.danger}; }
+.adm-btn--danger:hover:not(:disabled) { background-color: rgba(185,28,28,0.06); border-color: ${C.danger}; }
+
+.adm-tab {
+    padding: 7px 18px;
+    border: none;
+    border-radius: 100px;
+    background-color: transparent;
+    color: ${C.muted};
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: ${ff.body};
+    cursor: pointer;
+    transition: all .15s ease;
+}
+.adm-tab:hover { color: ${C.text}; background-color: rgba(28,25,23,0.05); }
+.adm-tab--active, .adm-tab--active:hover { background-color: ${C.primary}; color: ${C.white}; }
+
+.adm-row td { transition: background-color .12s ease; }
+.adm-row:hover td { background-color: ${C.bg}; }
+.adm-chip-doc { transition: border-color .15s ease, background-color .15s ease; }
+.adm-chip-doc:hover { border-color: ${C.primary}; }
+`;
 
 const TERM_VARIANTS: TERM_VARIANT[] = ['TCLE', 'TCLE2', 'TCLEPROF', 'TCLEUSAB', 'TALE18', 'TALEU13'];
 
-const inputStyle: React.CSSProperties = {
-    padding: '9px 12px',
-    borderRadius: '8px',
-    border: `1.5px solid ${C.border}`,
-    fontSize: '13px',
-    fontFamily: ff.body,
-    outline: 'none',
+/* ─── Peças reaproveitadas do visual do sistema ──────────────────────────────── */
+
+/** Cartão de seção — mesma silhueta dos cartões de /form e /dashboard
+ * (branco, raio 16px, borda 1.5px, sombra rasa), com cabeçalho em serifa. */
+function SectionCard({
+    title,
+    description,
+    aside,
+    children,
+}: {
+    title: string;
+    description?: React.ReactNode;
+    aside?: React.ReactNode;
+    children: React.ReactNode;
+}) {
+    return (
+        <section
+            style={{
+                backgroundColor: C.white,
+                border: `1.5px solid ${C.border}`,
+                borderRadius: '16px',
+                boxShadow: CARD_SHADOW,
+                overflow: 'hidden',
+            }}
+        >
+            <div
+                style={{
+                    padding: '22px 28px 18px',
+                    borderBottom: `1px solid ${C.border}`,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: '16px',
+                    flexWrap: 'wrap',
+                }}
+            >
+                <div style={{ flex: 1, minWidth: '240px' }}>
+                    <h2
+                        style={{
+                            fontFamily: ff.display,
+                            fontSize: '19px',
+                            fontWeight: 700,
+                            color: C.text,
+                            margin: 0,
+                            letterSpacing: '-0.01em',
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        {title}
+                    </h2>
+                    {description && (
+                        <p
+                            style={{
+                                fontFamily: ff.body,
+                                fontSize: '13px',
+                                color: C.muted,
+                                margin: '8px 0 0',
+                                lineHeight: 1.6,
+                                maxWidth: '760px',
+                            }}
+                        >
+                            {description}
+                        </p>
+                    )}
+                </div>
+                {aside && <div style={{ flexShrink: 0 }}>{aside}</div>}
+            </div>
+            <div style={{ padding: '24px 28px 28px' }}>{children}</div>
+        </section>
+    );
+}
+
+type BtnVariant = 'primary' | 'ghost' | 'outline' | 'danger';
+
+function Btn({
+    variant = 'primary',
+    small = false,
+    className,
+    children,
+    ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: BtnVariant; small?: boolean }) {
+    return (
+        <button
+            type="button"
+            {...rest}
+            className={`adm-btn adm-btn--${variant}${small ? ' adm-btn--sm' : ''}${className ? ` ${className}` : ''}`}
+        >
+            {children}
+        </button>
+    );
+}
+
+/** Rótulo em caixa alta acima do controle — mesmo padrão dos cabeçalhos de tabela,
+ * pra que campo e coluna se leiam como parte do mesmo sistema.
+ *
+ * `as="div"` é pra quando o filho é um dropdown (MUI): o Autocomplete já tem input
+ * próprio e indicador clicável, e envolver isso num `<label>` faria o clique no
+ * indicador disputar com o comportamento padrão do rótulo. Nesses casos o nome
+ * acessível vai no `ariaLabel` do `AdmSelect`. */
+function Field({
+    label,
+    children,
+    style,
+    as = 'label',
+}: {
+    label: string;
+    children: React.ReactNode;
+    style?: React.CSSProperties;
+    as?: 'label' | 'div';
+}) {
+    const Tag = as === 'div' ? 'div' : 'label';
+    return (
+        <Tag style={{ display: 'block', ...style }}>
+            <span
+                style={{
+                    display: 'block',
+                    fontFamily: ff.body,
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.06em',
+                    color: C.muted,
+                    marginBottom: '6px',
+                }}
+            >
+                {label}
+            </span>
+            {children}
+        </Tag>
+    );
+}
+
+/* ─── Dropdown do painel ──────────────────────────────────────────────────────
+ * Mesmo controle que o questionário usa nas perguntas de lista (ver `choiceType:
+ * "autoComplete"` em `components/answer/choice/index.tsx`): MUI Autocomplete, então
+ * a lista é pesquisável e se comporta igual ao que quem usa a plataforma já conhece.
+ *
+ * A diferença deliberada é a cor do acento: o tema não define `palette.primary`, então
+ * o MUI cru foca em azul (#1976d2). Aqui o foco segue o vinho do sistema, pro dropdown
+ * não ser a única peça azul no meio do painel. */
+
+type SelectOption = { id: string; label: string };
+
+function AdmSelect({
+    options,
+    value,
+    onChange,
+    ariaLabel,
+    placeholder,
+    disabled,
+}: {
+    options: SelectOption[];
+    value: string;
+    onChange: (id: string) => void;
+    ariaLabel: string;
+    placeholder?: string;
+    disabled?: boolean;
+}) {
+    return (
+        <Autocomplete
+            options={options}
+            value={options.find((o) => o.id === value) ?? null}
+            disabled={disabled}
+            size="small"
+            openOnFocus
+            getOptionLabel={(o) => o.label}
+            isOptionEqualToValue={(o, v) => o.id === v.id}
+            // Trocar de opção é a única ação útil aqui — não existe "nenhum
+            // formulário"/"nenhum tipo" pra selecionar, então ignora o limpar.
+            onChange={(_, opt) => opt && onChange(opt.id)}
+            noOptionsText="Nada encontrado"
+            sx={{ width: '100%', '& .MuiAutocomplete-clearIndicator': { display: 'none' } }}
+            slotProps={{ paper: { sx: SELECT_PAPER_SX } }}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    placeholder={placeholder}
+                    inputProps={{ ...params.inputProps, 'aria-label': ariaLabel }}
+                    sx={SELECT_FIELD_SX}
+                />
+            )}
+        />
+    );
+}
+
+type Tone = 'neutral' | 'primary' | 'amber';
+
+const TONE: Record<Tone, { bg: string; border: string; color: string }> = {
+    neutral: { bg: 'rgba(107,114,128,0.06)', border: C.border, color: C.muted },
+    primary: { bg: 'rgba(109,20,26,0.07)', border: 'rgba(109,20,26,0.22)', color: C.primary },
+    amber: { bg: 'rgba(217,119,6,0.08)', border: 'rgba(217,119,6,0.25)', color: '#92400e' },
+};
+
+/** Selo arredondado — mesmo formato dos badges dos cartões de /dashboard. */
+function Chip({ tone = 'neutral', children }: { tone?: Tone; children: React.ReactNode }) {
+    const t = TONE[tone];
+    return (
+        <span
+            style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '4px 11px',
+                borderRadius: '100px',
+                backgroundColor: t.bg,
+                border: `1px solid ${t.border}`,
+                color: t.color,
+                fontFamily: ff.body,
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                letterSpacing: '0.02em',
+                whiteSpace: 'nowrap',
+            }}
+        >
+            {children}
+        </span>
+    );
+}
+
+function Callout({ tone = 'neutral', children }: { tone?: Tone; children: React.ReactNode }) {
+    const t = TONE[tone];
+    return (
+        <div
+            style={{
+                padding: '13px 16px',
+                borderRadius: '12px',
+                backgroundColor: t.bg,
+                border: `1px solid ${t.border}`,
+                color: t.color,
+                fontFamily: ff.body,
+                fontSize: '13px',
+                lineHeight: 1.6,
+                maxWidth: '760px',
+            }}
+        >
+            {children}
+        </div>
+    );
+}
+
+/** Moldura da tabela: cantos arredondados e cabeçalho no creme do sistema, pra a
+ * tabela não ficar "solta" dentro do cartão branco. */
+function TableShell({ children }: { children: React.ReactNode }) {
+    return (
+        <div style={{ border: `1px solid ${C.border}`, borderRadius: '12px', overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: ff.body, fontSize: '13px' }}>
+                {children}
+            </table>
+        </div>
+    );
+}
+
+const thStyle: React.CSSProperties = {
+    padding: '11px 16px',
+    backgroundColor: C.bg,
+    borderBottom: `1px solid ${C.border}`,
+    color: C.muted,
+    fontSize: '11px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.06em',
+    textAlign: 'left',
+    whiteSpace: 'nowrap',
+};
+/** `<th>`/`<td>` não herdam uma cor legível do global CSS neste app (que ainda tem
+ * uma regra de `prefers-color-scheme: dark` no body) — sem cor explícita o texto
+ * das tabelas fica quase invisível. */
+const tdStyle: React.CSSProperties = {
+    padding: '12px 16px',
     color: C.text,
     backgroundColor: C.white,
 };
 
-const btnStyle: React.CSSProperties = {
-    padding: '9px 16px',
-    borderRadius: '8px',
-    border: 'none',
-    backgroundColor: C.primary,
-    color: C.white,
-    fontSize: '13px',
-    fontWeight: 700,
-    fontFamily: ff.body,
-    cursor: 'pointer',
-};
+function EmptyState({ children }: { children: React.ReactNode }) {
+    return (
+        <div
+            style={{
+                padding: '38px 20px',
+                textAlign: 'center',
+                fontFamily: ff.body,
+                fontSize: '13px',
+                color: C.mutedLight,
+                backgroundColor: C.white,
+            }}
+        >
+            {children}
+        </div>
+    );
+}
 
-// `src/css/index.css` tem uma regra global `input[type="checkbox"] { display: none; }`
-// (feita pra um outro componente que usa radio/checkbox escondido + label estilizado)
-// que também apaga QUALQUER checkbox nativo do site, inclusive os daqui — por isso as
-// marcações da matriz não apareciam. Estilo inline tem prioridade sobre a regra da
-// classe, então isso religa a exibição só nestes checkboxes, sem tocar no CSS global.
-const checkboxStyle: React.CSSProperties = {
-    display: 'inline-block',
-    width: '16px',
-    height: '16px',
-    cursor: 'pointer',
-    accentColor: C.primary,
-};
+function OrDivider() {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '16px 0' }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: C.border }} />
+            <span
+                style={{
+                    fontFamily: ff.body,
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: C.mutedLight,
+                    letterSpacing: '0.14em',
+                }}
+            >
+                OU
+            </span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: C.border }} />
+        </div>
+    );
+}
 
-// `<th>`/`<td>` não herdam uma cor legível do global CSS neste app — sem isso
-// o texto das tabelas fica quase invisível sobre o fundo claro do painel.
-const thStyle: React.CSSProperties = {
-    padding: '10px',
-    color: C.text,
-    fontWeight: 700,
-};
-const tdStyle: React.CSSProperties = {
-    padding: '10px',
-    color: C.text,
-};
+const SearchIcon = () => (
+    <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={C.mutedLight}
+        strokeWidth={2.2}
+        strokeLinecap="round"
+        style={{ position: 'absolute', left: '13px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+    >
+        <circle cx="11" cy="11" r="7" />
+        <path d="M20 20l-3.5-3.5" />
+    </svg>
+);
 
 const typeLabel = (t: { id: ID; description: string } | ID | null | undefined) =>
     t && typeof t === 'object' ? t.description : String(t ?? '');
@@ -154,91 +553,177 @@ function UsersTab() {
             .finally(() => setCreating(false));
     };
 
+    const typeOptions: SelectOption[] = types.map((t) => ({ id: String(t.id), label: t.description }));
+
     return (
-        <div>
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
-                <input
-                    style={{ ...inputStyle, flex: 1, minWidth: '220px' }}
-                    placeholder="Buscar por login, e-mail, CPF ou celular..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && load()}
-                />
-                <button style={btnStyle} onClick={load}>
-                    Buscar
-                </button>
-                <button style={{ ...btnStyle, backgroundColor: C.white, color: C.primary, border: `1.5px solid ${C.primary}` }} onClick={() => setShowCreate((v) => !v)}>
+        <SectionCard
+            title="Usuários"
+            description="Busque uma conta pelo login, e-mail, CPF ou celular, troque o tipo de usuário e cadastre novas contas."
+            aside={
+                <Chip tone="primary">
+                    {users.length} {users.length === 1 ? 'conta' : 'contas'}
+                </Chip>
+            }
+        >
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '18px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
+                    <SearchIcon />
+                    <input
+                        className="adm-input adm-input--search"
+                        placeholder="Buscar por login, e-mail, CPF ou celular..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && load()}
+                    />
+                </div>
+                <Btn onClick={load}>Buscar</Btn>
+                <Btn variant="outline" onClick={() => setShowCreate((v) => !v)}>
                     {showCreate ? 'Cancelar' : '+ Novo usuário'}
-                </button>
+                </Btn>
             </div>
 
             {showCreate && (
-                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '20px', padding: '16px', border: `1.5px solid ${C.border}`, borderRadius: '12px', backgroundColor: C.white }}>
-                    <input style={inputStyle} placeholder="Login (CPF/celular/e-mail/username)" value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} />
-                    <input style={inputStyle} placeholder="E-mail" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                    <input style={inputStyle} placeholder="Senha" type="password" value={form.pwd} onChange={(e) => setForm({ ...form, pwd: e.target.value })} />
-                    <select style={inputStyle} value={form.typeId} onChange={(e) => setForm({ ...form, typeId: e.target.value })}>
-                        <option value="">Tipo...</option>
-                        {types.map((t) => (
-                            <option key={String(t.id)} value={String(t.id)}>
-                                {t.description}
-                            </option>
-                        ))}
-                    </select>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontFamily: ff.body, color: C.text }}>
-                        <input style={checkboxStyle} type="checkbox" checked={form.isTest} onChange={(e) => setForm({ ...form, isTest: e.target.checked })} />
-                        Conta de teste
-                    </label>
-                    <button style={btnStyle} disabled={creating} onClick={handleCreate}>
-                        {creating ? 'Salvando...' : 'Cadastrar'}
-                    </button>
+                <div
+                    style={{
+                        marginBottom: '20px',
+                        padding: '20px',
+                        border: `1.5px solid ${C.border}`,
+                        borderRadius: '14px',
+                        backgroundColor: C.bg,
+                    }}
+                >
+                    <p
+                        style={{
+                            fontFamily: ff.display,
+                            fontSize: '15px',
+                            fontWeight: 700,
+                            color: C.text,
+                            margin: '0 0 16px',
+                        }}
+                    >
+                        Novo usuário
+                    </p>
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                            gap: '14px',
+                            marginBottom: '16px',
+                        }}
+                    >
+                        <Field label="Login">
+                            <input
+                                className="adm-input"
+                                placeholder="CPF, celular, e-mail ou username"
+                                value={form.login}
+                                onChange={(e) => setForm({ ...form, login: e.target.value })}
+                            />
+                        </Field>
+                        <Field label="E-mail">
+                            <input
+                                className="adm-input"
+                                placeholder="nome@exemplo.com"
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                            />
+                        </Field>
+                        <Field label="Senha">
+                            <input
+                                className="adm-input"
+                                placeholder="••••••••"
+                                type="password"
+                                value={form.pwd}
+                                onChange={(e) => setForm({ ...form, pwd: e.target.value })}
+                            />
+                        </Field>
+                        <Field label="Tipo de usuário" as="div">
+                            <AdmSelect
+                                ariaLabel="Tipo de usuário"
+                                placeholder="Selecione..."
+                                options={typeOptions}
+                                value={form.typeId}
+                                onChange={(id) => setForm({ ...form, typeId: id })}
+                            />
+                        </Field>
+                    </div>
+                    <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+                        <label
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                fontSize: '13px',
+                                fontFamily: ff.body,
+                                color: C.text,
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <input
+                                className="adm-check"
+                                type="checkbox"
+                                checked={form.isTest}
+                                onChange={(e) => setForm({ ...form, isTest: e.target.checked })}
+                            />
+                            Conta de teste
+                        </label>
+                        <div style={{ flex: 1 }} />
+                        <Btn variant="ghost" disabled={creating} onClick={() => setShowCreate(false)}>
+                            Cancelar
+                        </Btn>
+                        <Btn disabled={creating} onClick={handleCreate}>
+                            {creating ? 'Salvando...' : 'Cadastrar'}
+                        </Btn>
+                    </div>
                 </div>
             )}
 
-            <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: ff.body, fontSize: '13px' }}>
-                    <thead>
-                        <tr style={{ textAlign: 'left', borderBottom: `2px solid ${C.border}` }}>
-                            <th style={thStyle}>Login</th>
-                            <th style={thStyle}>E-mail</th>
-                            <th style={thStyle}>Tipo</th>
-                            <th style={thStyle}>Teste</th>
-                            <th style={thStyle}>Trocar tipo</th>
+            <TableShell>
+                <thead>
+                    <tr>
+                        <th style={thStyle}>Login</th>
+                        <th style={thStyle}>E-mail</th>
+                        <th style={thStyle}>Tipo</th>
+                        <th style={thStyle}>Teste</th>
+                        <th style={thStyle}>Trocar tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((u, i) => (
+                        <tr
+                            key={String(u.id)}
+                            className="adm-row"
+                            style={{ borderTop: i === 0 ? 'none' : `1px solid ${C.borderLight}` }}
+                        >
+                            <td style={{ ...tdStyle, fontWeight: 600 }}>
+                                {u.cpf ? maskCpfDisplay(u.cpf) : u.cellphone || u.username || '—'}
+                            </td>
+                            <td style={{ ...tdStyle, color: C.muted }}>{u.email || '—'}</td>
+                            <td style={tdStyle}>
+                                <Chip>{typeLabel(u.typeId) || '—'}</Chip>
+                            </td>
+                            <td style={tdStyle}>
+                                {u.isTest ? <Chip tone="amber">Teste</Chip> : <span style={{ color: C.mutedLight }}>—</span>}
+                            </td>
+                            <td style={{ ...tdStyle, minWidth: '210px' }}>
+                                <AdmSelect
+                                    ariaLabel={`Trocar tipo de ${u.email || u.username || 'usuário'}`}
+                                    options={typeOptions}
+                                    value={String(typeIdOf(u.typeId) ?? '')}
+                                    onChange={(id) => handleUpdateType(u.id, id)}
+                                />
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((u) => (
-                            <tr key={String(u.id)} style={{ borderBottom: `1px solid ${C.border}` }}>
-                                <td style={tdStyle}>{u.cpf ? maskCpfDisplay(u.cpf) : u.cellphone || u.username || '—'}</td>
-                                <td style={tdStyle}>{u.email || '—'}</td>
-                                <td style={tdStyle}>{typeLabel(u.typeId)}</td>
-                                <td style={tdStyle}>{u.isTest ? 'Sim' : 'Não'}</td>
-                                <td style={tdStyle}>
-                                    <select
-                                        style={inputStyle}
-                                        defaultValue={String(typeIdOf(u.typeId) ?? '')}
-                                        onChange={(e) => handleUpdateType(u.id, e.target.value)}
-                                    >
-                                        {types.map((t) => (
-                                            <option key={String(t.id)} value={String(t.id)}>
-                                                {t.description}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </td>
-                            </tr>
-                        ))}
-                        {users.length === 0 && (
-                            <tr>
-                                <td colSpan={5} style={{ padding: '20px', textAlign: 'center', color: C.muted }}>
-                                    Nenhum usuário encontrado.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    ))}
+                    {users.length === 0 && (
+                        <tr>
+                            <td colSpan={5} style={{ padding: 0 }}>
+                                <EmptyState>Nenhum usuário encontrado.</EmptyState>
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </TableShell>
+        </SectionCard>
     );
 }
 
@@ -272,43 +757,73 @@ function FormPermissionsTab({ forms }: { forms: INDEX_RES[] }) {
         });
     };
 
-    return (
-        <div>
-            <p style={{ fontFamily: ff.body, fontSize: '13px', color: C.muted, marginBottom: '16px' }}>
-                Admin e Desenvolvedor sempre têm acesso total, independente desta matriz — ela só vale pros demais tipos. A ausência de
-                marcação significa acesso negado.
-            </p>
-            <select style={{ ...inputStyle, marginBottom: '20px' }} value={String(formId)} onChange={(e) => setFormId(e.target.value)}>
-                {forms.map((f) => (
-                    <option key={String(f.id)} value={String(f.id)}>
-                        {f.title}
-                    </option>
-                ))}
-            </select>
+    const checkCell: React.CSSProperties = { ...tdStyle, textAlign: 'center' };
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: ff.body, fontSize: '13px' }}>
+    return (
+        <SectionCard
+            title="Permissões de Formulários"
+            description="Escolha um formulário e marque quais tipos de usuário podem vê-lo e respondê-lo."
+        >
+            <div style={{ marginBottom: '18px' }}>
+                <Callout>
+                    <strong>Admin</strong> e <strong>Desenvolvedor</strong> sempre têm acesso total, independente desta matriz —
+                    ela só vale pros demais tipos. A ausência de marcação significa acesso negado.
+                </Callout>
+            </div>
+
+            <Field label="Formulário" as="div" style={{ maxWidth: '420px', marginBottom: '20px' }}>
+                <AdmSelect
+                    ariaLabel="Formulário"
+                    options={forms.map((f) => ({ id: String(f.id), label: f.title }))}
+                    value={String(formId)}
+                    onChange={(id) => setFormId(id)}
+                />
+            </Field>
+
+            <TableShell>
                 <thead>
-                    <tr style={{ textAlign: 'left', borderBottom: `2px solid ${C.border}` }}>
+                    <tr>
                         <th style={thStyle}>Tipo de usuário</th>
-                        <th style={thStyle}>Pode ver</th>
-                        <th style={thStyle}>Pode responder</th>
+                        <th style={{ ...thStyle, textAlign: 'center', width: '140px' }}>Pode ver</th>
+                        <th style={{ ...thStyle, textAlign: 'center', width: '160px' }}>Pode responder</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rows.map((r) => (
-                        <tr key={String(r.typeId)} style={{ borderBottom: `1px solid ${C.border}` }}>
-                            <td style={tdStyle}>{r.typeDescription}</td>
-                            <td style={tdStyle}>
-                                <input style={checkboxStyle} type="checkbox" checked={r.canView} onChange={() => toggle(r, 'canView')} />
+                    {rows.map((r, i) => (
+                        <tr
+                            key={String(r.typeId)}
+                            className="adm-row"
+                            style={{ borderTop: i === 0 ? 'none' : `1px solid ${C.borderLight}` }}
+                        >
+                            <td style={{ ...tdStyle, fontWeight: 600 }}>{r.typeDescription}</td>
+                            <td style={checkCell}>
+                                <input
+                                    className="adm-check"
+                                    type="checkbox"
+                                    checked={r.canView}
+                                    onChange={() => toggle(r, 'canView')}
+                                />
                             </td>
-                            <td style={tdStyle}>
-                                <input style={checkboxStyle} type="checkbox" checked={r.canAnswer} onChange={() => toggle(r, 'canAnswer')} />
+                            <td style={checkCell}>
+                                <input
+                                    className="adm-check"
+                                    type="checkbox"
+                                    checked={r.canAnswer}
+                                    onChange={() => toggle(r, 'canAnswer')}
+                                />
                             </td>
                         </tr>
                     ))}
+                    {rows.length === 0 && (
+                        <tr>
+                            <td colSpan={3} style={{ padding: 0 }}>
+                                <EmptyState>Nenhum tipo de usuário para configurar.</EmptyState>
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
-            </table>
-        </div>
+            </TableShell>
+        </SectionCard>
     );
 }
 
@@ -467,75 +982,97 @@ function TermRequirementsTab({ forms }: { forms: INDEX_RES[] }) {
     const docChipStyle = (checked: boolean): React.CSSProperties => ({
         display: 'flex',
         alignItems: 'center',
-        gap: '6px',
-        padding: '7px 12px',
+        gap: '7px',
+        padding: '8px 13px',
         borderRadius: '100px',
         border: `1.5px solid ${checked ? C.primary : C.border}`,
         backgroundColor: checked ? 'rgba(109,20,26,0.06)' : C.white,
         color: checked ? C.primary : C.text,
-        fontSize: '12px',
         fontFamily: ff.body,
+        fontSize: '12px',
         cursor: busy ? 'default' : 'pointer',
     });
 
+    const docChips = (isChecked: (v: TERM_VARIANT) => boolean, onToggle: (v: TERM_VARIANT) => void) => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {TERM_VARIANTS.map((v) => {
+                const checked = isChecked(v);
+                return (
+                    <label key={v} className="adm-chip-doc" style={docChipStyle(checked)}>
+                        <input
+                            className="adm-check adm-check--sm"
+                            type="checkbox"
+                            checked={checked}
+                            disabled={busy}
+                            onChange={() => onToggle(v)}
+                        />
+                        <span>
+                            <strong>{TERM_VARIANT_LABEL[v].title}</strong> — {TERM_VARIANT_LABEL[v].subtitle}
+                        </span>
+                    </label>
+                );
+            })}
+        </div>
+    );
+
     return (
-        <div>
-            <p style={{ fontFamily: ff.body, fontSize: '13px', color: C.muted, marginBottom: '20px', lineHeight: 1.6, maxWidth: '720px' }}>
-                Aqui você decide quais termos de consentimento a pessoa precisa assinar antes de responder este formulário, e pode
-                variar por tipo de usuário. Pra cada tipo pode existir mais de uma <strong>forma de consentimento</strong> — a pessoa
-                só precisa completar UMA delas, não todas. Serve, por exemplo, pra separar o caso de um adulto (assina só um termo) do
-                caso de um menor de idade (assina dois termos diferentes) no mesmo formulário.
-            </p>
-
-            <select style={{ ...inputStyle, marginBottom: '20px' }} value={String(formId)} onChange={(e) => setFormId(e.target.value)}>
-                {forms.map((f) => (
-                    <option key={String(f.id)} value={String(f.id)}>
-                        {f.title}
-                    </option>
-                ))}
-            </select>
-
-            <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: C.text, marginBottom: '6px', fontFamily: ff.body }}>
-                    Pra qual tipo de usuário?
-                </label>
-                <select style={inputStyle} value={viewTypeId} onChange={(e) => setViewTypeId(e.target.value)}>
-                    <option value="default">Padrão (qualquer tipo sem regra própria)</option>
-                    {types.map((t) => (
-                        <option key={String(t.id)} value={String(t.id)}>
-                            {t.description}
-                        </option>
-                    ))}
-                </select>
+        <SectionCard
+            title="Termos (TCLE)"
+            description={
+                <>
+                    Aqui você decide quais termos de consentimento a pessoa precisa assinar antes de responder este formulário, e
+                    pode variar por tipo de usuário. Pra cada tipo pode existir mais de uma <strong>forma de consentimento</strong>{' '}
+                    — a pessoa só precisa completar UMA delas, não todas. Serve, por exemplo, pra separar o caso de um adulto
+                    (assina só um termo) do caso de um menor de idade (assina dois termos diferentes) no mesmo formulário.
+                </>
+            }
+        >
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                    gap: '14px',
+                    maxWidth: '760px',
+                    marginBottom: '20px',
+                }}
+            >
+                <Field label="Formulário" as="div">
+                    <AdmSelect
+                        ariaLabel="Formulário"
+                        options={forms.map((f) => ({ id: String(f.id), label: f.title }))}
+                        value={String(formId)}
+                        onChange={(id) => setFormId(id)}
+                    />
+                </Field>
+                <Field label="Pra qual tipo de usuário?" as="div">
+                    <AdmSelect
+                        ariaLabel="Pra qual tipo de usuário?"
+                        options={[
+                            { id: 'default', label: 'Padrão (qualquer tipo sem regra própria)' },
+                            ...types.map((t) => ({ id: String(t.id), label: t.description })),
+                        ]}
+                        value={viewTypeId}
+                        onChange={(id) => setViewTypeId(id)}
+                    />
+                </Field>
             </div>
 
             {viewTypeId !== 'default' && (
-                <div
-                    style={{
-                        padding: '12px 16px',
-                        borderRadius: '10px',
-                        marginBottom: '20px',
-                        fontSize: '13px',
-                        fontFamily: ff.body,
-                        lineHeight: 1.5,
-                        maxWidth: '720px',
-                        backgroundColor: rowsForView.length > 0 ? 'rgba(217,119,6,0.08)' : 'rgba(107,114,128,0.06)',
-                        color: rowsForView.length > 0 ? '#92400e' : C.muted,
-                        border: `1px solid ${rowsForView.length > 0 ? 'rgba(217,119,6,0.25)' : C.border}`,
-                    }}
-                >
-                    {rowsForView.length > 0 ? (
-                        <>
-                            ⚠ <strong>{selectedType?.description}</strong> tem regra própria aqui — ela substitui completamente a regra
-                            &quot;Padrão&quot; do formulário, só pra esse tipo.
-                        </>
-                    ) : (
-                        <>
-                            <strong>{selectedType?.description}</strong> ainda não tem regra própria — está seguindo a regra
-                            &quot;Padrão&quot; deste formulário. Só configure algo aqui se esse tipo precisar de algo DIFERENTE do
-                            padrão.
-                        </>
-                    )}
+                <div style={{ marginBottom: '20px' }}>
+                    <Callout tone={rowsForView.length > 0 ? 'amber' : 'neutral'}>
+                        {rowsForView.length > 0 ? (
+                            <>
+                                ⚠ <strong>{selectedType?.description}</strong> tem regra própria aqui — ela substitui completamente
+                                a regra &quot;Padrão&quot; do formulário, só pra esse tipo.
+                            </>
+                        ) : (
+                            <>
+                                <strong>{selectedType?.description}</strong> ainda não tem regra própria — está seguindo a regra
+                                &quot;Padrão&quot; deste formulário. Só configure algo aqui se esse tipo precisar de algo DIFERENTE
+                                do padrão.
+                            </>
+                        )}
+                    </Callout>
                 </div>
             )}
 
@@ -543,132 +1080,148 @@ function TermRequirementsTab({ forms }: { forms: INDEX_RES[] }) {
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '10px',
-                    padding: '14px 16px',
-                    borderRadius: '10px',
+                    gap: '12px',
+                    padding: '15px 18px',
+                    borderRadius: '12px',
                     border: `1.5px solid ${isExempt ? C.primary : C.border}`,
-                    backgroundColor: isExempt ? 'rgba(109,20,26,0.04)' : C.white,
+                    backgroundColor: isExempt ? 'rgba(109,20,26,0.05)' : C.bg,
                     marginBottom: '20px',
                     cursor: busy ? 'default' : 'pointer',
                     fontFamily: ff.body,
-                    maxWidth: '720px',
+                    maxWidth: '760px',
                 }}
             >
-                <input style={checkboxStyle} type="checkbox" checked={isExempt} disabled={busy} onChange={handleToggleExempt} />
+                <input className="adm-check" type="checkbox" checked={isExempt} disabled={busy} onChange={handleToggleExempt} />
                 <div>
                     <div style={{ fontSize: '13px', fontWeight: 700, color: C.text }}>Isento — não precisa assinar nada</div>
-                    <div style={{ fontSize: '12px', color: C.muted }}>
+                    <div style={{ fontSize: '12px', color: C.muted, marginTop: '2px', lineHeight: 1.5 }}>
                         Marque se esse tipo de usuário pode responder este formulário sem assinar termo nenhum.
                     </div>
                 </div>
             </label>
 
             {!isExempt && (
-                <div style={{ opacity: busy ? 0.6 : 1, maxWidth: '720px' }}>
+                <div style={{ opacity: busy ? 0.6 : 1, maxWidth: '760px', transition: 'opacity 0.15s ease' }}>
                     {pathGroups.length === 0 && !creatorOpen && (
-                        <p style={{ fontSize: '13px', color: C.muted, fontFamily: ff.body, marginBottom: '16px', lineHeight: 1.5 }}>
-                            Nenhuma forma de consentimento configurada — do jeito que está hoje, ninguém desse tipo precisa assinar
-                            nada pra responder este formulário.
-                        </p>
+                        <div style={{ marginBottom: '16px' }}>
+                            <Callout>
+                                Nenhuma forma de consentimento configurada — do jeito que está hoje, ninguém desse tipo precisa
+                                assinar nada pra responder este formulário.
+                            </Callout>
+                        </div>
                     )}
 
                     {pathGroups.map((group, i) => (
                         <React.Fragment key={group.pathKey}>
-                            {i > 0 && (
-                                <div style={{ textAlign: 'center', margin: '14px 0', fontSize: '12px', fontWeight: 700, color: C.muted, letterSpacing: '0.05em', fontFamily: ff.body }}>
-                                    — OU —
-                                </div>
-                            )}
-                            <div style={{ border: `1.5px solid ${C.border}`, borderRadius: '12px', padding: '18px 20px', backgroundColor: C.white, marginBottom: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', gap: '10px' }}>
+                            {i > 0 && <OrDivider />}
+                            <div
+                                style={{
+                                    border: `1.5px solid ${C.border}`,
+                                    borderRadius: '14px',
+                                    backgroundColor: C.bg,
+                                    marginBottom: '8px',
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'flex-start',
+                                        gap: '12px',
+                                        padding: '16px 20px 14px',
+                                        borderBottom: `1px solid ${C.border}`,
+                                    }}
+                                >
                                     <div>
-                                        <div style={{ fontSize: '14px', fontWeight: 700, color: C.text, fontFamily: ff.body }}>{group.pathKey}</div>
-                                        <div style={{ fontSize: '12px', color: C.muted, fontFamily: ff.body }}>
+                                        <div style={{ fontFamily: ff.display, fontSize: '15px', fontWeight: 700, color: C.text }}>
+                                            {group.pathKey}
+                                        </div>
+                                        <div
+                                            style={{
+                                                fontFamily: ff.body,
+                                                fontSize: '12px',
+                                                color: C.muted,
+                                                marginTop: '3px',
+                                            }}
+                                        >
                                             Precisa assinar TODOS os documentos marcados abaixo
                                         </div>
                                     </div>
-                                    <button
-                                        style={{ ...btnStyle, backgroundColor: '#fff', color: '#b91c1c', border: '1.5px solid #b91c1c', padding: '5px 10px', fontSize: '12px', flexShrink: 0 }}
+                                    <Btn
+                                        variant="danger"
+                                        small
+                                        style={{ flexShrink: 0 }}
                                         onClick={() => handleRemovePath(group.pathKey)}
                                         disabled={busy}
                                     >
                                         Remover esta forma
-                                    </button>
+                                    </Btn>
                                 </div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {TERM_VARIANTS.map((v) => {
-                                        const checked = group.rows.some((r) => r.variant === v);
-                                        return (
-                                            <label key={v} style={docChipStyle(checked)}>
-                                                <input
-                                                    style={{ ...checkboxStyle, width: '13px', height: '13px' }}
-                                                    type="checkbox"
-                                                    checked={checked}
-                                                    disabled={busy}
-                                                    onChange={() => handleToggleDocInGroup(group.pathKey, v)}
-                                                />
-                                                <span>
-                                                    <strong>{TERM_VARIANT_LABEL[v].title}</strong> — {TERM_VARIANT_LABEL[v].subtitle}
-                                                </span>
-                                            </label>
-                                        );
-                                    })}
+                                <div style={{ padding: '16px 20px 18px' }}>
+                                    {docChips(
+                                        (v) => group.rows.some((r) => r.variant === v),
+                                        (v) => handleToggleDocInGroup(group.pathKey, v)
+                                    )}
                                 </div>
                             </div>
                         </React.Fragment>
                     ))}
 
                     {creatorOpen ? (
-                        <div style={{ border: `1.5px dashed ${C.primary}`, borderRadius: '12px', padding: '18px 20px', backgroundColor: 'rgba(109,20,26,0.03)' }}>
-                            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: C.text, marginBottom: '6px', fontFamily: ff.body }}>
-                                Nome desta forma de consentimento (ex.: &quot;Adulto&quot;, &quot;Menor de 13 a 18 anos&quot;)
-                            </label>
-                            <input
-                                style={{ ...inputStyle, width: '100%', maxWidth: '320px', marginBottom: '14px' }}
-                                value={creatorName}
-                                onChange={(e) => setCreatorName(e.target.value)}
-                            />
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-                                {TERM_VARIANTS.map((v) => {
-                                    const checked = creatorVariants.includes(v);
-                                    return (
-                                        <label key={v} style={docChipStyle(checked)}>
-                                            <input
-                                                style={{ ...checkboxStyle, width: '13px', height: '13px' }}
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={() =>
-                                                    setCreatorVariants((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]))
-                                                }
-                                            />
-                                            <span>
-                                                <strong>{TERM_VARIANT_LABEL[v].title}</strong> — {TERM_VARIANT_LABEL[v].subtitle}
-                                            </span>
-                                        </label>
-                                    );
-                                })}
+                        <div
+                            style={{
+                                border: `1.5px dashed ${C.primary}`,
+                                borderRadius: '14px',
+                                padding: '20px',
+                                backgroundColor: 'rgba(109,20,26,0.03)',
+                            }}
+                        >
+                            <Field
+                                label="Nome desta forma de consentimento"
+                                style={{ maxWidth: '340px', marginBottom: '6px' }}
+                            >
+                                <input
+                                    className="adm-input"
+                                    placeholder='Ex.: "Adulto", "Menor de 13 a 18 anos"'
+                                    value={creatorName}
+                                    onChange={(e) => setCreatorName(e.target.value)}
+                                />
+                            </Field>
+                            <p
+                                style={{
+                                    fontFamily: ff.body,
+                                    fontSize: '12px',
+                                    color: C.muted,
+                                    margin: '0 0 16px',
+                                    lineHeight: 1.5,
+                                }}
+                            >
+                                Marque os documentos que essa forma exige — a pessoa precisará assinar todos eles.
+                            </p>
+                            <div style={{ marginBottom: '18px' }}>
+                                {docChips(
+                                    (v) => creatorVariants.includes(v),
+                                    (v) => setCreatorVariants((prev) => (prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]))
+                                )}
                             </div>
                             <div style={{ display: 'flex', gap: '10px' }}>
-                                <button style={btnStyle} onClick={handleCreatePath} disabled={busy}>
+                                <Btn onClick={handleCreatePath} disabled={busy}>
                                     Salvar forma
-                                </button>
-                                <button
-                                    style={{ ...btnStyle, backgroundColor: '#fff', color: C.muted, border: `1.5px solid ${C.border}` }}
-                                    onClick={() => setCreatorOpen(false)}
-                                    disabled={busy}
-                                >
+                                </Btn>
+                                <Btn variant="ghost" onClick={() => setCreatorOpen(false)} disabled={busy}>
                                     Cancelar
-                                </button>
+                                </Btn>
                             </div>
                         </div>
                     ) : (
-                        <button style={{ ...btnStyle, backgroundColor: '#fff', color: C.primary, border: `1.5px solid ${C.primary}` }} onClick={openCreator} disabled={busy}>
+                        <Btn variant="outline" onClick={openCreator} disabled={busy}>
                             + Adicionar forma de consentimento
-                        </button>
+                        </Btn>
                     )}
                 </div>
             )}
-        </div>
+        </SectionCard>
     );
 }
 
@@ -716,8 +1269,20 @@ export default function AdminPage() {
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <div style={{ backgroundColor: C.bg, minHeight: '88vh', padding: '0 0 80px' }}>
-                    {/* Hero header */}
-                    <div style={{ backgroundColor: C.white, borderBottom: `1px solid ${C.border}`, padding: '72px 24px 40px', marginBottom: '40px', textAlign: 'center' }}>
+                    <style>{ADMIN_CSS}</style>
+
+                    {/* Hero header — mesma composição de /form e /dashboard:
+                        barra de destaque em gradiente, título em serifa, subtítulo
+                        discreto e o grupo de abas em pílula. */}
+                    <div
+                        style={{
+                            backgroundColor: C.white,
+                            borderBottom: `1px solid ${C.border}`,
+                            padding: '72px 24px 48px',
+                            marginBottom: '44px',
+                            textAlign: 'center',
+                        }}
+                    >
                         <div
                             style={{
                                 display: 'inline-block',
@@ -728,30 +1293,42 @@ export default function AdminPage() {
                                 marginBottom: '20px',
                             }}
                         />
-                        <h1 style={{ fontFamily: ff.display, fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 700, color: C.text, margin: '0 0 12px', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                        <h1
+                            style={{
+                                fontFamily: ff.display,
+                                fontSize: 'clamp(24px, 3.5vw, 38px)',
+                                fontWeight: 700,
+                                color: C.text,
+                                margin: '0 0 12px',
+                                letterSpacing: '-0.02em',
+                                lineHeight: 1.2,
+                            }}
+                        >
                             Painel Admin
                         </h1>
-                        <p style={{ fontFamily: ff.body, fontSize: '15px', color: C.muted, margin: 0, lineHeight: 1.6 }}>
+                        <p style={{ fontFamily: ff.body, fontSize: '15px', color: C.mutedLight, margin: 0, lineHeight: 1.6 }}>
                             Permissões de usuários, cadastros e configuração de formulários
                         </p>
 
-                        <div style={{ display: 'inline-flex', gap: '4px', padding: '4px', marginTop: '24px', backgroundColor: C.bg, border: `1px solid ${C.border}`, borderRadius: '100px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        <div
+                            style={{
+                                display: 'inline-flex',
+                                gap: '4px',
+                                padding: '4px',
+                                marginTop: '24px',
+                                backgroundColor: C.bg,
+                                border: `1px solid ${C.border}`,
+                                borderRadius: '100px',
+                                flexWrap: 'wrap',
+                                justifyContent: 'center',
+                            }}
+                        >
                             {tabs.map((t) => (
                                 <button
                                     key={t.key}
                                     type="button"
                                     onClick={() => setTab(t.key)}
-                                    style={{
-                                        padding: '7px 18px',
-                                        borderRadius: '100px',
-                                        border: 'none',
-                                        backgroundColor: tab === t.key ? C.primary : 'transparent',
-                                        color: tab === t.key ? C.white : C.muted,
-                                        fontSize: '0.8rem',
-                                        fontWeight: 700,
-                                        fontFamily: ff.body,
-                                        cursor: 'pointer',
-                                    }}
+                                    className={`adm-tab${tab === t.key ? ' adm-tab--active' : ''}`}
                                 >
                                     {t.label}
                                 </button>
