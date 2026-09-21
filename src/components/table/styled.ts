@@ -27,6 +27,10 @@ export const TableWrapperOuter = styled.div`
     border: 1px solid #f3f4f6;
     background: #ffffff;
     overflow: hidden;
+
+    @media (max-width: 600px) {
+        flex: none;
+    }
 `;
 
 export const Toolbar = styled.div`
@@ -114,6 +118,11 @@ export const TableWrapper = styled.div`
     min-height: 180px;
     overflow: auto;
     overscroll-behavior-x: contain;
+
+    @media (max-width: 600px) {
+        flex: none;
+        height: clamp(180px, 35dvh, 400px);
+    }
 
     /* Firefox */
     scrollbar-width: auto;
@@ -293,5 +302,52 @@ export const NoData = styled.div`
         line-height: 20px;
         font-weight: 400;
         color: #6b7280;
+    }
+`;
+
+export const Pagination = styled.nav`
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-top: 1px solid #f3f4f6;
+    padding: 12px 20px;
+
+    @media (max-width: 600px) {
+        padding: 12px;
+    }
+`;
+
+export const PaginationControls = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .page-mobile { display: none; }
+
+    @media (max-width: 600px) {
+        display: grid;
+        grid-template-columns: 40px 40px minmax(40px, 1fr) 40px 40px;
+        width: 100%;
+        gap: 4px;
+        text-align: center;
+        white-space: nowrap;
+        .page-desktop { display: none; }
+        .page-mobile { display: inline; }
+    }
+`;
+
+export const PaginationButton = styled(ActionButton)`
+    svg { display: none; }
+
+    @media (max-width: 600px) {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+        svg { display: block; }
     }
 `;

@@ -12,6 +12,16 @@ export default function Page() {
     }, []);
 
     return (
-        <Base appBarChild={<NewMenu />} mainContainerChild={<HomeComponent />} footerChild={<FooterMain />} />
+        <Base
+            style={{
+                minHeight: '100dvh',
+                display: 'flex',
+                flexDirection: 'column',
+                '& > footer': { position: 'static', flexShrink: 0, flexWrap: 'wrap' },
+            }}
+            appBarChild={<NewMenu />}
+            mainContainerChild={<HomeComponent />}
+            footerChild={<FooterMain />}
+        />
     );
 }

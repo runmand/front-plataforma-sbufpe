@@ -1,5 +1,5 @@
+import type { StyleSheet } from "@react-pdf/renderer";
 import styled from "@emotion/styled";
-import { StyleSheet } from "@react-pdf/renderer";
 import { theme } from "src/core/theme";
 
 export const TaleContainer = styled.div`
@@ -95,7 +95,7 @@ export const DocumentLi = styled.li`
   }
 `;
 
-export const pdfStyles = StyleSheet.create({
+export const pdfStyles = {
   Title: {
     textAlign: "center",
     marginTop: 8,
@@ -137,4 +137,4 @@ export const pdfStyles = StyleSheet.create({
     height: 60,
     marginRight: 12,
   },
-});
+} satisfies Parameters<typeof StyleSheet.create>[0];

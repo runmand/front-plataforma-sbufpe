@@ -63,9 +63,10 @@ export function renderNodes(nodes: HTMLCollection) {
 }
 
 export async function generatePDF(nodes: HTMLCollection) {
-  const { Page, pdf, View, Document, Text, Image } = await import(
+  const { Page, pdf, View, Document, Text, Image, StyleSheet } = await import(
     "@react-pdf/renderer"
   );
+  const styles = StyleSheet.create(pdfStyles);
 
   let r: typeStyles[] = [];
   r = renderNodes(nodes);
@@ -74,27 +75,27 @@ export async function generatePDF(nodes: HTMLCollection) {
     return (
       <Document>
         <Page size={"A4"}>
-          <View style={pdfStyles.view}>
+          <View style={styles.view}>
             {r.map((item, index) => {
               if (item.style == "div") {
                 return (
-                  <View key={index} style={pdfStyles.TALEU}>
+                  <View key={index} style={styles.TALEU}>
                     {item.img ? (
                       // eslint-disable-next-line jsx-a11y/alt-text
-                      <Image src={item.img} style={pdfStyles.Image} />
+                      <Image src={item.img} style={styles.Image} />
                     ) : null}
-                    <Text style={pdfStyles.Paragraph2}>{item.text ?? ""}</Text>
+                    <Text style={styles.Paragraph2}>{item.text ?? ""}</Text>
                   </View>
                 );
               } else {
                 let style;
                 switch (item.style) {
                   case "h4":
-                    style = pdfStyles.Title;
+                    style = styles.Title;
                     break;
                   case "p":
                   default:
-                    style = pdfStyles.Paragraph;
+                    style = styles.Paragraph;
                 }
                 return (
                   <Text key={index} style={style}>

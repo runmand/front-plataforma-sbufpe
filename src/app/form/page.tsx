@@ -4,22 +4,19 @@ import Base from '@components/base-layout/index';
 import Image from 'next/image';
 import { useMediaQuery } from '@mui/material';
 import FormService from 'src/modules/form/service';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { INDEX_RES } from 'src/modules/form/type';
 import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
 import { useRouter } from 'next/navigation';
 import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
-import FormAnswerService from 'src/modules/form-answer/service';
 import NewMenu from '@components/newMenu/index';
 import FooterMain from '@components/footer/main/index';
 import TcleModal from '@components/tcle/index';
 
 export default function Page() {
-    let firstOpen = useRef(0);
     const formService = new FormService();
-    const formAnwerService = new FormAnswerService();
     const router = useRouter();
     const [openTCLE, setOpenTCLE] = useState<boolean>(false);
     const largeQuery = useMediaQuery('(min-width:720px)');
@@ -44,15 +41,6 @@ export default function Page() {
 
     async function goForm(id?: ID) {
         router.push(`${routerEnum.FORM_ANSWER}?formId=${id ?? formId}`);
-    }
-
-    async function getFormResult() {
-        try {
-            const { data: formResult } = await formAnwerService.getFormattedFormShow(3);
-            console.log(formResult);
-        } catch (err: any) {
-            console.error(err);
-        }
     }
 
     async function formServiceIndex() {
@@ -85,12 +73,7 @@ export default function Page() {
     }
 
     useEffect(() => {
-        if (firstOpen.current == 0) {
-            getFormResult();
-            formServiceIndex();
-        } else {
-            firstOpen.current = 1;
-        }
+        formServiceIndex();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -18,7 +18,12 @@ const normalize = (value: string) =>
 		.trim();
 
 export default function Index(props: TPROPS) {
-	const [answer, setAnswer] = React.useState<number[]>(Array(props.choices.length).fill(0));
+	const choices = React.useMemo(() => {
+		const ordered = [...props.choices];
+		if (ordered[ordered.length - 1]?.title === 'Não') ordered.unshift(ordered.pop()!);
+		return props.choiceType === 'checkbox' || props.choiceType === 'autoComplete' ? ordered : ordered.reverse();
+	}, [props.choices, props.choiceType]);
+	const [answer, setAnswer] = React.useState<number[]>(Array(choices.length).fill(0));
 	const [selected, setSelected] = React.useState<number | null>(null);
 
 	const [checkedIndices, setCheckedIndices] = React.useState<Set<number>>(new Set());
@@ -41,22 +46,17 @@ export default function Index(props: TPROPS) {
 		removing ? next.delete(index) : next.add(index);
 		if (removing && choice.title.toLowerCase().includes('outra')) setOtherText('');
 		setCheckedIndices(next);
-		const temp = Array(props.choices.length).fill(0);
-		next.forEach((i) => { temp[i] = Number(props.choices[i].formsQuestionFormsQuestionChoicesId); });
+		const temp = Array(choices.length).fill(0);
+		next.forEach((i) => { temp[i] = Number(choices[i].formsQuestionFormsQuestionChoicesId); });
 		props.onSelectChoice({ formQuestionFormRegisterId: props.formQuestionFormRegisterId, answer: JSON.stringify(temp) });
 	};
 
-	if (props.choices[props.choices.length - 1].title === 'Não') {
-		const element = props.choices.pop();
-		props.choices.unshift(element);
-	}
-
-	const isNumericList = props.choices.every((choice) => /^\d+$/.test(choice.title.trim()));
-	const maxSearchLength = props.choices.reduce((max, choice) => Math.max(max, choice.title.trim().length), 1);
+	const isNumericList = React.useMemo(() => choices.every((choice) => /^\d+$/.test(choice.title.trim())), [choices]);
+	const maxSearchLength = React.useMemo(() => choices.reduce((max, choice) => Math.max(max, choice.title.trim().length), 1), [choices]);
 
 	const matchesSomeChoice = (value: string) => {
 		const normalizedValue = normalize(value);
-		return props.choices.some((choice) => normalize(choice.title).includes(normalizedValue));
+		return choices.some((choice) => normalize(choice.title).includes(normalizedValue));
 	};
 
 	const sanitizeSearch = (rawValue: string): string | null => {
@@ -65,14 +65,11 @@ export default function Index(props: TPROPS) {
 		return value;
 	};
 
-	if (props.choiceType === 'autoComplete') {
-		const options = props.choices
-			.map((choice) => ({
-				label: choice.title,
-				id: choice.formsQuestionFormsQuestionChoicesId,
-			}))
-			.sort((a, b) => (isNumericList ? Number(a.label) - Number(b.label) : 0));
+	const options = React.useMemo(() => choices
+		.map((choice) => ({ label: choice.title, id: choice.formsQuestionFormsQuestionChoicesId }))
+		.sort((a, b) => (isNumericList ? Number(a.label) - Number(b.label) : 0)), [choices, isNumericList]);
 
+	if (props.choiceType === 'autoComplete') {
 		return (
 			<Autocomplete
 				id="combo-box"
@@ -101,8 +98,8 @@ export default function Index(props: TPROPS) {
 				)}
 				onChange={(_, choiceEvent: any) => {
 					if (!choiceEvent) return;
-					const index = props.choices.findIndex((c) => c.formsQuestionFormsQuestionChoicesId == choiceEvent.id);
-					handleSelectChoice(index, props.choices[index]);
+					const index = choices.findIndex((c) => c.formsQuestionFormsQuestionChoicesId == choiceEvent.id);
+					handleSelectChoice(index, choices[index]);
 				}}
 			/>
 		);
@@ -111,7 +108,7 @@ export default function Index(props: TPROPS) {
 	if (props.choiceType === 'checkbox') {
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-				{props.choices.map((choice, index) => {
+				{choices.map((choice, index) => {
 					const isChecked = checkedIndices.has(index);
 					const isOther = choice.title.toLowerCase().includes('outra');
 					return (
@@ -163,8 +160,8 @@ export default function Index(props: TPROPS) {
 									value={otherText}
 									onChange={(e) => {
 										setOtherText(e.target.value);
-										const temp = Array(props.choices.length).fill(0);
-										checkedIndices.forEach((i) => { temp[i] = Number(props.choices[i].formsQuestionFormsQuestionChoicesId); });
+										const temp = Array(choices.length).fill(0);
+										checkedIndices.forEach((i) => { temp[i] = Number(choices[i].formsQuestionFormsQuestionChoicesId); });
 										props.onSelectChoice({
 											formQuestionFormRegisterId: props.formQuestionFormRegisterId,
 											answer: JSON.stringify({ choices: temp, outra: e.target.value }),
@@ -193,7 +190,7 @@ export default function Index(props: TPROPS) {
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-			{props.choices.reverse().map((choice, index) => {
+			{choices.map((choice, index) => {
 				const isSelected = selected === index;
 				return (
 					<label

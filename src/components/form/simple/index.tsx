@@ -1,6 +1,6 @@
 import Alert from "@components/alert/index";
 import { useSnackbar } from "notistack";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ID } from "../../../core/types";
 import QuestionCard from "../../question";
 import { QUESTION, QUESTION_ANSWER } from "../../question/type";
@@ -78,7 +78,7 @@ export default function Index(props: TPROPS) {
   const { enqueueSnackbar } = useSnackbar();
   const simpleFormService = new SimpleFormService();
 
-  const handleAnswerQuestion = (answer: QUESTION_ANSWER) => {
+  const handleAnswerQuestion = useCallback((answer: QUESTION_ANSWER) => {
     setAnswers((prevAnswers) => {
       const indexToUpdate = prevAnswers.findIndex(
         (item) =>
@@ -86,6 +86,7 @@ export default function Index(props: TPROPS) {
       );
 
       if (indexToUpdate >= 0) {
+        if (prevAnswers[indexToUpdate].answer === answer.answer) return prevAnswers;
         return prevAnswers.map((item, index) =>
           index === indexToUpdate ? answer : item
         );
@@ -93,48 +94,39 @@ export default function Index(props: TPROPS) {
 
       return [...prevAnswers, answer];
     });
-  };
+    setErrorIds((prev) => {
+      if (!prev.has(answer.formQuestionFormRegisterId)) return prev;
+      const next = new Set(prev);
+      next.delete(answer.formQuestionFormRegisterId);
+      return next;
+    });
+  }, []);
 
-  const handleHideQuestion = (formQuestionFormRegisterId: ID) => {
-    setAnswers((prevAnswers) =>
-      prevAnswers.filter(
-        (item) => item.formQuestionFormRegisterId !== formQuestionFormRegisterId
-      )
+  const handleHideQuestion = useCallback((formQuestionFormRegisterId: ID) => {
+    setAnswers((prevAnswers) => prevAnswers.some((item) => item.formQuestionFormRegisterId === formQuestionFormRegisterId)
+      ? prevAnswers.filter((item) => item.formQuestionFormRegisterId !== formQuestionFormRegisterId)
+      : prevAnswers);
+  }, []);
+
+  const sortedAndFormattedQuestions = useMemo(() => {
+    const questions = [...props.formattedForm.questions].sort(
+      (a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId
     );
-  };
-
-  const formatted = (array: QUESTION[]) => {
-    if (props.formattedForm.id == 2) {
-      if (array.length <= 4) return array;
-
-      const firstQuestions = array.slice(0, 4);
-      const lastQuestion = array.slice(-1);
-      const middleQuestions = array.slice(4, -1);
-      return [...firstQuestions, ...lastQuestion, ...middleQuestions];
+    if (props.formattedForm.id == 2 && questions.length > 4) {
+      return [...questions.slice(0, 4), ...questions.slice(-1), ...questions.slice(4, -1)];
     }
-
-    return array;
-  };
-
-  const sortedAndFormattedQuestions = formatted(
-    [...props.formattedForm.questions].sort(
-      (a, b) =>
-        +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId
-    )
-  );
+    return questions;
+  }, [props.formattedForm.id, props.formattedForm.questions]);
 
   const renderQuestionCard = (question: QUESTION, index: number) => (
     <QuestionCard
-      key={index}
+      key={String(question.formQuestionFormRegisterId)}
       index={index}
       question={question}
       isError={errorIds.has(question.formQuestionFormRegisterId)}
       errorIds={errorIds}
-      onAnswerQuestion={(data) => {
-        handleAnswerQuestion(data);
-        setErrorIds((prev) => { const next = new Set(prev); next.delete(question.formQuestionFormRegisterId); return next; });
-      }}
-      onHideQuestion={(data) => handleHideQuestion(data)}
+      onAnswerQuestion={handleAnswerQuestion}
+      onHideQuestion={handleHideQuestion}
     />
   );
 

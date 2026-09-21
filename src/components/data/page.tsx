@@ -39,7 +39,7 @@ export default function Index() {
                     </SelectWrapper>
                     <TitleContainer suppressHydrationWarning>
                         <h1>{form.title}</h1>
-                        <h2 style={{ opacity: isLoading ? "0" : "1" }}>Atualizado em: {formatDate(updatedAt)}</h2>
+                        <h2 style={{ opacity: isLoading ? "0" : "1" }}>Atualizado em: {isLoading ? "" : formatDate(updatedAt)}</h2>
                     </TitleContainer>
                     <SelectWrapper $order="R">
                         <StyledLegend as="span" id="label-versao">

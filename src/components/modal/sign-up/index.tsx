@@ -29,17 +29,24 @@ export default function Index(props: TPROPS) {
     const canSubmit = login && userType && pwd && pwd === confirmPwd;
 
     useEffect(() => {
+        if (!props.isOpen || userTypeList.length) return;
+
+        let isCurrent = true;
         signupService
             .getUserTypes()
             .then((res) =>
-                setUserTypeList(
+                isCurrent && setUserTypeList(
                     res.data
                         ?.filter((item) => item.description?.toLowerCase() !== "desenvolvedor")
                         .map((item) => ({ id: item.id, label: item.description }))
                 )
             )
-            .catch(() => setIsLoading(false));
-    }, []);
+            .catch(() => isCurrent && setIsLoading(false));
+
+        return () => {
+            isCurrent = false;
+        };
+    }, [props.isOpen, userTypeList.length]);
 
     const handleTcle = () => {
         props.onClose();

@@ -1,13 +1,5 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { TPROPS } from "./type";
-import FormAnswerService from "src/modules/form-answer/service";
-import { ResultFormPdf, stylesPDF } from "@components/FormResultPdf";
-import { pdf, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { FormResultProps } from "@components/FormResultPdf/FormResultProps.types";
-import { IPlanejaDataPDF } from "@components/planeja/planeja-form";
-import { IStepsValues } from "@components/planeja-pratico/steps/FinishFormStep";
-import { http } from "src/core/axios";
-import ModifiedPdfPlanejaTeorico from "@components/pdf/PlanejaPDF";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
@@ -30,170 +22,21 @@ const ff = {
 
 export default function Index(props: TPROPS) {
     const router = useRouter();
-    const [formData, setFormData] = useState<FormResultProps>();
-    const formAnwerService = useMemo(() => new FormAnswerService(), []);
     const { enqueueSnackbar } = useSnackbar();
+    const [downloading, setDownloading] = useState<string | null>(null);
 
-    type typeDataPratico = { stepValues: IStepsValues };
-    type requestResponse = { type: string; data: IPlanejaDataPDF[] | IStepsValues };
-
-    const stylesPDFTeorico = StyleSheet.create({
-        page: { padding: 30 },
-        section: { margin: 10, padding: 10, flexGrow: 1 },
-        flex: { display: "flex", flexDirection: "row" },
-        title: { fontSize: 16, fontWeight: "bold" },
-        subtitle: { fontSize: 14, fontWeight: "bold", marginTop: 10 },
-        text: { fontSize: 12, marginTop: 5 },
-    });
-
-    const ModifiedPdf = ({ maxScore, score, domainList, answer, formTitle, date }: FormResultProps) => (
-        <Document>
-            <Page wrap={false}>
-                <View style={stylesPDF.section}>
-                    <View style={stylesPDF.flex}>
-                        <Text>Pontuação maxíma:</Text>
-                        <Text style={stylesPDF.points}>{maxScore} pts</Text>
-                    </View>
-                </View>
-                <View style={stylesPDF.section}>
-                    <View style={stylesPDF.flex}>
-                        <Text>Pontuação atingida:</Text>
-                        <Text style={stylesPDF.points}>{score} pts</Text>
-                    </View>
-                </View>
-                <View style={stylesPDF.section}>
-                    <View style={stylesPDF.flex}>
-                        <Text>Nome do CEO:</Text>
-                        <Text style={{ maxWidth: "300px", marginLeft: "10px" }}>{answer.title}</Text>
-                    </View>
-                </View>
-                <View style={stylesPDF.section}>
-                    <View style={stylesPDF.sectionSpacing}>
-                        {domainList.map((domain) => (
-                            <View key={domain.cod}>
-                                <Text style={stylesPDF.sectionTitle}>{domain.name}</Text>
-                                {domain.questionList.map((question, key) => (
-                                    <View key={key}>
-                                        <Text style={stylesPDF.sectionSubtitle}>{question.title}</Text>
-                                        <Text style={stylesPDF.sectionText}>{question.recommendationMessage}</Text>
-                                    </View>
-                                ))}
-                            </View>
-                        ))}
-                    </View>
-                </View>
-            </Page>
-        </Document>
-    );
-
-    const ModifiedPdfPratico = ({ stepValues }: typeDataPratico) => (
-        <Document>
-            <Page style={stylesPDFTeorico.page}>
-                <View style={stylesPDFTeorico.section}>
-                    <Text style={stylesPDFTeorico.title}>Primeira Etapa</Text>
-                    {stepValues.firstStep.map((item, i) => (
-                        <View key={i}>
-                            <Text style={stylesPDFTeorico.subtitle}>Domínio: {item.domain}</Text>
-                            <Text style={stylesPDFTeorico.text}>Primeiro Indicador: {item.first_indicator}</Text>
-                            <Text style={stylesPDFTeorico.text}>Grau do Primeiro Indicador: {item.first_degree}</Text>
-                            <Text style={stylesPDFTeorico.text}>Segundo Indicador: {item.second_indicator}</Text>
-                            <Text style={stylesPDFTeorico.text}>Grau do Segundo Indicador: {item.second_degree}</Text>
-                        </View>
-                    ))}
-                </View>
-                <View style={stylesPDFTeorico.section}>
-                    <Text style={stylesPDFTeorico.title}>Segunda Etapa</Text>
-                    {stepValues.secondStep.defined_problems.map((p, i) => (
-                        <View key={i}>
-                            <Text style={stylesPDFTeorico.subtitle}>Problema {p.id}</Text>
-                            <Text style={stylesPDFTeorico.text}>{p.answer}</Text>
-                        </View>
-                    ))}
-                </View>
-                <View style={stylesPDFTeorico.section}>
-                    <Text style={stylesPDFTeorico.title}>Terceira Etapa</Text>
-                    {stepValues.thirdStep.causas.map((c, i) => (
-                        <View key={i}>
-                            <Text style={stylesPDFTeorico.subtitle}>Causa {c.id}</Text>
-                            <Text style={stylesPDFTeorico.text}>{c.causa}</Text>
-                            <Text style={stylesPDFTeorico.text}>{c.explicacao}</Text>
-                        </View>
-                    ))}
-                </View>
-                <View style={stylesPDFTeorico.section}>
-                    <Text style={stylesPDFTeorico.title}>Quarta Etapa</Text>
-                    <Text style={stylesPDFTeorico.text}>Nó Crítico: {stepValues.fourthStep.criticalNode}</Text>
-                    {stepValues.fourthStep.actions.map((action, i) => (
-                        <View key={i}>
-                            <Text style={stylesPDFTeorico.subtitle}>Ação: {action.name}</Text>
-                            <Text style={stylesPDFTeorico.text}>Prazo: {action.deadline_compliance}</Text>
-                        </View>
-                    ))}
-                </View>
-            </Page>
-        </Document>
-    );
-
-    async function downloadPdf() {
-        const localStorageAnswer = localStorage.getItem("selectedAnswer");
-        let data: FormResultProps = null;
-        if (!formData) {
-            const id = localStorage.getItem("lastFormSubmited");
-            if (Number(id)) {
-                data = await http.get(`/user-answers/${Number(id)}`).then((r) => r.data as FormResultProps);
-            }
-        }
+    async function downloadPdf(type: "form" | "teoric" | "pratical") {
+        setDownloading(type);
         try {
-            const { domainList, maxScore, score, formTitle, date } = data;
-            const blob = await pdf(
-                <ModifiedPdf
-                    domainList={domainList}
-                    maxScore={maxScore}
-                    score={score}
-                    answer={JSON.parse(localStorageAnswer)}
-                    formTitle={formTitle}
-                    date={date}
-                />
-            ).toBlob();
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = new Date() + "";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        } catch {
-            enqueueSnackbar("Não existem documentos para baixar!", { variant: "error" });
+            const downloads = await import("@components/pdf/downloads");
+            if (type === "form") await downloads.downloadLastFormResultPdf();
+            else await downloads.downloadPlanejaHistoryPdf(type);
+        } catch (error) {
+            console.error(error);
+            enqueueSnackbar("Não foi possível gerar o PDF. Verifique se há dados disponíveis e tente novamente.", { variant: "error" });
+        } finally {
+            setDownloading(null);
         }
-    }
-
-    async function downloadPlanejaPDF(typeData: "teoric" | "pratical") {
-        const result = await http
-            .post(`/history/pdf/${typeData}`, { id: localStorage.getItem("userId") })
-            .then((r) => {
-                const d = r.data as requestResponse;
-                if (d?.data) return d;
-                enqueueSnackbar("Não existem documentos para baixar!", { variant: "error" });
-                throw "sem dados";
-            })
-            .catch((e) => {
-                console.error(e);
-                throw e;
-            });
-
-        const { data, type } = result;
-        const blob =
-            type === "PLANEJATEORICO"
-                ? await pdf(<ModifiedPdfPlanejaTeorico data={data as IPlanejaDataPDF[]} />).toBlob()
-                : await pdf(<ModifiedPdfPratico stepValues={data as IStepsValues} />).toBlob();
-
-        const now = new Date();
-        const ts = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}-${String(now.getMonth() + 1).padStart(2, "0")}-${now.getFullYear()}`;
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = `PlanejaSD ${typeData === "pratical" ? "pratico" : "teórico"} - ${ts}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
     }
 
     if (!props.isOpen) return null;
@@ -367,13 +210,14 @@ export default function Index(props: TPROPS) {
                             }}
                         >
                             {[
-                                { label: "Baixar PDF — Avaliações", action: () => downloadPdf() },
-                                { label: "Baixar PDF — PlanejaSD Teórico", action: () => downloadPlanejaPDF("teoric") },
-                                { label: "Baixar PDF — PlanejaSD Prático", action: () => downloadPlanejaPDF("pratical") },
-                            ].map(({ label, action }, i) => (
+                                { id: "form" as const, label: "Baixar PDF — Avaliações" },
+                                { id: "teoric" as const, label: "Baixar PDF — PlanejaSD Teórico" },
+                                { id: "pratical" as const, label: "Baixar PDF — PlanejaSD Prático" },
+                            ].map(({ id, label }, i) => (
                                 <button
                                     key={i}
-                                    onClick={action}
+                                    onClick={() => downloadPdf(id)}
+                                    disabled={downloading !== null}
                                     style={{
                                         width: "100%",
                                         padding: "11px 16px",
@@ -381,7 +225,8 @@ export default function Index(props: TPROPS) {
                                         color: "#fff",
                                         border: "none",
                                         borderRadius: "10px",
-                                        cursor: "pointer",
+                                        cursor: downloading ? "wait" : "pointer",
+                                        opacity: downloading && downloading !== id ? 0.6 : 1,
                                         fontFamily: ff.body,
                                         fontSize: "13px",
                                         fontWeight: 700,
@@ -396,7 +241,7 @@ export default function Index(props: TPROPS) {
                                         e.currentTarget.style.opacity = "1";
                                     }}
                                 >
-                                    {label}
+                                    {downloading === id ? "Gerando PDF..." : label}
                                 </button>
                             ))}
                         </div>
