@@ -36,8 +36,8 @@ export default function Index(props: TPROPS) {
             .getUserTypes()
             .then((res) =>
                 isCurrent && setUserTypeList(
-                    res.data
-                        ?.filter((item) => item.description?.toLowerCase() !== "desenvolvedor")
+                    (res.data ?? [])
+                        .filter((item) => item.description?.toLowerCase() !== "desenvolvedor")
                         .map((item) => ({ id: item.id, label: item.description }))
                 )
             )
