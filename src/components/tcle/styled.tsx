@@ -1,7 +1,6 @@
 import { withTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { theme } from "src/core/theme";
-import { StyleSheet } from "@react-pdf/renderer";
 
 export const CardContainer = styled.div``;
 

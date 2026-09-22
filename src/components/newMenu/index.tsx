@@ -1,12 +1,14 @@
 import * as React from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { localStorageKeyEnum, routerEnum } from "src/core/enums";
-import LoginModal from "@components/modal/log-in/index";
-import SignupModal from "@components/modal/sign-up/index";
 import DrawerMenu from "@components/menu/drawer/index";
 import { MENU_ITEM } from "@components/menu/items/type";
 import { itemsDrawer, itemsMenu } from "./itensMenu";
+
+const LoginModal = dynamic(() => import("@components/modal/log-in/index"), { ssr: false });
+const SignupModal = dynamic(() => import("@components/modal/sign-up/index"), { ssr: false });
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 const C = {
@@ -141,6 +143,8 @@ export default function Index() {
     const [haveLogin, setHaveLogin] = React.useState(false);
     const [isOpenLogin, setIsOpenLogin] = React.useState(false);
     const [isOpenSignup, setIsOpenSignup] = React.useState(false);
+    const [hasOpenedLogin, setHasOpenedLogin] = React.useState(false);
+    const [hasOpenedSignup, setHasOpenedSignup] = React.useState(false);
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [drawerTwoOpen, setDrawerTwoOpen] = React.useState(false);
 
@@ -169,7 +173,10 @@ export default function Index() {
             setMenu((prev) => [...prev, { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }]);
         }
 
-        const onLogin = () => setIsOpenLogin(true);
+        const onLogin = () => {
+            setHasOpenedLogin(true);
+            setIsOpenLogin(true);
+        };
         window.addEventListener("clickLoginEvent", onLogin);
         return () => window.removeEventListener("clickLoginEvent", onLogin);
     }, []);
@@ -179,6 +186,16 @@ export default function Index() {
         localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
         router.push(routerEnum.INITIAL);
         setHaveLogin(false);
+    };
+
+    const openLogin = () => {
+        setHasOpenedLogin(true);
+        setIsOpenLogin(true);
+    };
+
+    const openSignup = () => {
+        setHasOpenedSignup(true);
+        setIsOpenSignup(true);
     };
 
     const nossosItens = [
@@ -230,7 +247,8 @@ export default function Index() {
                     style={{
                         maxWidth: "1280px",
                         margin: "0 auto",
-                        padding: "0 24px",
+                        padding: isMobile ? "0 12px" : "0 24px",
+                        gap: "8px",
                         height: "68px",
                         display: "flex",
                         alignItems: "center",
@@ -240,16 +258,16 @@ export default function Index() {
                     {/* Logo */}
                     <button
                         onClick={() => router.push(routerEnum.INITIAL)}
-                        style={{ ...btnBase, display: "flex", alignItems: "center", gap: "10px", background: "transparent", padding: 0 }}
+                        style={{ ...btnBase, display: "flex", alignItems: "center", gap: isMobile ? "6px" : "10px", background: "transparent", padding: 0, flexShrink: 0, whiteSpace: "nowrap" }}
                     >
                         <Image
                             src="/logo-transparent.png"
                             alt="GestBucal"
-                            width={38}
-                            height={38}
+                            width={isMobile ? 32 : 38}
+                            height={isMobile ? 32 : 38}
                             style={{ borderRadius: "50%", border: "2px solid rgba(255,255,255,0.2)" }}
                         />
-                        <span style={{ fontFamily: ff.display, color: "#fff", fontWeight: 700, fontSize: "19px" }}>
+                        <span style={{ fontFamily: ff.display, color: "#fff", fontWeight: 700, fontSize: isMobile ? "17px" : "19px" }}>
                             GestBucal<span style={{ color: "rgba(255,255,255,0.35)", fontWeight: 300, marginLeft: "4px" }}>SD</span>
                         </span>
                     </button>
@@ -287,9 +305,9 @@ export default function Index() {
 
                     {/* Auth buttons / Menu+Logout — sempre visíveis */}
                     {!haveLogin && (
-                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px", flexShrink: 0, marginLeft: "auto" }}>
                             <button
-                                onClick={() => setIsOpenLogin(true)}
+                                onClick={openLogin}
                                 style={{
                                     ...btnBase,
                                     padding: isMobile ? "7px 14px" : "9px 24px",
@@ -313,7 +331,7 @@ export default function Index() {
                             </button>
                             {!isMobile && (
                                 <button
-                                    onClick={() => setIsOpenSignup(true)}
+                                    onClick={openSignup}
                                     style={{
                                         ...btnBase,
                                         padding: "9px 24px",
@@ -340,12 +358,17 @@ export default function Index() {
                     )}
 
                     {haveLogin && (
-                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px", flexShrink: 0, marginLeft: "auto" }}>
                             <button
+                                aria-label="Menu"
+                                title="Menu"
                                 onClick={() => setDrawerOpen(true)}
                                 style={{
                                     ...btnBase,
-                                    padding: "8px 14px",
+                                    padding: isMobile ? 0 : "8px 14px",
+                                    width: isMobile ? "40px" : undefined,
+                                    height: isMobile ? "40px" : undefined,
+                                    flexShrink: 0,
                                     fontSize: "14px",
                                     fontWeight: 600,
                                     color: "rgba(255,255,255,0.88)",
@@ -354,7 +377,7 @@ export default function Index() {
                                     borderRadius: "8px",
                                 }}
                             >
-                                ☰ Menu
+                                <span aria-hidden="true">☰</span>{!isMobile && " Menu"}
                             </button>
 
                             {!isMobile ? (
@@ -387,10 +410,15 @@ export default function Index() {
 
                     {isMobile && (
                         <button
+                            aria-label="Páginas"
+                            title="Páginas"
                             onClick={() => setDrawerTwoOpen(true)}
                             style={{
                                 ...btnBase,
-                                padding: "8px 14px",
+                                padding: isMobile ? 0 : "8px 14px",
+                                width: "40px",
+                                height: "40px",
+                                flexShrink: 0,
                                 fontSize: "14px",
                                 fontWeight: 600,
                                 color: "rgba(255,255,255,0.88)",
@@ -399,29 +427,33 @@ export default function Index() {
                                 borderRadius: "8px",
                             }}
                         >
-                            ⊕ Páginas
+                            <span aria-hidden="true">⊕</span>
                         </button>
                     )}
                 </div>
             </nav>
 
             {/* Modals */}
-            <LoginModal
-                isOpen={isOpenLogin}
-                canSkip={true}
-                onClose={() => setIsOpenLogin(false)}
-                openSignupModal={() => {
-                    setIsOpenLogin(false);
-                    setIsOpenSignup(true);
-                }}
-                openContact={() => router.push(routerEnum.CONTACTUS)}
-            />
-            <SignupModal
-                isOpen={isOpenSignup}
-                canSkip={true}
-                onClose={() => setIsOpenSignup(false)}
-                openTclePage={() => router.push(routerEnum.TCLE)}
-            />
+            {hasOpenedLogin && (
+                <LoginModal
+                    isOpen={isOpenLogin}
+                    canSkip={true}
+                    onClose={() => setIsOpenLogin(false)}
+                    openSignupModal={() => {
+                        setIsOpenLogin(false);
+                        openSignup();
+                    }}
+                    openContact={() => router.push(routerEnum.CONTACTUS)}
+                />
+            )}
+            {hasOpenedSignup && (
+                <SignupModal
+                    isOpen={isOpenSignup}
+                    canSkip={true}
+                    onClose={() => setIsOpenSignup(false)}
+                    openTclePage={() => router.push(routerEnum.TCLE)}
+                />
+            )}
             <DrawerMenu isOpen={drawerOpen} menuItems={menu} onClose={() => setDrawerOpen(false)} />
             <DrawerMenu
                 showPDF={false}

@@ -3,19 +3,18 @@
 import { useEffect } from 'react';
 import Base from '@components/base-layout/index';
 import NewMenu from '@components/newMenu/index';
-import Data from '@components/data/page';
 import FooterMain from '@components/footer/main/index';
+import VigiaDashboard from '@components/dashboard/vigia/index';
 
 export default function Page() {
     useEffect(() => {
-        document.title = 'Exportar Dados | GestBucal';
+        document.title = 'Dashboard Vigia SD | GestBucal';
     }, []);
 
     return (
         <Base
-            style={{ '@media (max-width: 640px)': { '& > footer': { position: 'static' } } }}
             appBarChild={<NewMenu />}
-            mainContainerChild={<Data />}
+            mainContainerChild={<VigiaDashboard />}
             footerChild={<FooterMain />}
         />
     );

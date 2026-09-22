@@ -3,19 +3,18 @@
 import { useEffect } from 'react';
 import Base from '@components/base-layout/index';
 import NewMenu from '@components/newMenu/index';
-import Data from '@components/data/page';
 import FooterMain from '@components/footer/main/index';
+import CeoDashboard from '@components/dashboard/ceo/index';
 
 export default function Page() {
     useEffect(() => {
-        document.title = 'Exportar Dados | GestBucal';
+        document.title = 'Dashboard CEO | GestBucal';
     }, []);
 
     return (
         <Base
-            style={{ '@media (max-width: 640px)': { '& > footer': { position: 'static' } } }}
             appBarChild={<NewMenu />}
-            mainContainerChild={<Data />}
+            mainContainerChild={<CeoDashboard />}
             footerChild={<FooterMain />}
         />
     );
