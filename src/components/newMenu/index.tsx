@@ -6,8 +6,26 @@ import LoginModal from "@components/modal/log-in/index";
 import SignupModal from "@components/modal/sign-up/index";
 import DrawerMenu from "@components/menu/drawer/index";
 import { MENU_ITEM } from "@components/menu/items/type";
-import { itemsDrawer, itemsMenu } from "./itensMenu";
+import { itemsDrawer } from "./itensMenu";
 import UserTypeService from "src/modules/userTypes/service";
+
+/* ─── Menu mobile "⊕ Páginas" (visível para todos, logado ou não) ──────────────
+   Espelha o conteúdo público dos dropdowns do menu desktop (`menuList`, abaixo),
+   mas já no formato MENU_ITEM ({ url, menuItemChildren }) que o componente de
+   drawer (`components/menu/items/index.tsx`) realmente lê. Antes este drawer
+   usava `itemsMenu` (formato `itemsListType`, com `route`/`subList`), que é
+   silenciosamente incompatível: gerava `router.push(undefined)` ao clicar. */
+const pagesMenu: MENU_ITEM[] = [
+    { id: 101, title: "Início", url: routerEnum.INITIAL },
+    { id: 102, title: "Acervo: Artigos", url: routerEnum.ARTICLES },
+    { id: 104, title: "Quem Somos?", url: routerEnum.TEAM },
+    { id: 105, title: "O que é GestBucal SD?", url: routerEnum.PROJECT },
+    { id: 106, title: "Nossos Dados: Usuários", url: routerEnum.USER },
+    { id: 107, title: "Nossos Dados: CEO", url: routerEnum.CEO },
+    { id: 108, title: "Nossos Dados: APS", url: routerEnum.APS },
+    { id: 109, title: "Contato", url: routerEnum.CONTACTUS },
+    { id: 110, title: "F.A.Q", url: routerEnum.FAQ },
+];
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 const C = {
@@ -147,7 +165,7 @@ export default function Index() {
     const [drawerTwoOpen, setDrawerTwoOpen] = React.useState(false);
 
     const [menu, setMenu] = React.useState<MENU_ITEM[]>(itemsDrawer);
-    const [menuTwo, setTwoMenu] = React.useState<MENU_ITEM[]>(itemsMenu);
+    const [menuTwo, setTwoMenu] = React.useState<MENU_ITEM[]>(pagesMenu);
 
     React.useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 30);
@@ -207,10 +225,7 @@ export default function Index() {
     const menuList = [
         {
             title: "Acervo",
-            items: [
-                { label: "Artigos", route: routerEnum.ARTICLES },
-                { label: "InformeSBPE", route: "/informes" },
-            ],
+            items: [{ label: "Artigos", route: routerEnum.ARTICLES }],
         },
         {
             title: "Quem Somos",
