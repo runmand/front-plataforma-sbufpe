@@ -10,7 +10,7 @@ export const CardTitle = styled.h1`
   color: ${theme.primaryColor};
   text-align: center;
   font-weight: 700;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   margin: 0 0 4px;
   letter-spacing: -0.01em;
 
