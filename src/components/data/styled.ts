@@ -28,8 +28,9 @@ export const Container = styled.div`
     }
 
     @media (max-width: 640px) {
-        height: calc(100vh - 96px);
-        height: calc(100dvh - 96px);
+        height: auto;
+        min-height: calc(100vh - 96px);
+        min-height: calc(100dvh - 96px);
     }
 `;
 

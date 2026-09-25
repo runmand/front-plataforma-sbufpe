@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { emitterEnum } from "../../core/enums";
 import { emitter } from "../../core/events";
 import ChoiceAnswer from "../answer/choice";
@@ -18,7 +18,7 @@ const C = {
   borderLight: '#f5f5f4',
 };
 
-export default function Index(props: TPROPS) {
+function QuestionCard(props: TPROPS) {
     const selectOptions: ID[] = droplist;
     const [canShow, setCanShow] = useState(false);
     const [isMedicalExam, setIsMedicalExam] = useState(false);
@@ -33,20 +33,30 @@ export default function Index(props: TPROPS) {
         emitter.emit(emitterKey, answer);
     };
 
-    if (props.parent) {
-        const listenerKey = `${props.parent.formQuestionFormRegisterId}-${emitterEnum.CAN_SHOW_QUESTION}`;
+    const parentId = props.parent?.formQuestionFormRegisterId;
+    const questionId = props.question.formQuestionFormRegisterId;
+    const condition = props.question.condition?.userAnswer;
+    const onHideQuestion = props.onHideQuestion;
+    const choices = useMemo(() => [...props.question.choices].sort(
+        (a, b) => +b.formsQuestionFormsQuestionChoicesId - +a.formsQuestionFormsQuestionChoicesId
+    ), [props.question.choices]);
 
-        /** Criando evento de escuta no filho. */
-        emitter.addListener(listenerKey, (parentAnswer: QUESTION_ANSWER) => {
-            const arrayAnswer = JSON.parse(parentAnswer.answer.replace(/[1-9]\d*/g, "1"));
-            const index = arrayAnswer.indexOf(1);
-            const isSameAnswer = props.question.condition?.userAnswer?.[index] == arrayAnswer[index];
-            setCanShow(isSameAnswer);
-
-            /** Caso a questão fique oculta novamente, deleta a resposta dela do vetor de respostas do formulário. */
-            if (!canShow) props.onHideQuestion(props.question.formQuestionFormRegisterId);
+    useEffect(() => {
+        if (parentId == null) return;
+        const subscription = emitter.addListener(`${parentId}-${emitterEnum.CAN_SHOW_QUESTION}`, (parentAnswer: QUESTION_ANSWER) => {
+            let visible = false;
+            try {
+                const answer = JSON.parse(parentAnswer.answer.replace(/[1-9]\d*/g, "1"));
+                const index = Array.isArray(answer) ? answer.indexOf(1) : -1;
+                visible = index >= 0 && condition?.[index] == answer[index];
+            } catch {
+                // An empty/invalid parent answer cannot satisfy a child condition.
+            }
+            setCanShow(visible);
+            if (!visible) onHideQuestion(questionId);
         });
-    }
+        return () => subscription.remove();
+    }, [parentId, questionId, condition, onHideQuestion]);
 
     useEffect(() => {
         setViewportHeight(window.innerHeight);
@@ -106,9 +116,7 @@ export default function Index(props: TPROPS) {
                     ) : (
                         <ChoiceAnswer
                             formQuestionFormRegisterId={props.question.formQuestionFormRegisterId}
-                            choices={props.question.choices.sort(
-                                (a, b) => +b.formsQuestionFormsQuestionChoicesId - +a.formsQuestionFormsQuestionChoicesId
-                            )}
+                            choices={choices}
                             onSelectChoice={(data) => {
                                 const selectedAnswer = JSON.parse(data.answer).filter((item: number) => Boolean(item))[0];
 
@@ -171,18 +179,14 @@ export default function Index(props: TPROPS) {
                         />
                     )}
                     {(props.question.childrenQuestion ?? []).slice().reverse().map((child, index) => (
-                        <Index
-                            key={index}
+                        <MemoQuestionCard
+                            key={String(child.formQuestionFormRegisterId)}
                             index={index}
                             parent={props.question}
                             question={child}
                             errorIds={props.errorIds}
-                            onAnswerQuestion={(data) => {
-                                props.onAnswerQuestion(data);
-                            }}
-                            onHideQuestion={(data) => {
-                                props.onHideQuestion(data);
-                            }}
+                            onAnswerQuestion={props.onAnswerQuestion}
+                            onHideQuestion={props.onHideQuestion}
                         />
                     ))}
                 </div>
@@ -191,3 +195,6 @@ export default function Index(props: TPROPS) {
     }
     return null;
 }
+
+const MemoQuestionCard = memo(QuestionCard);
+export default MemoQuestionCard;

@@ -5,7 +5,6 @@ import { localStorageKeyEnum } from "src/core/enums";
 import { useRouter } from "next/navigation";
 import { ErrorOutlineOutlined } from "@mui/icons-material";
 import { nameForm } from "src/constants/constantsPlaneja";
-import { downloadPdfPlanejaPratico } from "@components/pdf/PlanejaPraticoPDF";
 import { ISavedData } from "@components/planeja/planeja-form";
 import LoadToSend from "@components/loadToSend";
 
@@ -162,8 +161,9 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         }
     }
 
-    function downloadPDF() {
-        downloadPdfPlanejaPratico(stepValues);
+    async function downloadPDF() {
+        const { downloadPlanejaPracticalPdf } = await import("@components/pdf/downloads");
+        await downloadPlanejaPracticalPdf(stepValues);
     }
 
     return (

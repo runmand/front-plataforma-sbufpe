@@ -1,16 +1,20 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { white } from "src/core/colors";
-import LoginModal from "@components/modal/log-in/index";
-import SignupModal from "@components/modal/sign-up/index";
 import { Box, Button, useMediaQuery } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { theme } from "src/core/theme";
 import { routerEnum } from "src/core/enums";
 
+const LoginModal = dynamic(() => import("@components/modal/log-in/index"), { ssr: false });
+const SignupModal = dynamic(() => import("@components/modal/sign-up/index"), { ssr: false });
+
 export default function Index() {
     const router = useRouter();
     const [isOpenLogin, setIsOpenLogin] = React.useState<boolean>(false);
     const [isOpenSignup, setIsOpenSignup] = React.useState<boolean>(false);
+    const [hasOpenedLogin, setHasOpenedLogin] = React.useState(false);
+    const [hasOpenedSignup, setHasOpenedSignup] = React.useState(false);
     const largeQuery = useMediaQuery("(min-width:720px)");
 
     const handleShowPageContact = () => {
@@ -23,6 +27,7 @@ export default function Index() {
 
     useEffect(() => {
         const handleLoginEvent = () => {
+            setHasOpenedLogin(true);
             setIsOpenLogin(true);
         };
 
@@ -43,28 +48,34 @@ export default function Index() {
                     color: theme.white,
                     // fontSize: largeQuery ? '0.875rem' : '0.7rem'
                 }}
-                onClick={() => setIsOpenLogin(true)}
+                onClick={() => {
+                    setHasOpenedLogin(true);
+                    setIsOpenLogin(true);
+                }}
             >
                 Entrar
             </Button>
             <Box sx={{ position: "absolute" }}>
-                <LoginModal
+                {hasOpenedLogin && <LoginModal
                     isOpen={isOpenLogin}
                     canSkip={true}
                     onClose={() => {
                         setIsOpenLogin(false);
                     }}
-                    openSignupModal={() => setIsOpenSignup(true)}
+                    openSignupModal={() => {
+                        setIsOpenSignup(true);
+                        setHasOpenedSignup(true);
+                    }}
                     openContact={() => handleShowPageContact()}
-                />
-                <SignupModal
+                />}
+                {hasOpenedSignup && <SignupModal
                     isOpen={isOpenSignup}
                     canSkip={true}
                     onClose={() => {
                         setIsOpenSignup(false);
                     }}
                     openTclePage={() => handleShowTclePage()}
-                />
+                />}
             </Box>
         </>
     );

@@ -1,35 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TPROPS } from "./type";
-import { ResultFormPdf } from "@components/FormResultPdf";
 import { useRouter } from 'next/navigation';
-import { pdf } from "@react-pdf/renderer";
 import { routerEnum } from "src/core/enums";
+import { useSnackbar } from "notistack";
 
 const ff = { display: "'Newsreader', Georgia, serif", body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif" };
 const C = { primary: '#6D141A', secondary: '#921c22', text: '#1c1917', muted: '#78716c', border: '#e7e5e4', borderLight: '#f5f5f4', white: '#fff', bg: '#FAF7F2' };
 
 export default function Index(props: TPROPS) {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const [isDownloading, setIsDownloading] = useState(false);
 
   async function downloadPdf() {
-    const localStorageAnswer = localStorage.getItem("selectedAnswer");
-    const blob = await pdf(
-      <ResultFormPdf
-        domainList={props.formResult.domainList}
-        maxScore={props.formResult.maxScore}
-        score={props.formResult.score}
-        date={new Date(props.formResult.date)}
-        answer={JSON.parse(localStorageAnswer)}
-        formTitle={props.formTitle}
-      />
-    ).toBlob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = new Date() + "";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    setIsDownloading(true);
+    try {
+      const { downloadFormResultPdf } = await import("@components/pdf/downloads");
+      await downloadFormResultPdf(props.formResult, JSON.parse(localStorage.getItem("selectedAnswer") ?? "null"), props.formTitle);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Não foi possível gerar o PDF. Tente novamente.", { variant: "error" });
+    } finally {
+      setIsDownloading(false);
+    }
   }
 
   const handleQuestion = () => {
@@ -135,11 +128,12 @@ export default function Index(props: TPROPS) {
             {props.formId !== 2 && (
               <button
                 onClick={downloadPdf}
+                disabled={isDownloading}
                 style={{ padding: '10px 20px', borderRadius: '10px', border: `1.5px solid ${C.border}`, background: C.white, color: C.text, fontFamily: ff.body, fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.primary; e.currentTarget.style.color = C.primary; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.text; }}
               >
-                Baixar PDF
+                {isDownloading ? "Gerando PDF..." : "Baixar PDF"}
               </button>
             )}
             <button
@@ -156,4 +150,3 @@ export default function Index(props: TPROPS) {
     </>
   );
 }
-
