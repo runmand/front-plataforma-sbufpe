@@ -16,7 +16,7 @@ const C = {
     bg: "#FAF7F2",
 };
 const ff = {
-    display: "'Lora', Georgia, serif",
+    display: "'Newsreader', Georgia, serif",
     body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 

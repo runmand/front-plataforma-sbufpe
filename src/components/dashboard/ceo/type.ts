@@ -101,6 +101,15 @@ export type QuestionChoiceCount = {
 	percent: number;
 };
 
+/**
+ * Uma faixa de tempo ("3 a 5 anos") somada pro gráfico, junto das opções individuais que caíram
+ * nela. O gráfico desenha a faixa; a lista de detalhe usa `members` pra mostrar cada opção com a
+ * sua contagem — então agrupar pro desenho não esconde nenhuma resposta.
+ */
+export type DurationBinGroup = QuestionChoiceCount & {
+	members: QuestionChoiceCount[];
+};
+
 export type QuestionSummary = {
 	formQuestionFormRegisterId: number;
 	title: string;

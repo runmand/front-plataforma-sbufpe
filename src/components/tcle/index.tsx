@@ -11,7 +11,8 @@ import TCLEUSABILIDADE from "./tcle-document/TCLEUSABILIDADE";
 import { ID } from "src/core/types";
 import { http } from "src/core/axios";
 import { useSnackbar } from "notistack";
-import { AxiosError, AxiosResponse } from "axios";
+import TermRequirementService from "src/modules/termRequirements/service";
+import { REQUIREMENTS_RES, TERM_VARIANT } from "src/modules/termRequirements/type";
 
 type Props = {
     open: boolean;
@@ -36,6 +37,49 @@ export type DataTerm = {
 
 type TermRef = { getStates: () => Promise<DataTerm> };
 type TermRefNew = { getStatesNew: () => Promise<DataTerm> };
+
+/**
+ * Metadados de exibição de cada variante — o que muda de formulário pra formulário é
+ * QUAIS variantes aparecem e como se agrupam (`requirements.groups`, vindo do backend
+ * via `GET /term-requirements/:formId`), não o texto de cada documento em si.
+ */
+const VARIANT_META: Record<TERM_VARIANT, { title: string; subtitle: string; docTitle: string }> = {
+    TCLE: {
+        title: "Termo de Consentimento — Responsável Legal",
+        subtitle: "Para responsável legal pelo menor de 18 anos",
+        docTitle: "Termo de Consentimento Livre e Esclarecido (Para Responsável Legal pelo Menor de 18 Anos)",
+    },
+    TCLEPROF: {
+        title: "Termo de Consentimento — Profissionais",
+        subtitle: "Módulos 1, 2 e 3 · Maiores de 18 anos",
+        docTitle: "Termo de Consentimento Livre e Esclarecido – Módulos 1, 2 e 3 - Profissionais",
+    },
+    TCLEUSAB: {
+        title: "Termo de Consentimento — Teste de Usabilidade",
+        subtitle: "GestBucalSD · Teste de usabilidade da plataforma",
+        docTitle: "Termo de Consentimento Livre e Esclarecido (TCLE) – Versão Digital",
+    },
+    TCLE2: {
+        title: "Termo de Consentimento — Maiores de 18 Anos",
+        subtitle: "Para maiores de 18 anos ou emancipados",
+        docTitle: "Termo de Consentimento Livre e Esclarecido (Para Maiores de 18 Anos)",
+    },
+    TALE18: {
+        title: "Termo de Assentimento — 13 a 18 Anos",
+        subtitle: "Para menores entre 13 e 18 anos",
+        docTitle: "Termo de Assentimento Livre e Esclarecido (Para Menores de 13 a 18 Anos)",
+    },
+    TALEU13: {
+        title: "TALE Lúdico — 5 a 12 Anos",
+        subtitle: "Termo de assentimento para crianças",
+        docTitle: "Termo de Assentimento Livre e Esclarecido | TALE Lúdico (5 a 12 anos)",
+    },
+};
+const VARIANT_ORDER: TERM_VARIANT[] = ["TCLE", "TCLEPROF", "TCLEUSAB", "TCLE2", "TALE18", "TALEU13"];
+
+/** Os 3 tipos que o backend de fato persiste (`term_documents.type`) — TCLE/TCLE2/TCLEPROF/TCLEUSAB
+ * pousam todos no "bucket" tcle; a granularidade fina só existe na tela. */
+const bucketOf = (v: TERM_VARIANT): "tcle" | "tale" | "taleu" => (v === "TALE18" ? "tale" : v === "TALEU13" ? "taleu" : "tcle");
 
 const Badge = ({ checked, skippable }: { checked: boolean; skippable?: boolean }) => {
     if (skippable && !checked) return (
@@ -86,149 +130,147 @@ const DocIcon = ({ checked, skippable }: { checked: boolean; skippable?: boolean
 );
 
 export default function TcleModal(props: Props) {
+    const termRequirementService = new TermRequirementService();
+
     const TCLERef = useRef<TermRef>(null);
     const TCLE2Ref = useRef<TermRef>(null);
-    const TALERef = useRef<TermRef>(null);
-    const TALEURef = useRef<TermRefNew>(null);
+    const TALE18Ref = useRef<TermRef>(null);
+    const TALEU13Ref = useRef<TermRefNew>(null);
     const TCLEPROFRef = useRef<TermRef>(null);
     const TCLEUSABRef = useRef<TermRef>(null);
+
+    const [requirements, setRequirements] = useState<REQUIREMENTS_RES | null>(null);
+    const [loadingRequirements, setLoadingRequirements] = useState(false);
+
     const [openForm, setOpenForm] = useState(false);
-    const [checkedTCLE, setCheckedTCLE] = useState(false);
-    const [dataTCLE, setDataTCLE] = useState<DataTerm | null>(null);
-    const [checkedTCLE2, setCheckedTCLE2] = useState(false);
-    const [dataTCLE2, setDataTCLE2] = useState<DataTerm | null>(null);
-    const [checkedTCLEPROF, setCheckedTCLEPROF] = useState(false);
-    const [dataTCLEPROF, setDataTCLEPROF] = useState<DataTerm | null>(null);
-    const [checkedTCLEUSAB, setCheckedTCLEUSAB] = useState(false);
-    const [dataTCLEUSAB, setDataTCLEUSAB] = useState<DataTerm | null>(null);
-    const [checkedTALE18, setCheckedTALE18] = useState(false);
-    const [dataTALE, setDataTALE] = useState<DataTerm | null>(null);
-    const [checkedTALEUNDER13, setCheckedTALEUNDER13] = useState(false);
-    const [dataTALEU, setDataTALEU] = useState<DataTerm | null>(null);
+    const [checkedMap, setCheckedMap] = useState<Partial<Record<TERM_VARIANT, boolean>>>({});
+    const [dataMap, setDataMap] = useState<Partial<Record<TERM_VARIANT, DataTerm | null>>>({});
     const largeQuery = useMediaQuery("(min-width:720px)");
     const snackBar = useSnackbar();
 
-    const [termSelected, setTermSelected] = useState<"TCLE" | "TCLE2" | "TALE18" | "TALEU13" | "TCLEPROF" | "TCLEUSAB">("TCLEPROF");
+    const [termSelected, setTermSelected] = useState<TERM_VARIANT>("TCLEPROF");
     const [hasReadTerm, setHasReadTerm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
+    // Restaura o que já foi assinado em visitas anteriores (o PDF/base64 em si não
+    // sobrevive a um reload, só a marcação — ver comentário em `iCanGo`).
     useEffect(() => {
-        setCheckedTCLE(sessionStorage.getItem('tcle_TCLE') === '1');
-        setCheckedTCLE2(sessionStorage.getItem('tcle_TCLE2') === '1');
-        setCheckedTCLEPROF(sessionStorage.getItem('tcle_TCLEPROF') === '1');
-        setCheckedTCLEUSAB(sessionStorage.getItem('tcle_TCLEUSAB') === '1');
-        setCheckedTALE18(sessionStorage.getItem('tcle_TALE18') === '1');
-        setCheckedTALEUNDER13(sessionStorage.getItem('tcle_TALEU13') === '1');
+        const restored: Partial<Record<TERM_VARIANT, boolean>> = {};
+        VARIANT_ORDER.forEach((v) => {
+            restored[v] = sessionStorage.getItem(`tcle_${v}`) === '1';
+        });
+        setCheckedMap(restored);
     }, []);
 
     useEffect(() => { setHasReadTerm(false); setShowConfirmDialog(false); }, [termSelected]);
 
     useEffect(() => { if (!props.open) setOpenForm(false); }, [props.open]);
 
+    // Busca do backend quais termos este formulário exige do usuário atual (objetivo 4
+    // do painel admin) — substitui o mapeamento hardcoded por `idForm` que existia aqui.
+    useEffect(() => {
+        if (!props.open || !props.idForm) return;
+        setLoadingRequirements(true);
+        termRequirementService
+            .getForForm(props.idForm)
+            .then((res) => setRequirements(res.data ?? { exempt: false, groups: [] }))
+            .catch(() => setRequirements({ exempt: false, groups: [] }))
+            .finally(() => setLoadingRequirements(false));
+    }, [props.open, props.idForm]);
 
-    const handleTermScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-        if (scrollTop + clientHeight >= scrollHeight - 30) setHasReadTerm(true);
+    const groups = requirements?.groups ?? [];
+    const visibleVariants = VARIANT_ORDER.filter((v) => groups.some((g) => g.variants.includes(v)));
+    const isGroupSatisfied = (variants: TERM_VARIANT[]) => variants.length > 0 && variants.every((v) => checkedMap[v]);
+    const satisfiedGroup = groups.find((g) => isGroupSatisfied(g.variants));
+    const isSkippable = (variant: TERM_VARIANT) => !!satisfiedGroup && !satisfiedGroup.variants.includes(variant) && !checkedMap[variant];
+
+    const REF_MAP: Record<TERM_VARIANT, React.RefObject<any>> = {
+        TCLE: TCLERef,
+        TCLE2: TCLE2Ref,
+        TALE18: TALE18Ref,
+        TALEU13: TALEU13Ref,
+        TCLEPROF: TCLEPROFRef,
+        TCLEUSAB: TCLEUSABRef,
     };
 
     const confirmTerm = async () => {
         setLoading(true);
         try {
-            let states = null;
-            if (termSelected == "TCLE") {
-                states = await TCLERef.current?.getStates();
-                if (states) { states.form = Number(props.idForm); setDataTCLE(states); setCheckedTCLE(true); sessionStorage.setItem('tcle_TCLE', '1'); }
-            } else if (termSelected == "TCLE2") {
-                states = await TCLE2Ref.current?.getStates();
-                if (states) { states.form = Number(props.idForm); setDataTCLE2(states); setCheckedTCLE2(true); sessionStorage.setItem('tcle_TCLE2', '1'); }
-            } else if (termSelected == "TCLEPROF") {
-                states = await TCLEPROFRef.current?.getStates();
-                if (states) { states.form = Number(props.idForm); setDataTCLEPROF(states); setCheckedTCLEPROF(true); sessionStorage.setItem('tcle_TCLEPROF', '1'); }
-            } else if (termSelected == "TALE18") {
-                states = await TALERef.current?.getStates();
-                if (states) { states.form = Number(props.idForm); setDataTALE(states); setCheckedTALE18(true); sessionStorage.setItem('tcle_TALE18', '1'); }
-            } else if (termSelected == "TALEU13") {
-                states = await TALEURef.current?.getStatesNew();
-                if (states) { states.form = Number(props.idForm); setDataTALEU(states); setCheckedTALEUNDER13(true); sessionStorage.setItem('tcle_TALEU13', '1'); }
-            } else if (termSelected == "TCLEUSAB") {
-                states = await TCLEUSABRef.current?.getStates();
-                if (states) { states.form = Number(props.idForm); setDataTCLEUSAB(states); setCheckedTCLEUSAB(true); sessionStorage.setItem('tcle_TCLEUSAB', '1'); }
+            const ref = REF_MAP[termSelected];
+            const states: DataTerm | undefined =
+                termSelected === "TALEU13" ? await (ref.current as TermRefNew | null)?.getStatesNew() : await (ref.current as TermRef | null)?.getStates();
+
+            if (states) {
+                states.form = Number(props.idForm);
+                setDataMap((prev) => ({ ...prev, [termSelected]: states }));
+                setCheckedMap((prev) => ({ ...prev, [termSelected]: true }));
+                sessionStorage.setItem(`tcle_${termSelected}`, '1');
+                setOpenForm(false);
             }
-            if (states) setOpenForm(false);
         } finally {
             setLoading(false);
         }
     };
 
     async function iCanGo() {
-        const isForm6 = props.idForm == "6" || props.idForm == "2";
+        if (loadingRequirements) return;
 
-        // Form 6 — caminho adulto: apenas TCLE2
-        if (isForm6 && checkedTCLE2) {
-            if (!dataTCLE2) { props.goForm(); props.setOpenTCLE(false); return; }
-            setLoading(true);
-            const response = await http.post("/term/send", { tcle: dataTCLE2, tale: null, taleu: null, formId: props.idForm });
-            if (response.data) { snackBar.enqueueSnackbar(response.data, { variant: "success" }); props.goForm(); props.setOpenTCLE(false); }
-            else { const r = response as unknown as { errors: string[] }; snackBar.enqueueSnackbar(r.errors?.[0] ?? "Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" }); }
-            setLoading(false);
-            return;
-        }
-
-        // Caminho menor 13-18: TCLE + TALE18
-        if (isForm6 && checkedTCLE && checkedTALE18) {
-            if (!dataTCLE) { props.goForm(); props.setOpenTCLE(false); return; }
-            setLoading(true);
-            const response = await http.post("/term/send", { tcle: dataTCLE, tale: dataTALE, taleu: null, formId: props.idForm });
-            if (response.data) { snackBar.enqueueSnackbar(response.data, { variant: "success" }); props.goForm(); props.setOpenTCLE(false); }
-            else { const r = response as unknown as { errors: string[] }; snackBar.enqueueSnackbar(r.errors?.[0] ?? "Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" }); }
-            setLoading(false);
-            return;
-        }
-
-        // Caminho criança 5-12 (form 2): TCLE + TALEU13
-        if (props.idForm == "2" && checkedTCLE && checkedTALEUNDER13) {
-            if (!dataTCLE) { props.goForm(); props.setOpenTCLE(false); return; }
-            setLoading(true);
-            const response = await http.post("/term/send", { tcle: dataTCLE, tale: null, taleu: dataTALEU, formId: props.idForm });
-            if (response.data) { snackBar.enqueueSnackbar(response.data, { variant: "success" }); props.goForm(); props.setOpenTCLE(false); }
-            else { const r = response as unknown as { errors: string[] }; snackBar.enqueueSnackbar(r.errors?.[0] ?? "Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" }); }
-            setLoading(false);
-            return;
-        }
-
-        // Nenhum caminho completo
-        if (isForm6) {
-            if (checkedTCLE && !checkedTALE18 && !checkedTALEUNDER13) {
-                snackBar.enqueueSnackbar("Assine o Termo de Assentimento (13 a 18 Anos) ou o TALE Lúdico (5 a 12 Anos) para continuar.", { variant: "warning" });
-            } else {
-                snackBar.enqueueSnackbar("Você precisa asssinar os termos obrigatorios (*)!", { variant: "warning" });
-            }
-            return;
-        }
-
-        // Demais forms
-        const tcleData = dataTCLE ?? dataTCLEPROF ?? dataTCLEUSAB;
-
-        // Termo já assinado em uma visita anterior (sessionStorage), mas o
-        // payload (PDF/base64) não sobrevive a um reload — não é preciso
-        // reenviar pro backend, só liberar o formulário.
-        if (!tcleData && (checkedTCLE || checkedTCLEPROF || checkedTCLEUSAB)) {
+        // Nenhuma regra configurada pra este formulário = nenhum termo exigido
+        // (fail-open — ver `FormTermRequirement`). Corrige o bug antigo de formulários
+        // sem `idForm` mapeado travarem o usuário sem chance de prosseguir.
+        if (requirements?.exempt || groups.length === 0) {
             props.goForm();
             props.setOpenTCLE(false);
             return;
         }
 
-        if (tcleData) {
-            setLoading(true);
-            const response = await http.post("/term/send", { tcle: tcleData, tale: dataTALE, taleu: dataTALEU, formId: props.idForm });
-            if (response.data) { snackBar.enqueueSnackbar(response.data, { variant: "success" }); props.goForm(); props.setOpenTCLE(false); }
-            else { const r = response as unknown as { errors: string[] }; snackBar.enqueueSnackbar(r.errors?.[0] ?? "Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" }); }
-            setLoading(false);
-        } else {
-            snackBar.enqueueSnackbar("Você precisa asssinar os termos obrigatorios (*)!", { variant: "warning" });
+        const satisfied = groups.find((g) => isGroupSatisfied(g.variants));
+        if (!satisfied) {
+            snackBar.enqueueSnackbar("Você precisa assinar os termos obrigatórios (*)!", { variant: "warning" });
+            return;
         }
+
+        const tcleVariant = satisfied.variants.find((v) => bucketOf(v) === 'tcle');
+        const tcleData = tcleVariant ? dataMap[tcleVariant] : null;
+
+        // Termo já assinado em uma visita anterior (sessionStorage), mas o payload
+        // (PDF/base64) não sobrevive a um reload — não precisa reenviar, só liberar.
+        if (!tcleData) {
+            props.goForm();
+            props.setOpenTCLE(false);
+            return;
+        }
+
+        const taleVariant = satisfied.variants.find((v) => bucketOf(v) === 'tale');
+        const taleuVariant = satisfied.variants.find((v) => bucketOf(v) === 'taleu');
+
+        setLoading(true);
+        const response = await http.post("/term/send", {
+            tcle: tcleData,
+            tale: taleVariant ? dataMap[taleVariant] ?? null : null,
+            taleu: taleuVariant ? dataMap[taleuVariant] ?? null : null,
+            formId: props.idForm,
+        });
+        if (response.data) {
+            snackBar.enqueueSnackbar(response.data, { variant: "success" });
+            props.goForm();
+            props.setOpenTCLE(false);
+        } else {
+            const r = response as unknown as { errors: string[] };
+            snackBar.enqueueSnackbar(r.errors?.[0] ?? "Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" });
+        }
+        setLoading(false);
     }
+
+    const DOC_COMPONENT: Record<TERM_VARIANT, JSX.Element> = {
+        TCLE: <TCLE ref={TCLERef} />,
+        TALEU13: <TALEU13 ref={TALEU13Ref} />,
+        TALE18: <TALEU18 ref={TALE18Ref} />,
+        TCLE2: <TCLE2 ref={TCLE2Ref} />,
+        TCLEPROF: <TCLEPROF ref={TCLEPROFRef} />,
+        TCLEUSAB: <TCLEUSABILIDADE ref={TCLEUSABRef} />,
+    };
 
     return (
         <Modal
@@ -264,7 +306,7 @@ export default function TcleModal(props: Props) {
                             Clique em cada termo, leia e assine para continuar
                         </p>
 
-                        {(props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && (
+                        {satisfiedGroup && (
                             <div style={{
                                 display: 'flex', alignItems: 'flex-start', gap: '10px',
                                 backgroundColor: 'rgba(22,163,74,0.06)', border: '1px solid rgba(22,163,74,0.2)',
@@ -274,196 +316,50 @@ export default function TcleModal(props: Props) {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <p style={{ margin: 0, fontSize: '0.78rem', color: '#15803d', lineHeight: 1.5, fontFamily: "'Source Sans 3', sans-serif" }}>
-                                    Você pode prosseguir — o <strong>Termo de Maiores de 18 Anos</strong> já cobre sua participação. Os demais termos são para outros perfis de participante.
-                                </p>
-                            </div>
-                        )}
-                        {(props.idForm == "6" || props.idForm == "2") && checkedTCLE && !checkedTCLE2 && checkedTALE18 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'flex-start', gap: '10px',
-                                backgroundColor: 'rgba(22,163,74,0.06)', border: '1px solid rgba(22,163,74,0.2)',
-                                borderRadius: '10px', padding: '10px 14px', marginBottom: '12px',
-                            }}>
-                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#16a34a" strokeWidth={2} style={{ flexShrink: 0, marginTop: '1px' }}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <p style={{ margin: 0, fontSize: '0.78rem', color: '#15803d', lineHeight: 1.5, fontFamily: "'Source Sans 3', sans-serif" }}>
-                                    Você pode prosseguir — o <strong>Termo do Responsável Legal</strong> e o <strong>Termo de Assentimento (13 a 18 Anos)</strong> estão assinados.
-                                </p>
-                            </div>
-                        )}
-                        {props.idForm == "2" && checkedTCLE && !checkedTCLE2 && checkedTALEUNDER13 && !checkedTALE18 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'flex-start', gap: '10px',
-                                backgroundColor: 'rgba(22,163,74,0.06)', border: '1px solid rgba(22,163,74,0.2)',
-                                borderRadius: '10px', padding: '10px 14px', marginBottom: '12px',
-                            }}>
-                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#16a34a" strokeWidth={2} style={{ flexShrink: 0, marginTop: '1px' }}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <p style={{ margin: 0, fontSize: '0.78rem', color: '#15803d', lineHeight: 1.5, fontFamily: "'Source Sans 3', sans-serif" }}>
-                                    Você pode prosseguir — o <strong>Termo do Responsável Legal</strong> e o <strong>TALE Lúdico (5 a 12 Anos)</strong> estão assinados.
-                                </p>
-                            </div>
-                        )}
-                        {(props.idForm == "6" || props.idForm == "2") && checkedTCLE && !checkedTCLE2 && !checkedTALE18 && !checkedTALEUNDER13 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'flex-start', gap: '10px',
-                                backgroundColor: 'rgba(217,119,6,0.06)', border: '1px solid rgba(217,119,6,0.2)',
-                                borderRadius: '10px', padding: '10px 14px', marginBottom: '12px',
-                            }}>
-                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#d97706" strokeWidth={2} style={{ flexShrink: 0, marginTop: '1px' }}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <p style={{ margin: 0, fontSize: '0.78rem', color: '#92400e', lineHeight: 1.5, fontFamily: "'Source Sans 3', sans-serif" }}>
-                                    {props.idForm == "2"
-                                        ? <>Assine o <strong>Termo de Assentimento — 13 a 18 Anos</strong> ou o <strong>TALE Lúdico (5 a 12 Anos)</strong> para concluir e prosseguir.</>
-                                        : <>Assine também o <strong>Termo de Assentimento — 13 a 18 Anos</strong> para concluir e prosseguir.</>
-                                    }
+                                    Você pode prosseguir — os termos necessários para o seu perfil já estão assinados. Os demais são para outros perfis de participante.
                                 </p>
                             </div>
                         )}
 
-                        <TermsContainer>
-                            <TermsText
-                                $checked={checkedTCLE}
-                                style={{
-                                    display: props.idForm == "5" || props.idForm == "6" || props.idForm == "2" ? "" : "none",
-                                    opacity: ((props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && !checkedTCLE) ? 0.5 : 1,
-                                    cursor: (checkedTCLE || ((props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && !checkedTCLE)) ? 'default' : 'pointer',
-                                    pointerEvents: (checkedTCLE || ((props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && !checkedTCLE)) ? 'none' : 'auto',
-                                }}
-                                onClick={() => { setOpenForm(true); setTermSelected("TCLE"); }}
-                            >
-                                <DocIcon checked={checkedTCLE} skippable={(props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && !checkedTCLE} />
-                                <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTCLE ? '#6D141A' : ((props.idForm == "6" || props.idForm == "2") && checkedTCLE2) ? '#9ca3af' : '#1c1917', lineHeight: 1.3 }}>
-                                        Termo de Consentimento — Responsável Legal
-                                    </span>
-                                    <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>Para responsável legal pelo menor de 18 anos</span>
-                                </span>
-                                <Badge checked={checkedTCLE} skippable={(props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && !checkedTCLE} />
-                            </TermsText>
-                            <TermsText
-                                $checked={checkedTCLEPROF}
-                                style={{
-                                    display: props.idForm == "1" || props.idForm == "3" || props.idForm == "4" || props.idForm == "15" ? "" : "none",
-                                    cursor: checkedTCLEPROF ? 'default' : 'pointer',
-                                    pointerEvents: checkedTCLEPROF ? 'none' : 'auto',
-                                }}
-                                onClick={() => { setOpenForm(true); setTermSelected("TCLEPROF"); }}
-                            >
-                                <DocIcon checked={checkedTCLEPROF} />
-                                <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTCLEPROF ? '#6D141A' : '#1c1917', lineHeight: 1.3 }}>
-                                        Termo de Consentimento — Profissionais
-                                    </span>
-                                    <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>Módulos 1, 2 e 3 · Maiores de 18 anos</span>
-                                </span>
-                                <Badge checked={checkedTCLEPROF} />
-                            </TermsText>
-                            <TermsText
-                                $checked={checkedTCLEUSAB}
-                                style={{
-                                    display: props.idForm == "16" ? "" : "none",
-                                    cursor: checkedTCLEUSAB ? 'default' : 'pointer',
-                                    pointerEvents: checkedTCLEUSAB ? 'none' : 'auto',
-                                }}
-                                onClick={() => { setOpenForm(true); setTermSelected("TCLEUSAB"); }}
-                            >
-                                <DocIcon checked={checkedTCLEUSAB} />
-                                <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTCLEUSAB ? '#6D141A' : '#1c1917', lineHeight: 1.3 }}>
-                                        Termo de Consentimento — Teste de Usabilidade
-                                    </span>
-                                    <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>GestBucalSD · Teste de usabilidade da plataforma</span>
-                                </span>
-                                <Badge checked={checkedTCLEUSAB} />
-                            </TermsText>
-                            {(() => {
-                                const tcle2Skippable = (props.idForm == "6" || props.idForm == "2") && checkedTCLE && !checkedTCLE2;
-                                return (
-                                    <TermsText
-                                        $checked={checkedTCLE2}
-                                        style={{
-                                            display: props.idForm == "6" || props.idForm == "2" ? "" : "none",
-                                            opacity: tcle2Skippable ? 0.5 : 1,
-                                            cursor: (checkedTCLE2 || tcle2Skippable) ? 'default' : 'pointer',
-                                            pointerEvents: (checkedTCLE2 || tcle2Skippable) ? 'none' : 'auto',
-                                        }}
-                                        onClick={() => { setOpenForm(true); setTermSelected("TCLE2"); }}
-                                    >
-                                        <DocIcon checked={checkedTCLE2} skippable={tcle2Skippable} />
-                                        <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTCLE2 ? '#6D141A' : tcle2Skippable ? '#9ca3af' : '#1c1917', lineHeight: 1.3 }}>
-                                                Termo de Consentimento — Maiores de 18 Anos
+                        {loadingRequirements ? (
+                            <div style={{ padding: '24px', textAlign: 'center', color: '#9ca3af', fontSize: '0.85rem' }}>Carregando termos...</div>
+                        ) : (
+                            <TermsContainer>
+                                {visibleVariants.map((variant) => {
+                                    const checked = !!checkedMap[variant];
+                                    const skippable = isSkippable(variant);
+                                    const meta = VARIANT_META[variant];
+                                    return (
+                                        <TermsText
+                                            key={variant}
+                                            $checked={checked}
+                                            style={{
+                                                opacity: skippable ? 0.5 : 1,
+                                                cursor: (checked || skippable) ? 'default' : 'pointer',
+                                                pointerEvents: (checked || skippable) ? 'none' : 'auto',
+                                            }}
+                                            onClick={() => { setOpenForm(true); setTermSelected(variant); }}
+                                        >
+                                            <DocIcon checked={checked} skippable={skippable} />
+                                            <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checked ? '#6D141A' : skippable ? '#9ca3af' : '#1c1917', lineHeight: 1.3 }}>
+                                                    {meta.title}
+                                                </span>
+                                                <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>{meta.subtitle}</span>
                                             </span>
-                                            <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>Para maiores de 18 anos ou emancipados</span>
-                                        </span>
-                                        <Badge checked={checkedTCLE2} skippable={tcle2Skippable} />
-                                    </TermsText>
-                                );
-                            })()}
-                            {(() => {
-                                const tale18Skippable = !checkedTALE18 && (
-                                    ((props.idForm == "6" || props.idForm == "2") && checkedTCLE2 && !checkedTCLE) ||
-                                    (props.idForm == "2" && checkedTCLE && checkedTALEUNDER13)
-                                );
-                                return (
-                                    <TermsText
-                                        $checked={checkedTALE18}
-                                        style={{
-                                            display: props.idForm == "6" || props.idForm == "2" ? "" : "none",
-                                            opacity: tale18Skippable ? 0.5 : 1,
-                                            cursor: (checkedTALE18 || tale18Skippable) ? 'default' : 'pointer',
-                                            pointerEvents: (checkedTALE18 || tale18Skippable) ? 'none' : 'auto',
-                                        }}
-                                        onClick={() => { setOpenForm(true); setTermSelected("TALE18"); }}
-                                    >
-                                        <DocIcon checked={checkedTALE18} skippable={tale18Skippable} />
-                                        <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTALE18 ? '#6D141A' : tale18Skippable ? '#9ca3af' : '#1c1917', lineHeight: 1.3 }}>
-                                                Termo de Assentimento — 13 a 18 Anos
-                                            </span>
-                                            <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>Para menores entre 13 e 18 anos</span>
-                                        </span>
-                                        <Badge checked={checkedTALE18} skippable={tale18Skippable} />
-                                    </TermsText>
-                                );
-                            })()}
-                            {(() => {
-                                const taleuSkippable = props.idForm == "2" && !checkedTALEUNDER13 &&
-                                    (checkedTCLE2 || (checkedTCLE && checkedTALE18));
-                                return (
-                                    <TermsText
-                                        $checked={checkedTALEUNDER13}
-                                        style={{
-                                            display: props.idForm == "5" || props.idForm == "2" ? "" : "none",
-                                            opacity: taleuSkippable ? 0.5 : 1,
-                                            cursor: (checkedTALEUNDER13 || taleuSkippable) ? 'default' : 'pointer',
-                                            pointerEvents: (checkedTALEUNDER13 || taleuSkippable) ? 'none' : 'auto',
-                                        }}
-                                        onClick={() => { setOpenForm(true); setTermSelected("TALEU13"); }}
-                                    >
-                                        <DocIcon checked={checkedTALEUNDER13} skippable={taleuSkippable} />
-                                        <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: checkedTALEUNDER13 ? '#6D141A' : taleuSkippable ? '#9ca3af' : '#1c1917', lineHeight: 1.3 }}>
-                                                TALE Lúdico — 5 a 12 Anos
-                                            </span>
-                                            <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 400 }}>Termo de assentimento para crianças</span>
-                                        </span>
-                                        <Badge checked={checkedTALEUNDER13} skippable={taleuSkippable} />
-                                    </TermsText>
-                                );
-                            })()}
-                        </TermsContainer>
+                                            <Badge checked={checked} skippable={skippable} />
+                                        </TermsText>
+                                    );
+                                })}
+                            </TermsContainer>
+                        )}
                     </CardContainer>
                     <TermsButtonContainer>
                         <TermsButton disabled={loading} onClick={() => props.setOpenTCLE(false)}>
                             <ArrowBack />
                             Voltar
                         </TermsButton>
-                        <TermsButton disabled={loading} onClick={iCanGo}>
+                        <TermsButton disabled={loading || loadingRequirements} onClick={iCanGo}>
                             {loading ? <CircularProgress size={18} color="inherit" /> : <>Próximo <ArrowForward /></>}
                         </TermsButton>
                     </TermsButtonContainer>
@@ -484,20 +380,17 @@ export default function TcleModal(props: Props) {
                     }}
                 >
                     <DocumentContainer>
-                        {termSelected == "TCLE" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido (Para Responsável Legal pelo Menor de 18 Anos)</DocumentTitle>}
-                        {termSelected == "TALEU13" && <DocumentTitle>Termo de Assentimento Livre e Esclarecido | TALE Lúdico (5 a 12 anos)</DocumentTitle>}
-                        {termSelected == "TALE18" && <DocumentTitle>Termo de Assentimento Livre e Esclarecido (Para Menores de 13 a 18 Anos)</DocumentTitle>}
-                        {termSelected == "TCLE2" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido (Para Maiores de 18 Anos)</DocumentTitle>}
-                        {termSelected == "TCLEPROF" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido – Módulos 1, 2 e 3 - Profissionais</DocumentTitle>}
-                        {termSelected == "TCLEUSAB" && <DocumentTitle>Termo de Consentimento Livre e Esclarecido (TCLE) – Versão Digital</DocumentTitle>}
+                        <DocumentTitle>{VARIANT_META[termSelected].docTitle}</DocumentTitle>
 
-                        <TermScrollArea onScroll={handleTermScroll}>
-                            <div style={{ display: termSelected == "TCLE" ? "" : "none" }}><TCLE ref={TCLERef} /></div>
-                            <div style={{ display: termSelected == "TALEU13" ? "" : "none" }}><TALEU13 ref={TALEURef} /></div>
-                            <div style={{ display: termSelected == "TALE18" ? "" : "none" }}><TALEU18 ref={TALERef} /></div>
-                            <div style={{ display: termSelected == "TCLE2" ? "" : "none" }}><TCLE2 ref={TCLE2Ref} /></div>
-                            <div style={{ display: termSelected == "TCLEPROF" ? "" : "none" }}><TCLEPROF ref={TCLEPROFRef} /></div>
-                            <div style={{ display: termSelected == "TCLEUSAB" ? "" : "none" }}><TCLEUSABILIDADE ref={TCLEUSABRef} /></div>
+                        <TermScrollArea onScroll={(e: React.UIEvent<HTMLDivElement>) => {
+                            const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+                            if (scrollTop + clientHeight >= scrollHeight - 30) setHasReadTerm(true);
+                        }}>
+                            {VARIANT_ORDER.map((variant) => (
+                                <div key={variant} style={{ display: termSelected === variant ? "" : "none" }}>
+                                    {DOC_COMPONENT[variant]}
+                                </div>
+                            ))}
                         </TermScrollArea>
 
                         {!hasReadTerm && (
