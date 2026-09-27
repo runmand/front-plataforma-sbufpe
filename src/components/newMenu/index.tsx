@@ -186,11 +186,15 @@ export default function Index() {
     }, []);
 
     React.useEffect(() => {
-        setHaveLogin(!!localStorage.getItem(localStorageKeyEnum.TOKEN));
+        const token = localStorage.getItem(localStorageKeyEnum.TOKEN);
+        const loggedIn = !!token;
+        setHaveLogin(loggedIn);
 
-        const id = Number(localStorage.getItem("typeId"));
-        if (id <= 2 || id == 5) {
-            setMenu((prev) => [...prev, { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }]);
+        const typeIdRaw = localStorage.getItem(localStorageKeyEnum.TYPE_ID) || localStorage.getItem("typeId");
+        const id = loggedIn && typeIdRaw ? Number(typeIdRaw) : null;
+
+        if (id !== null && (id <= 2 || id === 5)) {
+            setMenu((prev) => (prev.some((m) => m.id === 7) ? prev : [...prev, { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }]));
         }
         // Painel admin: só Admin ou Desenvolvedor vê o item no menu (a segurança de
         // verdade é o backend, que já só deixa esses dois papéis entrar nas rotas
@@ -219,8 +223,11 @@ export default function Index() {
     const handleLogout = () => {
         localStorage.removeItem(localStorageKeyEnum.TOKEN);
         localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
-        router.push(routerEnum.INITIAL);
+        localStorage.removeItem(localStorageKeyEnum.USER_ID);
+        setMenu(itemsDrawer);
+        setIsAdminOrDev(false);
         setHaveLogin(false);
+        router.push(routerEnum.INITIAL);
     };
 
     const openLogin = () => {

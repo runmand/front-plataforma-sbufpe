@@ -23,19 +23,28 @@ http.interceptors.request.use(
             "/user-registers",
             "/user-types",
             "/reset/",
+            "/reset/execute",
             "/biopen/aps",
             "/biopen/ceo",
             "/biopen/usuario",
         ];
 
         /** Se a rota for protegida, segue a lógica. */
-        if (!openRoutes.includes(config.url)) {
-            const token = localStorage.getItem(localStorageKeyEnum.TOKEN);
+        const cleanUrl = config.url?.split("?")[0] || "";
+        const isOpen =
+            openRoutes.includes(cleanUrl) ||
+            cleanUrl.startsWith("/biopen/") ||
+            cleanUrl.startsWith("/databi/");
+
+        if (!isOpen) {
+            const token = typeof window !== "undefined" ? localStorage.getItem(localStorageKeyEnum.TOKEN) : null;
 
             //TODO: Verificar expiração do token.
             /** Se não existir JWT token, redireciona para a pagina inicial. */
             if (!token) {
-                window.location.href = "/";
+                if (typeof window !== "undefined") {
+                    window.location.href = "/";
+                }
                 return Promise.reject(new Error("No token"));
             }
 

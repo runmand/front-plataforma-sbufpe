@@ -163,7 +163,7 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
         // A regra de versões existente é preservada para não alterar a leitura histórica dos dados.
         return filtered.filter((answer) => {
             const year = new Date(answer.date).getFullYear();
-            return Number(version.id) === 1 ? year > 2026 : year < 2026;
+            return Number(version.id) === 1 ? year >= 2026 : year < 2026;
         });
     }, [answerIndexes, answers, filters, version.id]);
 
