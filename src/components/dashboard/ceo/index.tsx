@@ -6,11 +6,27 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { useSnackbar } from "notistack";
 import CeoDashboardService from "./service";
 import { CeoApiResponse, CeoFilterState, DEFAULT_CEO_FILTERS, QuestionSummary } from "./type";
-import { filterSubmissionsByDate, getSubmissionDateBounds, ymdToTime, timeToYmd, summarize, buildAgeHistogram, QUESTION_TYPE_LABEL } from "./utils";
+import {
+	filterSubmissionsByDate,
+	getSubmissionDateBounds,
+	ymdToTime,
+	timeToYmd,
+	summarize,
+	buildAgeHistogram,
+	buildDurationBins,
+	QUESTION_TYPE_LABEL,
+} from "./utils";
 import { CEO, ff } from "./colors";
 import QuestionBarChart from "./QuestionBarChart";
 import QuestionPieChart from "./QuestionPieChart";
 import QuestionHistogramChart from "./QuestionHistogramChart";
+import DurationBreakdown from "./DurationBreakdown";
+import DataSheet from "@components/dashboard/dataSheet/index";
+
+/** Larguras/offsets das colunas congeladas da planilha (o `left` tem que casar com a largura
+ * da coluna anterior, por isso os dois andam juntos). */
+const FREEZE_ID: React.CSSProperties = { left: 0, width: 52, minWidth: 52, maxWidth: 52 };
+const FREEZE_DATE: React.CSSProperties = { left: 52, width: 104, minWidth: 104, maxWidth: 104 };
 
 /**
  * Perguntas específicas com um tipo de gráfico diferente do padrão (barra), pedidas explicitamente
@@ -30,8 +46,10 @@ const Card = ({ children, style }: { children: React.ReactNode; style?: React.CS
 	<div
 		style={{
 			backgroundColor: CEO.white,
-			border: `1px solid ${CEO.border}`,
+			// Mesma silhueta de cartão do resto do sistema (/form, /dashboard, painel admin).
+			border: `1.5px solid ${CEO.border}`,
 			borderRadius: 16,
+			boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
 			padding: "20px 24px",
 			...style,
 		}}
@@ -56,26 +74,6 @@ const displayValue = (value: string | number | undefined): string => {
 	return text === "" ? "—" : text;
 };
 
-const thStyle: React.CSSProperties = {
-	textAlign: "left",
-	padding: "8px 12px",
-	borderBottom: `2px solid ${CEO.border}`,
-	fontFamily: ff.body,
-	fontWeight: 700,
-	fontSize: 12,
-	color: CEO.text,
-	whiteSpace: "nowrap",
-	backgroundColor: CEO.bg,
-};
-
-const tdStyle: React.CSSProperties = {
-	padding: "6px 12px",
-	borderBottom: `1px solid ${CEO.border}`,
-	fontFamily: ff.body,
-	fontSize: 12,
-	color: CEO.text,
-	whiteSpace: "nowrap",
-};
 
 /** Lista de respostas de texto livre de uma pergunta sem choices — só mostra as 3 primeiras, com "ver todas". */
 const OpenAnswersList = ({ answers }: { answers: string[] }) => {
@@ -162,7 +160,23 @@ const QuestionBlock = ({ q }: { q: QuestionSummary }) => (
 					    opção (ex: "Nome do CEO/SESB", um seletor de estabelecimento) ficam com dezenas de
 					    opções em 0%, que só atrapalham o gráfico sem agregar informação. */}
 					{isPieChartQuestion(q.title) ? (
-						<QuestionPieChart data={q.choices.filter((c) => c.count > 0)} />
+						(() => {
+							// "Há quanto tempo você trabalha…" tem uma opção por valor ("6 meses"… até 44
+							// anos): ~22 opções, que não cabem numa pizza (as de 0,8% ficam com ~3° de arco).
+							// A pizza mostra as faixas de tempo e a lista abaixo mostra cada opção com a sua
+							// contagem — as duas leituras separadas, sem esconder resposta nenhuma. Se as
+							// opções não forem tempo, `buildDurationBins` devolve null e vai a pizza normal.
+							const answered = q.choices.filter((c) => c.count > 0);
+							const bins = buildDurationBins(answered, q.totalAnswered);
+							return bins ? (
+								<>
+									<QuestionPieChart data={bins} ordered />
+									<DurationBreakdown bins={bins} />
+								</>
+							) : (
+								<QuestionPieChart data={answered} />
+							);
+						})()
 					) : (
 						<QuestionBarChart data={q.choices.filter((c) => c.count > 0)} />
 					)}
@@ -250,34 +264,35 @@ export default function CeoDashboard() {
 	return (
 		<div style={{ minHeight: "60vh", backgroundColor: CEO.bg, paddingTop: 96 }}>
 			{/* ── Header ── */}
+			{/* Hero na mesma composição das outras telas: barra de destaque 40×3, título em serifa
+			    na cor do texto (não no bordô) e conteúdo centralizado. */}
 			<div style={{ backgroundColor: CEO.white, borderBottom: `1px solid ${CEO.border}`, padding: "48px 24px 36px" }}>
-				<div style={{ maxWidth: 1280, margin: "0 auto" }}>
+				<div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center" }}>
 					<div
 						style={{
 							display: "inline-block",
-							width: 48,
+							width: 40,
 							height: 3,
 							background: `linear-gradient(90deg, ${CEO.primary}, ${CEO.secondary})`,
 							borderRadius: 2,
-							marginBottom: 18,
+							marginBottom: 20,
 						}}
 					/>
 					<h1
 						style={{
 							fontFamily: ff.display,
-							fontSize: "clamp(28px, 3.4vw, 40px)",
+							fontSize: "clamp(24px, 3.5vw, 38px)",
 							fontWeight: 700,
-							color: CEO.primary,
-							margin: "0 0 10px",
-							letterSpacing: "-0.01em",
-							lineHeight: 1.15,
+							color: CEO.text,
+							margin: "0 0 12px",
+							letterSpacing: "-0.02em",
+							lineHeight: 1.2,
 						}}
 					>
 						Dashboard — {summary.formTitle || "Formulário de CEO"}
 					</h1>
 					<p style={{ fontFamily: ff.body, fontSize: 15, color: CEO.muted, margin: 0, lineHeight: 1.6 }}>
-						Distribuição das respostas do formulário, por pergunta, direto da rota de leitura de dados (GET
-						/data/form/1).
+						Distribuição das respostas do formulário, pergunta por pergunta
 					</p>
 				</div>
 			</div>
@@ -360,16 +375,24 @@ export default function CeoDashboard() {
 						<button
 							type="button"
 							onClick={() => setShowTable((v) => !v)}
+							// Botão "fantasma" no mesmo formato do resto do sistema: raio 10, borda 1.5px.
 							style={{
 								fontFamily: ff.body,
 								fontSize: 13,
-								fontWeight: 600,
+								fontWeight: 700,
 								color: CEO.primary,
 								backgroundColor: CEO.white,
-								border: `1px solid ${CEO.border}`,
-								borderRadius: 8,
-								padding: "8px 14px",
+								border: `1.5px solid ${CEO.border}`,
+								borderRadius: 10,
+								padding: "9px 16px",
 								cursor: "pointer",
+								transition: "border-color .15s ease",
+							}}
+							onMouseEnter={(e) => {
+								e.currentTarget.style.borderColor = CEO.primary;
+							}}
+							onMouseLeave={(e) => {
+								e.currentTarget.style.borderColor = CEO.border;
 							}}
 						>
 							{showTable ? "Ocultar planilha de dados ▲" : "Ver dados em planilha ▼"} ({fmtInt(summary.totalResponses)})
@@ -377,42 +400,53 @@ export default function CeoDashboard() {
 
 						{showTable && (
 							<Card style={{ marginTop: 12, padding: 0, overflow: "hidden" }}>
-								<div style={{ overflow: "auto", maxHeight: 440 }}>
-									<table style={{ width: "100%", borderCollapse: "collapse" }}>
-										<thead>
-											<tr>
-												<th style={{ ...thStyle, position: "sticky", top: 0 }}>#</th>
-												<th style={{ ...thStyle, position: "sticky", top: 0 }}>Data</th>
-												{summary.questionTitlesInOrder.map((title) => (
-													<th key={title} style={{ ...thStyle, position: "sticky", top: 0 }}>
-														{title}
-													</th>
-												))}
-											</tr>
-										</thead>
-										<tbody>
-											{summary.tableRows.length ? (
-												summary.tableRows.map((row, i) => (
-													<tr key={i} style={{ backgroundColor: i % 2 === 0 ? CEO.white : CEO.bg }}>
-														<td style={tdStyle}>{row.__submissionIndex}</td>
-														<td style={tdStyle}>{displayValue(new Date(row.__date).toLocaleDateString("pt-BR"))}</td>
-														{summary.questionTitlesInOrder.map((title) => (
-															<td key={title} style={tdStyle}>
-																{displayValue(row[title] as string)}
-															</td>
-														))}
-													</tr>
-												))
-											) : (
-												<tr>
-													<td style={{ ...tdStyle, whiteSpace: "normal" }} colSpan={summary.questionTitlesInOrder.length + 2}>
-														Sem registros.
+								{/* "#" e "Data" ficam congelados: rolando pra direita, sem eles a linha perde a
+								    identidade e não se sabe mais de qual submissão é o valor. */}
+								<DataSheet wideHeaders>
+									<thead>
+										<tr>
+											<th className="dsheet-freeze dsheet-num" style={FREEZE_ID}>
+												#
+											</th>
+											<th className="dsheet-freeze dsheet-freeze-edge" style={FREEZE_DATE}>
+												Data
+											</th>
+											{summary.questionTitlesInOrder.map((title) => (
+												<th key={title} title={title}>
+													<span>{title}</span>
+												</th>
+											))}
+										</tr>
+									</thead>
+									<tbody>
+										{summary.tableRows.length ? (
+											summary.tableRows.map((row, i) => (
+												<tr key={i}>
+													<td className="dsheet-freeze dsheet-num" style={FREEZE_ID}>
+														{row.__submissionIndex}
 													</td>
+													<td className="dsheet-freeze dsheet-freeze-edge" style={FREEZE_DATE}>
+														{displayValue(new Date(row.__date).toLocaleDateString("pt-BR"))}
+													</td>
+													{summary.questionTitlesInOrder.map((title) => {
+														const value = displayValue(row[title] as string);
+														return (
+															<td key={title} title={value}>
+																{value}
+															</td>
+														);
+													})}
 												</tr>
-											)}
-										</tbody>
-									</table>
-								</div>
+											))
+										) : (
+											<tr>
+												<td style={{ whiteSpace: "normal", color: CEO.muted }} colSpan={summary.questionTitlesInOrder.length + 2}>
+													Sem registros.
+												</td>
+											</tr>
+										)}
+									</tbody>
+								</DataSheet>
 							</Card>
 						)}
 					</div>
@@ -421,7 +455,8 @@ export default function CeoDashboard() {
 					<div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 						{summary.domains.map((domain) => (
 							<Card key={domain.cod}>
-								<h2 style={{ fontFamily: ff.body, fontSize: 16, fontWeight: 700, color: CEO.primary, margin: "0 0 4px" }}>
+								{/* Título de seção em serifa, como os cartões de seção do painel admin. */}
+								<h2 style={{ fontFamily: ff.display, fontSize: 19, fontWeight: 700, color: CEO.text, margin: "0 0 4px", letterSpacing: "-0.01em" }}>
 									{domain.name}
 								</h2>
 								<div>

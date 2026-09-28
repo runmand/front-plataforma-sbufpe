@@ -1,6 +1,6 @@
 export type AnswersForm = {userId: number, date: Date, answers: AnswersFormData[]}
 
-export type AnswersFormData = {id: number, answer: string, createdAt: Date, questionId: number, answerText: string}
+export type AnswersFormData = {id: number, answer: string, createdAt: Date, questionId: number, answerText: string | null}
 
 export type FormsRegisters = {
     id: number,

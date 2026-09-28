@@ -5,7 +5,26 @@ import { useRouter } from "next/navigation";
 import { localStorageKeyEnum, routerEnum } from "src/core/enums";
 import DrawerMenu from "@components/menu/drawer/index";
 import { MENU_ITEM } from "@components/menu/items/type";
-import { itemsDrawer, itemsMenu } from "./itensMenu";
+import { itemsDrawer } from "./itensMenu";
+import UserTypeService from "src/modules/userTypes/service";
+
+/* ─── Menu mobile "⊕ Páginas" (visível para todos, logado ou não) ──────────────
+   Espelha o conteúdo público dos dropdowns do menu desktop (`menuList`, abaixo),
+   mas já no formato MENU_ITEM ({ url, menuItemChildren }) que o componente de
+   drawer (`components/menu/items/index.tsx`) realmente lê. Antes este drawer
+   usava `itemsMenu` (formato `itemsListType`, com `route`/`subList`), que é
+   silenciosamente incompatível: gerava `router.push(undefined)` ao clicar. */
+const pagesMenu: MENU_ITEM[] = [
+    { id: 101, title: "Início", url: routerEnum.INITIAL },
+    { id: 102, title: "Acervo: Artigos", url: routerEnum.ARTICLES },
+    { id: 104, title: "Quem Somos?", url: routerEnum.TEAM },
+    { id: 105, title: "O que é GestBucal SD?", url: routerEnum.PROJECT },
+    { id: 106, title: "Nossos Dados: Usuários", url: routerEnum.USER },
+    { id: 107, title: "Nossos Dados: CEO", url: routerEnum.CEO },
+    { id: 108, title: "Nossos Dados: APS", url: routerEnum.APS },
+    { id: 109, title: "Contato", url: routerEnum.CONTACTUS },
+    { id: 110, title: "F.A.Q", url: routerEnum.FAQ },
+];
 
 const LoginModal = dynamic(() => import("@components/modal/log-in/index"), { ssr: false });
 const SignupModal = dynamic(() => import("@components/modal/sign-up/index"), { ssr: false });
@@ -22,7 +41,7 @@ const C = {
     borderLight: "#f5f5f4",
 };
 const ff = {
-    display: "'Lora', Georgia, serif",
+    display: "'Newsreader', Georgia, serif",
     body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 const btnBase: React.CSSProperties = {
@@ -141,6 +160,7 @@ export default function Index() {
     const [scrolled, setScrolled] = React.useState(false);
     const [isMobile, setIsMobile] = React.useState(false);
     const [haveLogin, setHaveLogin] = React.useState(false);
+    const [isAdminOrDev, setIsAdminOrDev] = React.useState(false);
     const [isOpenLogin, setIsOpenLogin] = React.useState(false);
     const [isOpenSignup, setIsOpenSignup] = React.useState(false);
     const [hasOpenedLogin, setHasOpenedLogin] = React.useState(false);
@@ -149,7 +169,7 @@ export default function Index() {
     const [drawerTwoOpen, setDrawerTwoOpen] = React.useState(false);
 
     const [menu, setMenu] = React.useState<MENU_ITEM[]>(itemsDrawer);
-    const [menuTwo, setTwoMenu] = React.useState<MENU_ITEM[]>(itemsMenu);
+    const [menuTwo, setTwoMenu] = React.useState<MENU_ITEM[]>(pagesMenu);
 
     React.useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 30);
@@ -171,6 +191,21 @@ export default function Index() {
         const id = Number(localStorage.getItem("typeId"));
         if (id <= 2 || id == 5) {
             setMenu((prev) => [...prev, { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }]);
+        }
+        // Painel admin: só Admin ou Desenvolvedor vê o item no menu (a segurança de
+        // verdade é o backend, que já só deixa esses dois papéis entrar nas rotas
+        // /admin/*). Resolvido por DESCRIÇÃO via `/user-types` — não por id numérico
+        // fixo, porque o id de "Desenvolvedor" não é garantido ser o mesmo em todo
+        // ambiente/banco.
+        if (id) {
+            new UserTypeService().index().then((res) => {
+                const myType = res.data?.find((t) => String(t.id) === String(id));
+                const description = myType?.description?.toLowerCase();
+                if (description === "admin" || description === "desenvolvedor") {
+                    setIsAdminOrDev(true);
+                    setMenu((prev) => (prev.some((m) => m.id === 8) ? prev : [...prev, { id: 8, title: "Painel Admin", url: routerEnum.ADMIN }]));
+                }
+            });
         }
 
         const onLogin = () => {
@@ -207,10 +242,7 @@ export default function Index() {
     const menuList = [
         {
             title: "Acervo",
-            items: [
-                { label: "Artigos", route: routerEnum.ARTICLES },
-                { label: "InformeSBPE", route: "/informes" },
-            ],
+            items: [{ label: "Artigos", route: routerEnum.ARTICLES }],
         },
         {
             title: "Quem Somos",
@@ -300,6 +332,30 @@ export default function Index() {
                             {menuList.map((m, i) => (
                                 <NavDropdown key={i} title={m.title} items={m.items} />
                             ))}
+                            {isAdminOrDev && (
+                                <button
+                                    onClick={() => router.push(routerEnum.ADMIN)}
+                                    style={{
+                                        ...btnBase,
+                                        padding: "8px 14px",
+                                        fontSize: "14px",
+                                        fontWeight: 600,
+                                        color: "rgba(255,255,255,0.88)",
+                                        background: "transparent",
+                                        borderRadius: "8px",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                                        e.currentTarget.style.color = "#fff";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "rgba(255,255,255,0.88)";
+                                    }}
+                                >
+                                    Painel Admin
+                                </button>
+                            )}
                         </div>
                     )}
 

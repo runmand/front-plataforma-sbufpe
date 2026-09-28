@@ -8,7 +8,7 @@ import SimpleFormService from "./service";
 import { TPROPS } from "./type";
 
 const ff = {
-  display: "'Lora', Georgia, serif",
+  display: "'Newsreader', Georgia, serif",
   body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 const C = {

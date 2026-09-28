@@ -45,8 +45,8 @@ type CachedForm = { data: requestResponse; date: Date };
 
 const ROWS_PER_PAGE = 50;
 
-function formatAnswerText(text: string | undefined) {
-    if (text === undefined) return "Não Informado";
+function formatAnswerText(text: string | null | undefined) {
+    if (text === null || text === undefined) return "Não Informado";
     if (text === "") return "Não respondido";
     return text;
 }
@@ -68,11 +68,9 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
     const [columns, setColumns] = useState<formsQuestionsFormsRegisters[]>([]);
     const [answers, setAnswers] = useState<AnswersForm[]>([]);
     const [filters, setFilters] = useState<Map<number, string>>(new Map());
-    const [hasAppliedFilters, setHasAppliedFilters] = useState(false);
     const [page, setPage] = useState(1);
     const cachedFormsRef = useRef<Map<ID, CachedForm>>(new Map());
     const latestRequestRef = useRef(0);
-    const initialVersionRef = useRef(version.id);
 
     const getForm = useCallback(
         async (reload = false) => {
@@ -123,7 +121,6 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
 
     useEffect(() => {
         setFilters(new Map());
-        setHasAppliedFilters(false);
         setPage(1);
         setColumns([]);
         setAnswers([]);
@@ -135,11 +132,7 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
     }, [form.id, getForm]);
 
     useEffect(() => {
-        if (initialVersionRef.current !== version.id) {
-            setHasAppliedFilters(true);
-            initialVersionRef.current = version.id;
-            setPage(1);
-        }
+        setPage(1);
     }, [version.id]);
 
     const orderQuestions = useMemo(() => columns.map((column) => column.questionId.id), [columns]);
@@ -162,19 +155,17 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
                 const answerText = answerIndexes.get(answer)?.get(questionId)?.answerText;
 
                 if (response === "Não respondido") return answerText === "";
-                if (response === "Não Informado") return answerText === undefined;
+                if (response === "Não Informado") return answerText === null || answerText === undefined;
                 return answerText === response;
             });
         });
-
-        if (!hasAppliedFilters) return filtered;
 
         // A regra de versões existente é preservada para não alterar a leitura histórica dos dados.
         return filtered.filter((answer) => {
             const year = new Date(answer.date).getFullYear();
             return Number(version.id) === 1 ? year > 2026 : year < 2026;
         });
-    }, [answerIndexes, answers, filters, hasAppliedFilters, version.id]);
+    }, [answerIndexes, answers, filters, version.id]);
 
     const filterOptionsByQuestion = useMemo(() => {
         const valuesByQuestion = new Map<number, Set<string>>();
@@ -210,7 +201,6 @@ export default function Table({ form, setUpdatedAt, isLoading, setIsLoading, ver
             }
             return next;
         });
-        setHasAppliedFilters(true);
         setPage(1);
     }, []);
 

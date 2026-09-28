@@ -7,9 +7,44 @@ type TPROPS = { data: CpoBracketPoint[] };
 // Valores do CPO — no máximo 2 casas decimais.
 const fmt = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-const SegmentLabel = (props: any) => {
+/** Legenda na ordem visual da pilha, de cima pra baixo. */
+const LEGEND = [
+	{ label: "Cariados", color: VIGIA.cariados },
+	{ label: "Restaurados", color: VIGIA.restaurados },
+	{ label: "Perdidos", color: VIGIA.perdidos },
+];
+
+/** Luminância relativa (WCAG) de um hex — usada só pra escolher a tinta do rótulo. */
+const luminance = (hex: string): number => {
+	const channel = (i: number) => {
+		const c = parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16) / 255;
+		return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+	};
+	return 0.2126 * channel(0) + 0.7152 * channel(1) + 0.0722 * channel(2);
+};
+
+/**
+ * Tinta do rótulo escrito DENTRO do segmento, escolhida pelo contraste real com o preenchimento
+ * dele. Branco fixo não serve: sobre o verde (#1baf7a) e o laranja o texto branco fica em ~2,5:1
+ * e quase desaparece.
+ */
+const labelInkOn = (fill: string): string => {
+	const l = luminance(fill);
+	return 1.05 / (l + 0.05) >= (l + 0.05) / (luminance(VIGIA.text) + 0.05) ? VIGIA.white : VIGIA.text;
+};
+
+/** Altura mínima do segmento pra caber o rótulo de 11px com folga. */
+const MIN_LABEL_HEIGHT = 17;
+
+/**
+ * Rótulo dentro do segmento. Só desenha quando o segmento é alto o suficiente pra conter o
+ * texto: antes ele era desenhado sempre, então num segmento fininho (0,17 / 0,26) o número
+ * vazava por cima do vizinho e chegava a ser cortado pela linha do eixo. O valor dessas fatias
+ * continua acessível no tooltip, e o total de cada barra segue escrito acima dela.
+ */
+const makeSegmentLabel = (fill: string) => (props: any) => {
 	const { x, y, width, height, value } = props;
-	if (!value) return null;
+	if (!value || height < MIN_LABEL_HEIGHT) return null;
 
 	return (
 		<text
@@ -17,7 +52,7 @@ const SegmentLabel = (props: any) => {
 			y={y + height / 2}
 			textAnchor="middle"
 			dominantBaseline="middle"
-			fill="#fff"
+			fill={labelInkOn(fill)}
 			fontSize={11}
 			fontFamily={ff.body}
 			fontWeight={600}
@@ -70,18 +105,52 @@ export default function StackedCpoChart(props: TPROPS) {
 				/>
 				<YAxis tick={{ fontFamily: ff.body, fontSize: 12, fill: VIGIA.muted }} axisLine={false} tickLine={false} />
 				<Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+				{/* Legenda na ordem em que os segmentos aparecem na barra, de cima pra baixo — a mesma
+				    do tooltip. Antes ela vinha na ordem de declaração das <Bar> (de baixo pra cima),
+				    o inverso do tooltip, que já inverte o payload. */}
 				<Legend
+					payload={LEGEND.map((item) => ({ value: item.label, type: "circle", color: item.color, id: item.label }))}
 					formatter={(value) => <span style={{ fontFamily: ff.body, fontSize: 13, color: VIGIA.text }}>{value}</span>}
 					iconType="circle"
 				/>
-				<Bar dataKey="perdidos" name="Perdidos" stackId="cpo" fill={VIGIA.perdidos} isAnimationActive={false}>
-					<LabelList dataKey="perdidos" content={SegmentLabel} />
+				{/* `stroke` da cor da superfície dá o respiro de 2px entre os segmentos empilhados —
+				    antes os blocos se tocavam direto. `maxBarSize` evita que em tela larga as barras
+				    virem lajes: marca fina lê melhor que bloco saturado. */}
+				<Bar
+					dataKey="perdidos"
+					name="Perdidos"
+					stackId="cpo"
+					fill={VIGIA.perdidos}
+					stroke={VIGIA.white}
+					strokeWidth={2}
+					maxBarSize={56}
+					isAnimationActive={false}
+				>
+					<LabelList dataKey="perdidos" content={makeSegmentLabel(VIGIA.perdidos)} />
 				</Bar>
-				<Bar dataKey="restaurados" name="Restaurado" stackId="cpo" fill={VIGIA.restaurados} isAnimationActive={false}>
-					<LabelList dataKey="restaurados" content={SegmentLabel} />
+				<Bar
+					dataKey="restaurados"
+					name="Restaurados"
+					stackId="cpo"
+					fill={VIGIA.restaurados}
+					stroke={VIGIA.white}
+					strokeWidth={2}
+					maxBarSize={56}
+					isAnimationActive={false}
+				>
+					<LabelList dataKey="restaurados" content={makeSegmentLabel(VIGIA.restaurados)} />
 				</Bar>
-				<Bar dataKey="cariados" name="Cariados" stackId="cpo" fill={VIGIA.cariados} isAnimationActive={false}>
-					<LabelList dataKey="cariados" content={SegmentLabel} />
+				<Bar
+					dataKey="cariados"
+					name="Cariados"
+					stackId="cpo"
+					fill={VIGIA.cariados}
+					stroke={VIGIA.white}
+					strokeWidth={2}
+					maxBarSize={56}
+					isAnimationActive={false}
+				>
+					<LabelList dataKey="cariados" content={makeSegmentLabel(VIGIA.cariados)} />
 					<LabelList dataKey="cariados" content={makeTotalLabel(props.data)} />
 				</Bar>
 			</BarChart>

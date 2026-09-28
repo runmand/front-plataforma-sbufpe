@@ -1,6 +1,6 @@
 import { TPROPS } from './type';
 
-const ff = { body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif", display: "'Lora', Georgia, serif" };
+const ff = { body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif", display: "'Newsreader', Georgia, serif" };
 const C = { primary: '#6D141A', secondary: '#921c22', text: '#1c1917', muted: '#78716c', border: '#e7e5e4', white: '#fff', bg: '#FAF7F2' };
 
 export default function AlertDialog(props: TPROPS) {

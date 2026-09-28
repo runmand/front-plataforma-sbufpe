@@ -29,7 +29,9 @@ export default function CareFreeChart(props: TPROPS) {
 				<YAxis
 					type="category"
 					dataKey="label"
-					width={78}
+					// 96 e não 78: a 78 um rótulo como "13–14 anos" quebrava em duas linhas, deixando o
+					// eixo irregular ao lado do gráfico de CPO, que agora fica pareado com este.
+					width={96}
 					tick={{ fontFamily: ff.body, fontSize: 12, fill: VIGIA.text }}
 					axisLine={false}
 					tickLine={false}

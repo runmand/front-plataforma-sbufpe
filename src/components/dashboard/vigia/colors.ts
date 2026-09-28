@@ -17,7 +17,8 @@ export const VIGIA = {
 	bg: "#FAF7F2",
 	white: "#fff",
 	text: "#1c1917",
-	muted: "#6b7280",
+	// Mesmo tom de texto secundário do resto do site (pedra quente, não cinza azulado).
+	muted: "#78716c",
 	border: "#e7e5e4",
 
 	// Série categórica (Cariados / Perdidos / Restaurados) — validada.
