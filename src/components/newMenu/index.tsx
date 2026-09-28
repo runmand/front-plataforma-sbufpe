@@ -242,7 +242,10 @@ export default function Index() {
     const menuList = [
         {
             title: "Acervo",
-            items: [{ label: "Artigos", route: routerEnum.ARTICLES }],
+            items: [
+                { label: "Artigos", route: routerEnum.ARTICLES },
+                { label: "InformeSBPE", route: routerEnum.INFORMES },
+            ],
         },
         {
             title: "Quem Somos",

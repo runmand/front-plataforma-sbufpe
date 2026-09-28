@@ -25,6 +25,7 @@ export enum routerEnum {
     TCLE = "/tcle",
     DIRECTION = "/direction",
     DATAFORM = "/dataform",
+    INFORMES = "/informes",
     DASHBOARD = "/dashboard",
     DASHBOARD_VIGIA = "/dashboard/vigia",
     DASHBOARD_CEO = "/dashboard/ceo",
