@@ -1,7 +1,6 @@
 import { withTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { theme } from "src/core/theme";
-import { StyleSheet } from "@react-pdf/renderer";
 
 export const CardContainer = styled.div``;
 
@@ -10,7 +9,7 @@ export const CardTitle = styled.h1`
   color: ${theme.primaryColor};
   text-align: center;
   font-weight: 700;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   margin: 0 0 4px;
   letter-spacing: -0.01em;
 

@@ -37,9 +37,10 @@ export default function Index() {
         <Box
             sx={{
                 background: theme.greyLight,
-                marginTop: "5rem",
+                marginTop: "68px",
                 paddingTop: !largeQuery ? "2rem" : "1rem",
-                minHeight: "88vh",
+                paddingBottom: "32px",
+                flex: 1,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",

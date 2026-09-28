@@ -100,7 +100,7 @@ export const studentTeamTI = [
   {
     name: 'Bruno Magno',
     role: 'Estudante',
-    photo: './profile-image/BrunoMagno.jpg',
+    photo: './profile-image/BrunoMagno.png',
     contacts: [
       {
         id: 'linked-in',

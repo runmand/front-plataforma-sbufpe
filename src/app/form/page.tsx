@@ -4,22 +4,21 @@ import Base from '@components/base-layout/index';
 import Image from 'next/image';
 import { useMediaQuery } from '@mui/material';
 import FormService from 'src/modules/form/service';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { INDEX_RES } from 'src/modules/form/type';
 import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
 import { useRouter } from 'next/navigation';
-import { localStorageKeyEnum, routerEnum } from 'src/core/enums';
+import { routerEnum } from 'src/core/enums';
 import NotFound from '@components/not-found/index';
-import FormAnswerService from 'src/modules/form-answer/service';
 import NewMenu from '@components/newMenu/index';
 import FooterMain from '@components/footer/main/index';
 import TcleModal from '@components/tcle/index';
+import TermRequirementService from 'src/modules/termRequirements/service';
 
 export default function Page() {
-    let firstOpen = useRef(0);
     const formService = new FormService();
-    const formAnwerService = new FormAnswerService();
+    const termRequirementService = new TermRequirementService();
     const router = useRouter();
     const [openTCLE, setOpenTCLE] = useState<boolean>(false);
     const largeQuery = useMediaQuery('(min-width:720px)');
@@ -32,49 +31,36 @@ export default function Page() {
     }, []);
 
     const handleSelectForm = (id: ID) => {
-        const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID);
         setFormId(id);
 
-        if (typeId != 5) {
-            setOpenTCLE(true);
-        } else {
-            goForm(id);
-        }
+        // Só abre o modal de TCLE se o backend disser que este formulário exige algum
+        // termo pro tipo de usuário atual (objetivo 4 do painel admin) — antes isso era
+        // decidido só pelo typeId==5 no client, hardcoded.
+        termRequirementService
+            .getForForm(id)
+            .then((res) => {
+                const requirements = res.data;
+                if (res.errors || !requirements || requirements.exempt || requirements.groups.length === 0) {
+                    goForm(id);
+                } else {
+                    setOpenTCLE(true);
+                }
+            })
+            .catch(() => goForm(id));
     };
 
     async function goForm(id?: ID) {
         router.push(`${routerEnum.FORM_ANSWER}?formId=${id ?? formId}`);
     }
 
-    async function getFormResult() {
-        try {
-            const { data: formResult } = await formAnwerService.getFormattedFormShow(3);
-            console.log(formResult);
-        } catch (err: any) {
-            console.error(err);
-        }
-    }
-
     async function formServiceIndex() {
+        // A lista já vem filtrada pelo backend por permissão do usuário autenticado
+        // (objetivo 5 do painel admin) — não precisa mais de switch(typeId) aqui.
         formService
             .index()
             .then((res) => {
                 if (!res.errors) {
-                    const typeId = +localStorage.getItem(localStorageKeyEnum.TYPE_ID);
-                    switch (typeId) {
-                        case 1:
-                            return setForms(res.data);
-                        case 2:
-                            return setForms(res.data);
-                        case 3:
-                            return setForms(
-                                res.data.filter((form) => form.id !== 2 && form.id !== 5 && form.id !== 6 && form.id !== 7 && form.id !== 8)
-                            );
-                        case 4:
-                            return setForms(res.data.filter((form) => form.id === 2));
-                        case 5:
-                            return setForms(res.data);
-                    }
+                    setForms(res.data);
                 } else {
                     res.errors.forEach((error) => enqueueSnackbar(error, { variant: 'error' }));
                 }
@@ -85,18 +71,13 @@ export default function Page() {
     }
 
     useEffect(() => {
-        if (firstOpen.current == 0) {
-            getFormResult();
-            formServiceIndex();
-        } else {
-            firstOpen.current = 1;
-        }
+        formServiceIndex();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const ff = {
-        display: "'Lora', Georgia, serif",
+        display: "'Newsreader', Georgia, serif",
         body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
     };
     const C = {
@@ -154,6 +135,31 @@ export default function Page() {
                                 }}>
                                     Selecione o formulário que deseja responder
                                 </p>
+
+                                {/* Alterna entre Formulários e Dashboards */}
+                                <div style={{
+                                    display: 'inline-flex', gap: '4px', padding: '4px', marginTop: '20px',
+                                    backgroundColor: C.bg, border: `1px solid ${C.border}`, borderRadius: '100px',
+                                }}>
+                                    <span style={{
+                                        padding: '7px 18px', borderRadius: '100px',
+                                        backgroundColor: C.primary, color: C.white,
+                                        fontSize: '0.8rem', fontWeight: 700, fontFamily: ff.body,
+                                    }}>
+                                        Formulários
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() => router.push(routerEnum.DASHBOARD)}
+                                        style={{
+                                            padding: '7px 18px', borderRadius: '100px', border: 'none',
+                                            backgroundColor: 'transparent', color: C.muted,
+                                            fontSize: '0.8rem', fontWeight: 700, fontFamily: ff.body, cursor: 'pointer',
+                                        }}
+                                    >
+                                        Dashboards
+                                    </button>
+                                </div>
                             </div>
 
                             {/* Cards grid */}

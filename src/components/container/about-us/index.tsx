@@ -1,7 +1,7 @@
+import Image from "next/image";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
@@ -39,11 +39,14 @@ const TeamMemberCard = ({ member, sx = {} }: { member: any; sx?: any }) => (
     <CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2.5 }}>
         {/* Foto */}
-        <Avatar
+        <Image
           alt={member.name}
-          src={member.photo}
-          variant="rounded"
-          sx={{ width: 88, height: 88, borderRadius: 3, flexShrink: 0 }}
+          src={member.photo.replace(/^\.\//, '/')}
+          // Keep extra resolution for dense displays and the square crop of landscape photos.
+          width={264}
+          height={264}
+          quality={90}
+          style={{ width: 88, height: 88, borderRadius: 12, flexShrink: 0, objectFit: 'cover' }}
         />
 
         {/* Conteúdo */}

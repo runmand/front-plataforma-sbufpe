@@ -12,6 +12,11 @@ export default function Page() {
     }, []);
 
     return (
-        <Base appBarChild={<NewMenu />} mainContainerChild={<Data />} footerChild={<FooterMain />} />
+        <Base
+            style={{ '@media (max-width: 640px)': { '& > footer': { position: 'static' } } }}
+            appBarChild={<NewMenu />}
+            mainContainerChild={<Data />}
+            footerChild={<FooterMain />}
+        />
     );
 }

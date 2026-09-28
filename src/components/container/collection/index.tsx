@@ -64,7 +64,7 @@ export default function Index() {
         sx={{
           width: "100%",
           boxSizing: "border-box",
-          padding: "0 32px",
+          padding: { xs: "0 16px", sm: "0 32px" },
           display: "flex",
           flexDirection: "column",
           gap: "16px",
@@ -240,7 +240,7 @@ export default function Index() {
           width: "100%",
           boxSizing: "border-box",
           marginTop: "48px",
-          padding: `0 32px calc(48px + ${footerHeight}px)`,
+          padding: { xs: `0 16px calc(48px + ${footerHeight}px)`, sm: `0 32px calc(48px + ${footerHeight}px)` },
         }}
       >
         <Box
@@ -287,8 +287,15 @@ export default function Index() {
               siblingCount={1}
               boundaryCount={1}
               sx={{
+                maxWidth: "100%",
                 "& .MuiPagination-ul": {
-                  gap: "8px",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  gap: { xs: "4px", sm: "8px" },
+                },
+                "& .MuiPagination-ul > li": {
+                  width: "auto",
                 },
                 "& .MuiPaginationItem-root": {
                   width: "40px",

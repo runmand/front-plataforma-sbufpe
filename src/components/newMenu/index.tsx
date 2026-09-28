@@ -1,12 +1,33 @@
 import * as React from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { localStorageKeyEnum, routerEnum } from "src/core/enums";
-import LoginModal from "@components/modal/log-in/index";
-import SignupModal from "@components/modal/sign-up/index";
 import DrawerMenu from "@components/menu/drawer/index";
 import { MENU_ITEM } from "@components/menu/items/type";
-import { itemsDrawer, itemsMenu } from "./itensMenu";
+import { itemsDrawer } from "./itensMenu";
+import UserTypeService from "src/modules/userTypes/service";
+
+/* ─── Menu mobile "⊕ Páginas" (visível para todos, logado ou não) ──────────────
+   Espelha o conteúdo público dos dropdowns do menu desktop (`menuList`, abaixo),
+   mas já no formato MENU_ITEM ({ url, menuItemChildren }) que o componente de
+   drawer (`components/menu/items/index.tsx`) realmente lê. Antes este drawer
+   usava `itemsMenu` (formato `itemsListType`, com `route`/`subList`), que é
+   silenciosamente incompatível: gerava `router.push(undefined)` ao clicar. */
+const pagesMenu: MENU_ITEM[] = [
+    { id: 101, title: "Início", url: routerEnum.INITIAL },
+    { id: 102, title: "Acervo: Artigos", url: routerEnum.ARTICLES },
+    { id: 104, title: "Quem Somos?", url: routerEnum.TEAM },
+    { id: 105, title: "O que é GestBucal SD?", url: routerEnum.PROJECT },
+    { id: 106, title: "Nossos Dados: Usuários", url: routerEnum.USER },
+    { id: 107, title: "Nossos Dados: CEO", url: routerEnum.CEO },
+    { id: 108, title: "Nossos Dados: APS", url: routerEnum.APS },
+    { id: 109, title: "Contato", url: routerEnum.CONTACTUS },
+    { id: 110, title: "F.A.Q", url: routerEnum.FAQ },
+];
+
+const LoginModal = dynamic(() => import("@components/modal/log-in/index"), { ssr: false });
+const SignupModal = dynamic(() => import("@components/modal/sign-up/index"), { ssr: false });
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 const C = {
@@ -20,7 +41,7 @@ const C = {
     borderLight: "#f5f5f4",
 };
 const ff = {
-    display: "'Lora', Georgia, serif",
+    display: "'Newsreader', Georgia, serif",
     body: "'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif",
 };
 const btnBase: React.CSSProperties = {
@@ -139,13 +160,16 @@ export default function Index() {
     const [scrolled, setScrolled] = React.useState(false);
     const [isMobile, setIsMobile] = React.useState(false);
     const [haveLogin, setHaveLogin] = React.useState(false);
+    const [isAdminOrDev, setIsAdminOrDev] = React.useState(false);
     const [isOpenLogin, setIsOpenLogin] = React.useState(false);
     const [isOpenSignup, setIsOpenSignup] = React.useState(false);
+    const [hasOpenedLogin, setHasOpenedLogin] = React.useState(false);
+    const [hasOpenedSignup, setHasOpenedSignup] = React.useState(false);
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [drawerTwoOpen, setDrawerTwoOpen] = React.useState(false);
 
     const [menu, setMenu] = React.useState<MENU_ITEM[]>(itemsDrawer);
-    const [menuTwo, setTwoMenu] = React.useState<MENU_ITEM[]>(itemsMenu);
+    const [menuTwo, setTwoMenu] = React.useState<MENU_ITEM[]>(pagesMenu);
 
     React.useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 30);
@@ -168,8 +192,26 @@ export default function Index() {
         if (id <= 2 || id == 5) {
             setMenu((prev) => [...prev, { id: 7, title: "Nossos Dados: Exportar", url: routerEnum.DATA }]);
         }
+        // Painel admin: só Admin ou Desenvolvedor vê o item no menu (a segurança de
+        // verdade é o backend, que já só deixa esses dois papéis entrar nas rotas
+        // /admin/*). Resolvido por DESCRIÇÃO via `/user-types` — não por id numérico
+        // fixo, porque o id de "Desenvolvedor" não é garantido ser o mesmo em todo
+        // ambiente/banco.
+        if (id) {
+            new UserTypeService().index().then((res) => {
+                const myType = res.data?.find((t) => String(t.id) === String(id));
+                const description = myType?.description?.toLowerCase();
+                if (description === "admin" || description === "desenvolvedor") {
+                    setIsAdminOrDev(true);
+                    setMenu((prev) => (prev.some((m) => m.id === 8) ? prev : [...prev, { id: 8, title: "Painel Admin", url: routerEnum.ADMIN }]));
+                }
+            });
+        }
 
-        const onLogin = () => setIsOpenLogin(true);
+        const onLogin = () => {
+            setHasOpenedLogin(true);
+            setIsOpenLogin(true);
+        };
         window.addEventListener("clickLoginEvent", onLogin);
         return () => window.removeEventListener("clickLoginEvent", onLogin);
     }, []);
@@ -179,6 +221,16 @@ export default function Index() {
         localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
         router.push(routerEnum.INITIAL);
         setHaveLogin(false);
+    };
+
+    const openLogin = () => {
+        setHasOpenedLogin(true);
+        setIsOpenLogin(true);
+    };
+
+    const openSignup = () => {
+        setHasOpenedSignup(true);
+        setIsOpenSignup(true);
     };
 
     const nossosItens = [
@@ -230,7 +282,8 @@ export default function Index() {
                     style={{
                         maxWidth: "1280px",
                         margin: "0 auto",
-                        padding: "0 24px",
+                        padding: isMobile ? "0 12px" : "0 24px",
+                        gap: "8px",
                         height: "68px",
                         display: "flex",
                         alignItems: "center",
@@ -240,16 +293,16 @@ export default function Index() {
                     {/* Logo */}
                     <button
                         onClick={() => router.push(routerEnum.INITIAL)}
-                        style={{ ...btnBase, display: "flex", alignItems: "center", gap: "10px", background: "transparent", padding: 0 }}
+                        style={{ ...btnBase, display: "flex", alignItems: "center", gap: isMobile ? "6px" : "10px", background: "transparent", padding: 0, flexShrink: 0, whiteSpace: "nowrap" }}
                     >
                         <Image
                             src="/logo-transparent.png"
                             alt="GestBucal"
-                            width={38}
-                            height={38}
+                            width={isMobile ? 32 : 38}
+                            height={isMobile ? 32 : 38}
                             style={{ borderRadius: "50%", border: "2px solid rgba(255,255,255,0.2)" }}
                         />
-                        <span style={{ fontFamily: ff.display, color: "#fff", fontWeight: 700, fontSize: "19px" }}>
+                        <span style={{ fontFamily: ff.display, color: "#fff", fontWeight: 700, fontSize: isMobile ? "17px" : "19px" }}>
                             GestBucal<span style={{ color: "rgba(255,255,255,0.35)", fontWeight: 300, marginLeft: "4px" }}>SD</span>
                         </span>
                     </button>
@@ -282,14 +335,38 @@ export default function Index() {
                             {menuList.map((m, i) => (
                                 <NavDropdown key={i} title={m.title} items={m.items} />
                             ))}
+                            {isAdminOrDev && (
+                                <button
+                                    onClick={() => router.push(routerEnum.ADMIN)}
+                                    style={{
+                                        ...btnBase,
+                                        padding: "8px 14px",
+                                        fontSize: "14px",
+                                        fontWeight: 600,
+                                        color: "rgba(255,255,255,0.88)",
+                                        background: "transparent",
+                                        borderRadius: "8px",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                                        e.currentTarget.style.color = "#fff";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = "transparent";
+                                        e.currentTarget.style.color = "rgba(255,255,255,0.88)";
+                                    }}
+                                >
+                                    Painel Admin
+                                </button>
+                            )}
                         </div>
                     )}
 
                     {/* Auth buttons / Menu+Logout — sempre visíveis */}
                     {!haveLogin && (
-                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px", flexShrink: 0, marginLeft: "auto" }}>
                             <button
-                                onClick={() => setIsOpenLogin(true)}
+                                onClick={openLogin}
                                 style={{
                                     ...btnBase,
                                     padding: isMobile ? "7px 14px" : "9px 24px",
@@ -313,7 +390,7 @@ export default function Index() {
                             </button>
                             {!isMobile && (
                                 <button
-                                    onClick={() => setIsOpenSignup(true)}
+                                    onClick={openSignup}
                                     style={{
                                         ...btnBase,
                                         padding: "9px 24px",
@@ -340,12 +417,17 @@ export default function Index() {
                     )}
 
                     {haveLogin && (
-                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "8px" : "10px", flexShrink: 0, marginLeft: "auto" }}>
                             <button
+                                aria-label="Menu"
+                                title="Menu"
                                 onClick={() => setDrawerOpen(true)}
                                 style={{
                                     ...btnBase,
-                                    padding: "8px 14px",
+                                    padding: isMobile ? 0 : "8px 14px",
+                                    width: isMobile ? "40px" : undefined,
+                                    height: isMobile ? "40px" : undefined,
+                                    flexShrink: 0,
                                     fontSize: "14px",
                                     fontWeight: 600,
                                     color: "rgba(255,255,255,0.88)",
@@ -354,7 +436,7 @@ export default function Index() {
                                     borderRadius: "8px",
                                 }}
                             >
-                                ☰ Menu
+                                <span aria-hidden="true">☰</span>{!isMobile && " Menu"}
                             </button>
 
                             {!isMobile ? (
@@ -387,10 +469,15 @@ export default function Index() {
 
                     {isMobile && (
                         <button
+                            aria-label="Páginas"
+                            title="Páginas"
                             onClick={() => setDrawerTwoOpen(true)}
                             style={{
                                 ...btnBase,
-                                padding: "8px 14px",
+                                padding: isMobile ? 0 : "8px 14px",
+                                width: "40px",
+                                height: "40px",
+                                flexShrink: 0,
                                 fontSize: "14px",
                                 fontWeight: 600,
                                 color: "rgba(255,255,255,0.88)",
@@ -399,29 +486,33 @@ export default function Index() {
                                 borderRadius: "8px",
                             }}
                         >
-                            ⊕ Páginas
+                            <span aria-hidden="true">⊕</span>
                         </button>
                     )}
                 </div>
             </nav>
 
             {/* Modals */}
-            <LoginModal
-                isOpen={isOpenLogin}
-                canSkip={true}
-                onClose={() => setIsOpenLogin(false)}
-                openSignupModal={() => {
-                    setIsOpenLogin(false);
-                    setIsOpenSignup(true);
-                }}
-                openContact={() => router.push(routerEnum.CONTACTUS)}
-            />
-            <SignupModal
-                isOpen={isOpenSignup}
-                canSkip={true}
-                onClose={() => setIsOpenSignup(false)}
-                openTclePage={() => router.push(routerEnum.TCLE)}
-            />
+            {hasOpenedLogin && (
+                <LoginModal
+                    isOpen={isOpenLogin}
+                    canSkip={true}
+                    onClose={() => setIsOpenLogin(false)}
+                    openSignupModal={() => {
+                        setIsOpenLogin(false);
+                        openSignup();
+                    }}
+                    openContact={() => router.push(routerEnum.CONTACTUS)}
+                />
+            )}
+            {hasOpenedSignup && (
+                <SignupModal
+                    isOpen={isOpenSignup}
+                    canSkip={true}
+                    onClose={() => setIsOpenSignup(false)}
+                    openTclePage={() => router.push(routerEnum.TCLE)}
+                />
+            )}
             <DrawerMenu isOpen={drawerOpen} menuItems={menu} onClose={() => setDrawerOpen(false)} />
             <DrawerMenu
                 showPDF={false}

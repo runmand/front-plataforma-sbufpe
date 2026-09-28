@@ -4,9 +4,13 @@ import Base from "@components/base-layout/index";
 import Appbar from "@components/app-bar/index";
 import HomeToolbar from "@components/toolbar/home";
 import { Box, Button, Typography } from "@mui/material";
-import { downloadPDFPlaneja } from "@components/pdf/PlanejaPDF";
 
 export const FinishedForm = () => {
+    const downloadPDFPlaneja = async () => {
+        const { downloadPlanejaTheoreticalPdf } = await import("@components/pdf/downloads");
+        await downloadPlanejaTheoreticalPdf();
+    };
+
     return (
         <Base
             appBarChild={<Appbar toolbarChild={<HomeToolbar />} />}

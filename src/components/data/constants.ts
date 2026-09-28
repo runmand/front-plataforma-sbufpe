@@ -34,8 +34,8 @@ export const forms_allowed: INDEX_RES[] = [
         title: "Planeja SD - Pratico",
     },
     {
-        id: 15,
-        title: "Satisfação Profissional dos CD",
+        id: 16,
+        title: "Formulário Geral de Usabilidade - GestBucalSD",
     },
 ];
 
