@@ -22,6 +22,7 @@ const pagesMenu: MENU_ITEM[] = [
     { id: 106, title: "Nossos Dados: Usuários", url: routerEnum.USER },
     { id: 107, title: "Nossos Dados: CEO", url: routerEnum.CEO },
     { id: 108, title: "Nossos Dados: APS", url: routerEnum.APS },
+    { id: 111, title: "Nossos Dados: Acessos", url: routerEnum.INFORMES },
     { id: 109, title: "Contato", url: routerEnum.CONTACTUS },
     { id: 110, title: "F.A.Q", url: routerEnum.FAQ },
 ];
@@ -237,15 +238,13 @@ export default function Index() {
         { label: "Usuários", route: routerEnum.USER },
         { label: "CEO", route: routerEnum.CEO },
         { label: "APS", route: routerEnum.APS },
+        { label: "Acessos", route: routerEnum.INFORMES },
     ];
 
     const menuList = [
         {
             title: "Acervo",
-            items: [
-                { label: "Artigos", route: routerEnum.ARTICLES },
-                { label: "InformeSBPE", route: routerEnum.INFORMES },
-            ],
+            items: [{ label: "Artigos", route: routerEnum.ARTICLES }],
         },
         {
             title: "Quem Somos",

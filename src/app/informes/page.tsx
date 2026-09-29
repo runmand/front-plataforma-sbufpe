@@ -8,7 +8,7 @@ import FooterMain from '@components/footer/main/index';
 
 export default function Page() {
     useEffect(() => {
-        document.title = 'Informes | GestBucal';
+        document.title = 'Acessos | GestBucal';
     }, []);
 
     return (

@@ -1,9 +1,5 @@
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-
-interface AccessData {
-	month: string;
-	qty: string;
-}
+import { AccessData, YearTable } from "./YearTable";
 
 const rows2023: AccessData[] = [
 	{ month: 'Abril', qty: '50' },
@@ -56,50 +52,11 @@ const rows2026: AccessData[] = [
 	{ month: 'Junho', qty: '477' },
 ];
 
-function YearTable({ year, rows }: { year: string; rows: AccessData[] }) {
-	const max = Math.max(...rows.map((row) => Number(row.qty)));
-
-	return (
-		<div className="mb-10 last:mb-0">
-			<div className="flex items-center gap-3 mb-4">
-				<span className="inline-flex items-center justify-center rounded-full bg-gb-primary text-white text-xs font-bold px-3 py-1 font-body tracking-wide">
-					{year}
-				</span>
-				<span className="h-px flex-1" style={{ background: "#e7e5e4" }} />
-			</div>
-
-			<div className="overflow-hidden rounded-xl" style={{ border: "1px solid #e7e5e4" }}>
-				<table className="w-full text-sm font-body">
-					<thead>
-						<tr className="bg-gb-input">
-							<th className="text-left px-4 py-2.5 font-semibold text-gb-text">Mês</th>
-							<th className="text-right px-4 py-2.5 font-semibold text-gb-text w-24">Acessos</th>
-							<th className="hidden sm:table-cell px-4 py-2.5" />
-						</tr>
-					</thead>
-					<tbody>
-						{rows.map((row) => (
-							<tr key={`${year}-${row.month}`} className="even:bg-gb-input/40" style={{ borderTop: "1px solid #e7e5e4" }}>
-								<td className="px-4 py-2.5 text-gb-text">{row.month}</td>
-								<td className="px-4 py-2.5 text-right font-semibold text-gb-primary">{row.qty}</td>
-								<td className="hidden sm:table-cell px-4 py-2.5">
-									<span className="block h-1.5 rounded-full overflow-hidden" style={{ background: "#fde8ea" }}>
-										<span
-											className="block h-full rounded-full bg-gb-primary"
-											style={{ width: `${(Number(row.qty) / max) * 100}%` }}
-										/>
-									</span>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-		</div>
-	);
-}
-
 export default function Index() {
+	const max = Math.max(
+		...[...rows2023, ...rows2024, ...rows2025, ...rows2026].map((row) => Number(row.qty)),
+	);
+
 	return (
 		<div className="bg-[#f5f5f4] min-h-[88vh] pt-20 sm:pt-24 pb-20 sm:pb-24 px-4">
 			<div className="max-w-[860px] mx-auto">
@@ -115,11 +72,11 @@ export default function Index() {
 					</h1>
 				</div>
 
-				<div className="bg-white rounded-2xl shadow-lg p-6 sm:p-10 font-body" style={{ border: "1px solid #e7e5e4" }}>
-					<YearTable year="2023" rows={rows2023} />
-					<YearTable year="2024" rows={rows2024} />
-					<YearTable year="2025" rows={rows2025} />
-					<YearTable year="2026" rows={rows2026} />
+				<div className="bg-white rounded-2xl shadow-lg p-6 sm:p-10 font-body border border-gb-border">
+					<YearTable year="2023" rows={rows2023} max={max} />
+					<YearTable year="2024" rows={rows2024} max={max} />
+					<YearTable year="2025" rows={rows2025} max={max} />
+					<YearTable year="2026" rows={rows2026} max={max} />
 				</div>
 			</div>
 		</div>
