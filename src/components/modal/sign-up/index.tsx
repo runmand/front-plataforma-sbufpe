@@ -10,6 +10,7 @@ import SignupService from "./service";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { validateCPF, validateEmail } from "src/utils/validators";
+import { parseJwtPayload } from "src/core/jwt";
 
 //TODO: Criar validação de formalario antes de enviar dados para a API.
 //TODO: Criar limpeza de campos apartir do callback fornecido por cada campo.
@@ -92,6 +93,11 @@ export default function Index(props: TPROPS) {
                     enqueueSnackbar("Registro efetuado com sucesso!", { variant: "success" });
                     localStorage.setItem(localStorageKeyEnum.TOKEN, res.data.token);
                     localStorage.setItem(localStorageKeyEnum.TYPE_ID, res.data.user_type.typeId + "");
+                    const jwtPayload = parseJwtPayload<{ id?: number }>(res.data.token);
+                    const userId = (res.data as any)?.user_id ?? jwtPayload?.id;
+                    if (userId) {
+                        localStorage.setItem(localStorageKeyEnum.USER_ID, userId + "");
+                    }
                     router.push(routerEnum.FORM);
                 } else {
                     setIsLoading(false);
