@@ -1,18 +1,15 @@
 import { Box, Button, Grid, Paper, Typography, useMediaQuery } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useImperativeHandle, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { theme } from "src/core/theme";
 import { items } from "./data";
 import { containerBodyTypeEnum, localStorageKeyEnum, routerEnum } from "src/core/enums";
-import LoginModal from "@components/newMenu/login";
-import { TProps } from "./type";
 
 export default function Index() {
     const router = useRouter();
     const largeQuery = useMediaQuery("(min-width:720px)");
     const [isLogged, setIsLogged] = useState<boolean>(false);
-    const [clickLogin, setClickLogin] = useState<boolean>(false);
 
     useEffect(() => {
         const token = localStorage.getItem(localStorageKeyEnum.TOKEN);
