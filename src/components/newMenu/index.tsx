@@ -25,6 +25,9 @@ const pagesMenu: MENU_ITEM[] = [
     { id: 111, title: "Nossos Dados: Acessos", url: routerEnum.INFORMES },
     { id: 109, title: "Contato", url: routerEnum.CONTACTUS },
     { id: 110, title: "F.A.Q", url: routerEnum.FAQ },
+    { id: 112, title: "Central de Dashboards", url: routerEnum.DASHBOARD },
+    { id: 113, title: "Dashboard CEO", url: routerEnum.DASHBOARD_CEO },
+    { id: 114, title: "Dashboard Vigia SD", url: routerEnum.DASHBOARD_VIGIA },
 ];
 
 const LoginModal = dynamic(() => import("@components/modal/log-in/index"), { ssr: false });

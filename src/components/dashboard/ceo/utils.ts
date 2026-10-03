@@ -219,9 +219,19 @@ export const timeToYmd = (time: number): string => {
  * e como min/max do slider de período.
  */
 export const getSubmissionDateBounds = (submissions: ApiAnswerForm[]): { min: string; max: string } | null => {
-	const times = submissions.map((s) => new Date(s.date).getTime()).filter((t) => Number.isFinite(t));
-	if (times.length === 0) return null;
-	return { min: timeToYmd(Math.min(...times)), max: timeToYmd(Math.max(...times)) };
+	const bounds = submissions.reduce(
+		(result, submission) => {
+			const time = new Date(submission.date).getTime();
+			if (Number.isFinite(time)) {
+				result.min = Math.min(result.min, time);
+				result.max = Math.max(result.max, time);
+			}
+			return result;
+		},
+		{ min: Infinity, max: -Infinity }
+	);
+	if (!Number.isFinite(bounds.min)) return null;
+	return { min: timeToYmd(bounds.min), max: timeToYmd(bounds.max) };
 };
 
 /**
