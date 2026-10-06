@@ -77,11 +77,11 @@ function FormAnswerContent() {
 
                 sortedData.forEach((el) => {
                     if (el.formQuestionFormRegisterId == 234 && formId == 5) {
-                        el.childrenQuestion.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId);
+                        el.childrenQuestion?.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId);
                     }
 
                     if (el.formQuestionFormRegisterId == 499 && formId == 6) {
-                        el.childrenQuestion.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId);
+                        el.childrenQuestion?.sort((a, b) => +a.formQuestionFormRegisterId - +b.formQuestionFormRegisterId);
                     }
                 });
 

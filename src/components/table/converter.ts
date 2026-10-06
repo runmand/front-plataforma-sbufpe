@@ -156,7 +156,17 @@ export function convertPlanejaPraticoToForm(planData: praticalAnswerObj[]): requ
     const answer: AnswersForm[] = [];
 
     planData.map((a) => {
-        const dataJson = convertPraticalToReadable(JSON.parse(a.question_answer), a.typeuser);
+        let dataJson: string[];
+        try {
+            const parsed = JSON.parse(a.question_answer);
+            if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+                throw new Error("Resposta do Planeja Prático inválida");
+            }
+            dataJson = convertPraticalToReadable(parsed, a.typeuser);
+        } catch {
+            // Preserva o registro na tabela e no CSV sem interromper as demais respostas.
+            dataJson = columnsPratico.map(() => "Dados inválidos");
+        }
         let date = new Date();
         let userId = 0;
         const answers: AnswersFormData[] = [];
