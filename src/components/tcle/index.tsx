@@ -152,6 +152,10 @@ export default function TcleModal(props: Props) {
     const [hasReadTerm, setHasReadTerm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [showResetDialog, setShowResetDialog] = useState(false);
+    // Incrementado ao zerar: muda a `key` dos documentos e força o React a remontá-los,
+    // limpando nome/e-mail/assinatura que ficaram preenchidos da pessoa anterior.
+    const [docsKey, setDocsKey] = useState(0);
 
     // Restaura o que já foi assinado em visitas anteriores (o PDF/base64 em si não
     // sobrevive a um reload, só a marcação — ver comentário em `iCanGo`).
@@ -192,6 +196,24 @@ export default function TcleModal(props: Props) {
         TALEU13: TALEU13Ref,
         TCLEPROF: TCLEPROFRef,
         TCLEUSAB: TCLEUSABRef,
+    };
+
+    const hasAnySigned = VARIANT_ORDER.some((v) => checkedMap[v]);
+
+    /**
+     * Zera os termos assinados neste navegador — usado quando a mesma pessoa/aparelho
+     * aplica o TCLE para vários participantes. Só limpa o estado local (`sessionStorage`
+     * + campos preenchidos); os PDFs já enviados continuam gravados em `term_documents`.
+     */
+    const resetTerms = () => {
+        VARIANT_ORDER.forEach((v) => sessionStorage.removeItem(`tcle_${v}`));
+        setCheckedMap({});
+        setDataMap({});
+        setTermSelected("TCLEPROF");
+        setHasReadTerm(false);
+        setDocsKey((k) => k + 1);
+        setShowResetDialog(false);
+        snackBar.enqueueSnackbar("Termos zerados. Agora outra pessoa pode assinar.", { variant: "info" });
     };
 
     const confirmTerm = async () => {
@@ -353,6 +375,27 @@ export default function TcleModal(props: Props) {
                                 })}
                             </TermsContainer>
                         )}
+
+                        {hasAnySigned && !loadingRequirements && (
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
+                                <button
+                                    type="button"
+                                    disabled={loading}
+                                    onClick={() => setShowResetDialog(true)}
+                                    style={{
+                                        display: 'inline-flex', alignItems: 'center', gap: '6px',
+                                        padding: '6px 14px', borderRadius: '8px', border: '1.5px solid rgba(109,20,26,0.25)',
+                                        background: '#fff', color: '#6D141A', fontSize: '0.8rem', fontWeight: 600,
+                                        cursor: loading ? 'not-allowed' : 'pointer', fontFamily: "'Source Sans 3', sans-serif",
+                                    }}
+                                >
+                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    Zerar termos (assinar para outra pessoa)
+                                </button>
+                            </div>
+                        )}
                     </CardContainer>
                     <TermsButtonContainer>
                         <TermsButton disabled={loading} onClick={() => props.setOpenTCLE(false)}>
@@ -363,6 +406,52 @@ export default function TcleModal(props: Props) {
                             {loading ? <CircularProgress size={18} color="inherit" /> : <>Próximo <ArrowForward /></>}
                         </TermsButton>
                     </TermsButtonContainer>
+
+                    {showResetDialog && (
+                        <div style={{
+                            position: 'absolute', inset: 0, borderRadius: '24px',
+                            backgroundColor: 'rgba(0,0,0,0.45)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            zIndex: 10,
+                        }}>
+                            <div style={{
+                                backgroundColor: '#fff', borderRadius: '16px',
+                                padding: '28px 28px 24px', maxWidth: '380px', width: '90%',
+                                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+                                display: 'flex', flexDirection: 'column', gap: '16px',
+                            }}>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1c1917', fontFamily: "'Source Sans 3', sans-serif" }}>
+                                    Zerar termos assinados?
+                                </span>
+                                <p style={{ margin: 0, fontSize: '0.83rem', color: '#57534e', lineHeight: 1.6, fontFamily: "'Source Sans 3', sans-serif" }}>
+                                    As assinaturas feitas neste aparelho serão limpas para que <strong>outra pessoa</strong> possa ler e assinar os termos.
+                                    Os termos já enviados continuam registrados.
+                                </p>
+                                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                                    <button
+                                        onClick={() => setShowResetDialog(false)}
+                                        style={{
+                                            padding: '8px 18px', borderRadius: '8px', border: '1.5px solid #e7e5e4',
+                                            background: '#fff', color: '#57534e', fontSize: '0.83rem', fontWeight: 600,
+                                            cursor: 'pointer', fontFamily: "'Source Sans 3', sans-serif",
+                                        }}
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        onClick={resetTerms}
+                                        style={{
+                                            padding: '8px 18px', borderRadius: '8px', border: 'none',
+                                            background: '#6D141A', color: '#fff', fontSize: '0.83rem', fontWeight: 700,
+                                            cursor: 'pointer', fontFamily: "'Source Sans 3', sans-serif",
+                                        }}
+                                    >
+                                        Sim, zerar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </Box>
             ) : (
                 <Box
@@ -387,7 +476,7 @@ export default function TcleModal(props: Props) {
                             if (scrollTop + clientHeight >= scrollHeight - 30) setHasReadTerm(true);
                         }}>
                             {VARIANT_ORDER.map((variant) => (
-                                <div key={variant} style={{ display: termSelected === variant ? "" : "none" }}>
+                                <div key={`${variant}-${docsKey}`} style={{ display: termSelected === variant ? "" : "none" }}>
                                     {DOC_COMPONENT[variant]}
                                 </div>
                             ))}
