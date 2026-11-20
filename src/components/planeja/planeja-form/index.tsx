@@ -8,7 +8,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Update, Info, Save } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { http } from "src/core/axios";
 import { IChoices } from "src/core/IPlanejaResponse";
@@ -154,10 +154,18 @@ interface ITeoricConfig {
     thisPrincipal: boolean;
 }
 
+function formatChoice(choice: string): IChoices[] {
+    const newStr = choice.replace(/''/g, '""');
+    const formattedJSON = newStr.replace(/'/g, '"');
+
+    return JSON.parse(formattedJSON);
+}
+
 export default function PlanForm({ onFinish }: PlanFormProps) {
     const [isSendingData, setIsSendingData] = useState(false);
     const [error, setError] = useState("");
     const [errorOnSendForm, setErrorOnSendForm] = useState(false);
+    const [loadError, setLoadError] = useState(false);
     const [data, setData] = useState<IPlanejaResponse[]>([]);
     const [savedDataToSend, setSavedDataToSend] = useState<ISavedData[]>([]);
     const [estabelecimentoSaude, setEstabelecimentoSaude] = useState("");
@@ -169,31 +177,48 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     const [thisPrincipal, setThisPrincipal] = useState(false);
     const [dataSaved, setDataSaved] = useState(false);
     const [databaseHistory, setDatabaseHistory] = useState<ISavedData[]>([]);
-    const [submit, setSubmit] = useState(true);
+    const [submit, setSubmit] = useState(false);
     const [upSteps, setUpSteps] = useState(0);
-    const isLastIndex = activeIndex + 1 === data.length;
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data } = await http.get("plan-question");
-                const formattedData = data.map((item: any) => {
-                    return {
-                        id: item.id,
-                        title: item.title,
-                        content: item.content,
-                        choices: formatChoice(item.choices),
-                        position: item.position,
-                    };
-                });
-                formattedData.sort((a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position);
-                setData(formattedData);
-            } catch (error) {
-                console.error("Erro ao obter os dados:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    const currentQuestion = data[activeIndex];
+    const isLastIndex = data.length > 0 && activeIndex + 1 === data.length;
 
+    const fetchData = useCallback(async () => {
+        try {
+            const { data: responseData } = await http.get("plan-question");
+            if (!Array.isArray(responseData)) {
+                setData([]);
+                setLoadError(true);
+                return;
+            }
+            const formattedData = responseData.map((item: any) => {
+                return {
+                    id: item.id,
+                    title: item.title,
+                    content: item.content,
+                    choices: formatChoice(item.choices),
+                    position: item.position,
+                };
+            });
+            formattedData.sort((a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position);
+            setData(formattedData);
+            setLoadError(false);
+            setActiveIndex((prev) => (prev < 0 || prev >= formattedData.length ? 0 : prev));
+        } catch (error) {
+            console.error("Erro ao obter os dados:", error);
+            setLoadError(true);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    const handleRetry = useCallback(() => {
+        setSubmit(false);
+        setIsLoading(true);
+        setLoadError(false);
+        void fetchData();
+    }, [fetchData]);
+
+    useEffect(() => {
         const loadHistory = async () => {
             try {
                 let localData: ISavedData[] | null = getLocalHistory();
@@ -255,9 +280,17 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
             }
         };
 
-        fetchData();
-        loadHistory();
-    }, []);
+        let active = true;
+        Promise.resolve().then(() => {
+            if (active) {
+                void fetchData();
+                void loadHistory();
+            }
+        });
+        return () => {
+            active = false;
+        };
+    }, [fetchData]);
 
     useEffect(() => {
         setDataSaved(false);
@@ -363,15 +396,9 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
         }
     }
 
-    function formatChoice(choice: string): IChoices[] {
-        const newStr = choice.replace(/''/g, '""');
-        const formattedJSON = newStr.replace(/'/g, '"');
-
-        return JSON.parse(formattedJSON);
-    }
-
     function findChoiceByQuestionId() {
-        return savedDataToSend.find((item) => item.planQuestion === data[activeIndex].position);
+        if (!currentQuestion) return undefined;
+        return savedDataToSend.find((item) => item.planQuestion === currentQuestion.position);
     }
 
     function calculateLeftCaracteres(text: string, limit?: number) {
@@ -633,6 +660,57 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                 upSteps={upSteps}
                             />
                         )
+                    ) : loadError || !data.length || !currentQuestion ? (
+                        <div
+                            style={{
+                                minHeight: "50vh",
+                                width: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                padding: "24px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    maxWidth: "460px",
+                                    width: "100%",
+                                    backgroundColor: "#fff",
+                                    border: "1px solid #e7e5e4",
+                                    borderRadius: "16px",
+                                    padding: "32px 24px",
+                                    textAlign: "center",
+                                    boxShadow: "0 4px 16px rgba(0,0,0,0.05)",
+                                }}
+                            >
+                                <h2 style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "22px", color: "#1c1917", margin: "0 0 10px" }}>
+                                    {loadError ? "Não foi possível carregar o formulário" : "Nenhuma questão disponível"}
+                                </h2>
+                                <p style={{ fontSize: "14px", color: "#78716c", margin: "0 0 24px", lineHeight: 1.6 }}>
+                                    {loadError
+                                        ? "Ocorreu um problema ao carregar as questões. Verifique sua conexão e tente novamente."
+                                        : "Não há questões disponíveis para este formulário no momento."}
+                                </p>
+                                <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+                                    <button
+                                        type="button"
+                                        onClick={handleRetry}
+                                        style={{
+                                            padding: "10px 24px",
+                                            borderRadius: "100px",
+                                            border: "none",
+                                            backgroundColor: "#6D141A",
+                                            color: "#fff",
+                                            fontSize: "14px",
+                                            fontWeight: 700,
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Tentar novamente
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <LoadHistory thisPrincipal={thisPrincipal} updateForm={updateForm} useThis={useThis} />
@@ -647,14 +725,14 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                         <Box sx={{ width: "100%" }}></Box>
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: sanitizeHtml(data[activeIndex]?.title),
+                                                __html: sanitizeHtml(currentQuestion.title),
                                             }}
                                         ></div>
                                     </Grid>
                                     <Grid item xs={2}>
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: sanitizeHtml(data[activeIndex]?.content),
+                                                __html: sanitizeHtml(currentQuestion.content),
                                             }}
                                         ></div>
 
@@ -663,7 +741,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                     <Grid item xs={2}>
                                         <FormControl fullWidth>
                                             {/* Verificar se o id da questão é 9, se for, devemos exibir o input de texto da opinião e o campo de email: TODO - Melhorar esse tipo de valição de id por algo diferente, como tag ou tipo de pergunta */}
-                                            {data[activeIndex].id === 9 ? (
+                                            {currentQuestion.id === 9 ? (
                                                 <>
                                                     <TextField
                                                         label="Opinião"
@@ -673,7 +751,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                         value={findChoiceByQuestionId()?.justify ?? ""}
                                                         onChange={(e) =>
                                                             handleAnswer({
-                                                                questionId: data[activeIndex].id,
+                                                                questionId: currentQuestion.id,
                                                                 question_answer: findChoiceByQuestionId()?.question_answer,
                                                                 justify: e.target.value,
                                                             })
@@ -701,7 +779,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                         value={findChoiceByQuestionId()?.question_answer ?? ""}
                                                         onChange={(e) =>
                                                             handleAnswer({
-                                                                questionId: data[activeIndex].id,
+                                                                questionId: currentQuestion.id,
                                                                 question_answer: e.target.value,
                                                                 justify: findChoiceByQuestionId()?.justify,
                                                             })
@@ -735,7 +813,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                     name="radio-buttons-group"
                                                     sx={{ display: "flex", flexDirection: "column" }}
                                                 >
-                                                    {data[activeIndex].choices.map((choice, index) => (
+                                                    {(currentQuestion.choices ?? []).map((choice, index) => (
                                                         <div
                                                             style={{
                                                                 display: "flex",
@@ -750,7 +828,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                                 label={choice.option_label}
                                                                 onChange={() =>
                                                                     handleAnswer({
-                                                                        questionId: data[activeIndex].id,
+                                                                        questionId: currentQuestion.id,
                                                                         question_answer: choice.option_label,
                                                                         justify: findChoiceByQuestionId()?.justify,
                                                                     })
@@ -765,7 +843,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                                         value={findChoiceByQuestionId()?.justify ?? ""}
                                                                         onChange={(e) =>
                                                                             handleAnswer({
-                                                                                questionId: data[activeIndex].id,
+                                                                                questionId: currentQuestion.id,
                                                                                 question_answer: findChoiceByQuestionId()?.question_answer,
                                                                                 justify: e.target.value,
                                                                             })

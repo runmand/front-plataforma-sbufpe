@@ -132,6 +132,12 @@ export function convertPraticalToReadable(data: PraticalJSON, typeUser?: string)
     return lines;
 }
 
+function toValidDate(value?: string): Date {
+    if (!value) return new Date();
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
 export function convertPlanejaPraticoToForm(planData: praticalAnswerObj[]): requestResponse {
     const data = getFormsRegistersDefault();
     const formsQuestionsFormsRegistersVariable: formsQuestionsFormsRegisters[] = [];
@@ -168,14 +174,14 @@ export function convertPlanejaPraticoToForm(planData: praticalAnswerObj[]): requ
             // Preserva o registro na tabela e no CSV sem interromper as demais respostas.
             dataJson = columnsPratico.map(() => "Dados inválidos");
         }
-        const date = a.createdAt ? new Date(a.createdAt) : new Date();
+        const date = toValidDate(a.createdAt);
         const userId = a.userId ?? 0;
         const answers: AnswersFormData[] = [];
         dataJson.map((v, index) => {
             answers.push({
                 answer: undefined,
                 answerText: v,
-                createdAt: new Date(a.createdAt),
+                createdAt: date,
                 id: a.id,
                 questionId: index + 1,
             });
@@ -221,13 +227,14 @@ export function convertPlanejaTeoricoToForm(planData: planAnswer[][]): requestRe
         let userId = 0;
         const answers: AnswersFormData[] = [];
         a.map((v, index) => {
-            date = new Date(v.createdAt);
+            const itemDate = toValidDate(v.createdAt);
+            date = itemDate;
             userId = v.userId;
             if (v.questionId == 9) {
                 answers.push({
                     answer: undefined,
                     answerText: v.answer + (v.justify ? `, ${v.justify}` : ""),
-                    createdAt: new Date(v.createdAt),
+                    createdAt: itemDate,
                     id: v.id,
                     questionId: Number(`${v.questionId}.${index}`),
                 });
@@ -235,7 +242,7 @@ export function convertPlanejaTeoricoToForm(planData: planAnswer[][]): requestRe
                 answers.push({
                     answer: undefined,
                     answerText: v.answer + (v.justify ? `, ${v.justify}` : ""),
-                    createdAt: new Date(v.createdAt),
+                    createdAt: itemDate,
                     id: v.id,
                     questionId: v.questionId,
                 });

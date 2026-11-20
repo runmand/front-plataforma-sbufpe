@@ -9,7 +9,6 @@ import { useSnackbar } from 'notistack';
 import { CircularProgress } from '@mui/material';
 import FormAnswerService from 'src/modules/form-answer/service';
 import SimpleForm from '@components/form/simple/index';
-import { ID } from 'src/core/types';
 import React from 'react';
 import FormResultModal from '@components/modal/form/result';
 import { routerEnum } from 'src/core/enums';
@@ -20,11 +19,12 @@ function FormAnswerContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const formIdParam = searchParams.get('formId');
-    const formId: ID = Number(formIdParam);
+    const parsedFormId = formIdParam && formIdParam.trim() !== '' ? Number(formIdParam) : NaN;
+    const formId: number | null = Number.isInteger(parsedFormId) && parsedFormId > 0 ? parsedFormId : null;
 
     const { enqueueSnackbar } = useSnackbar();
     const [formattedForm, setFormattedForm] = useState<GET_FORMATTED_FORM_SHOW>();
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(formId !== null);
     const [loadError, setLoadError] = useState<boolean>(false);
     const [isOpenFormResult, setIsOpenFormResult] = useState<boolean>(false);
     const [formThanks, setFormThanks] = useState(false);
@@ -38,12 +38,10 @@ function FormAnswerContent() {
     // mesma regra de "grupo satisfeito" do `TcleModal` (ver `components/tcle/index.tsx`),
     // então reflete qualquer mudança feita no painel sem precisar editar código de novo.
     useEffect(() => {
-        if (formIdParam === null) return;
-
-        const id = Number(formIdParam);
+        if (formId === null) return;
 
         new TermRequirementService()
-            .getForForm(id)
+            .getForForm(formId)
             .then((res) => {
                 const requirements = res.data;
                 if (res.errors || !requirements) return;
@@ -64,11 +62,10 @@ function FormAnswerContent() {
             .catch(() => {
                 // Falha ao consultar não deve travar quem já passou pelo TcleModal.
             });
-    }, [formIdParam, router, enqueueSnackbar]);
+    }, [formId, router, enqueueSnackbar]);
 
     const fetchForm = useCallback(async () => {
-        if (formId === null || Number.isNaN(formId) || !formId) {
-            setLoadError(true);
+        if (formId === null) {
             setLoading(false);
             return;
         }
@@ -119,6 +116,7 @@ function FormAnswerContent() {
     }, [fetchForm]);
 
     const getUserResultFromForm = () => {
+        if (formId === null) return;
         if (formId === 5) {
             setFormThanks(true);
             return;
@@ -143,7 +141,55 @@ function FormAnswerContent() {
             appBarChild={<NewMenu />}
             mainContainerChild={
                 <div style={{ paddingTop: '4.5rem', minHeight: '70vh' }}>
-                    {loading ? (
+                    {formId === null ? (
+                        <div
+                            style={{
+                                minHeight: '65vh',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '24px',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    maxWidth: '460px',
+                                    width: '100%',
+                                    backgroundColor: '#fff',
+                                    border: '1px solid #e7e5e4',
+                                    borderRadius: '16px',
+                                    padding: '32px 24px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+                                }}
+                            >
+                                <h2 style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: '22px', color: '#1c1917', margin: '0 0 10px' }}>
+                                    Formulário não encontrado
+                                </h2>
+                                <p style={{ fontSize: '14px', color: '#78716c', margin: '0 0 24px', lineHeight: 1.6 }}>
+                                    O identificador do formulário informado é inválido ou não foi encontrado. Volte para a lista e selecione um formulário válido.
+                                </p>
+                                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => router.push(routerEnum.FORM)}
+                                        style={{
+                                            padding: '10px 24px',
+                                            borderRadius: '100px',
+                                            border: 'none',
+                                            backgroundColor: '#6D141A',
+                                            color: '#fff',
+                                            fontSize: '14px',
+                                            fontWeight: 700,
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Voltar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : loading ? (
                         <div
                             style={{
                                 minHeight: '65vh',
@@ -240,9 +286,9 @@ function FormAnswerContent() {
                         <SimpleForm formattedForm={formattedForm} onFinish={() => getUserResultFromForm()} />
                     )}
 
-                    {formThanks && (
+                    {formThanks && formId !== null && (
                         <FormResultFeedBack
-                            formId={formId as number}
+                            formId={formId}
                             formTitle={formattedForm?.title}
                             isOpen={formThanks}
                             canSkip={true}
@@ -250,9 +296,9 @@ function FormAnswerContent() {
                         />
                     )}
 
-                    {formResult && formattedForm && (
+                    {formResult && formattedForm && formId !== null && (
                         <FormResultModal
-                            formId={formId as number}
+                            formId={formId}
                             formTitle={formattedForm.title}
                             formResult={formResult}
                             isOpen={isOpenFormResult}

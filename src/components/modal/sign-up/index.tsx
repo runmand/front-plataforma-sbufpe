@@ -58,12 +58,12 @@ export default function Index(props: TPROPS) {
     };
 
     const validateForm = () => {
-        if (!validateEmail(email)) {
+        if (!email || !validateEmail(email)) {
             enqueueSnackbar("Email invalido", { variant: "error" });
             return false;
         }
 
-        if (pwd.length < 8) {
+        if (!pwd || pwd.length < 8) {
             enqueueSnackbar("A senha deve conter 8 caracteres", { variant: "error" });
             return false;
         }
@@ -73,8 +73,13 @@ export default function Index(props: TPROPS) {
             return false;
         }
 
-        if (!validateCPF(login)) {
+        if (!login || !validateCPF(login)) {
             enqueueSnackbar("Cpf inserido é invalido, verifique tente novamente.", { variant: "error" });
+            return false;
+        }
+
+        if (!userType) {
+            enqueueSnackbar("Selecione o tipo de participante.", { variant: "error" });
             return false;
         }
 
@@ -82,6 +87,10 @@ export default function Index(props: TPROPS) {
     };
 
     const handleSubmit = async () => {
+        if (!login || !email || !pwd || !confirmPwd || !userType || !isChecked || isLoading) {
+            return;
+        }
+
         setIsLoading(true);
 
         if (!validateForm()) {

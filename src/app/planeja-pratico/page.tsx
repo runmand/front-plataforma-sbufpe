@@ -277,13 +277,13 @@ export default function Page() {
 
     useEffect(() => {
         if (!next) {
-            if (stepsValues.firstStep[0].domain == '') {
+            if (!stepsValues?.firstStep?.[0]?.domain) {
                 setActiveIndex(0);
-            } else if (stepsValues.secondStep.defined_problems[0].answer == '') {
+            } else if (!stepsValues?.secondStep?.defined_problems?.[0]?.answer) {
                 setActiveIndex(2);
-            } else if (stepsValues.thirdStep.causas.every((causa) => causa.causa === '')) {
+            } else if (!stepsValues?.thirdStep?.causas?.length || stepsValues.thirdStep.causas.every((causa) => causa.causa === '')) {
                 setActiveIndex(3);
-            } else if (stepsValues.fourthStep.actions[0].name == '') {
+            } else if (!stepsValues?.fourthStep?.actions?.[0]?.name) {
                 setActiveIndex(4);
             } else {
                 setActiveIndex(5);
@@ -292,6 +292,7 @@ export default function Page() {
     }, [stepsValues, next]);
 
     async function updateForm() {
+        if (!stepsValuesDatabase) return;
         setThisPrincipal(true);
         const data = stepsValuesDatabase;
         setStepsValues(data);
