@@ -44,7 +44,7 @@ async function getHistory(){
     form: nameForm.teoric
   }    
 
-  const result = await http.post("/history/pdf", payload).then(r => {
+  const result = await http.post("/history/pdf/teoric", payload).then(r => {
     return r.data.data as IPlanejaDataPDF[];
   }).catch(error => {
     console.error('Erro ao obter o histórico:', error);
@@ -76,14 +76,17 @@ export async function downloadPDFPlaneja() {
   const year = now.getFullYear();
 
   // Set the anchor element's download attribute to the PDF file name
-  a.download = `Resposta do planeja - ${hours}:${minutes}:${seconds}-${day}-${month}-${year}`;
+  a.download = `Resposta_do_planeja_${hours}-${minutes}-${seconds}_${day}-${month}-${year}.pdf`;
 
   // Append the anchor element to the document body
   document.body.appendChild(a);
 
-  // Click the anchor element to initiate the download
-  a.click();
-
-  // Remove the anchor element from the document body
-  document.body.removeChild(a);
+  try {
+    // Click the anchor element to initiate the download
+    a.click();
+  } finally {
+    // Remove the anchor element from the document body
+    document.body.removeChild(a);
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
 }

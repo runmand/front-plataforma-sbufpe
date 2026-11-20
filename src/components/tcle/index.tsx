@@ -268,21 +268,28 @@ export default function TcleModal(props: Props) {
         const taleuVariant = satisfied.variants.find((v) => bucketOf(v) === 'taleu');
 
         setLoading(true);
-        const response = await http.post("/term/send", {
-            tcle: tcleData,
-            tale: taleVariant ? dataMap[taleVariant] ?? null : null,
-            taleu: taleuVariant ? dataMap[taleuVariant] ?? null : null,
-            formId: props.idForm,
-        });
-        if (response.data) {
-            snackBar.enqueueSnackbar(response.data, { variant: "success" });
-            props.goForm();
-            props.setOpenTCLE(false);
-        } else {
-            const r = response as unknown as { errors: string[] };
-            snackBar.enqueueSnackbar(r.errors?.[0] ?? "Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" });
+        try {
+            const response = await http.post("/term/send", {
+                tcle: tcleData,
+                tale: taleVariant ? dataMap[taleVariant] ?? null : null,
+                taleu: taleuVariant ? dataMap[taleuVariant] ?? null : null,
+                formId: props.idForm,
+            });
+            if (response?.data) {
+                snackBar.enqueueSnackbar(response.data, { variant: "success" });
+                props.goForm();
+                props.setOpenTCLE(false);
+            } else {
+                const r = response as unknown as { errors?: string[] };
+                if (!r?.errors?.length) {
+                    snackBar.enqueueSnackbar("Houve um erro ao tentar enviar seu termo, tente refazer e mande novamente", { variant: "error" });
+                }
+            }
+        } catch (err) {
+            console.error("Erro ao enviar termo TCLE:", err);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     const DOC_COMPONENT: Record<TERM_VARIANT, JSX.Element> = {

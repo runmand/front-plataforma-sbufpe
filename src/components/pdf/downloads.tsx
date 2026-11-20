@@ -12,14 +12,25 @@ type HistoryResponse = {
 
 function timestamp() {
     const now = new Date();
-    return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}-${String(now.getMonth() + 1).padStart(2, "0")}-${now.getFullYear()}`;
+    return `${String(now.getHours()).padStart(2, "0")}-${String(now.getMinutes()).padStart(2, "0")}-${String(now.getSeconds()).padStart(2, "0")}_${String(now.getDate()).padStart(2, "0")}-${String(now.getMonth() + 1).padStart(2, "0")}-${now.getFullYear()}`;
+}
+
+function sanitizePdfFileName(fileName: string): string {
+    const cleaned = fileName
+        .replace(/[<>:"/\\|?*\x00-\x1F]+/g, "-")
+        .replace(/\s+/g, "_")
+        .replace(/_+/g, "_")
+        .replace(/-+/g, "-")
+        .replace(/^[.\-_]+|[.\-_]+$/g, "");
+    const base = cleaned || "documento";
+    return base.toLowerCase().endsWith(".pdf") ? base : `${base}.pdf`;
 }
 
 function downloadBlob(blob: Blob, fileName: string) {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = fileName;
+    anchor.download = sanitizePdfFileName(fileName);
     document.body.appendChild(anchor);
 
     try {
@@ -43,7 +54,7 @@ export async function downloadFormResultPdf(formResult: FormResultProps, answer:
         />
     ).toBlob();
 
-    downloadBlob(blob, new Date() + "");
+    downloadBlob(blob, `resultado-avaliacao-${timestamp()}.pdf`);
 }
 
 export async function downloadLastFormResultPdf() {
@@ -58,7 +69,7 @@ export async function downloadLastFormResultPdf() {
     const blob = await pdf(
         <HistoryResultPdf {...formResult} answer={JSON.parse(localStorage.getItem("selectedAnswer") ?? "null")} />
     ).toBlob();
-    downloadBlob(blob, new Date() + "");
+    downloadBlob(blob, `resultado-avaliacao-${timestamp()}.pdf`);
 }
 
 export async function downloadPlanejaHistoryPdf(typeData: "teoric" | "pratical") {
@@ -74,11 +85,11 @@ export async function downloadPlanejaHistoryPdf(typeData: "teoric" | "pratical")
             ? await createTheoreticalBlob(pdf, response.data as IPlanejaDataPDF[])
             : await createHistoryPracticalBlob(pdf, response.data as IStepsValues);
 
-    downloadBlob(blob, `PlanejaSD ${typeData === "pratical" ? "pratico" : "teórico"} - ${timestamp()}`);
+    downloadBlob(blob, `PlanejaSD_${typeData === "pratical" ? "pratico" : "teorico"}_${timestamp()}.pdf`);
 }
 
 export async function downloadPlanejaTheoreticalPdf() {
-    const { data: response } = await http.post<{ data: IPlanejaDataPDF[] }>("/history/pdf", {
+    const { data: response } = await http.post<{ data: IPlanejaDataPDF[] }>("/history/pdf/teoric", {
         id: localStorage.getItem("userId"),
         form: nameForm.teoric,
     });
@@ -87,13 +98,13 @@ export async function downloadPlanejaTheoreticalPdf() {
 
     const { pdf } = await import("@react-pdf/renderer");
     const blob = await createTheoreticalBlob(pdf, response.data);
-    downloadBlob(blob, `Resposta do planeja - ${timestamp()}`);
+    downloadBlob(blob, `Resposta_do_planeja_${timestamp()}.pdf`);
 }
 
 export async function downloadPlanejaPracticalPdf(stepValues: IStepsValues) {
     const { pdf } = await import("@react-pdf/renderer");
     const blob = await createPracticalBlob(pdf, stepValues);
-    downloadBlob(blob, `relatorio_${new Date().toLocaleDateString()}.pdf`);
+    downloadBlob(blob, `relatorio_planeja_pratico_${timestamp()}.pdf`);
 }
 
 async function createTheoreticalBlob(pdf: (document: React.ReactElement) => { toBlob: () => Promise<Blob> }, data: IPlanejaDataPDF[]) {

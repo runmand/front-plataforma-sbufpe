@@ -197,8 +197,7 @@ export default function Index(props: TPROPS) {
                         </button>
                     </div>
                 ) : (
-                    props.showPDF ||
-                    (props.showPDF == undefined && (
+                    (props.showPDF ?? true) && (
                         <div
                             style={{
                                 padding: "16px",
@@ -245,7 +244,7 @@ export default function Index(props: TPROPS) {
                                 </button>
                             ))}
                         </div>
-                    ))
+                    )
                 )}
             </div>
         </>

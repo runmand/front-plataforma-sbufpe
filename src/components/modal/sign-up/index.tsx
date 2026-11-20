@@ -27,7 +27,7 @@ export default function Index(props: TPROPS) {
     const [confirmPwd, setConfirmPwd] = React.useState<string | null>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [isChecked, setIsChecked] = React.useState<boolean>(false);
-    const canSubmit = login && userType && pwd && pwd === confirmPwd;
+    const canSubmit = Boolean(login && email && userType && pwd && pwd === confirmPwd);
 
     useEffect(() => {
         if (!props.isOpen || userTypeList.length) return;
@@ -38,7 +38,10 @@ export default function Index(props: TPROPS) {
             .then((res) =>
                 isCurrent && setUserTypeList(
                     (res.data ?? [])
-                        .filter((item) => item.description?.toLowerCase() !== "desenvolvedor")
+                        .filter((item) => {
+                            const desc = item.description?.toLowerCase();
+                            return desc !== "desenvolvedor" && desc !== "admin";
+                        })
                         .map((item) => ({ id: item.id, label: item.description }))
                 )
             )
@@ -56,22 +59,22 @@ export default function Index(props: TPROPS) {
 
     const validateForm = () => {
         if (!validateEmail(email)) {
-            enqueueSnackbar("Email invalido");
+            enqueueSnackbar("Email invalido", { variant: "error" });
             return false;
         }
 
         if (pwd.length < 8) {
-            enqueueSnackbar("A senha deve conter 8 caracteres");
+            enqueueSnackbar("A senha deve conter 8 caracteres", { variant: "error" });
             return false;
         }
 
         if (pwd !== confirmPwd) {
-            enqueueSnackbar("As senhas devem ser igual, caso tenha esquecido clique no icone do olho ao lado da senha");
+            enqueueSnackbar("As senhas devem ser igual, caso tenha esquecido clique no icone do olho ao lado da senha", { variant: "error" });
             return false;
         }
 
         if (!validateCPF(login)) {
-            enqueueSnackbar("Cpf inserido é invalido, verifique tente novamente.");
+            enqueueSnackbar("Cpf inserido é invalido, verifique tente novamente.", { variant: "error" });
             return false;
         }
 

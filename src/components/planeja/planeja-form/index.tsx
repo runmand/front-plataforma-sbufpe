@@ -24,7 +24,98 @@ import SaveButton from "@components/saveButton";
 import NewMenu from "@components/newMenu/index";
 import FooterMain from "@components/footer/main/index";
 import LoadToSend from "@components/loadToSend";
-import sharp from "sharp";
+
+const ALLOWED_HTML_TAGS = new Set([
+    "B",
+    "STRONG",
+    "I",
+    "EM",
+    "U",
+    "BR",
+    "P",
+    "UL",
+    "OL",
+    "LI",
+    "SPAN",
+    "DIV",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "SUB",
+    "SUP",
+]);
+
+const FORBIDDEN_HTML_TAGS = new Set(["SCRIPT", "STYLE", "IFRAME", "OBJECT", "EMBED", "SVG", "MATH", "TEMPLATE"]);
+
+function sanitizeHtml(html?: string | null): string {
+    if (!html) return "";
+    if (typeof window === "undefined" || typeof DOMParser === "undefined") {
+        return html
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    const cleanNode = (node: Node): Node | null => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            return document.createTextNode(node.textContent ?? "");
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) {
+            return null;
+        }
+
+        const el = node as Element;
+        const tag = el.tagName.toUpperCase();
+
+        if (FORBIDDEN_HTML_TAGS.has(tag)) {
+            return null;
+        }
+
+        if (!ALLOWED_HTML_TAGS.has(tag)) {
+            const fragment = document.createDocumentFragment();
+            Array.from(el.childNodes).forEach((child) => {
+                const cleanedChild = cleanNode(child);
+                if (cleanedChild) fragment.appendChild(cleanedChild);
+            });
+            return fragment;
+        }
+
+        const safeEl = document.createElement(tag.toLowerCase());
+        Array.from(el.childNodes).forEach((child) => {
+            const cleanedChild = cleanNode(child);
+            if (cleanedChild) safeEl.appendChild(cleanedChild);
+        });
+        return safeEl;
+    };
+
+    const container = document.createElement("div");
+    Array.from(doc.body.childNodes).forEach((child) => {
+        const cleaned = cleanNode(child);
+        if (cleaned) container.appendChild(cleaned);
+    });
+    return container.innerHTML;
+}
+
+function parseStoredJson<T>(raw: string | null): T | null {
+    if (!raw) return null;
+    try {
+        return JSON.parse(raw) as T;
+    } catch {
+        try {
+            return JSON.parse(atob(raw)) as T;
+        } catch {
+            return null;
+        }
+    }
+}
 
 interface IPlanejaResponse {
     id: number;
@@ -60,7 +151,7 @@ interface IAnswer {
 }
 
 interface ITeoricConfig {
-    thisPrincial: boolean;
+    thisPrincipal: boolean;
 }
 
 export default function PlanForm({ onFinish }: PlanFormProps) {
@@ -104,46 +195,64 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
         };
 
         const loadHistory = async () => {
-            let localData: ISavedData[] = getLocalHistory();
-            let data: ISavedData[] = [];
-            let index: number = 0;
+            try {
+                let localData: ISavedData[] | null = getLocalHistory();
+                let restoredData: ISavedData[] = [];
+                let index: number = 0;
 
-            let historyBD = await getHistory();
-            setDatabaseHistory(historyBD);
+                let historyBD: ISavedData[] | null = null;
+                try {
+                    historyBD = await getHistory();
+                } catch {
+                    historyBD = null;
+                }
 
-            if (historyBD !== undefined) {
-                if (localData !== null) {
-                    if (localData[localData.length - 1].planQuestion == historyBD[0].planQuestion) {
-                        if (localData[localData.length - 1].justify == historyBD[0].justify) {
-                            //Se forem iguais
-                            setThisPrincipal(true);
-                        } else {
-                            //Exitem ambos mas são diferentes
-                            setThisPrincipal(false);
+                const validHistoryBD = Array.isArray(historyBD) && historyBD.length > 0 ? historyBD : null;
+                const validLocalData = Array.isArray(localData) && localData.length > 0 ? localData : null;
+
+                setDatabaseHistory(validHistoryBD ?? []);
+
+                if (validHistoryBD) {
+                    if (validLocalData) {
+                        const lastLocal = validLocalData[validLocalData.length - 1];
+                        const firstBD = validHistoryBD[0];
+                        if (lastLocal?.planQuestion == firstBD?.planQuestion) {
+                            if (lastLocal?.justify == firstBD?.justify) {
+                                //Se forem iguais
+                                setThisPrincipal(true);
+                            } else {
+                                //Exitem ambos mas são diferentes
+                                setThisPrincipal(false);
+                            }
                         }
+                    } else {
+                        //Se só tiver history
+                        setThisPrincipal(false);
                     }
                 } else {
-                    //Se só tiver history
-                    setThisPrincipal(false);
+                    setThisPrincipal(true);
                 }
-            } else {
+
+                if (!validLocalData || validLocalData[0]?.question_answer == undefined) {
+                    localData = null;
+                } else {
+                    localData = validLocalData;
+                }
+
+                if (localData !== null) {
+                    restoredData = [...localData].reverse();
+                }
+
+                if (restoredData.length > 0) {
+                    index = restoredData[0].planQuestion;
+                }
+
+                setSavedDataToSend(restoredData);
+                setActiveIndex(index);
+            } catch (err) {
+                console.error("Erro ao carregar histórico do Planeja Teórico:", err);
                 setThisPrincipal(true);
             }
-
-            if (localData == undefined || localData[0].question_answer == undefined) {
-                localData = null;
-            }
-
-            if (localData !== null && localData !== undefined) {
-                data = localData.reverse();
-            }
-
-            if (data.length > 0) {
-                index = data[0].planQuestion;
-            }
-
-            setSavedDataToSend(data);
-            setActiveIndex(index);
         };
 
         fetchData();
@@ -198,7 +307,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
 
     async function setLocalHistory(newData: ISavedData[]) {
-        localStorage.setItem("historyTeoric", btoa(JSON.stringify(newData)));
+        localStorage.setItem("historyTeoric", JSON.stringify(newData));
     }
 
     async function clearLocalHistory() {
@@ -206,15 +315,11 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
 
     async function setLocalFinishHistory(newData: IPlanejaDataPDF[]) {
-        localStorage.setItem("historyTeoric", btoa(JSON.stringify(newData)));
+        localStorage.setItem("historyTeoric", JSON.stringify(newData));
     }
 
-    function getLocalHistory(): ISavedData[] {
-        try {
-            return JSON.parse(atob(localStorage.getItem("historyTeoric")));
-        } catch (error) {
-            return null;
-        }
+    function getLocalHistory(): ISavedData[] | null {
+        return parseStoredJson<ISavedData[]>(localStorage.getItem("historyTeoric"));
     }
 
     async function finishHistory(newData: IPlanejaDataPDF[]) {
@@ -313,7 +418,9 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
     function updateConfig() {
         const config = getConfig();
-        setThisPrincipal(config.thisPrincial);
+        if (config) {
+            setThisPrincipal(Boolean(config.thisPrincipal));
+        }
     }
 
     function useThis() {
@@ -448,12 +555,20 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
             setIsLoading(true);
             setSubmit(true);
-            setUpSteps(1);
-            await sendData(savedDataToSend);
-            setUpSteps(2);
-            setUpSteps(3);
-            await sendCertificate(savedDataToSend);
-            setUpSteps(3);
+            setErrorOnSendForm(false);
+            try {
+                setUpSteps(1);
+                await sendData(savedDataToSend);
+                setUpSteps(2);
+                setUpSteps(3);
+                await sendCertificate(savedDataToSend);
+                setUpSteps(3);
+            } catch (err) {
+                console.error("Erro ao enviar Planeja Teórico:", err);
+                setErrorOnSendForm(true);
+            } finally {
+                setIsLoading(false);
+            }
         } else {
             // caso seja a última questão(opinião e email), nós limpamos os erros
             if (activeIndex === 8) {
@@ -532,14 +647,14 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                         <Box sx={{ width: "100%" }}></Box>
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: data[activeIndex].title,
+                                                __html: sanitizeHtml(data[activeIndex]?.title),
                                             }}
                                         ></div>
                                     </Grid>
                                     <Grid item xs={2}>
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: data[activeIndex].content,
+                                                __html: sanitizeHtml(data[activeIndex]?.content),
                                             }}
                                         ></div>
 

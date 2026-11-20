@@ -7,6 +7,7 @@ import DrawerMenu from "@components/menu/drawer/index";
 import { MENU_ITEM } from "@components/menu/items/type";
 import { itemsDrawer } from "./itensMenu";
 import UserTypeService from "src/modules/userTypes/service";
+import { clearClientSession } from "src/core/axios";
 
 /* ─── Menu mobile "⊕ Páginas" (visível para todos, logado ou não) ──────────────
    Espelha o conteúdo público dos dropdowns do menu desktop (`menuList`, abaixo),
@@ -206,14 +207,17 @@ export default function Index() {
         // fixo, porque o id de "Desenvolvedor" não é garantido ser o mesmo em todo
         // ambiente/banco.
         if (id) {
-            new UserTypeService().index().then((res) => {
-                const myType = res.data?.find((t) => String(t.id) === String(id));
-                const description = myType?.description?.toLowerCase();
-                if (description === "admin" || description === "desenvolvedor") {
-                    setIsAdminOrDev(true);
-                    setMenu((prev) => (prev.some((m) => m.id === 8) ? prev : [...prev, { id: 8, title: "Painel Admin", url: routerEnum.ADMIN }]));
-                }
-            });
+            new UserTypeService()
+                .index({ silent: true })
+                .then((res) => {
+                    const myType = res.data?.find((t) => String(t.id) === String(id));
+                    const description = myType?.description?.toLowerCase();
+                    if (description === "admin" || description === "desenvolvedor") {
+                        setIsAdminOrDev(true);
+                        setMenu((prev) => (prev.some((m) => m.id === 8) ? prev : [...prev, { id: 8, title: "Painel Admin", url: routerEnum.ADMIN }]));
+                    }
+                })
+                .catch(() => {});
         }
 
         const onLogin = () => {
@@ -225,9 +229,7 @@ export default function Index() {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem(localStorageKeyEnum.TOKEN);
-        localStorage.removeItem(localStorageKeyEnum.TYPE_ID);
-        localStorage.removeItem(localStorageKeyEnum.USER_ID);
+        clearClientSession();
         setMenu(itemsDrawer);
         setIsAdminOrDev(false);
         setHaveLogin(false);

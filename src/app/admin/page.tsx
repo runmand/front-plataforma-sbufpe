@@ -1239,20 +1239,26 @@ export default function AdminPage() {
         // via `/user-types`, não por id numérico fixo — o id de "Desenvolvedor" não é
         // garantido ser o mesmo em todo ambiente/banco.
         const typeId = Number(localStorage.getItem(localStorageKeyEnum.TYPE_ID));
-        new UserTypeService().index().then((res) => {
-            const myType = res.data?.find((t) => String(t.id) === String(typeId));
-            const description = myType?.description?.toLowerCase();
-            const ok = description === 'admin' || description === 'desenvolvedor';
-            setAllowed(ok);
-            if (!ok) {
-                router.push(routerEnum.INITIAL);
-                return;
-            }
+        new UserTypeService()
+            .index()
+            .then((res) => {
+                const myType = res.data?.find((t) => String(t.id) === String(typeId));
+                const description = myType?.description?.toLowerCase();
+                const ok = description === 'admin' || description === 'desenvolvedor';
+                setAllowed(ok);
+                if (!ok) {
+                    router.replace(routerEnum.INITIAL);
+                    return;
+                }
 
-            new FormService().index().then((formsRes) => {
-                if (!formsRes.errors) setForms(formsRes.data ?? []);
+                new FormService().index().then((formsRes) => {
+                    if (!formsRes.errors) setForms(formsRes.data ?? []);
+                });
+            })
+            .catch(() => {
+                setAllowed(false);
+                router.replace(routerEnum.INITIAL);
             });
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -1262,7 +1268,7 @@ export default function AdminPage() {
         { key: 'termRequirements', label: 'Termos (TCLE)' },
     ];
 
-    if (allowed === null) return <div style={{ minHeight: '70vh' }} />;
+    if (!allowed) return <div style={{ minHeight: '70vh' }} />;
 
     return (
         <Base

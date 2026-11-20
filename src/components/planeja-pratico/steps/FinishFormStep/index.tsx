@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Typography, Paper, Alert, InputLabel, TextField } from "@mui/material";
 import { http } from "src/core/axios";
+import { showWarning } from "src/core/snackbar";
 import React, { useState } from "react";
 import { localStorageKeyEnum } from "src/core/enums";
 import { useRouter } from "next/navigation";
@@ -102,6 +103,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
         } catch (err) {
             console.error(err);
             setError(true);
+            throw err;
         }
     }
 
@@ -119,7 +121,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
             finished: true,
         };
 
-        const result = await http
+        await http
             .put("/history/", payload)
             .then((r) => {
                 clearHistory();
@@ -133,31 +135,44 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
 
     async function handleSendForm(e: React.FormEvent) {
         e.preventDefault();
+        setError(false);
         setSendingData(true);
-        const strifiedData = JSON.stringify({
-            ...stepValues,
-            dados_para_certificado: {
-                ...values,
-            },
-        });
-        setUpSteps(1);
-        await setHistory(stepValues);
-        setUpSteps(2);
-        sendData({
-            userId: Number(localStorage.getItem(localStorageKeyEnum.USER_ID)),
-            question_answer: strifiedData,
-            flowchart_file: stepValues.fourthStep.mentalMapUrl,
-        });
-        await sendCertificate();
-        setUpSteps(3);
-        router.push("/finished-form");
+        let succeeded = false;
+        try {
+            const strifiedData = JSON.stringify({
+                ...stepValues,
+                dados_para_certificado: {
+                    ...values,
+                },
+            });
+            setUpSteps(1);
+            await setHistory(stepValues);
+            setUpSteps(2);
+            await sendData({
+                userId: Number(localStorage.getItem(localStorageKeyEnum.USER_ID)),
+                question_answer: strifiedData,
+                flowchart_file: stepValues.fourthStep.mentalMapUrl,
+            });
+            await sendCertificate();
+            setUpSteps(3);
+            succeeded = true;
+            router.push("/finished-form");
+        } catch (err) {
+            console.error("Erro ao finalizar Planeja Prático:", err);
+            setError(true);
+        } finally {
+            if (!succeeded) {
+                setSendingData(false);
+            }
+        }
     }
 
     async function sendCertificate() {
         try {
             await http.post("/plan-question-answer/certificate", { email: values.email, name: values.names, form: "P" });
-        } catch {
-            console.log("error");
+        } catch (err) {
+            console.error("Erro ao enviar certificado:", err);
+            showWarning("Suas respostas foram salvas, mas não foi possível enviar o certificado por e-mail no momento.");
         }
     }
 
@@ -476,7 +491,7 @@ export const FinishFormStep = ({ stepValues, onClickPrevStep }: IProps) => {
                             Voltar
                         </Button>
 
-                        <Button onClick={downloadPDF} variant="contained" color="primary" type={"submit"}>
+                        <Button onClick={downloadPDF} variant="contained" color="primary" type="button">
                             {"Baixar PDF"}
                         </Button>
 
