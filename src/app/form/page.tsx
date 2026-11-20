@@ -2,29 +2,25 @@
 
 import Base from '@components/base-layout/index';
 import Image from 'next/image';
-import { useMediaQuery } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import FormService from 'src/modules/form/service';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { INDEX_RES } from 'src/modules/form/type';
-import { useSnackbar } from 'notistack';
 import { ID } from 'src/core/types';
 import { useRouter } from 'next/navigation';
 import { routerEnum } from 'src/core/enums';
-import NotFound from '@components/not-found/index';
 import NewMenu from '@components/newMenu/index';
 import FooterMain from '@components/footer/main/index';
 import TcleModal from '@components/tcle/index';
 import TermRequirementService from 'src/modules/termRequirements/service';
 
 export default function Page() {
-    const formService = new FormService();
-    const termRequirementService = new TermRequirementService();
     const router = useRouter();
     const [openTCLE, setOpenTCLE] = useState<boolean>(false);
-    const largeQuery = useMediaQuery('(min-width:720px)');
-    const { enqueueSnackbar } = useSnackbar();
-    const [forms, setForms] = React.useState<INDEX_RES[]>();
-    const [formId, setFormId] = React.useState<ID>(0);
+    const [forms, setForms] = useState<INDEX_RES[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [loadError, setLoadError] = useState<boolean>(false);
+    const [formId, setFormId] = useState<ID>(0);
 
     useEffect(() => {
         document.title = 'Formulários | GestBucal';
@@ -36,7 +32,7 @@ export default function Page() {
         // Só abre o modal de TCLE se o backend disser que este formulário exige algum
         // termo pro tipo de usuário atual (objetivo 4 do painel admin) — antes isso era
         // decidido só pelo typeId==5 no client, hardcoded.
-        termRequirementService
+        new TermRequirementService()
             .getForForm(id)
             .then((res) => {
                 const requirements = res.data;
@@ -53,28 +49,39 @@ export default function Page() {
         router.push(`${routerEnum.FORM_ANSWER}?formId=${id ?? formId}`);
     }
 
-    async function formServiceIndex() {
-        // A lista já vem filtrada pelo backend por permissão do usuário autenticado
-        // (objetivo 5 do painel admin) — não precisa mais de switch(typeId) aqui.
-        formService
-            .index()
-            .then((res) => {
-                if (!res.errors) {
-                    setForms(res.data);
-                } else {
-                    res.errors.forEach((error) => enqueueSnackbar(error, { variant: 'error' }));
-                }
-            })
-            .catch((e) => {
-                enqueueSnackbar('Ops! Algo deu errado...', { variant: 'error' });
-            });
-    }
+    const fetchForms = useCallback(async () => {
+        try {
+            // A lista já vem filtrada pelo backend por permissão do usuário autenticado
+            // (objetivo 5 do painel admin) — não precisa mais de switch(typeId) aqui.
+            const res = await new FormService().index();
+            if (!res.errors && Array.isArray(res.data)) {
+                setForms(res.data);
+                setLoadError(false);
+            } else {
+                setLoadError(true);
+            }
+        } catch {
+            setLoadError(true);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const handleRetry = useCallback(() => {
+        setLoading(true);
+        setLoadError(false);
+        void fetchForms();
+    }, [fetchForms]);
 
     useEffect(() => {
-        formServiceIndex();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        let active = true;
+        Promise.resolve().then(() => {
+            if (active) void fetchForms();
+        });
+        return () => {
+            active = false;
+        };
+    }, [fetchForms]);
 
     const ff = {
         display: "'Newsreader', Georgia, serif",
@@ -94,13 +101,91 @@ export default function Page() {
         <Base
             appBarChild={<NewMenu />}
             mainContainerChild={
-                forms ? (
-                    forms.length === 0 ? (
-                        <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: ff.body, color: C.muted, fontSize: '15px' }}>
-                            Nenhum formulário disponível no momento.
+                loading ? (
+                    <div
+                        style={{
+                            minHeight: '70vh',
+                            backgroundColor: C.bg,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '16px',
+                            padding: '100px 24px 48px',
+                            fontFamily: ff.body,
+                            color: C.muted,
+                        }}
+                    >
+                        <CircularProgress sx={{ color: C.primary }} size={36} aria-label="Carregando formulários" />
+                        <span style={{ fontSize: '15px', color: C.text }}>Carregando formulários...</span>
+                    </div>
+                ) : loadError ? (
+                    <div
+                        style={{
+                            minHeight: '70vh',
+                            backgroundColor: C.bg,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '100px 24px 48px',
+                            fontFamily: ff.body,
+                        }}
+                    >
+                        <div
+                            style={{
+                                maxWidth: '460px',
+                                width: '100%',
+                                backgroundColor: C.white,
+                                border: `1px solid ${C.border}`,
+                                borderRadius: '16px',
+                                padding: '32px 24px',
+                                textAlign: 'center',
+                                boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+                            }}
+                        >
+                            <h2 style={{ fontFamily: ff.display, fontSize: '22px', color: C.text, margin: '0 0 10px' }}>
+                                Não foi possível carregar os formulários
+                            </h2>
+                            <p style={{ fontSize: '14px', color: C.muted, margin: '0 0 24px', lineHeight: 1.6 }}>
+                                Ocorreu uma instabilidade ao buscar os formulários disponíveis. Verifique sua conexão e tente novamente.
+                            </p>
+                            <button
+                                type="button"
+                                onClick={handleRetry}
+                                style={{
+                                    padding: '10px 24px',
+                                    borderRadius: '100px',
+                                    border: 'none',
+                                    backgroundColor: C.primary,
+                                    color: C.white,
+                                    fontSize: '14px',
+                                    fontWeight: 700,
+                                    fontFamily: ff.body,
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Tentar novamente
+                            </button>
                         </div>
-                    ) : (
-                        <div style={{ backgroundColor: C.bg, minHeight: '88vh', padding: '0 0 80px' }}>
+                    </div>
+                ) : forms.length === 0 ? (
+                    <div
+                        style={{
+                            minHeight: '70vh',
+                            backgroundColor: C.bg,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '100px 24px 48px',
+                            fontFamily: ff.body,
+                            color: C.muted,
+                            fontSize: '15px',
+                        }}
+                    >
+                        Nenhum formulário disponível no momento.
+                    </div>
+                ) : (
+                    <div style={{ backgroundColor: C.bg, minHeight: '88vh', padding: '0 0 80px' }}>
 
                             {/* Hero header */}
                             <div style={{
@@ -265,9 +350,6 @@ export default function Page() {
 
                             <TcleModal idForm={formId} setOpenTCLE={setOpenTCLE} open={openTCLE} goForm={goForm} />
                         </div>
-                    )
-                ) : (
-                    <div style={{ minHeight: '70vh' }} />
                 )
             }
             footerChild={<FooterMain />}

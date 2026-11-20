@@ -10,7 +10,10 @@ export function exportToCSV(
 
     const formatText = (text: string) => {
         if (!text) return ni;
-        return `"${text.replace(/"/g, '""').replace(/\n/g, " ")}"`;
+        const trimmedStart = text.replace(/^ +/, "");
+        const needsFormulaPrefix = /^[=+\-@\t\r]/.test(trimmedStart);
+        const safeText = needsFormulaPrefix ? `'${text}` : text;
+        return `"${safeText.replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
     };
 
     const headers = columns.map((col) => formatText(col.questionId.title)).join(",");

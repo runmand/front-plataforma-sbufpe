@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { http } from 'src/core/axios';
 import { RESPONSE } from 'src/core/types';
 import { USER_TYPE } from './type';
@@ -9,7 +10,7 @@ import { USER_TYPE } from './type';
  * garantido ser o mesmo em todo ambiente (não está fixado em nenhuma migration).
  */
 export default class UserTypeService {
-	index = async (): Promise<RESPONSE<USER_TYPE[]>> => {
-		return http.get('/user-types');
+	index = async (config?: AxiosRequestConfig): Promise<RESPONSE<USER_TYPE[]>> => {
+		return http.get('/user-types', config);
 	};
 }

@@ -15,6 +15,7 @@
         "@mui/icons-material": "^5.10.14",
         "@mui/lab": "^5.0.0-alpha.108",
         "@mui/material": "^5.10.14",
+        "@react-pdf/renderer": "^4.5.1",
         "@swc/helpers": "^0.5.21",
         "axios": "^0.27.2",
         "fbemitter": "^3.0.0",
@@ -31,7 +32,6 @@
         "sharp": "^0.34.1"
     },
     "devDependencies": {
-        "@react-pdf/renderer": "^4.5.1",
         "@types/fbemitter": "^2.0.32",
         "@types/file-saver": "^2.0.7",
         "@types/node": "^18.7.16",

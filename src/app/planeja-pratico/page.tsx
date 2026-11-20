@@ -74,7 +74,7 @@ interface IDefinedProblem {
 }
 
 interface IPraticalConfig {
-    thisPrincial: boolean;
+    thisPrincipal: boolean;
 }
 
 export default function Page() {
@@ -198,7 +198,7 @@ export default function Page() {
     }
 
     async function setHistory(newData: IStepsValues) {
-        localStorage.setItem('historyPratical', btoa(JSON.stringify(newData)));
+        localStorage.setItem('historyPratical', JSON.stringify(newData));
     }
 
     async function setHistoryDatabase(newData: IStepsValues) {
@@ -241,28 +241,34 @@ export default function Page() {
 
     useEffect(() => {
         const loadHistory = async () => {
-            const historyBD: IStepsValues = await getHistory();
-            setStepsValuesDatabase(historyBD);
+            try {
+                let historyBD: IStepsValues | null = null;
+                try {
+                    historyBD = await getHistory();
+                } catch {
+                    historyBD = null;
+                }
+                setStepsValuesDatabase(historyBD ?? undefined);
 
-            const localData: IStepsValues = getLocalHistory();
-            let data: IStepsValues = null;
+                const localData: IStepsValues | null = getLocalHistory();
+                let data: IStepsValues | null = null;
 
-            if (historyBD !== undefined) {
-                if (localData !== null) {
+                if (historyBD) {
                     setThisPrincipal(false);
                 } else {
-                    setThisPrincipal(false);
+                    setThisPrincipal(true);
                 }
-            } else {
+
+                if (localData !== null) {
+                    data = localData;
+                }
+
+                if (data !== null) {
+                    setStepsValues(data);
+                }
+            } catch (err) {
+                console.error('Erro ao carregar histórico do Planeja Prático:', err);
                 setThisPrincipal(true);
-            }
-
-            if (localData !== null) {
-                data = localData;
-            }
-
-            if (data !== null) {
-                setStepsValues(data);
             }
         };
 
@@ -271,13 +277,13 @@ export default function Page() {
 
     useEffect(() => {
         if (!next) {
-            if (stepsValues.firstStep[0].domain == '') {
+            if (!stepsValues?.firstStep?.[0]?.domain) {
                 setActiveIndex(0);
-            } else if (stepsValues.secondStep.defined_problems[0].answer == '') {
+            } else if (!stepsValues?.secondStep?.defined_problems?.[0]?.answer) {
                 setActiveIndex(2);
-            } else if (stepsValues.thirdStep.causas.every((causa) => causa.causa === '')) {
+            } else if (!stepsValues?.thirdStep?.causas?.length || stepsValues.thirdStep.causas.every((causa) => causa.causa === '')) {
                 setActiveIndex(3);
-            } else if (stepsValues.fourthStep.actions[0].name == '') {
+            } else if (!stepsValues?.fourthStep?.actions?.[0]?.name) {
                 setActiveIndex(4);
             } else {
                 setActiveIndex(5);
@@ -286,6 +292,7 @@ export default function Page() {
     }, [stepsValues, next]);
 
     async function updateForm() {
+        if (!stepsValuesDatabase) return;
         setThisPrincipal(true);
         const data = stepsValuesDatabase;
         setStepsValues(data);
@@ -299,23 +306,31 @@ export default function Page() {
 
     function updateConfig() {
         const config = getConfig();
-        setThisPrincipal(config.thisPrincial);
+        if (config) {
+            setThisPrincipal(Boolean(config.thisPrincipal));
+        }
     }
 
-    function getConfig(): IPraticalConfig {
+    function getConfig(): IPraticalConfig | null {
         try {
-            const principal = JSON.parse(localStorage.getItem('pratical-config'));
+            const principal = JSON.parse(localStorage.getItem('pratical-config') || 'null');
             return principal;
         } catch {
             return null;
         }
     }
 
-    function getLocalHistory(): IStepsValues {
+    function getLocalHistory(): IStepsValues | null {
+        const raw = localStorage.getItem('historyPratical');
+        if (!raw) return null;
         try {
-            return JSON.parse(atob(localStorage.getItem('historyPratical')));
-        } catch (error) {
-            return null;
+            return JSON.parse(raw) as IStepsValues;
+        } catch {
+            try {
+                return JSON.parse(atob(raw)) as IStepsValues;
+            } catch {
+                return null;
+            }
         }
     }
 

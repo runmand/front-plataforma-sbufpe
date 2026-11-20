@@ -23,6 +23,9 @@ importers:
       '@mui/material':
         specifier: ^5.10.14
         version: 5.18.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-pdf/renderer':
+        specifier: ^4.5.1
+        version: 4.5.1(react@18.3.1)
       '@swc/helpers':
         specifier: ^0.5.21
         version: 0.5.23
@@ -66,9 +69,6 @@ importers:
         specifier: ^0.34.1
         version: 0.34.5
     devDependencies:
-      '@react-pdf/renderer':
-        specifier: ^4.5.1
-        version: 4.5.1(react@18.3.1)
       '@types/fbemitter':
         specifier: ^2.0.32
         version: 2.0.35

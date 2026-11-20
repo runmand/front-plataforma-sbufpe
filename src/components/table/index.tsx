@@ -35,7 +35,7 @@ import { exportToCSV } from "./exportToCSV";
 
 interface Props {
     form: INDEX_RES;
-    setUpdatedAt: React.Dispatch<React.SetStateAction<Date>>;
+    setUpdatedAt: React.Dispatch<React.SetStateAction<Date | null>>;
     isLoading: boolean;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     version: INDEX_RES;

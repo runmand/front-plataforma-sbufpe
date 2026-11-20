@@ -28,7 +28,11 @@ export default function Index(props: TPROPS) {
             return maskUtils.apply(v, oldValue, config.cellphoneMask);
         },
         default: (v: string): string => {
-            setInputProps({ ...inputProps, maxLength: Infinity });
+            setInputProps((prev) => {
+                if (!prev || prev.maxLength === undefined) return prev;
+                const { maxLength: _removed, ...rest } = prev;
+                return rest;
+            });
             return v;
         },
     };
@@ -42,11 +46,19 @@ export default function Index(props: TPROPS) {
         setValue(maskedValue);
 
         /** Atualiza o valor do campo. Pois o autopreenchimento não ativa o onBlur. */
-        props.onBlur(target.value);
+        props.onBlur(maskedValue);
     };
 
-    /** Caso exista um callback para que outro componente possa limpar este campo, é aqui onda o clear é feito. */
-    if (props.onClear) props.onClear(() => setValue(""));
+    /** Caso exista um callback para que outro componente possa limpar este campo, é aqui onde o clear é registrado. */
+    const { onClear } = props;
+    React.useEffect(() => {
+        if (onClear) {
+            onClear(() => {
+                setValue("");
+                setOldValue("");
+            });
+        }
+    }, [onClear]);
 
     return (
         <div className="relative w-full">
