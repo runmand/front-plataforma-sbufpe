@@ -8,7 +8,7 @@ import Dropdown from "@components/dropdown";
 export default function Index() {
     const [form, setForm] = useState<INDEX_RES>(forms_allowed[0]);
     const [version, setVersion] = useState<INDEX_RES>(version_constants[0]);
-    const [updatedAt, setUpdatedAt] = useState<Date>(new Date());
+    const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const formatDate = (date: Date): string => {
@@ -39,7 +39,9 @@ export default function Index() {
                     </SelectWrapper>
                     <TitleContainer suppressHydrationWarning>
                         <h1>{form.title}</h1>
-                        <h2 style={{ opacity: isLoading ? "0" : "1" }}>Atualizado em: {isLoading ? "" : formatDate(updatedAt)}</h2>
+                        <h2 style={{ opacity: isLoading || !updatedAt ? "0" : "1" }}>
+                            Atualizado em: {isLoading || !updatedAt ? "" : formatDate(updatedAt)}
+                        </h2>
                     </TitleContainer>
                     <SelectWrapper $order="R">
                         <StyledLegend as="span" id="label-versao">

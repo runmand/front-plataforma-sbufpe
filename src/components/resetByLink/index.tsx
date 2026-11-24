@@ -20,13 +20,21 @@ export default function Index() {
             showError("Preencha os campos de senha");
             return;
         }
+        if (pwd.length < 8 || pwd.length > 16) {
+            showError("A senha deve conter entre 8 e 16 caracteres");
+            return;
+        }
         if (pwd !== pwdConfirm) {
             showError("As senhas devem ser iguais");
             return;
         }
         setIsLoading(true);
         http.post("/reset/execute", { password: pwd, token: params?.token?.toString() })
-            .then(() => {
+            .then((res: any) => {
+                if (res?.errors?.length) {
+                    setIsLoading(false);
+                    return;
+                }
                 showSuccess("Senha alterada com sucesso!");
                 router.push("/");
             })

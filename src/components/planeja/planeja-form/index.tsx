@@ -8,7 +8,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { Update, Info, Save } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { http } from "src/core/axios";
 import { IChoices } from "src/core/IPlanejaResponse";
@@ -24,7 +24,98 @@ import SaveButton from "@components/saveButton";
 import NewMenu from "@components/newMenu/index";
 import FooterMain from "@components/footer/main/index";
 import LoadToSend from "@components/loadToSend";
-import sharp from "sharp";
+
+const ALLOWED_HTML_TAGS = new Set([
+    "B",
+    "STRONG",
+    "I",
+    "EM",
+    "U",
+    "BR",
+    "P",
+    "UL",
+    "OL",
+    "LI",
+    "SPAN",
+    "DIV",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "SUB",
+    "SUP",
+]);
+
+const FORBIDDEN_HTML_TAGS = new Set(["SCRIPT", "STYLE", "IFRAME", "OBJECT", "EMBED", "SVG", "MATH", "TEMPLATE"]);
+
+function sanitizeHtml(html?: string | null): string {
+    if (!html) return "";
+    if (typeof window === "undefined" || typeof DOMParser === "undefined") {
+        return html
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    const cleanNode = (node: Node): Node | null => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            return document.createTextNode(node.textContent ?? "");
+        }
+
+        if (node.nodeType !== Node.ELEMENT_NODE) {
+            return null;
+        }
+
+        const el = node as Element;
+        const tag = el.tagName.toUpperCase();
+
+        if (FORBIDDEN_HTML_TAGS.has(tag)) {
+            return null;
+        }
+
+        if (!ALLOWED_HTML_TAGS.has(tag)) {
+            const fragment = document.createDocumentFragment();
+            Array.from(el.childNodes).forEach((child) => {
+                const cleanedChild = cleanNode(child);
+                if (cleanedChild) fragment.appendChild(cleanedChild);
+            });
+            return fragment;
+        }
+
+        const safeEl = document.createElement(tag.toLowerCase());
+        Array.from(el.childNodes).forEach((child) => {
+            const cleanedChild = cleanNode(child);
+            if (cleanedChild) safeEl.appendChild(cleanedChild);
+        });
+        return safeEl;
+    };
+
+    const container = document.createElement("div");
+    Array.from(doc.body.childNodes).forEach((child) => {
+        const cleaned = cleanNode(child);
+        if (cleaned) container.appendChild(cleaned);
+    });
+    return container.innerHTML;
+}
+
+function parseStoredJson<T>(raw: string | null): T | null {
+    if (!raw) return null;
+    try {
+        return JSON.parse(raw) as T;
+    } catch {
+        try {
+            return JSON.parse(atob(raw)) as T;
+        } catch {
+            return null;
+        }
+    }
+}
 
 interface IPlanejaResponse {
     id: number;
@@ -60,13 +151,21 @@ interface IAnswer {
 }
 
 interface ITeoricConfig {
-    thisPrincial: boolean;
+    thisPrincipal: boolean;
+}
+
+function formatChoice(choice: string): IChoices[] {
+    const newStr = choice.replace(/''/g, '""');
+    const formattedJSON = newStr.replace(/'/g, '"');
+
+    return JSON.parse(formattedJSON);
 }
 
 export default function PlanForm({ onFinish }: PlanFormProps) {
     const [isSendingData, setIsSendingData] = useState(false);
     const [error, setError] = useState("");
     const [errorOnSendForm, setErrorOnSendForm] = useState(false);
+    const [loadError, setLoadError] = useState(false);
     const [data, setData] = useState<IPlanejaResponse[]>([]);
     const [savedDataToSend, setSavedDataToSend] = useState<ISavedData[]>([]);
     const [estabelecimentoSaude, setEstabelecimentoSaude] = useState("");
@@ -78,77 +177,120 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     const [thisPrincipal, setThisPrincipal] = useState(false);
     const [dataSaved, setDataSaved] = useState(false);
     const [databaseHistory, setDatabaseHistory] = useState<ISavedData[]>([]);
-    const [submit, setSubmit] = useState(true);
+    const [submit, setSubmit] = useState(false);
     const [upSteps, setUpSteps] = useState(0);
-    const isLastIndex = activeIndex + 1 === data.length;
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data } = await http.get("plan-question");
-                const formattedData = data.map((item: any) => {
-                    return {
-                        id: item.id,
-                        title: item.title,
-                        content: item.content,
-                        choices: formatChoice(item.choices),
-                        position: item.position,
-                    };
-                });
-                formattedData.sort((a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position);
-                setData(formattedData);
-            } catch (error) {
-                console.error("Erro ao obter os dados:", error);
-            } finally {
-                setIsLoading(false);
+    const currentQuestion = data[activeIndex];
+    const isLastIndex = data.length > 0 && activeIndex + 1 === data.length;
+
+    const fetchData = useCallback(async () => {
+        try {
+            const { data: responseData } = await http.get("plan-question");
+            if (!Array.isArray(responseData)) {
+                setData([]);
+                setLoadError(true);
+                return;
             }
-        };
+            const formattedData = responseData.map((item: any) => {
+                return {
+                    id: item.id,
+                    title: item.title,
+                    content: item.content,
+                    choices: formatChoice(item.choices),
+                    position: item.position,
+                };
+            });
+            formattedData.sort((a: IPlanejaResponse, b: IPlanejaResponse) => a.position - b.position);
+            setData(formattedData);
+            setLoadError(false);
+            setActiveIndex((prev) => (prev < 0 || prev >= formattedData.length ? 0 : prev));
+        } catch (error) {
+            console.error("Erro ao obter os dados:", error);
+            setLoadError(true);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
+    const handleRetry = useCallback(() => {
+        setSubmit(false);
+        setIsLoading(true);
+        setLoadError(false);
+        void fetchData();
+    }, [fetchData]);
+
+    useEffect(() => {
         const loadHistory = async () => {
-            let localData: ISavedData[] = getLocalHistory();
-            let data: ISavedData[] = [];
-            let index: number = 0;
+            try {
+                let localData: ISavedData[] | null = getLocalHistory();
+                let restoredData: ISavedData[] = [];
+                let index: number = 0;
 
-            let historyBD = await getHistory();
-            setDatabaseHistory(historyBD);
+                let historyBD: ISavedData[] | null = null;
+                try {
+                    historyBD = await getHistory();
+                } catch {
+                    historyBD = null;
+                }
 
-            if (historyBD !== undefined) {
-                if (localData !== null) {
-                    if (localData[localData.length - 1].planQuestion == historyBD[0].planQuestion) {
-                        if (localData[localData.length - 1].justify == historyBD[0].justify) {
-                            //Se forem iguais
-                            setThisPrincipal(true);
-                        } else {
-                            //Exitem ambos mas são diferentes
-                            setThisPrincipal(false);
+                const validHistoryBD = Array.isArray(historyBD) && historyBD.length > 0 ? historyBD : null;
+                const validLocalData = Array.isArray(localData) && localData.length > 0 ? localData : null;
+
+                setDatabaseHistory(validHistoryBD ?? []);
+
+                if (validHistoryBD) {
+                    if (validLocalData) {
+                        const lastLocal = validLocalData[validLocalData.length - 1];
+                        const firstBD = validHistoryBD[0];
+                        if (lastLocal?.planQuestion == firstBD?.planQuestion) {
+                            if (lastLocal?.justify == firstBD?.justify) {
+                                //Se forem iguais
+                                setThisPrincipal(true);
+                            } else {
+                                //Exitem ambos mas são diferentes
+                                setThisPrincipal(false);
+                            }
                         }
+                    } else {
+                        //Se só tiver history
+                        setThisPrincipal(false);
                     }
                 } else {
-                    //Se só tiver history
-                    setThisPrincipal(false);
+                    setThisPrincipal(true);
                 }
-            } else {
+
+                if (!validLocalData || validLocalData[0]?.question_answer == undefined) {
+                    localData = null;
+                } else {
+                    localData = validLocalData;
+                }
+
+                if (localData !== null) {
+                    restoredData = [...localData].reverse();
+                }
+
+                if (restoredData.length > 0) {
+                    index = restoredData[0].planQuestion;
+                }
+
+                setSavedDataToSend(restoredData);
+                setActiveIndex(index);
+            } catch (err) {
+                console.error("Erro ao carregar histórico do Planeja Teórico:", err);
                 setThisPrincipal(true);
             }
-
-            if (localData == undefined || localData[0].question_answer == undefined) {
-                localData = null;
-            }
-
-            if (localData !== null && localData !== undefined) {
-                data = localData.reverse();
-            }
-
-            if (data.length > 0) {
-                index = data[0].planQuestion;
-            }
-
-            setSavedDataToSend(data);
-            setActiveIndex(index);
         };
 
-        fetchData();
-        loadHistory();
-    }, []);
+        let active = true;
+        Promise.resolve().then(() => {
+            if (active) {
+                void fetchData();
+                void loadHistory();
+            }
+        });
+        return () => {
+            active = false;
+        };
+    }, [fetchData]);
 
     useEffect(() => {
         setDataSaved(false);
@@ -198,7 +340,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
 
     async function setLocalHistory(newData: ISavedData[]) {
-        localStorage.setItem("historyTeoric", btoa(JSON.stringify(newData)));
+        localStorage.setItem("historyTeoric", JSON.stringify(newData));
     }
 
     async function clearLocalHistory() {
@@ -206,15 +348,11 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
     }
 
     async function setLocalFinishHistory(newData: IPlanejaDataPDF[]) {
-        localStorage.setItem("historyTeoric", btoa(JSON.stringify(newData)));
+        localStorage.setItem("historyTeoric", JSON.stringify(newData));
     }
 
-    function getLocalHistory(): ISavedData[] {
-        try {
-            return JSON.parse(atob(localStorage.getItem("historyTeoric")));
-        } catch (error) {
-            return null;
-        }
+    function getLocalHistory(): ISavedData[] | null {
+        return parseStoredJson<ISavedData[]>(localStorage.getItem("historyTeoric"));
     }
 
     async function finishHistory(newData: IPlanejaDataPDF[]) {
@@ -258,15 +396,9 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
         }
     }
 
-    function formatChoice(choice: string): IChoices[] {
-        const newStr = choice.replace(/''/g, '""');
-        const formattedJSON = newStr.replace(/'/g, '"');
-
-        return JSON.parse(formattedJSON);
-    }
-
     function findChoiceByQuestionId() {
-        return savedDataToSend.find((item) => item.planQuestion === data[activeIndex].position);
+        if (!currentQuestion) return undefined;
+        return savedDataToSend.find((item) => item.planQuestion === currentQuestion.position);
     }
 
     function calculateLeftCaracteres(text: string, limit?: number) {
@@ -313,7 +445,9 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
     function updateConfig() {
         const config = getConfig();
-        setThisPrincipal(config.thisPrincial);
+        if (config) {
+            setThisPrincipal(Boolean(config.thisPrincipal));
+        }
     }
 
     function useThis() {
@@ -448,12 +582,20 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
 
             setIsLoading(true);
             setSubmit(true);
-            setUpSteps(1);
-            await sendData(savedDataToSend);
-            setUpSteps(2);
-            setUpSteps(3);
-            await sendCertificate(savedDataToSend);
-            setUpSteps(3);
+            setErrorOnSendForm(false);
+            try {
+                setUpSteps(1);
+                await sendData(savedDataToSend);
+                setUpSteps(2);
+                setUpSteps(3);
+                await sendCertificate(savedDataToSend);
+                setUpSteps(3);
+            } catch (err) {
+                console.error("Erro ao enviar Planeja Teórico:", err);
+                setErrorOnSendForm(true);
+            } finally {
+                setIsLoading(false);
+            }
         } else {
             // caso seja a última questão(opinião e email), nós limpamos os erros
             if (activeIndex === 8) {
@@ -518,6 +660,57 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                 upSteps={upSteps}
                             />
                         )
+                    ) : loadError || !data.length || !currentQuestion ? (
+                        <div
+                            style={{
+                                minHeight: "50vh",
+                                width: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                padding: "24px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    maxWidth: "460px",
+                                    width: "100%",
+                                    backgroundColor: "#fff",
+                                    border: "1px solid #e7e5e4",
+                                    borderRadius: "16px",
+                                    padding: "32px 24px",
+                                    textAlign: "center",
+                                    boxShadow: "0 4px 16px rgba(0,0,0,0.05)",
+                                }}
+                            >
+                                <h2 style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "22px", color: "#1c1917", margin: "0 0 10px" }}>
+                                    {loadError ? "Não foi possível carregar o formulário" : "Nenhuma questão disponível"}
+                                </h2>
+                                <p style={{ fontSize: "14px", color: "#78716c", margin: "0 0 24px", lineHeight: 1.6 }}>
+                                    {loadError
+                                        ? "Ocorreu um problema ao carregar as questões. Verifique sua conexão e tente novamente."
+                                        : "Não há questões disponíveis para este formulário no momento."}
+                                </p>
+                                <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+                                    <button
+                                        type="button"
+                                        onClick={handleRetry}
+                                        style={{
+                                            padding: "10px 24px",
+                                            borderRadius: "100px",
+                                            border: "none",
+                                            backgroundColor: "#6D141A",
+                                            color: "#fff",
+                                            fontSize: "14px",
+                                            fontWeight: 700,
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Tentar novamente
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <LoadHistory thisPrincipal={thisPrincipal} updateForm={updateForm} useThis={useThis} />
@@ -532,14 +725,14 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                         <Box sx={{ width: "100%" }}></Box>
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: data[activeIndex].title,
+                                                __html: sanitizeHtml(currentQuestion.title),
                                             }}
                                         ></div>
                                     </Grid>
                                     <Grid item xs={2}>
                                         <div
                                             dangerouslySetInnerHTML={{
-                                                __html: data[activeIndex].content,
+                                                __html: sanitizeHtml(currentQuestion.content),
                                             }}
                                         ></div>
 
@@ -548,7 +741,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                     <Grid item xs={2}>
                                         <FormControl fullWidth>
                                             {/* Verificar se o id da questão é 9, se for, devemos exibir o input de texto da opinião e o campo de email: TODO - Melhorar esse tipo de valição de id por algo diferente, como tag ou tipo de pergunta */}
-                                            {data[activeIndex].id === 9 ? (
+                                            {currentQuestion.id === 9 ? (
                                                 <>
                                                     <TextField
                                                         label="Opinião"
@@ -558,7 +751,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                         value={findChoiceByQuestionId()?.justify ?? ""}
                                                         onChange={(e) =>
                                                             handleAnswer({
-                                                                questionId: data[activeIndex].id,
+                                                                questionId: currentQuestion.id,
                                                                 question_answer: findChoiceByQuestionId()?.question_answer,
                                                                 justify: e.target.value,
                                                             })
@@ -586,7 +779,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                         value={findChoiceByQuestionId()?.question_answer ?? ""}
                                                         onChange={(e) =>
                                                             handleAnswer({
-                                                                questionId: data[activeIndex].id,
+                                                                questionId: currentQuestion.id,
                                                                 question_answer: e.target.value,
                                                                 justify: findChoiceByQuestionId()?.justify,
                                                             })
@@ -620,7 +813,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                     name="radio-buttons-group"
                                                     sx={{ display: "flex", flexDirection: "column" }}
                                                 >
-                                                    {data[activeIndex].choices.map((choice, index) => (
+                                                    {(currentQuestion.choices ?? []).map((choice, index) => (
                                                         <div
                                                             style={{
                                                                 display: "flex",
@@ -635,7 +828,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                                 label={choice.option_label}
                                                                 onChange={() =>
                                                                     handleAnswer({
-                                                                        questionId: data[activeIndex].id,
+                                                                        questionId: currentQuestion.id,
                                                                         question_answer: choice.option_label,
                                                                         justify: findChoiceByQuestionId()?.justify,
                                                                     })
@@ -650,7 +843,7 @@ export default function PlanForm({ onFinish }: PlanFormProps) {
                                                                         value={findChoiceByQuestionId()?.justify ?? ""}
                                                                         onChange={(e) =>
                                                                             handleAnswer({
-                                                                                questionId: data[activeIndex].id,
+                                                                                questionId: currentQuestion.id,
                                                                                 question_answer: findChoiceByQuestionId()?.question_answer,
                                                                                 justify: e.target.value,
                                                                             })
