@@ -15,9 +15,10 @@ const LOGGED_URL =
 
 function ApsEmbed({ url, title }: { url: string; title: string }) {
     const isLarge = useMediaQuery('(min-width:720px)');
+    // `mb` abaixo = espaço para o footer fixo não cobrir a barra inferior do Power BI (setas de página).
 
     return (
-        <Box sx={{ marginTop: '84px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 8 }}>
+        <Box sx={{ marginTop: '84px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', mb: isLarge ? '72px' : '160px' }}>
             <Typography
                 textAlign="center"
                 fontSize={isLarge ? '28pt' : '18pt'}

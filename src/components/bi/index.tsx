@@ -27,9 +27,13 @@ export default function Index(props: TProps) {
 
     const titleSize    = isLarge ? "32pt" : "20pt";
     const iframeHeight = isLarge ? "800px" : "500px";
+    // O footer do site é `position: fixed` (css/index.css) e fica por cima do fim da página.
+    // Sem esse espaço ele cobria a barra inferior do Power BI (setas de página, zoom).
+    // No mobile o footer quebra em coluna e fica mais alto.
+    const footerSpace = isLarge ? "72px" : "160px";
 
     return (
-        <Box sx={{ marginTop: "84px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Box sx={{ marginTop: "84px", mb: footerSpace, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
             {loading ? (
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: iframeHeight }}>
                     <CircularProgress color="secondary" />
